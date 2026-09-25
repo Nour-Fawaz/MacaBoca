@@ -98,12 +98,63 @@ likely change throughout the year.}
 
 \section{Workflow Plan}
 
-\begin{itemize}
-	\item How will you be using git, including branches, pull request, etc.?
-	\item How will you be managing issues, including template issues, issue
-	classification, etc.?
-  \item Use of CI/CD
-\end{itemize}
+\subsection*{Git Usage}
+The team will use Git and GitHub for version control and project management. After being
+assigned individual tasks, team members are required to create an issue, and to create
+and work on a new branch. On completion of their work, they will submit
+a pull request with a description of the changes made, and all steps to test said changes
+to add the reviewer. All members are encouraged to review any open pull request, but 
+at least one team member must review and approve the changes before the user
+can merge their branch onto main. 
+
+\subsection*{Issue Management}
+All progress on the team will be tracked via Github Issues and a Kanban board. 
+This includes every lecture and different type of meeting attended, as well as all
+development tasks and deliverables. Template issues have been created for
+each type of task/issue, and can be easily updated via configurable files in the repository;
+currently including sections for dates, descriptions, and relevant notes. Each issue also
+has a specific label to categorize it (e.g ``Lecture'' for Lecture Issues, and ``Bug''
+all Development Bug Issues).
+Each member will be responsible for updating their own issues with relevant pull requests,
+and status changes as the task progresses. The coordinator will also regularly 
+review the project board to ensure that all issues are on track.
+\\\\
+\underline{Issue Templates}:
+\begin{enumerate}
+    \item Lecture Issue: To track any relevant notes detailed in lecture.
+    \item Supervisor Meeting Issue: To track all pre-meeting agenda items, questions, and notes with the supervisor and external teams.
+    \item Team Meeting Issue: To track all pre-meeting agenda items, questions, and notes for general meetings.
+    \item TA Meeting Issue: To track all pre-meeting agenda items, questions, and notes with the TA.
+    \item Deliverable Issue: To track requirements and progress on all deliverable items.
+    \item Blank Issue: To track any other important items.
+\end{enumerate}
+
+\subsection*{CI/CD}
+To prevent any failures or issues from occurring, we'll be using Github Actions to implement
+our main CI/CD pipelines. These workflows will then be triggered on every pull request
+that opens or updates, and again on every merge to main. Each workflow will run 
+the project's integration, contract or unit tests, and check for any formatting or
+linting errors before allowing the changes to be merged. If any of these builds or runs
+fail, the team member who opened the pull request must go back and fix the issue before 
+merging. Another workflow will also be added to compile our LaTeX documentation whenever a
+\texttt{.tex} file is changed, ensuring that every document still generates a PDF without
+any errors. The compiled PDFs will also be uploaded as artifacts so whoever is reviewing
+the pull request can actually verify the final formatted output before approving.
+Once every check has passed, a final team member must stamp their approval in order to
+finally merge the changes into main.
+\\\\
+\underline{Workflow Summary}:
+\begin{enumerate}
+    \item Brainstorm and discuss all tasks as a team.
+    \item Individual task is assigned to a team member, who creates an issue on the kanban board to track.
+    \item Team member creates a new branch from latest main, to work on their task. They must ensure that they're frequently pruning their branch to the latest main.
+    \item Any progress or significant changes should be updated on the kanban issue board.
+    \item Team member regularly commits their changes, with descriptive/clear commit messages.
+    \item Once the task is complete, the team member submits a pull request, and assigns a reviewer. The pull request should include a description of the changes made, and any relevant testing information.
+    \item The reviewer checks the PR, following any testing or tophatting instructions provided, and leaves comments if it needs any changes. If not, they approve the PR with a smiley face.
+    \item Once the PR is approved, the team member double checks their work and merges their branch into main.
+    \item Team member closes the issue on the kanban board.
+\end{enumerate}
 
 \section{Project Decomposition and Scheduling}
 
