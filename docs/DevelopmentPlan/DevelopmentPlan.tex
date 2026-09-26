@@ -2,6 +2,8 @@
 
 \usepackage{booktabs}
 \usepackage{tabularx}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue} 
 
 \title{Development Plan\\\progname}
 
@@ -91,13 +93,13 @@ Communication plays a vital role in ensuring all team members share a similar un
 The following contains the different communication platforms that will be used, their purpose, and each team member’s expectations regarding each form of communication.
 
 \subsection{Communication Tools}
-\begin{enumerate}
+\begin{itemize}
     \item \textbf{iMessage}: An iMessage group chat will be created to communicate with one another in a more convenient way. iMessage will strictly be used as a form of communication, mainly for casual conversation related to the project, discussing project details, and planning project meetings.
     \item \textbf{Google Drive}: A shared google drive folder will be created to house all documents relevant to the project. For example, brainstorming documentation and meeting minutes. It will be organized into folders each dedicated to a specific phase of time (in weeks) and project deliverable. 
     \item \textbf{Teams}: A team group chat will be used for to conduct online meetings as well as share files not directly related to a specific project deliverable. For example, to share deliverable document examples and relevant course content pertaining to the project.
     \item \textbf{Email}: Email will be used to communicate with professors and supervisors who are onboard with the project.
     \item \textbf{GitHub}: A GitHub repository will be created to track project tasks using issues, which will be labeled depending on the task type. Additionally, a Kanban board will be created to track project task flow and completion by their assignees. The GitHub will also contain all the deliverable documents including the source code of the entire project.
-\end{enumerate}
+\end{itemize}
 
 \section{Team Member Roles}
 
@@ -219,12 +221,41 @@ Topics to discuss include the following:
 
 \section{Use of AI and LLMs}
 
-\wss{This section is a continuation of the previous section.  The role of LLMs
-in your project as important enough to warrant their own section.  
-How will your team be using LLMs for code and documentation development?  
-What tools will you be using?  How will you verify the output of your LLMs?}
+\subsection{How AI and LLMs Will be Used}
+Large language models will be used as a tool to check and generate technical writing and code. 
 
-\section{Coding Standard}
+\subsubsection{Generating Writing and Code}
+Team members are permitted to use any of the AI tools listed in the \hyperref[sec:Tools]{Tools} subsection to generate technical writing and/or code to complete project related tasks. 
+However, any output used must be strictly verified as outlined in the \hyperref[sec:Verf_LLM_Output]{Verification of LLM Output} section.
+
+\subsubsection{Checking Writing and Code}
+Before a team member creates a pull request to merge their work with the main branch, it is highly recommended and enforced where the writer deems it necessary to check their work against an LLM. 
+
+For written deliverables, the team member may ask the LLM whether their writing covers the “Exceeds” criteria in the corresponding rubric posted on avenue. 
+This includes asking for idea generation, fixing grammatical mistakes, and enhancing the writing structure and tone. 
+
+As for code, the member may ask the LLM whether their code contains any errors and follows the code standard outlined in \hyperref[sec:Code_Standard]{Section 12}.
+
+\subsection{Verification of LLM Output} \label{sec:Verf_LLM_Output}
+In order to verify the output of the LLM, every line of code and writing must first be reviewed and completely understood by the individual generating the output of the LLM. 
+For example, if the team member uses an LLM to generate code they must be able to explain to another member what the code is doing. 
+Additionally, if they generate writing, they must understand what the writing means. 
+If the team member is unable to do so, they must revise their section such that they are confident in their work and can clarify what is being done. 
+This goes in hand with using an LLM as a checking tool.
+
+Next, each team member’s section pertaining to all project tasks, including those generated or checked with an LLM, will be reviewed by another group member.
+For written sections, the reviewing member will check whether the writing is clear, concise and understandable. 
+As for code, the member will determine if it is clean, readable, maintainable, and if it follows the code standard outlined in \hyperref[sec:Code_Standard]{Section 12}. 
+
+\subsection{Tools} \label{sec:Tools}
+All team members are permitted to use the following AI tools to check and generate writing and code as they see fit:
+\begin{itemize}
+    \item GitHub Copilot
+    \item Claude
+    \item ChatGPT
+\end{itemize}
+
+\section{Coding Standard} \label{sec:Code_Standard}
 
 \wss{What coding standard will you adopt?}
 
