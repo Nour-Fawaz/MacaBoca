@@ -48,8 +48,8 @@ understandable to a non-technical audience.}
 
 \subsection{Inputs and Outputs}
 
-\wss{Characterize the problem in terms of ``high level'' inputs and outputs.  
-Use abstraction so that you can avoid details.}
+\textbf{Inputs}: A video recording assessment of a bilingual child and speech clinician completed on a web-based user-centered platform. \\
+\textbf{Outputs}: A web-based annotation interface, integrated directly into the TeleHealth platform, that allows a speech clinician to review, edit, and export annotated transcriptions of the input video.
 
 \subsection{Stakeholders}
 
@@ -59,6 +59,14 @@ Use abstraction so that you can avoid details.}
 is summarized as part of the developer plan.}
 
 \section{Goals}
+\begin{enumerate}
+    \item \textbf{Integrate SAFA Into a Telehealth Platform}: SAFA is currently a local, standalone tool, requiring clinicians to leave the TeleHealth platform entirely to annotate assessments. Success will be measured by clinicians being able to access and use SAFA's core annotation features entirely within their TeleHealth account, with no local installation or file transfer required.
+    \item \textbf{Improve SAFA’s Usability}: Currently SAFA is not very intuitive which may discourage many users. We aim to redesign the annotation interface to be simpler and more guided, so that any speech clinician can use the software seamlessly. Success will be measured through usability testing (task completion rate, or a post-use satisfaction survey) showing improved ease of use compared to the current SAFA interface.
+    \item \textbf{Speed Up Speech Annotation}: The integration of SAFA into the TeleHealth platform will speed up the annotation process for bilingual speech assessments conducted through the platform. Manual annotation of a single session can take up to 3-4 hours whereas using SAFA has already been shown to cut this by roughly one-third. We aim to preserve or improve that amount of time once integrated into the TeleHealth platform. It will be measured by comparing average annotation completion time before and after integration.
+    \item \textbf{Ensure Patient Confidentiality and Safety}: Considering assessment videos, transcripts, and annotations will be within the clinician’s TeleHealth account rather than on a local machine, the system must protect sensitive patient information. Success will be measured by confirming that only authorized clinicians can access a given patient's data, in line with standard healthcare data protection practices (such as HIPAA).
+    \item \textbf{Integrate a Clinician Record and Analysis Hub}: Centralizing all patient records and assessment history in one accessible hub will simplify clinicians' workflow, allowing them to quickly reference patient history without navigating multiple disconnected systems. Success will be measured by clinicians retrieving a specific past assessment in under a set number of clicks or seconds, then comparing them to the current process of locating the files in a distributed system.
+    \item \textbf{Ensure Reliable Video-Transcript Synchronization}: A core part of SAFA's usability is from the video playing in sync with the transcript, allowing precise and easy edits. This synchronization must carry over into the newly integrated web-based interface within the TeleHealth platform. Success will be measured by confirming that video playback and transcript highlighting remain accurately aligned during testing, ensuring no noticeable drift or lag are present.
+\end{enumerate}
 
 \section{Stretch Goals}
 
