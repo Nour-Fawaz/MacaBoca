@@ -2,6 +2,9 @@
 
 \usepackage{booktabs}
 \usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{parskip}
 
 \title{Development Plan\\\progname}
 
@@ -158,14 +161,101 @@ finally merge the changes into main.
 
 \section{Project Decomposition and Scheduling}
 
+We will use GitHub Projects as the single source of truth for documentation and
+code (link to the GitHub project is \href{https://github.com/users/Nour-Fawaz/projects/8}{HERE}). The board (\textit{Maca Kanba})
+contains all project issues, with a Kanban view for day-to-day work and a
+table/roadmap view grouped by milestone. Every issue has at least one assigned owner to ensure it gets completed, though
+there may be multiple collaborators if required. Two issue types are used:
+
+\begin{enumerate}
+    \item \textit{Documentation issues}: one per deliverable section, using the
+    documents.md template (Document Name / Description / Due Date / Reviewed by).
+    \item \textit{Code issues}: one per feature/module/task, using a separate code
+    template.
+\end{enumerate}
+
+\medskip
+\noindent\textbf{Milestones}
+
+Milestones are grouped by graded deliverable date to help keep the team on track
+for due dates. Peer-review milestones follow immediately after their
+corresponding deliverable. For example, if M2 is SRS + Hazard Analysis, then
+M2.1 is SRS Peer Review and all issues related to addressing feedback are
+tracked there. Code-heavy sections (POC, Rev 0 module implementation, Rev 1) may get
+their own milestones separate from any documentation due the same week, since
+code issues require a separate lifecycle that relies more on testing and
+thorough reviews.
+
+\medskip
+\noindent\textbf{Project Schedule}
+
 \begin{itemize}
-  \item How will you be using GitHub projects?
-  \item Include a link to your GitHub project
+    \item \textbf{September 28 -- November 19: Requirements}
+    \begin{itemize}
+        \item Problem Statement
+        \item Proof of Concept Plan
+        \item Development Plan \& Team Charter
+        \item Requirements Document (SRS)
+        \item Hazard Analysis, V\&V Plan Revision 0
+        \item Design Document Revision -1 with CD-Fall
+    \end{itemize}
+
+    \item \textbf{January 18 -- January 29: Proof of Concept \& Module Implementation}
+    \begin{itemize}
+        \item Design Document Revision 0
+        \item Scheduling constraint requests
+        \item Core module implementation
+        \item POC Demonstration
+        \item Team Contribution Survey for Revision 0
+        \item Team Productivity Report for Revision 0
+    \end{itemize}
+
+    \item \textbf{(POC/Rev 0 Demo dates) -- March 8: Integration \& Verification}
+    \begin{itemize}
+        \item Integration of completed modules
+        \item V\&V Report
+        \item CD-Winter
+    \end{itemize}
+
+    \item \textbf{March 8 -- April 6: Finalization \& Expo}
+    \begin{itemize}
+        \item Team Contribution Survey for Revision 1
+        \item Team Productivity Report for Revision 1
+        \item Source code and Final Documentation for Revision 1
+        \item Final Demonstration
+        \item Capstone EXPO
+    \end{itemize}
 \end{itemize}
 
-\wss{How will the project be scheduled?  This is the big picture schedule, not
-details. You will need to reproduce information that is in the course outline
-for deadlines.}
+The project can thus be broken down into the following milestones:
+
+\begin{table}[H]
+\centering
+\caption{Project Milestones}
+\label{tab:milestones}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{1.8cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}p{2.7cm}}
+\toprule
+\textbf{Milestone} & \textbf{Deliverable(s)} & \textbf{Due Date} \\
+\midrule
+M1 & Problem Statement, POC Plan, Development Plan, Team Charter & Sep 28 \\
+M1.1 & Peer Review: above & Oct 1 \\
+M2 & SRS + Hazard Analysis & Oct 19 \\
+M2.1 & Peer Review: SRS + Hazard Analysis & Oct 22 \\
+M3 & V\&V Plan Rev 0 & Nov 2 \\
+M3.1 & Peer Review: V\&V Plan & Nov 5 \\
+M4 & Design Doc Rev -1, CD-Fall & Nov 16 \\
+M4.1 & Peer Review: Design Doc Rev -1 & Nov 19 \\
+M5 & Scheduling constraint requests & Jan 18 \\
+M6 & Module Implementation & Jan 21 \\
+M6.1 & Design Doc peer module reflection & Jan 25 \\
+M7 & Team Contribution Survey + Productivity Report Rev 0 & Jan 29 \\
+M8 & V\&V Report + CD-Winter & Mar 8 \\
+M9 & Team Contribution Survey + Productivity Report Rev 1 & Mar 18 \\
+M10 & Final Documentation (Rev 1) + Source Code & Mar 31 \\
+M11 & EXPO Demonstration & Apr 6 \\
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \section{Proof of Concept Demonstration Plan}
 
@@ -345,9 +435,11 @@ deliverable?}
 
 \subsubsection*{Quality} 
 
-\wss{What are your team's expectations regarding the quality
-of team members' preparation for team meetings and the quality of the
-deliverables that members bring to the team?}
+Team members are expected to spend 20-30 minutes reviewing relevant documents before each meeting, or enough to contribute meaningfully and raise questions or notes as needed. Before meetings with the supervisor, all members must be fully aware of the project's status and prepared to both ask and answer questions.
+
+For deliverables, each member is responsible for completing their assigned section to the best of their ability: original content, free of spelling and grammar errors, and going beyond the bare minimum. If a section is entirely AI-generated, the author must be able to explain the writing/code and prove to have a deep understanding of the work they put out. All team members are responsible for properly testing their code with the appropriate endpoints to ensure any existing functionality is not broken. Each section should be checked against the Avenue rubric to confirm all requirements are met, and reviewed by a designated team member before submission.
+
+All deliverables must be finalized two days before the official deadline to allow time for review. Any issues found afterward are to be fixed by the original author. Final submission occurs by 7:00 pm on the due date to allow time for technical issues.
 
 \subsubsection*{Attitude}
 
