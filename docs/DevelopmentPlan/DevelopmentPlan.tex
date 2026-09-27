@@ -5,7 +5,7 @@
 \usepackage{hyperref}
 \usepackage{float}
 \usepackage{parskip}
-\usepackage{float}
+\hypersetup{colorlinks=true, linkcolor=blue} 
 
 \title{Development Plan\\\progname}
 
@@ -35,12 +35,8 @@ Date2 & Name(s) & Description of changes\\
 
 \newpage{}
 
-\wss{Put your introductory blurb here.  Often the blurb is a brief roadmap of
-what is contained in the report.}
-
-\wss{Additional information on the development plan can be found in the
-\href{https://gitlab.cas.mcmaster.ca/courses/capstone/-/blob/main/Lectures/L02b_POCAndDevPlan/POCAndDevPlan.pdf?ref_type=heads}
-{lecture slides}.}
+The following document outlines the roadmap and development plan for improving and integrating a speech annotation tool into an existing TeleHealth platform. 
+Included in the document are proprietary information (1-3), team logistics (4-6), project workflows and scheduling (7-9), and expected software tools and practices (10-12).
 
 \section{Confidential Information?}
 
@@ -91,7 +87,17 @@ be taken as well with the same template as general meetings.
 
 \section{Team Communication Plan}
 
-\wss{Issues on GitHub should be part of your communication plan.}
+Communication plays a vital role in ensuring all team members share a similar understanding of the project, each milestone is completed properly, and ideas, thoughts, and emergencies are conveyed/discussed. 
+The following contains the different communication platforms that will be used, their purpose, and each team member’s expectations regarding each form of communication.
+
+\subsection{Communication Tools}
+\begin{itemize}
+    \item \textbf{iMessage}: An iMessage group chat will be created to communicate with one another in a more convenient way. iMessage will strictly be used as a form of communication, mainly for casual conversation related to the project, discussing project details, and planning project meetings.
+    \item \textbf{Google Drive}: A shared google drive folder will be created to house all documents relevant to the project. For example, brainstorming documentation and meeting minutes. It will be organized into folders each dedicated to a specific phase of time (in weeks) and project deliverable. 
+    \item \textbf{Teams}: A team group chat will be used for to conduct online meetings as well as share files not directly related to a specific project deliverable. For example, to share deliverable document examples and relevant course content pertaining to the project.
+    \item \textbf{Email}: Email will be used to communicate with professors and supervisors who are onboard with the project.
+    \item \textbf{GitHub}: A GitHub repository will be created to track project tasks using issues, which will be labeled depending on the task type. Additionally, a Kanban board will be created to track project task flow and completion by their assignees. The GitHub will also contain all the deliverable documents including the source code of the entire project.
+\end{itemize}
 
 \section{Team Member Roles}
 
@@ -404,12 +410,41 @@ Topics to discuss include the following:
 
 \section{Use of AI and LLMs}
 
-\wss{This section is a continuation of the previous section.  The role of LLMs
-in your project as important enough to warrant their own section.  
-How will your team be using LLMs for code and documentation development?  
-What tools will you be using?  How will you verify the output of your LLMs?}
+\subsection{How AI and LLMs Will be Used}
+Large language models will be used as a tool to check and generate technical writing and code. 
 
-\section{Coding Standard}
+\subsubsection{Generating Writing and Code}
+Team members are permitted to use any of the AI tools listed in the \hyperref[sec:Tools]{Tools} subsection to generate technical writing and/or code to complete project related tasks. 
+However, any output used must be strictly verified as outlined in the \hyperref[sec:Verf_LLM_Output]{Verification of LLM Output} section.
+
+\subsubsection{Checking Writing and Code}
+Before a team member creates a pull request to merge their work with the main branch, it is highly recommended and enforced where the writer deems it necessary to check their work against an LLM. 
+
+For written deliverables, the team member may ask the LLM whether their writing covers the “Exceeds” criteria in the corresponding rubric posted on avenue. 
+This includes asking for idea generation, fixing grammatical mistakes, and enhancing the writing structure and tone. 
+
+As for code, the member may ask the LLM whether their code contains any errors and follows the code standard outlined in \hyperref[sec:Code_Standard]{Section 12}.
+
+\subsection{Verification of LLM Output} \label{sec:Verf_LLM_Output}
+In order to verify the output of the LLM, every line of code and writing must first be reviewed and completely understood by the individual generating the output of the LLM. 
+For example, if the team member uses an LLM to generate code they must be able to explain to another member what the code is doing. 
+Additionally, if they generate writing, they must understand what the writing means. 
+If the team member is unable to do so, they must revise their section such that they are confident in their work and can clarify what is being done. 
+This goes in hand with using an LLM as a checking tool.
+
+Next, each team member’s section pertaining to all project tasks, including those generated or checked with an LLM, will be reviewed by another group member.
+For written sections, the reviewing member will check whether the writing is clear, concise and understandable. 
+As for code, the member will determine if it is clean, readable, maintainable, and if it follows the code standard outlined in \hyperref[sec:Code_Standard]{Section 12}. 
+
+\subsection{Tools} \label{sec:Tools}
+All team members are permitted to use the following AI tools to check and generate writing and code as they see fit:
+\begin{itemize}
+    \item GitHub Copilot
+    \item Claude
+    \item ChatGPT
+\end{itemize}
+
+\section{Coding Standard} \label{sec:Code_Standard}
 
 The coding standards used by this project will be aligned with the existing standards of the system to maintain consistency with previously developed components. For example, an existing module, TeleHealth, followed the ReactJS guidelines provided by Pillar Studio for React development and PEP 8 for Python development. Where applicable, this project will follow the same established standards.
 Any additional programming languages used during development will follow the established coding conventions and style guidelines recommended by the language creators or maintainers.
@@ -457,8 +492,6 @@ whether material was generated by a human or an AI system.}
 \newpage{}
 
 \section*{Appendix --- Reflection}
-
-\wss{Not required for CAS 741}
 
 \input{../Reflection.text}
 
@@ -545,15 +578,29 @@ Lastly, the group was very determined and organized for this deliverable and had
 finally nailing down a project, our subsequent meetings led us to divide up tasks to meet this deliverable. I think the open communication 
 and structured planning that came from our struggles getting a project actually helped us stay conflict-free during this deliverable.
 
+\subsection*{Nour}
+I believe having a development plan really helps build a foundation for the entire project. 
+It allows all the team members to develop the same general understanding of what the project entails and what is expected of us. 
+I believe without the plan, we would be confused about where to start, what resources we’d need, and what steps to take to make our project smoother and more manageable. 
+After creating the development plan, I have a much better understanding of the tasks we’ll likely be doing and the tools we’ll need. 
 
+Some advantages of implementing a CI/CD pipeline are, first, in the long run, it’s faster and helps automate a lot of processes you no longer have to worry about manually. 
+Second, it helps catch bugs early, which is much more preferable to resolving them later. 
+Third it helps maintain consistent quality across all builds throughout the project. 
+For example, a defined set of tests will run automatically every time a build enters the pipeline. 
+There are some disadvantages, however, and the one I find most concerning is the initial learning curve. 
+To implement an efficient and truly beneficial CI/CD pipeline requires an understanding of how to construct one, and since I haven't built one before, this will take time to learn. 
+In addition to this, the pipeline needs to be maintained as the project progresses, which also requires dedicated effort.  
+This might not sound like much, but when you're focused on actually completing the project, it's easy to overlook things like this.
+
+Fortunately, our group did not experience any disagreements when completing this deliverable. 
+Prior to starting, we had a meeting to discuss task delegation and task deadlines. 
+Additionally, we set up the entire project environment to prevent any member from running into issues later. 
+Since expectations and responsibilities were made clear from the start, there were no conflicts regarding next steps or task completion timelines.
 
 \newpage{}
 
 \section*{Appendix --- Team Charter}
-
-\wss{borrows from
-\href{https://engineering.up.edu/industry_partnerships/files/team-charter.pdf}
-{University of Portland Team Charter}}
 
 \subsection*{External Goals}
 
@@ -601,36 +648,84 @@ For deliverables, each member is responsible for completing their assigned secti
 
 All deliverables must be finalized two days before the official deadline to allow time for review. Any issues found afterward are to be fixed by the original author. Final submission occurs by 7:00 pm on the due date to allow time for technical issues.
 
-\subsubsection*{Attitude}
+\subsubsection*{Attitude} \label{sec:Attitude}
+\textbf{Code of Conduct} \\ 
+The following code of conduct was developed by the team and outlines what is expected in terms of attitude, behaviour, cooperation, and contribution from each team member.
+\begin{itemize}
+    \item \textbf{Communication}: All team members are expected to communicate with one another in a kind and respectful manner. They should approach all conversations with an open-mind and be willing to take constructive feedback when needed. Additionally, all team members are expected to respond to group messages within approximately 1-2 hours of being directed at them.
+    \item \textbf{Positive Attitude}: All team members are expected to approach tasks with a positive attitude and outlook to maintain team morale and encourage one another.
+    \item \textbf{Collaboration}: All team members are expected to communicate their thoughts and ideas, participate thoroughly in group meetings by providing feedback and constructive criticism, and cooperate efficiently and effectively with other members.
+    \item \textbf{Task Completion}: All team members are expected to have their tasks completed by the agreed upon deadlines. Additionally, group members must remain proactive and help other group members who are struggling with their tasks.
+    \item \textbf{Dedication to Quality}: All group members are expected to complete their tasks with the utmost quality and to the best of their abilities.
+\end{itemize}
+\textbf{Conflict Resolution Plan} \\ 
+When experiencing conflict, the following guide will be used:
+\begin{enumerate}
+    \item The team will hold a group discussion allowing each team member to share their perspective in order to pinpoint the root of the problem
+    \item The team will brainstorm potential solutions to the problem by finding common ground through shared goals and interests.
+    \item The team will develop a solution plan that all opposing parties are satisfied with.
+    \item The team will begin implementing the plan and monitoring its progress. If the solution yields no results, the team may repeat the process until a proper solution is reached.
+\end{enumerate}
 
-\wss{What are your team's expectations regarding team members' ideas,
-interactions with the team, cooperation, attitudes, and anything else regarding
-team member contributions?  Do you want to introduce a code of conduct?  Do you
-want a conflict resolution plan?  Can adopt existing codes of conduct.}
 
 \subsubsection*{Stay on Track}
+\textbf{Meetings} \\
+Mandatory in person meetings will be held approximately 1-2 times per week, depending on the current project milestone, to:
+\begin{itemize}
+    \item Discuss overall current project progress
+    \item Give each group member the opportunity to provide an update on the tasks they have been completing since the last group meeting
+    \item Delegate tasks regarding the current project milestone
+    \item Discuss upcoming TA check-ins to determine what topics should be brought up and what questions to ask
+\end{itemize}
 
-\wss{What methods will be used to keep the team on track? How will your team
-ensure that members contribute as expected to the team and that the team
-performs as expected? How will your team reward members who do well and manage
-members whose performance is below expectations?  What are the consequences for
-someone not contributing their fair share?}
+\noindent \textbf{GitHub} \\
+Github issues will be used to break down project millstones into tasks that can be delegated to group members. 
+Each member will be assigned a task, which they are expected to update on the project Kanban board to communicate its progression to the rest of the group. \\
 
-\wss{You may wish to use the project management metrics collected for the TA and
-instructor for this.}
+\noindent \textbf{Course Google Calendar}\\
+Each member will use the course Google Calendar to stay aware of upcoming lectures, deadlines, and TA meetings. 
+This will allow the team to prepare any questions and concerns regarding the project in advance. \\
 
-\wss{You can set target metrics for attendance, commits, etc.  What are the
-consequences if someone doesn't hit their targets?  Do they need to bring the
-coffee to the next team meeting?  Does the team need to make an appointment with
-their TA, or the instructor?  Are there incentives for reaching targets early?}
+\noindent \textbf{Deadlines} \\
+All group members are expected to have their parts of the project deliverable completed and on their GitHub branch at least one day prior to the deliverable’s deadline. 
+The team will then meet the following day to assemble the document, ensuring it is ready for submission at least 6 hours before the deadline.\\
+
+\noindent \textbf{Rewarding Team Members} \\
+Members with exceptional performance will be rewarded by having their hard work and dedication acknowledged by the team. 
+This may also be rewarded by taking on more leadership roles, provided they are open to doing so. 
+Additionally, other members are free to reward them with snacks. \\
+
+\noindent \textbf{Target Metrics and Consequences} \\
+Members who are performing below expectations will be confronted by the team in a kind and supportive manner. 
+They will be asked about the cause of their reduced performance, and the team will work with them to address the issue constructively. 
+However, if the member remains unresponsive the team will follow the conflict resolution plan outlined in the \hyperref[sec:Attitude]{Attitude} section. If all else fails, the issue will be raised with the TA and, if necessary, the course instructor. 
+\begin{itemize}
+    \item \textbf{Attendance}: Team members are expected to attend all in-person group meetings. If they are unable to attend in person, they must join online unless they have an emergency. If a team member misses 3 group meetings, they must purchase a tube of milk chocolate M\&M’s minis for each team member.
+    \item \textbf{Commits}: The number of commits expected from each team member should reflect the amount of work they were assigned. However, each member is expected to make at least 5 commits per project deliverable, with every commit contributing meaningful value to the project. Failing to meet the minimum requirement will result in the member refilling the rest of the group’s water bottles for an entire day when asked to do so.
+    \item \textbf{GitHub Issues}: Team members are expected to have all their issues 100\% completed (moved to the “Done” section of the Kanban board) one day prior to a project deadline. Failing to do so will result in the member purchasing a bag of milk chocolate M\&M’s for each team member.
+\end{itemize}
+If a group member misses the target metrics outlined above more than twice, the team will first meet with them to discuss the behaviour. 
+If the member’s behaviour persists and deadlines continue to be missed, the issue will be raised with the TA and, possibly, the course instructor. 
+This also applies if a group member consistently fails to contribute fairly to the project, which can be analyzed via their completed issues and number of commits.
+
+If a group member consistently reaches the target metrics early, they will be given the choice of the next meeting's location, or the ability to set restrictions on where it will be held.
+
 
 \subsubsection*{Team Building}
 
-\wss{How will you build team cohesion (fun time, group rituals, etc.)? }
+For group meetings, first they will be held at certain locations favoured by different team members, such as Coco’s for boba tea, so that our time together feels more like a hangout rather than simply meeting to do project work. 
+Next, members will bring snacks to stressful meetings to lighten the mood and spread joy. 
+Lastly, the team has decided to hold all team meetings in person unless a team member is truly unable to attend.
 
 \subsubsection*{Decision Making} 
 
-\wss{How will you make decisions in your group? Consensus?  Vote? How will you
-handle disagreements? }
+All group decisions will be made by reaching a consensus, rather than a vote. This ensures that all group members are satisfied with the outcome of the decision. \\
+
+\noindent The team will follow the process below to handle disagreements:
+\begin{enumerate}
+    \item Each member will be given a turn to share their opinion and thoughts on the matter, while maintaining a positive attitude as outlined in the \hyperref[sec:Attitude]{Attitude} section. 
+    \item After hearing everyone’s perspective, the team will hold a short, project-focused discussion to work toward an agreed-upon consensus. Relevant technical documentation may be referenced during this discussion to ensure that project goals continue to be met.
+    \item If aconsensus is still not reached, a neutral third party, which can include an uninvolved team member or an individual onboard with the project, may facilitate the discussion or offer their perspective to help the group reach an agreement.
+\end{enumerate}
 
 \end{document}
