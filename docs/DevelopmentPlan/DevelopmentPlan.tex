@@ -5,6 +5,7 @@
 \usepackage{hyperref}
 \usepackage{float}
 \usepackage{parskip}
+\usepackage{float}
 
 \title{Development Plan\\\progname}
 
@@ -94,11 +95,85 @@ be taken as well with the same template as general meetings.
 
 \section{Team Member Roles}
 
-\wss{You should identify the types of roles you anticipate, like notetaker,
-leader, meeting chair, reviewer.  Assigning specific people to those roles is
-not necessary at this stage.  In a student team the role of the individuals will
-likely change throughout the year.}
+Team member roles for this project will be divided into technical and administrative roles.
+From the initialization of the project, team members will be assigned all technical roles. This ensures that all members gain experience with development, testing, documentation, research, and review throughout the project. Technical responsibilities will be delegated according to individual tasks requirements, such that each team member may actively learn the skills needed for each technical role.
+\\Next, each team member will initially be assigned one primary administrative role. These assignments are not fixed and may change throughout the project based on workload, individual expertise, and project needs. This structure allows the team to maintain clear ownership of administrative responsibilities while remaining flexible as the project evolves.
+\\\\See Table~\ref{TblTechnicalRoles} and Table~\ref{TblAdministrativeRoles} for each role, its responsibilities, and its corresponding assigned member(s).
 
+\begin{table}[H]
+    \caption{Technical Roles}\label{TblTechnicalRoles}
+    \renewcommand{\arraystretch}{1.1}
+    \setlength{\tabcolsep}{5pt}
+    \begin{tabularx}{\textwidth}{p{3cm} X p{3cm}}
+    \toprule
+    \textbf{Technical Role} & \textbf{Responsibilities} & \textbf{Member(s)}\\
+    \midrule
+
+    \textbf{Developer}
+    & Implement end-to-end development of project features.
+    & All
+    \\
+    \midrule
+
+    \textbf{Documenter}
+    & Contribute to all project documentation. Document code in accordance with the project coding standard (See Section~12).
+    & All
+    \\
+    \midrule
+
+    \textbf{Tester\&Reviewer}
+    & Ensure all features are tested and reviewed prior to implementation.
+    & All
+    \\
+    \midrule
+
+    \textbf{Researcher}
+    & Research domain knowledge and technical concepts required for project tasks. Apply research findings to software design and implementation.
+    & All
+    \\
+
+    \bottomrule
+    \end{tabularx}
+\end{table}
+
+\begin{table}[H]
+    \caption{Administrative Roles}\label{TblAdministrativeRoles}
+    \renewcommand{\arraystretch}{1.1}
+    \setlength{\tabcolsep}{5pt}
+    \begin{tabularx}{\textwidth}{p{3cm} X p{3cm}}
+    \toprule
+    \textbf{Administrative Role} & \textbf{Responsibilities} & \textbf{Member(s)}\\
+    \midrule
+
+    \textbf{Liaison}
+    & Act as the primary communicator with professors, supervisors, and peer reviewers. Lead meetings with TAs and other external stakeholders when required.
+    & Javayria M.
+    \\
+    \midrule
+
+    \textbf{Administrator}
+    & Submits all team deliverables. Verify that required components are included in team documentation.
+    & tbd
+    \\
+    \midrule
+
+    \textbf{Coordinator}
+    & Take meeting notes and record feedback and action items. Ensures all members are assigned an equal task load.
+    & tbd
+    \\
+    \midrule
+
+    \textbf{Subject Matter Expert}
+    & Prepares all meeting agendas. Maintain project resources and bibliography. Primary researcher for required peer review knowledge.
+    & tbd
+    \\
+
+    \bottomrule
+    \end{tabularx}
+\end{table}
+
+
+    
 \section{Workflow Plan}
 
 \subsection*{Git Usage}
@@ -336,7 +411,9 @@ What tools will you be using?  How will you verify the output of your LLMs?}
 
 \section{Coding Standard}
 
-\wss{What coding standard will you adopt?}
+The coding standards used by this project will be aligned with the existing standards of the system to maintain consistency with previously developed components. For example, an existing module, TeleHealth, followed the ReactJS guidelines provided by Pillar Studio for React development and PEP 8 for Python development. Where applicable, this project will follow the same established standards.
+Any additional programming languages used during development will follow the established coding conventions and style guidelines recommended by the language creators or maintainers.
+\\The codebase will also follow a consistent structure and design pattern throughout the repository. For example, if an atomic folder structure is established, all team members will follow the same structure when adding or modifying files. 
 
 \newpage{}
 
@@ -451,6 +528,24 @@ broke off to work on them separately. We agreed though that if we have any futur
 disagreements, the members involved would communicate respectfully and sort it out 
 together before moving forward with any work. 
 
+\subsection*{Yilin}
+For myself, I think of the development plan as the underpainting of any project. 
+Starting a painting without one is always more intimidating, unstructured, and difficult to truly begin making progress. 
+In the same way, a development plan allows both myself and my team members to sit down and discuss our understanding 
+of the project and our expectations for both the journey and the outcome. It is allocated time to build team communication 
+and understand both the problems we will be facing and what we hope to solve.
+
+I believe one of the advantages of CI/CD is the significant increase in consistency and discipline it can provide when 
+developing software. Automated testing, builds, and other checks can help reduce human error by acting as a safety net and 
+providing immediate feedback. On the other hand, one of the downfalls of CI/CD is that it can give you a false sense of security. 
+For example, under a time crunch, the process of thoroughly going through a merge request might be rushed, or developers may rely 
+too heavily on automated tests that do not catch issues a human may catch, leading to serious consequences.
+
+Lastly, the group was very determined and organized for this deliverable and had no disagreements. As we were all excited about 
+finally nailing down a project, our subsequent meetings led us to divide up tasks to meet this deliverable. I think the open communication 
+and structured planning that came from our struggles getting a project actually helped us stay conflict-free during this deliverable.
+
+
 
 \newpage{}
 
@@ -473,19 +568,28 @@ to show off our skillset as engineers.
 
 \subsubsection*{Expectations}
 
-\wss{What are your team's expectations regarding meeting attendance (being on
-time, leaving early, missing meetings, etc.)?}
+All team members are expected to arrive on time to pre-agreed meetings and remain for the entirety of the scheduled time slot. 
+Team members are expected to attend all meetings unless they notify the group in advance that they are unable to attend. 
+Notice should be provided at least one day before the meeting whenever possible. 
+If a team member is unable to attend a meeting, they are responsible for reviewing the meeting notes, 
+communicating with the team as necessary, and completing their assigned work before the next meeting. Missing more than three meetings will result in a meeting with the rest of the team to discuss next steps. Lastly, team members are expected to arrive prepared, with any technical or administrative tasks assigned prior to the meeting completed.
+
 
 \subsubsection*{Acceptable Excuse}
 
-\wss{What constitutes an acceptable excuse for missing a meeting or a deadline?
-What types of excuses will not be considered acceptable?}
+Acceptable reasons for missing a meeting include unexpected emergencies, 
+health-related circumstances, and anticipated absences. Emergency circumstances 
+will be addressed with consideration for the situation. 
+Team members should communicate any health-related absence or anticipated impact on 
+their availability, such that the team can adjust the workload. Anticipated absences 
+should be communicated before the meeting is scheduled, or as soon as the member becomes aware of the conflict.
 
 \subsubsection*{In Case of Emergency}
 
-\wss{What process will team members follow if they have an emergency and cannot
-attend a team meeting or complete their individual work promised for a team
-deliverable?}
+If an emergency does occur, the member does not need to alert the rest of the team. 
+They can do so afterwards when reasonably able. The team will bring flowers and do 
+their best to console the team members. In the case that the emergency coincided with a 
+deadline, the affected team member may make up their contribution through future tasks.
 
 \subsection*{Accountability and Teamwork}
 
