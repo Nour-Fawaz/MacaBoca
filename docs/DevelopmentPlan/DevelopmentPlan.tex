@@ -104,11 +104,46 @@ likely change throughout the year.}
 \subsection*{Git Usage}
 The team will use Git and GitHub for version control and project management. After being
 assigned individual tasks, team members are required to create an issue, and to create
-and work on a new branch. On completion of their work, they will submit
-a pull request with a description of the changes made, and all steps to test said changes
-to add the reviewer. All members are encouraged to review any open pull request, but 
+and work on a new branch. All work will be completed on the branch and submitted for review through a pull request (PR).
+All members are encouraged to review any open pull request, but 
 at least one team member must review and approve the changes before the user
 can merge their branch onto main. 
+
+\subsubsection*{Naming Conventions}
+The project will make use of following naming conventions:
+
+\textit{Pull Requests/Commits}: \texttt{<type>(<scope>): <short description>}. The supported types are:
+\begin{itemize}
+    \item \texttt{feat}: Adding new functionality
+    \item \texttt {fix}: Fixing a bug/error
+    \item \texttt{docs}: Updating documentation
+    \item \texttt{test}: Adding/updating tests
+    \item \texttt{refactor}: Restructuring code, no external behavior change
+    \item \texttt{chore}: Github maintenance, builds, dependencies
+\end{itemize} The scope identifies the primary component or document affected by the change, such as \texttt{ui}, \texttt{backend}, \texttt{data}, or the name of a specific document. The scope can be omitted if no appropriate scope applies.
+
+For example:
+\begin{center}
+\texttt{feat(ui): add activity selection screen}
+\end{center}
+
+\textit{Branches}: \texttt{<type>/<name>/<short-description>}, where \texttt{<type>} identifies the purpose of the branch, \texttt{<name>} identifies the contributor, and \texttt{<short-description>} briefly describes the work being completed. Descriptions should use lowercase words separated by hyphens.
+
+For example:
+\begin{center}
+\texttt{feat/javayria/activity-selection-screen}
+\end{center}
+
+\subsubsection*{Handling Pull Requests}
+
+When opening a pull request, contributors will select the appropriate pull request template:
+\begin{enumerate}
+\item Code Pull Request: Include a description of the changes, added tests + test scenarios, linked issues, and a checklist
+\item Documentation Pull Request: Include a description of the changes, linked issues, and a checklist
+\end{enumerate} For changes involving both code and documentation, members are to use the Code Pull Request 
+template and include the documentation changes in the checklist. The checklist serves as a reminder 
+for authors to review their work before submitting the pull request for review, but does not need to be completed in order for to be merged.
+When merging pull requests, the `Squash and merge' option should be selected to help keep \textit{main}'s history clean and readable.
 
 \subsection*{Issue Management}
 All progress on the team will be tracked via Github Issues and a Kanban board. 
@@ -118,7 +153,7 @@ each type of task/issue, and can be easily updated via configurable files in the
 currently including sections for dates, descriptions, and relevant notes. Each issue also
 has a specific label to categorize it (e.g ``Lecture'' for Lecture Issues, and ``Bug''
 all Development Bug Issues).
-Each member will be responsible for updating their own issues with relevant pull requests,
+Each member will be responsible for updating their own issues with relevant pull requests (must be closed by updating the 'Linked Issues` section of the PR description),
 and status changes as the task progresses. The coordinator will also regularly 
 review the project board to ensure that all issues are on track.
 \\\\
@@ -152,11 +187,11 @@ finally merge the changes into main.
     \item Individual task is assigned to a team member, who creates an issue on the kanban board to track.
     \item Team member creates a new branch from latest main, to work on their task. They must ensure that they're frequently pruning their branch to the latest main.
     \item Any progress or significant changes should be updated on the kanban issue board.
-    \item Team member regularly commits their changes, with descriptive/clear commit messages.
-    \item Once the task is complete, the team member submits a pull request, and assigns a reviewer. The pull request should include a description of the changes made, and any relevant testing information.
+    \item Team member regularly commits their changes, with descriptive/clear commit messages that follow the outlined naming conventions.
+    \item Once the task is complete, the team member submits a pull request, and assigns a reviewer. The pull request description should include be complete, with all template fields filled out and checklists up to date.
     \item The reviewer checks the PR, following any testing or tophatting instructions provided, and leaves comments if it needs any changes. If not, they approve the PR with a smiley face.
     \item Once the PR is approved, the team member double checks their work and merges their branch into main.
-    \item Team member closes the issue on the kanban board.
+    \item Team member closes the issue on the kanban board if it was not done by an accompanying PR.
 \end{enumerate}
 
 \section{Project Decomposition and Scheduling}
