@@ -56,18 +56,38 @@ user experience for clinicians. Its functionality also does not fully support th
  recording and analyzing patient assessments.
 
 \subsection{Inputs and Outputs}
-
-\wss{Characterize the problem in terms of ``high level'' inputs and outputs.  
-Use abstraction so that you can avoid details.}
+\textbf{Inputs}: A video recording assessment of a bilingual child and speech clinician completed on a web-based user-centered platform. \\
+\textbf{Outputs}: A web-based annotation interface, integrated directly into the TeleHealth platform, that allows a speech clinician to review, edit, and export annotated transcriptions of the input video.
 
 \subsection{Stakeholders}
 
 \subsection{Environment}
 
-\wss{Hardware and Software Environment for the users.  The developer environment
-is summarized as part of the developer plan.}
+\subsubsection{Software}
+The system will be a web-based application accessed through the existing TeleHealth
+platform, and will be supported on all current web browsers. The platform itself will
+be built using modern web frameworks such as React, and languages like Python.
+Modules will follow common software design patterns and object-oriented programming
+principles. Additional technologies and libraries will also be used for purposes such
+as cloud services in order to host the platform, data storage, and authentication.
+
+\subsubsection{Hardware}
+Clinicians will access the annotation interface from a desktop view,
+as reviewing and editing transcripts alongside video playback requires a larger
+screen, as well as a keyboard and mouse for precise editing. Audio output, such as
+speakers or headphones, will also be required to review speech and videos
+from recorded assessments. Patients and caregivers will complete assessment
+sessions through TeleHealth's existing web-based interface, using a device with a 
+webcam and microphone. Support for assessments and annotations on mobile phones
+or tablets will be a stretch goal but may likely be out of scope for this project.
 
 \section{Goals}
+\begin{enumerate}
+    \item \textbf{Integrate SAFA Into a Telehealth Platform}: SAFA is currently a local, standalone tool, requiring clinicians to leave the TeleHealth platform entirely to annotate assessments. Success will be measured by clinicians being able to access and use SAFA's core annotation features entirely within their TeleHealth account, with no local installation or file transfer required.
+    \item \textbf{Improve SAFA’s Usability}: Currently SAFA is not very intuitive which may discourage many users. We aim to redesign the annotation interface to be simpler and more guided, so that any speech clinician can use the software seamlessly. Success will be measured through usability testing (task completion rate, or a post-use satisfaction survey) showing improved ease of use compared to the current SAFA interface.
+    \item \textbf{Speed Up Speech Annotation}: The integration of SAFA into the TeleHealth platform will speed up the annotation process for bilingual speech assessments conducted through the platform. Manual annotation of a single session can take up to 3-4 hours whereas using SAFA has already been shown to cut this by roughly one-third. We aim to preserve or improve that amount of time once integrated into the TeleHealth platform. It will be measured by comparing average annotation completion time before and after integration.
+    \item \textbf{Integrate a Clinician Record and Analysis Hub}: Centralizing all patient records and assessment history in one accessible hub will simplify clinicians' workflow, allowing them to quickly reference patient history without navigating multiple disconnected systems. Success will be measured by clinicians retrieving a specific past assessment in under a set number of clicks or seconds, then comparing them to the current process of locating the files in a distributed system.
+\end{enumerate}
 
 \section{Stretch Goals}
 
@@ -135,5 +155,58 @@ years of experience working with Capstone teams. Referencing the task list and o
 within the stakeholder needs. With these tasks as our baseline, we ensured all goals were measurable. This meant that each 
 goal would be accompanied by a success metric that our team could feasible measure and fulfill. 
 
+\subsection*{Catherine}
+Our team was given a wide breadth of resources and knowledge from both our supervisor
+and additional professors also working on the MERS project, so we were able to define
+our problem and goals pretty well before starting this deliverable. We also
+planned multiple meetings in order to discuss each task item, brainstorm various ideas/notes, 
+and ensure that everybody was on the same page before we broke off to
+individually tackle our assigned parts. Having both the project knowledge and pre-work
+discussions helped heavily in guiding us through our deliverable, so we were able
+to easily communicate our individual thoughts with each other and work through the
+deliverable efficiently.
+
+One of the pain points I believe we experienced was understanding the nitty-gritty
+details of our project, given how it touches several moving parts, from the SAFA
+system to the TeleHealth platform. There were many questions we had about the project,
+and we often had to wait for responses, gather information from lengthy papers, and
+make our own assumptions in the meantime. What helped a lot was, again, our frequent
+and productive meetings, where we brainstormed and worked on understanding the project
+together. Once we had a better grasp of the project, another pain point was then figuring 
+out our scope; e.g what can we realistically finish and do we need to scope up or 
+scope down? To work through this, we outlined our main goals and separated those from our
+stretch goals, and plan on using our POC as a checkpoint since it validates
+our most concerning risks. 
+
+To keep our scope as realistic but properly complex as possible, we made sure that as
+a team, we fully and thoroughly understood the project and what was being asked of us.
+This included understanding what parts of the MERS system were done, what could
+be improved, and what needed to still be implemented or connected. By separating those 
+into individual goals as previously mentioned, we were able to visualize and
+better understand the scope of our project and what could be doable within the next
+two terms. We wanted to ensure that we weren't underestimating any technical work
+involved, so actually working on this deliverable also brought up multiple 
+useful questions that we asked ourselves; such as what are the risks that come with 
+your project and are we able to prevent them? Essentially, visualizing our project
+in a more in-depth manner, and breaking the tasks that we'd eventually
+work on developing into "modules" helped us a lot in determining what would be
+achievable this year.
+
+\subsection*{Nour}
+What went well when writing this deliverable was brainstorming what to include in the problem statement. 
+This is because our supervisor, Dr. Irene, made clear what she would like to add and change in the existing system. 
+Additionally, she and her team provided several resources for us to understand the current system and its pain points. 
+Moreover, since we knew what was expected of us and the priority level our tasks, we knew which Custom Documents would be best suited for the project. 
+For example, we are going to write a Norman’s Principles Report as one of our custom documents, considering one of our objectives is improving the usability of the SAFA system.
+
+Although we had a good understanding of the SAFA annotation tool, we had hardly any understanding of the actual TeleHealth system it would be integrated into. 
+This made it difficult to know what to include in the Expected Technology section of the Development Plan document. 
+Especially considering myself, who is not experienced in web-development or audio-video synchronization tools. 
+Therefore, pinpointing what tools the development team may have used to implement the TeleHealth system, and what we might need to use to integrate SAFA, was difficult.
+
+The scope of the project was largely defined by our supervisor from the start, hence adjusting it was not much of an issue. 
+When we first consulted with her, the tasks she outlined initially seemed lighter than what we expected from a capstone project. 
+However, after clarifying this with her, she confirmed that the work was enough, with additional tasks available if we wanted to take on more. 
+Hence, we broke down the main objectives she explicitly identified into our goals and added a few additional ones to account for possible extended work if time and resources allowed.
 
 \end{document}

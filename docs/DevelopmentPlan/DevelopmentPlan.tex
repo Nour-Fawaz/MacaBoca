@@ -373,10 +373,87 @@ M11 & EXPO Demonstration & Apr 6 \\
 \end{table}
 
 \section{Proof of Concept Demonstration Plan}
+A high-level overview of our proof of concept demonstration:
 
-What is the main risk, or risks, for the success of your project?  What will you
-demonstrate during your proof of concept demonstration to convince yourself that
-you will be able to overcome this risk?
+\begin{enumerate}
+  \item A patient will have previously recorded a bilingual assessment session on the
+  TeleHealth platform.
+  \item The clinician will log in and select the same patient profile and
+  language assessment session from the patient's history.
+  \item The SAFA interface retrieves a transcript of the recording, divided into
+  time-coded chunks with clinically meaningful markers (e.g., language switches,
+  utterances, and assessment tasks).
+  \item The clinician reviews and annotates the transcript, verifies the markers, and
+  labels key details about the speaker and their performance to support their
+  assessment of the patient's language abilities.
+\end{enumerate}
+
+The high-level plan above does not fully address the major risks that could arise
+during the project, but we have identified ways to address these issues.
+
+\begin{itemize}
+  \item By failing to properly \textbf{integrate SAFA into the TeleHealth platform},
+  clinicians will have to leave the web platform and transfer files manually
+  to SAFA, defeating one of the project's main purposes. The main concern
+  is that SAFA was built as a local, standalone tool, whereas TeleHealth
+  exists as a prototype web-based platform with its own architecture and design.
+    \begin{itemize}
+      \item To address this, the POC will demonstrate an end-to-end workflow in which
+      clinicians access a patient's recorded assessment session within the TeleHealth
+      platform and use SAFA's core modules. The usability and performance of each
+      module, including chunk editing, video playback, and annotation markers, will
+      be compared with its performance in the standalone SAFA tool to verify successful
+      integration.
+    \end{itemize}
+
+  \item Another large risk is failing to \textbf{keep the video and transcript synchronized in
+  the browser}. Clinicians might make edits to the wrong sections of the transcript
+  and become confused by the timing. SAFA depends on the video and transcript staying
+  aligned so clinicians can make precise edits. Streaming video over the web can also
+  add delay and buffering that may not occur when running SAFA locally, which could contribute
+  to synchronization issues. This will require extending TeleHealth's Media Processing
+  module to stream video and seek to specific timestamps, rather than loading the full
+  file at once.
+  \begin{itemize}
+    \item To address this, the POC will play a full-length recorded session
+    (at least 10 minutes) and repeatedly jump between sections from the start, middle,
+    and end of the video. We will check that the highlighted chunk matches what is
+    being said and measure the gap between the video's timestamp and the transcript's
+    timestamp. As a tentative target, we can aim to keep this gap under half a second
+    with no noticeable drift throughout the demonstration.
+  \end{itemize}
+
+  \item The system may also struggle to properly \textbf{categorize and pre-annotate
+  important parts of the transcript}. If this happens, clinicians may still need to
+  manually search through entire recordings for key moments and markers, reducing the
+  time savings that the transcription and annotation modules are intended to provide.
+  \begin{itemize}
+    \item To address this, the POC will compare the system's automatically generated
+    markers and tags against a manually reviewed sample of the recording. We will
+    measure how accurately the system identifies speaker turns, language changes,
+    assessment tasks, and significant moments, as well as how much time these markers
+    save during clinician annotation.
+  \end{itemize}
+
+  \item Finally, one of the largest risks is failing to \textbf{protect patient data}.
+  Unauthorized users may gain access to assessment videos, transcripts, and annotations.
+  Since these files will live in the clinician's TeleHealth account, unauthorized access
+  could result in a serious security failure and expose sensitive information about
+  children.
+  \begin{itemize}
+    \item To address this, the POC will use TeleHealth's existing authentication to
+    show that a clinician can only access recordings and annotations for their own
+    patients. We will also verify that patient data is encrypted during transmission
+    and stored securely. This will be demonstrated by logging in as a second clinician
+    account and confirming that it cannot view or edit the first clinician's data,
+    including through direct links or API requests.
+  \end{itemize}
+\end{itemize}
+
+\noindent If the team is unable to make progress on the risks above, it could lead to
+minor or major consequences for the project. Addressing these risks early will help the
+team confirm that the project is feasible and define clear metrics for
+success.
 
 \section{Expected Technology}
 
@@ -458,40 +535,24 @@ Any additional programming languages used during development will follow the est
 
 \section{Appendix --- Generative AI Use Disclosure}
 
-\wss{ChatGPT (version 5) was used to brainstorm ideas for the template for this disclose section.}
-
-\wss{This section is about the use of AI to write this document, not your
-planned use of AI for your project.  You discuss that topic in one of the
-sections in the body of this report.}
 
 \subsection{AI Tools Used}
-
-\wss{Give the name of the AI tool(s) used and the version.}
+\begin{itemize}
+    \item Claude Sonnet 5 (Medium)
+\end{itemize}
 
 \subsection{How and Where Used}
-
-\wss{Explain what the tool(s) were used for.  Examples include: brainstorming,
-explaining a technical concept, reviewing the document, generating or modifying
-text, generating or modifying diagrams, identifying errors or omissions or
-inconsistencies.}
-
-\wss{For each of the uses, identify which parts of the document were affected.}
-
-\wss{You do not need to report every interaction, but you should disclose the 
-uses that materially contributed to your work}
+\begin{itemize}
+    \item Claude was used to review sections of the document against the rubric requirements and the specific questions written in each section's prompt. This was applied in both the Development Plan and Problem Statement documents.
+    \item Claude was used to improve the wording, clarity, and flow of written sections, including reducing repetitive phrasing and correcting grammar. This was applied in both the Development Plan and Problem Statement documents.
+    \item Claude was used to help identify and fix LaTeX compilation errors. This applies to the following sections of the Development Plan: 6, 8, and 11.
+\end{itemize}
 
 \subsection{Verification of AI-Generated Content}
-
-\wss{\begin{itemize}
-    \item Describe how the team checked AI-generated or AI-assisted material
-    before including it in the document.
-    \item In particular, verify factual claims, technical assertions,
-    requirements, calculations, references, and other information for which an
-    AI system may produce incorrect or fabricated results.
-    \item \textbf{The team is responsible for the accuracy, completeness,
-consistency, and appropriateness of the submitted document, regardless of
-whether material was generated by a human or an AI system.}
-\end{itemize}}
+To verify the output of the LLM, each team member went over their section and presented their work to the group, explaining what they had completed since the previous meeting. 
+Each member was able to successfully explain their sections. 
+Additionally, before any pull request was approved, a team member who had not written the section reviewed the work to ensure it was cohesive, accurate, and consistent with the rest of the document. 
+Considering this document contains no factual claims, the verification of the output was mainly assessing whether it was consistent with the rest of the document, rather than fact checking.
 
 \newpage{}
 
