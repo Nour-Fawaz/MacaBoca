@@ -2,8 +2,8 @@
 
 \usepackage{tabularx}
 \usepackage{booktabs}
+\usepackage{float}
 \usepackage{parskip}
-
 
 \title{Problem Statement and Goals\\\progname}
 
@@ -24,7 +24,9 @@
 \toprule
 \textbf{Date} & \textbf{Developer(s)} & \textbf{Change}\\
 \midrule
-28-09-2026 & All & Added sections and reviewed document\\
+Sep 27, 2026 & All & Added first draft (Inputs/Outputs, Goals)\\
+Sep 28, 2026 & All & Added remaining sections\\
+Sep 28, 2026 & All & Added Reflection\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -52,6 +54,33 @@ user experience for clinicians. Its functionality also does not fully support th
 \textbf{Outputs}: A web-based annotation interface, integrated directly into the TeleHealth platform, that allows a speech clinician to review, edit, and export annotated transcriptions of the input video.
 
 \subsection{Stakeholders}
+
+\subsubsection{Primary Stakeholders}
+\textbf{Speech-language pathologists (SLPs):} SLPs, or speech clinicians, are the direct users of the integrated system.
+They review assessment recordings, verify and correct AI-generated transcripts,
+tag speakers and languages, and use the results to make diagnostic decisions and
+write reports. Their main needs are less time spent annotating, an interface
+that requires little training, and full control over the final decision.
+
+\subsubsection{Secondary Stakeholders}
+\textbf{Children and guardians:} Children complete assessments on the
+patient-facing site and are supervised by their guardians. They do not use our system
+directly, but its quality affects how quickly and accurately their assessments
+are reviewed and how soon they receive support.
+
+\textbf{Research team (Dr. Du, Dr. Wu, and collaborators):} They
+developed SAFA and the surrounding research, and they want the integrated
+system to become part of a larger clinician-support platform. They depend on our
+work meeting clinician requirements and being compatible with their existing pipeline.
+
+\subsubsection{Tertiary Stakeholders}
+\textbf{Clinics, schools, and healthcare institutions:} Organizations that
+employ SLPs must approve tools that handle patient data and may be affected by
+changes to their clinical workflows.
+
+\textbf{Privacy and regulatory bodies:} Because the system stores recordings
+and records of children, it must respect applicable health-privacy
+requirements (e.g., HIPAA for U.S.-based clinicians).
 
 \subsection{Environment}
 
@@ -92,17 +121,15 @@ or tablets will be a stretch goal but may likely be out of scope for this projec
 
 \section{Custom Documents (CDs)}
 
-\wss{For CAS 741: State whether the project is a research project. This
-designation, with the approval (or request) of the instructor, can be modified
-over the course of the term.}
+The custom documents chosen for the project are:
 
-\wss{For SE Capstone: List your custom documents (CDs).  Potential CDs include
-usability testing, code walkthroughs, user documentation, formal proof,
-GenderMag personas, Design Thinking, etc.  (The full list is on the course
-outline and in Lecture 02.) Normally the number of CDs will be two (one per
-term).  Approval of the CDs will be part of the discussion with the instructor
-for approving the project. The CDs, with the approval (or request) of the
-instructor, can be modified over the course of the term.}
+\begin{enumerate}
+    \item \textbf{Wireframe (Fall)}: Since redesigning SAFA's interface is a core goal, we will create a mock-up of the new interface
+    and present it to the research team and clinicians. The document will describe the mock-up and discuss insights gained from
+    their feedback.
+    \item \textbf{Usability Report (Winter)}: Clinicians should be able to use the integrated system with ease and have it suit their daily workflows.
+    This document will include the testing plan, the results, and a discussion of the findings and user feedback (including improvements on how the system looks and functions).
+\end{enumerate}
 
 \newpage{}
 
@@ -199,4 +226,23 @@ When we first consulted with her, the tasks she outlined initially seemed lighte
 However, after clarifying this with her, she confirmed that the work was enough, with additional tasks available if we wanted to take on more. 
 Hence, we broke down the main objectives she explicitly identified into our goals and added a few additional ones to account for possible extended work if time and resources allowed.
 
+\subsection*{Javayria}
+This deliverable helped our team understand the project beyond the brief description we were given when it was pitched. What went best was writing the problem statement,
+ because the supervisor, Dr. Irene Yuan, and the other researchers gave us notes on the current telehealth assessment system and SAFA. That made their baseline
+  expectation clear from the start: integrate the systems into one larger application that speech-language pathologists can use for their work.
+I was also pleasantly surprised by how responsive and supportive the research team is, even though they are based in the U.S. We still don't know many
+ details about the existing system or exactly what they are envisioning, but it's relieving to be working with a team that doesn't hesitate to help.
+
+My main pain point was the GitHub management work. I am a big fan of structure and guidelines, so I wanted the team to use naming conventions and templates wherever
+ possible. However, setting them up was much harder than expected as GitHub still doesn't offer a UI option to choose a template when creating a pull request. I 
+ originally wanted one template for documentation changes and another for code changes, but I ended up creating a single default template that is applied to every PR. 
+ Although this wasn't the focus of the deliverable, it reminded me that setting up CI/CD for code changes later on will likely be a challenge.
+
+The scope has stayed mostly the same as the description Dr. Yuan gave us in our first supervisor meeting. The main change has been working out how to make it 
+ complex enough for a senior design project. At first, the goal was to integrate SAFA into the larger telehealth system. We were worried that this could either end up being a 
+ few adapters and some simple web development, or a full-fledged serverless architecture system that would take up most of our time. After learning more about SAFA 
+ and how Dr. Wu's lab implemented it, we found that there is a lot more work than making it available on the web. The tool is still in its early stages, and the
+  research paper contains multiple feature requests from clinicians. The two systems will need to interact in several ways, and we will need to decide what 
+  additional components the combined system requires. I'm both excited and nervous, as the scope will need to be refined throughout the term once we learn more about
+  the work we are inheriting.
 \end{document}
