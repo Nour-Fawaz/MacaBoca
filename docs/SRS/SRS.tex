@@ -283,9 +283,9 @@ TODO
   
 \subsection{System Context}
 
-\plt{Include users, external systems, APIs, databases, and third-party services.}
+\plt{DONE Include users, external systems, APIs, databases, and third-party services.}
 
-\plt{Your system context will include a figure that shows the abstract view of
+\plt{DONE Your system context will include a figure that shows the abstract view of
   the software.  In some cases the diagram will show other external
   entities, besides the user.  For instance, when the software product is a
   library, the user will be another software program, not an actual end user.
@@ -294,9 +294,23 @@ TODO
   They should only be named with a specific library name if this is required by
   the system constraint.}
 
+Figure~\ref{Fig_SystemContext} shows the context between the Speech Assessment
+Web Platform and the users and external systems it interacts with. The main platform
+integrates SAFA, and is based off the previously existing TeleHealth platform. Three types
+of users will interact with the platform directly, the first being patients; they'll
+complete assessments by submitting video and audio responses, and following their
+progress, will receive assessment reports as they progress. Clinicians review transcripts 
+and flagged insights from the system, then edit and annotate them to build reports for 
+their patients. Researchers will correct transcripts to gain insights on how flagging,
+transcription, and other features can be improved. They also gain data for their research
+on speech and language patterns.
+The platform also relies on speech and language models, which generate draft transcripts
+and detect meaningful insights and patterns within a recording. The database and 
+file storage service is also used to securely store the data that the platform relies on.
+
 \begin{figure}[h!]
 \begin{center}
- \includegraphics[width=0.6\textwidth]{SystemContextFigure}
+ \includegraphics[width=1.0\textwidth]{SystemContextFigure}
 \caption{System Context}
 \label{Fig_SystemContext} 
 \end{center}
