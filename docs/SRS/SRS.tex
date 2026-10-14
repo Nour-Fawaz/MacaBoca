@@ -348,15 +348,36 @@ McSCert uses in their automotive hazard analyses.}
 
 \subsection{System Constraints}
 
-\plt{System constraints differ from other type of requirements because they
-  limit the developers' options in the system design and they identify how the
-  eventual system must fit into the world. This is the only place in the SRS
-  where design decisions can be specified.  That is, the quality requirement for
-  abstraction is relaxed here.  However, system constraints should only be
-  included if they are truly required.}
+\begin{itemize}
+\item \textbf{Integration with TeLaC:} The system must be integrated into the
+  existing TeLaC telehealth platform and accessed through the clinician dashboard,
+  rather than as a separate standalone application. \textit{Rationale:} Clinician
+  workflows require more than just the analysis of a single assessment. In order to 
+  connect their work, they have should a platform that is able to help collect, review,
+  transcribe, and annotate assessments across multiple patients and time.
 
-\plt{This is where you would mention platform constrains, and licensing
-restrictions.}
+\item \textbf{Web-based deployment:} The system must be a web application, deployed
+  to a server and accessible through the web. The SAFA module, which is currently a
+  Python desktop application, must be adapted to run within this web-based environment.
+  \textit{Rationale:} TeLaC is a web-based platform, so SAFA must also run in the
+  browser to work within it. This also means clinicians can access the system from
+  any device with a web browser, without needing to install or maintain a separate
+  desktop application.
+
+\item \textbf{Assessment transcriptions:} For automatic transcription within
+  assessments, the system must use
+  the pre-trained Whisper model under OpenAI, no other models will be trained and used for
+  transcription. \textit{Rationale:} The research team's existing workflow uses 
+  Whisper to generate the transcripts reviewed in SAFA, and training a new model 
+  is outside the project scope.
+
+\item \textbf{Health and privacy regulations:} The system must comply with all
+  health and privacy regulations in the country that it's used in (e.g., HIPAA
+  in the United States). \textit{Rationale:} The system stores
+  recordings and records of children, which are protected health information.
+  Leakage of such private information could have serious consequences for these
+  families, as well as legal consequences for the research team.
+\end{itemize}
 
 % ============================================================== 
 \section{Stakeholder Requirements}
