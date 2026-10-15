@@ -395,11 +395,14 @@ they should be verifiable.}
 
 \noindent \begin{itemize}
 
-\item[SR\refstepcounter{srnum}\thesrnum \label{SR_Label1}] TODO
+\refstepcounter{srnum}
+\item[SR\thesrnum] \label{SR_Label1} TODO
 
-\item[SR\refstepcounter{srnum}\thesrnum \label{SR_Label2}] TODO
+\refstepcounter{srnum}
+\item[SR\thesrnum] \label{SR_Label2} TODO
 
-\item[SR\refstepcounter{srnum}\thesrnum \label{SR_Label3}] TODO
+\refstepcounter{srnum}
+\item[SR\thesrnum] \label{SR_Label3} TODO
 
 \end{itemize}
 
@@ -566,99 +569,123 @@ Clinician
 
 \noindent \begin{itemize}
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label1}:] The system shall ...
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label1}:] The system shall ...
 \\ \textbf{Rationale:}
 \\ \textbf{Fit Criterion:}
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label2}:] The system shall ...
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label2}:] The system shall ...
 \\ \textbf{Rationale:}
 \\ \textbf{Fit Criterion:}
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label3}:] The system shall ...
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label3}:] The system shall ...
 \\ \textbf{Rationale:}
 \\ \textbf{Fit Criterion:}
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label4}:] The system shall ...
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label4}:]The system shall ...
 \\ \textbf{Rationale:}
 \\ \textbf{Fit Criterion:}
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label5}:] The system shall ...
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label5}:]The system shall ...
 \\ \textbf{Rationale:}
 \\ \textbf{Fit Criterion:}
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label6}:] The system shall allow clinicians to assign speaker roles and filter assessment transcripts by speaker.
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label6}:] The system shall allow clinicians to assign speaker roles and filter assessment transcripts by speaker.
 \\ \textbf{Rationale:} Automatically generated transcripts do not identify who is speaking. Clinicians need to distinguish the child’s speech from that of adults, such as the parent or clinician, to analyze the child’s language and identify interfering parent behavior.
 \\ \textbf{Fit Criterion:} The system must label every transcript segment from a speaker with the role assigned to that speaker once the clinician assigns it. 
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label7}:] The system shall generate detailed assessment reports from transcriptions, including any edits made by clinicians.
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label7}:] The system shall generate detailed assessment reports from transcriptions, including any edits made by clinicians.
 \\ \textbf{Rationale:} Clinicians review and correct the automatically generated transcription, adjust flagged assessment questions, and add notes to individual questions. The report must reflect these changes so that it includes the clinician’s judgment.
 \\ \textbf{Fit Criterion:} The system must include any changes made throughout the analysis process made by the clinician, otherwise it outputs the automatically generated content in the report.
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label8}:] The system shall allow clinicians to edit and update assessment results at any time.
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label8}:] The system shall allow clinicians to edit and update assessment results at any time.
 \\ \textbf{Rationale:} Clinicians do not always analyze assessments sequentially. They may notice an error in a result or change their judgment after reviewing more of the recording, so they need to be able to go back and change results at any stage. 
 \\ \textbf{Fit Criterion:} The system must display the updated result once the clinician submits a change. 
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label9}:] The system shall display a list of all assigned patients to the logged-in clinician.
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label9}:] The system shall display a list of all assigned patients to the logged-in clinician.
 \\ \textbf{Rationale:} Clinicians care for multiple patients and need access to their information to properly care for each one. Additionally, they need a quick starting point for their work. 
 \\ \textbf{Fit Criterion:} The system must display every patient assigned to the clinician once they log in. The system must display an empty list when the clinician has no assigned patients.
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label10}:] The system shall allow clinicians to add new patients.
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label10}:] The system shall allow clinicians to add new patients.
 \\ \textbf{Rationale:} Clinicians regularly take on new patients and need to create a profile for each one so that the patient’s assessments and records can be managed in the system.
 \\ \textbf{Fit Criterion:} The system must add the new patient to the clinician’s list of patients once the clinician creates the profile.
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label11}:] The system shall ...
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label11}:] The system shall ...
 \\ \textbf{Rationale:}
 \\ \textbf{Fit Criterion:}
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label12}:] The system shall ...
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label12}:] The system shall ...
 \\ \textbf{Rationale:}
 \\ \textbf{Fit Criterion:}
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label13}:] The system shall ...
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label13}:] The system shall ...
 \\ \textbf{Rationale:}
 \\ \textbf{Fit Criterion:}
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label14}:] The system shall ...
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label14}:] The system shall ...
 \\ \textbf{Rationale:}
 \\ \textbf{Fit Criterion:}
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label15}:] The system shall ...
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label15}:] The system shall ...
 \\ \textbf{Rationale:}
 \\ \textbf{Fit Criterion:}
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label16}:] The system shall ...
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label16}:] The system shall ...
 \\ \textbf{Rationale:}
 \\ \textbf{Fit Criterion:}
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label17}:] The system shall ...
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label17}:] The system shall ...
 \\ \textbf{Rationale:}
 \\ \textbf{Fit Criterion:}
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label18}:] The system shall ...
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label18}:] The system shall ...
 \\ \textbf{Rationale:}
 \\ \textbf{Fit Criterion:}
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label19}:] The system shall ...
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label19}:] The system shall ...
 \\ \textbf{Rationale:}
 \\ \textbf{Fit Criterion:}
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label20}:] The system shall ...
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label20}:] The system shall ...
 \\ \textbf{Rationale:}
 \\ \textbf{Fit Criterion:}
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label21}:] The system shall ...
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label21}:] The system shall ...
 \\ \textbf{Rationale:}
 \\ \textbf{Fit Criterion:}
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label22}:] The system shall display assessment results in a format suited to the assessment’s purpose.
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label22}:] The system shall display assessment results in a format suited to the assessment’s purpose.
 \\ \textbf{Rationale:} Clinicians use progress-monitoring assessments to track change over time and diagnostic or screening assessments to evaluate a patient at a single point in time. Each purpose requires a different view of the results to be interpreted correctly.
 \\ \textbf{Fit Criterion:} The system must show progress-monitoring results as change over time and diagnostic or screening results as a single-session summary.
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label23}:] The system shall ...
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label23}:] The system shall ...
 \\ \textbf{Rationale:}
 \\ \textbf{Fit Criterion:}
 
-\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label24}:] The system shall ...
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_Label24}:] The system shall ...
 \\ \textbf{Rationale:}
 \\ \textbf{Fit Criterion:}
 
@@ -719,106 +746,123 @@ TODO
 % ============================================================== 
 \section{Non-Functional Requirements}
 
-\plt{You may have to add other NFRs.}
-
-\plt{List your nonfunctional requirements.  You may consider using a fit
-  criterion to make them verifiable.}
-
-\plt{The goal is for the nonfunctional requirements to be unambiguous, abstract
-  and verifiable.  This isn't easy to show succinctly, so a good strategy may be
-to give a ``high level'' view of the requirement, but allow for the details to
-be covered in the Verification and Validation document.}
-
-\plt{An absolute requirement on a quality of the system is rarely needed.  For
-  instance, an accuracy of 0.0101 \% is likely fine, even if the requirement is
-  for 0.01 \% accuracy.  Therefore, the emphasis will often be more on
-  describing now well the quality is achieved, through experimentation, and
-  possibly theory, rather than meeting some bar that was defined a priori.}
-
-\plt{You do not need an entry for correctness in your NFRs.  The purpose of the
-  SRS is to record the requirements that need to be satisfied for correctness.
-  Any statement of correctness would just be redundant. Rather than discuss
-  correctness, you can characterize how far away from the correct (true)
-  solution you are allowed to be.  This is discussed under accuracy.}
-
 \noindent \begin{itemize}
 
-\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Accuracy}:]
-  \textbf{Accuracy} \plt{Characterize the accuracy by giving the context/use for
-    the software.  Maybe something like, ``The accuracy of the computed
-    solutions should meet the level needed for $<$engineering or scientific
-    application$>$.  The level of accuracy achieved by \progname{} shall be
-    described following the procedure given in Section~X of the Verification and
-    Validation Plan.''  If you do this provide a link to the VnV plan.}
+\refstepcounter{nfrnum}
+\item[\textbf{\rthenfrnum}:]
+\label{NFR-U1}
+  The system shall be intuitive for users with limited technical fluency.
+  \\ \textbf{Rationale:} Clinicians’ technical fluency varies, and they have little time to learn new software. An intuitive system shortens the learning curve and avoids the need for formal training.
+  \\ \textbf{Fit Criterion:} In usability testing, at least TASK\_SUCCESS\_RATE\% of clinicians with no prior training on the system must complete each core task (e.g., assign a speaker role, view assessment results, add a patient) without assistance within TASK\_TIME minutes.
 
-\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Usability}:] \textbf{Usability}
-  \plt{Characterize the usability by giving the context/use for the software.
-    You should likely reference the user characteristics section.  The level of
-    usability achieved by the software shall be described following the
-    procedure given in Section~X of the Verification and Validation Plan.  Include a link to the VnV plan.}
+\refstepcounter{nfrnum}
+\item[\textbf{\rthenfrnum}:]
+\label{NFR-U2}
+  The system shall present all functionality with clear and descriptive labels.
+  \\ \textbf{Rationale:} Clinicians work under heavy workloads, and they may be unfamiliar with common software icons. Clear labeling lets them recognize what each function does without guessing.
+  \\ \textbf{Fit Criterion:} In usability testing, at least TASK\_SUCCESS\_RATE\% of clinicians must be able to locate and use each core function on their first attempt, relying only on the labels shown on screen and without assistance.
 
-\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Maintainability}:]
-  \textbf{Maintainability} \plt{The effort required to make any of the likely
-    changes listed for \progname{} should be less than FRACTION of the original
-    development time.  FRACTION is then a symbolic constant that can be defined
-    at the end of the report.}
+\refstepcounter{nfrnum}
+\item[\textbf{\rthenfrnum}:]
+\label{NFR-U3}
+  The system shall allow clinicians to return to any previously visited stage of their workflow with minimal effort.
+  \\ \textbf{Rationale:} Clinicians do not analyze assessments in a straight line. They may go back to review or correct earlier work, so moving between stages should not slow them down.
+  \\ \textbf{Fit Criterion:} The clinician must be able to reach any previously visited stage of the workflow from the current page in at most MAX\_NAV\_STEPS navigation steps.
 
-\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Portability}:]
-  \textbf{Portability} \plt{This NFR is easier to write than the others.  The
-    systems that \progname{} should run on should be listed here.  When possible
-    the specific versions of the potential operating environments should be
-    given.  To make the NFR verifiable a statement could be made that the tests
-    from a given section of the VnV plan can be successfully run on all of the
-    possible operating environments.}
+\refstepcounter{nfrnum}
+\item[\textbf{\rthenfrnum}:]
+\label{NFR-U4}
+  The system shall immediately show clinicians the result of each change they submit.
+  \\ \textbf{Rationale:} Clinicians edit sensitive patient information; therefore, they need quick confirmation that the system received their change and that it was applied correctly. Without immediate feedback, they cannot tell whether their action was registered, which causes uncertainty and repeated attempts.
+  \\ \textbf{Fit Criterion:} The system must display the updated information to the clinician within SYSTEM\_FEEDBACK\_TIME seconds after the clinician submits a change.
 
-\item Other NFRs that might be discussed include verifiability,
-  understandability, reusability, performance, reliability and availability, security, and accessibility.  You may have to add other NFRs.
+\refstepcounter{nfrnum}
+\item[\textbf{\rthenfrnum}:]
+\label{NFR-S1}
+  The system shall only allow a clinician to view the information of patients assigned to them.
+  \\ \textbf{Rationale:} Patient assessments are sensitive health information. Access must be limited to the clinician responsible for the patient in order to protect patient privacy and meet data protection obligations.
+  \\ \textbf{Fit Criterion:} The system must only list patients assigned to the logged-in clinician and must not allow a clinician to add or access a patient who is in another clinician’s care.
+
+\refstepcounter{nfrnum}
+\item[\textbf{\rthenfrnum}:]
+\label{NFR-S2}
+  The system shall require users to re-enter their credentials after IDLE\_TIMEOUT minutes of inactivity.
+  \\ \textbf{Rationale:} Clinicians may leave their workstation unattended, and their accounts contain highly sensitive information. Automatic sign-out prevents unauthorized people from viewing it.
+  \\ \textbf{Fit Criterion:} The system must end the user’s session and require credentials before displaying any patient information once the user has been inactive for IDLE\_TIMEOUT minutes.
+
+\refstepcounter{nfrnum}
+\item[\textbf{\rthenfrnum}:]
+\label{NFR-S3}
+  The system shall encrypt patient recordings and transcripts in transit and in storage.
+  \\ \textbf{Rationale:} Assessment recordings and transcripts contain private patient information. The annotation service sends video assessments to a third-party transcription service, and the recordings are also kept in the system’s storage. Hence, they must be protected in both places so that anyone who intercepts the data or gains access to the storage cannot read it.
+  \\ \textbf{Fit Criterion:} The system must transmit all recordings and transcripts to third-party services using TRANSIT\_ENCRYPTION\_STANDARD and must store them using STORAGE\_ENCRYPTION\_STANDARD.
+
+\refstepcounter{nfrnum}
+\item[\textbf{\rthenfrnum}:]
+\label{NFR-M1}
+  The system shall regularly back up patient information and assessment recordings.
+  \\ \textbf{Rationale:} Assessment data is difficult or impossible to recreate, so losing it would waste clinicians’ work and could affect patient care.
+  \\ \textbf{Fit Criterion:} The system must back up all patient information and assessment recordings at least every BACKUP\_INTERVAL hours.
+
+\refstepcounter{nfrnum}
+\item[\textbf{\rthenfrnum}:]
+\label{NFR-P1}
+  The system shall only accept video assessments in which the speakers can be clearly seen and heard.
+  \\ \textbf{Rationale:} The annotation tool and behavior detection depend on the recording’s quality. Poor audio makes the auto-generated transcript less accurate, whereas poor video quality makes it difficult to detect faces and parent interference. Both instances can lead clinicians to wrong conclusions about a child’s assessment.
+  \\ \textbf{Fit Criterion:} The system must only accept submitted assessments where the recording at least meets the minimum video resolution, MIN\_VIDEO\_RESOLUTION, and the minimum audio level, MIN\_AUDIO\_LEVEL. 
+
 
 \end{itemize}
 
 % ============================================================== 
 \section{AI and Machine Learning Requirements}
 
-\plt{Refer to
-\href{https://gitlab.cas.mcmaster.ca/courses/capstone/-/blob/main/Lectures/Lxx_DrMosserGuestLecture/2026_09_Capstone.pdf?ref_type=heads}{Dr.
-Mosser's guest lecture} on AI requirements.}
+The system integrates a speech recognition model that was suggested and provided by the capstone team’s supervisors. 
+The model was not created by the capstone team. \\
 
-\plt{Include only when applicable.}
+The model used is OpenAI’s Whisper-1, a general-purpose, multilingual automatic speech recognition and translation model. 
+It is accessed through an API and takes audio or text as input [2].
 
 \subsection{Model Inputs}
 
-TODO
+Individual segments of the assessment’s audio file (.wav), each under 25 MB.
 
 \subsection{Model Outputs}
 
-TODO
+A JSON object containing the start and end times of each segment, formatted as MM:SS (minutes:seconds), and a text field with the words spoken in the segment.
+
+\subsubsection{Example Output}
+\begin{verbatim}
+  [
+    {
+    "start": "00:00",
+    "end": "00:05",
+    "text": "Recognized words."
+    }
+  ]
+\end{verbatim}
 
 \subsection{Evaluation Metrics}
 
-\plt{Accuracy, Precision, Recall, F1, BLEU, WER, etc.}
+The model is not currently being evaluated. The annotation tool does, however, let speech clinicians edit transcriptions in chunks, viewing the text next to the audio playback, so incorrect auto-generated transcriptions can be corrected.
 
-TODO
+The model could be evaluated in the future by comparing the original auto-generated transcriptions against the clinician-edited versions and calculating the word error rate.
+
 
 \subsection{Known Limitations}
 
-\plt{Explicitly document expected failure modes.}
+The model’s website describes its performance as average, so the following failure modes are expected when it is used in MERLS [3].
+\begin{itemize}
+  \item \textbf{Incorrect transcription or translation:} since the model’s overall performance is average, some transcribed or translated text can be wrong. If these errors go unnoticed, clinicians may draw incorrect conclusions about a child’s speech abilities.
+  \item \textbf{Incorrect transcription of difficult non-English words: }: the model is known to incorrectly transcribe difficult words in languages other than English. This is concerning for MERLS considering the system is used to assess bilingual children.
+  \item \textbf{Uneven performance across different languages:} The model generally performs best on languages with a decent amount of training data, such as Spanish, German, Italian, and English. Transcript accuracy may vary by language, and languages with fewer resources may be transcribed less reliably.
+\end{itemize}
 
-TODO
+Because of these expected failures, MERLS doesn’t treat the model’s output as final. 
+Clinicians review the auto-generated transcript against the video playback and correct any errors before relying on it.
 
 % ============================================================== 
 \section{Requirements Traceability Matrices}
-
-\plt{The Requirements Traceability Matrix (RTM) is a table that shows the
-relationship between different types of requirements. It is used to ensure that
-all requirements are traceable and that no requirements are missed. The typical
-flow is: Stakeholder Need -> Use Case -> Requirement}
-
-\plt{There is also a traceability matrix between functional and nonfunctional
-  requirements. The purpose of some FRs is to satisfy NFRs.  Therefore, it is
-  important to show the relationship between the two.}
-
-\plt{Further traceability to test cases and modules will be given in other
-documents.}
 
 \begin{longtable}{p{0.15\textwidth} p{0.15\textwidth} p{0.20\textwidth} p{0.20\textwidth}}
 
@@ -837,7 +881,12 @@ Functional Requirements} \label{tab:SR2UC2FRtm}
 \toprule
 Functional Req & Nonfunctional Req \\
 \midrule
-\rref{FR_Label1} & \nfrref{NFR_Accuracy} \\
+\rref{FR_Label6} & \nfrref{NFR-U2} \\
+\rref{FR_Label7} & \nfrref{NFR-U4} \\
+\rref{FR_Label8} & \nfrref{NFR-U3} \\
+\rref{FR_Label9} & \nfrref{NFR-S1} \\
+\rref{FR_Label10} & \nfrref{NFR-U4} \\
+\rref{FR_Label22} & \nfrref{NFR-U1} \\
 \bottomrule
 \caption{Traceability Between Functional and Nonfunctional Requirements}
 \label{tab:FR2Rtm}
