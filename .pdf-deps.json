@@ -93,6 +93,8 @@
     "docs/Reflection.text",
     "docs/SRS/SRS.tex",
     "docs/SRS/SystemContextFigure.pdf",
+    "docs/SRS/UC1-Annnotation_Tool.png",
+    "docs/SRS/WorkflowA_State_Diagram.png",
     "docs/SRS_Reflection.text",
     "refs/References.bib"
   ],
