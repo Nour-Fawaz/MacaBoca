@@ -451,33 +451,146 @@ numbers.}
   functional requirements and to create test cases.}  
 \plt{Typically 8-15 substantial use cases.}
 
-\refstepcounter{ucnum} \label{UC_Label1}
-\subsection{\ucref{UC_Label1}: Example Use Case}
+\refstepcounter{ucnum} \label{UC_LogIn}
+\subsection{\ucref{UC_LogIn}: Log In}
 
 \textbf{Primary Actor}
 
-TODO
+Clinician, Researcher
 
 \textbf{Preconditions}
 \begin{itemize}
-\item TODO
+\item User has an existing TeleHealth account with a clinician or researcher
+  role.
+\item User is on the platform's login page.
 \end{itemize}
 
 \textbf{Main Success Scenario}
 \begin{enumerate}
-\item TODO
-\item TODO
-\item TODO
+\item User enters their email and password.
+\item The system verifies the credentials and authenticates the user.
+\item The system identifies the user's role.
+\item Using the user's role, the system redirects the user to the correct home page view.
 \end{enumerate}
 
 \textbf{Alternative Flows}
 \begin{itemize}
-\item TODO
+\item 1a. The user has forgotten their password: the user selects ``Forgot
+  password'' and follows the reset process.
+\item 2a. When the credentials are incorrect, the system shows an error message and
+  prompts the user to try again.
+\item 2b. The user has too many failed attempts, the system temporarily locks
+  the account until the user resets it.
 \end{itemize}
 
 \textbf{Postconditions}
 \begin{itemize}
-\item TODO
+\item The user is logged in, and can only access the data allowed by their role.
+\end{itemize}
+
+\refstepcounter{ucnum} \label{UC_LogOut}
+\subsection{\ucref{UC_LogOut}: Log Out}
+
+\textbf{Primary Actor}
+
+Clinician, Researcher
+
+\textbf{Preconditions}
+\begin{itemize}
+\item The user is logged in (\ucref{UC_LogIn}).
+\end{itemize}
+
+\textbf{Main Success Scenario}
+\begin{enumerate}
+\item The user selects the Log Out option.
+\item The system asks the user to save any edits and annotations.
+\item The system redirects the user back to the login page.
+\end{enumerate}
+
+\textbf{Alternative Flows}
+\begin{itemize}
+\item 1a. The user is inactive for over 20 minutes, so the system 
+  automatically logs them out after saving their work, and shows a 
+  message explaining why.
+\end{itemize}
+
+\textbf{Postconditions}
+\begin{itemize}
+\item User cannot access any data or their account again
+  without logging back in.
+\end{itemize}
+
+\refstepcounter{ucnum} \label{UC_ViewPatientList}
+\subsection{\ucref{UC_ViewPatientList}: View Patient List}
+
+\textbf{Primary Actor}
+
+Clinician
+
+\textbf{Preconditions}
+\begin{itemize}
+\item The clinician is logged in (\ucref{UC_LogIn}).
+\end{itemize}
+
+\textbf{Main Success Scenario}
+\begin{enumerate}
+\item The clinician opens the patients tab to view their list of patients.
+\item The system retrieves the patients assigned to the clinician.
+\item The system displays the list of patients with information, such as their name,
+  age, and the date and status of their most recent assessment.
+\item The clinician searches, sorts, or filters the list to find a patient.
+\item The clinician selects a patient to view their profile.
+\end{enumerate}
+
+\textbf{Alternative Flows}
+\begin{itemize}
+\item 2a. If the clinician has no assigned patients, the system shows an empty list
+  with a message explaining that no patients are assigned yet.
+\item 4a. If no patients match the search or filter criteria, the system shows a ``no
+  results'' message and the clinician can clear the search.
+\end{itemize}
+
+\textbf{Postconditions}
+\begin{itemize}
+\item Only the clinician can see the patients assigned to them and their information.
+\item On select, only the selected patients profile is displayed.
+\end{itemize}
+
+\refstepcounter{ucnum} \label{UC_SelectAssessment}
+\subsection{\ucref{UC_SelectAssessment}: Select a Submitted Assessment from a Patient}
+
+\textbf{Primary Actor}
+
+Clinician
+
+\textbf{Preconditions}
+\begin{itemize}
+\item The clinician is logged in and has selected a patient
+  (\ucref{UC_ViewPatientList}).
+\item The patient has submitted at least one assessment.
+\end{itemize}
+
+\textbf{Main Success Scenario}
+\begin{enumerate}
+\item The system displays all the patient's submitted assessments, each with its
+  date, assessment type, and review status, which are also filterable.
+\item Clinician then selects an assessment.
+\item The system displays the assessment's details; including its recordings, metadata,
+  and report if one has been previously submitted.
+\item The system provides the option to analyze the assessment, if not previously done before.
+\end{enumerate}
+
+\textbf{Alternative Flows}
+\begin{itemize}
+\item 1a. If the patient has not submitted any assessment, the system shows a
+  message saying no assessments are available.
+\item 3a. The recording is missing or corrupted, so the system shows an error and
+  flags the assessment to be followed up on.
+\end{itemize}
+
+\textbf{Postconditions}
+\begin{itemize}
+\item The selected assessment is ready to be analyzed and annotated with SAFA.
 \end{itemize}
 
 % ============================================================== 
@@ -652,7 +765,7 @@ documents.}
 \toprule
 Stakeholder Req & Use Case & Functional Req \\
 \midrule
-\srref{SR_Label1} & \ucref{UC_Label1} & \rref{FR_Label1} \\
+\srref{SR_Label1} & \ucref{UC_LogIn} & \rref{FR_Label1} \\
 \bottomrule
 
 \caption{Traceability Between Stakeholder Requirements, Use Cases, and
