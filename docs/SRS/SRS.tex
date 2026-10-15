@@ -624,30 +624,29 @@ requirements are usually derived from the stakeholder requirements and use cases
 \item[FR\refstepcounter{reqnum}\thereqnum \label{FR_TODO10}:] TODO
 
 \item[FR\refstepcounter{reqnum}\thereqnum \label{FR_AssessmentHistory}:] The system
-  shall display to the clinician all previous assessments for a selected patient in
-  chronological order.
+  shall display to the clinician all completed assessments for a selected patient,
+  ordered from most recent to oldest.
 
   \textit{Rationale:} Clinicians must be able to track a patient's progress across multiple
   assessments over time.
 
   \textit{Fit Criterion:} For a selected patient, all completed assessments are
-  listed, ordered from most recent to oldest by assessment date, and able to be
-  searched and filtered through.
+  listed, ordered from most recent to oldest by assessment date.
 
 \item[FR\refstepcounter{reqnum}\thereqnum \label{FR_AssessmentOverview}:] The system
-  shall display an overview of every assessment's results, including automatically 
-  flagged items and the patients overall results, without requiring a transcript.
+  shall display an overview of every assessment's results, including automatically
+  flagged items and the patient's overall results, without requiring a transcript.
 
   \textit{Rationale:} When reviewing many assessments, clinicians need a quick
   summary without having to perform any in-depth transcription and annotation.
 
-  \textit{Fit Criterion:} The overview for each completed assessment should show a score and
-  status for every question, like ``pass'' or ``flagged'', and can be viewed before the assessment goes into review
-  via using the SAFA tool.
+  \textit{Fit Criterion:} The overview for each completed assessment shows the
+  patient's overall results, and each question's result (e.g., right or wrong) and
+  whether it was flagged. The overview can be viewed before the assessment is
+  reviewed in the SAFA tool.
 
 \item[FR\refstepcounter{reqnum}\thereqnum \label{FR_DetectInterference}:] The system
-  shall detect potential interference in video assessments and report it to the
-  clinician.
+  shall flag questions in video assessments where potential interference occurred.
 
   \textit{Rationale:} During assessment, outside help or disruptions (e.g.,
   parents giving hints to the child) can heavily impact results and potentially make them invalid.
@@ -657,26 +656,26 @@ requirements are usually derived from the stakeholder requirements and use cases
 
 \item[FR\refstepcounter{reqnum}\thereqnum \label{FR_QuestionTimestamp}:] The system
   shall allow the clinician to navigate to the point in the video assessment where
-  a selected question was asked.
+  a selected question was asked or a selected moment occurred.
 
   \textit{Rationale:} When searching for a specific moment or question asked in an assessment,
   given a transcription, clinicians should not have to search through a full recording
   to review that moment.
 
   \textit{Fit Criterion:} Selecting a question or specific moment in a conversation starts video playback
-  to that specific point in the assessment playback.
+  at that specific point in the assessment.
 
 \item[FR\refstepcounter{reqnum}\thereqnum \label{FR_ManualEvaluation}:] The system
-  shall allow the clinician to always require manual evaluation of questions that cannot be
+  shall allow the clinician to manually evaluate questions that cannot be
   automatically evaluated, using video playback of the recorded answer.
 
-  \textit{Rationale:} Some responses, such as open-ended answers, cannot be scored
+  \textit{Rationale:} Some responses, such as open-ended answers, cannot be evaluated
   automatically and require clinical judgement. Other times, the system simply
-  might not be able to automatically score a question, so the clinician must
+  might not be able to automatically evaluate a question, so the clinician must
   manually evaluate it.
 
-  \textit{Fit Criterion:} For each question without an automatic score, the clinician
-  can play the recorded answer and assess it, which is then saved to the
+  \textit{Fit Criterion:} For each question without an automatic result, the clinician
+  can play the recorded answer and enter their evaluation, which is then saved to the
   assessment results.
 
 \item[FR\refstepcounter{reqnum}\thereqnum \label{FR_TODO16}:] TODO
@@ -695,7 +694,7 @@ requirements are usually derived from the stakeholder requirements and use cases
 
 \item[FR\refstepcounter{reqnum}\thereqnum \label{FR_ClinicalDomains}:] The system
   shall organize assessment results by clinically meaningful domains, such as
-  by semantics, grammar, and phonology.
+  semantics, grammar, and phonology.
 
   \textit{Rationale:} Clinicians interpret a child's language abilities by domain,
   so grouping results this way supports diagnosis and reporting.
@@ -712,8 +711,8 @@ requirements are usually derived from the stakeholder requirements and use cases
   may disengage during long screen-based assessments.
 
   \textit{Fit Criterion:} The system presents an interactive break activity (e.g.,
-  an animation) at set intervals during an assessment, after which the assessment
-  resumes again.
+  an animation) after a set number of questions defined for each assessment, after
+  which the assessment resumes where it left off.
 
 \end{itemize}
 
@@ -790,18 +789,53 @@ be covered in the Verification and Validation document.}
 \noindent \begin{itemize}
 
 \item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Accuracy}:]
-  \textbf{Accuracy} \plt{Characterize the accuracy by giving the context/use for
-    the software.  Maybe something like, ``The accuracy of the computed
-    solutions should meet the level needed for $<$engineering or scientific
-    application$>$.  The level of accuracy achieved by \progname{} shall be
-    described following the procedure given in Section~X of the Verification and
-    Validation Plan.''  If you do this provide a link to the VnV plan.}
+  \textbf{Accuracy} The system shall raise automatic flags that are accurate enough for
+  clinicians to use them to decide which parts of an assessment need review, with
+  clinicians still making the final judgement.
 
-\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Usability}:] \textbf{Usability}
-  \plt{Characterize the usability by giving the context/use for the software.
-    You should likely reference the user characteristics section.  The level of
-    usability achieved by the software shall be described following the
-    procedure given in Section~X of the Verification and Validation Plan.  Include a link to the VnV plan.}
+  \textit{Rationale:} To make things easier for clinicians, they may use the flags in the assessment overview
+  (\rref{FR_AssessmentOverview}) or the interference markers
+  (\rref{FR_DetectInterference}) to quickly identify and select 
+  segments to review and cast in-depth analysis' on. Beyond this, too many missed flags 
+  means certain signals are going unnoticed by the clinicians, while too many 
+  false flags is a waste of clinicians' time.
+
+  \textit{Fit Criterion:} On a set of assessments reviewed by a clinician, the
+  system flags at least 80\% of the moments the clinician identifies, and no more than
+  20\% of its flags are false alarms. Each flag should be placed within 2 seconds of
+  when the moment occurs in the recording.
+
+\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Usability}:]
+  \textbf{Usability} The system shall be easy for clinicians to use without
+  complex training or in-depth software knowledge, and should be easy for
+  children to complete assessments and get results back as well.
+
+  \textit{Rationale:} Clinicians have to review many assessments in a day and shouldn't
+  have to rely on having technical training to use the system, so a confusing interface 
+  would slow down their work and could lead to mistakes in their evaluations. Children with poor
+  attention or more complex communication needs may lose focus which could also make their results invalid.
+
+  \textit{Fit Criterion:} In usability testing, at least 4 out of 5 clinicians who
+  have not used the system before can open a patient's assessment overview
+  (\rref{FR_AssessmentOverview}), jump to a question in the video
+  (\rref{FR_QuestionTimestamp}), and enter their evaluation of a question
+  (\rref{FR_ManualEvaluation}) within 5 minutes without help. At least 4 out of 5
+  children complete a full assessment, including its breaks
+  (\rref{FR_ChildEngagement}), without an adult stepping in.
+
+\item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Performance}:]
+  \textbf{Performance} The system shall respond quickly enough that clinicians can
+  review assessments without noticeable waiting and lag.
+
+  \textit{Rationale:} Clinicians review many assessments in one sitting, so small
+  delays can add up, especially if they are doing so in a scheduled environment. 
+  Jumping to a question also needs to feel instant so clinicians can quickly compare responses.
+
+  \textit{Fit Criterion:} On regular network connections, the assessment should
+  (\rref{FR_AssessmentOverview}) load within 3 seconds, and selecting a question
+  (\rref{FR_QuestionTimestamp}) starts video playback at its timestamp within 1
+  second. During playback, the highlighted transcript chunk stays within 0.5
+  seconds of the video, matching the target set in the Development Plan.
 
 \item[NFR\refstepcounter{nfrnum}\thenfrnum \label{NFR_Maintainability}:]
   \textbf{Maintainability} \plt{The effort required to make any of the likely
@@ -878,12 +912,16 @@ Stakeholder Req & Use Case & Functional Req \\
 Functional Requirements} \label{tab:SR2UC2FRtm}
 \end{longtable}
 
-\begin{longtable}{p{0.20\textwidth} p{0.20\textwidth}}
+\begin{longtable}{p{0.25\textwidth} p{0.55\textwidth}}
 
 \toprule
 Functional Req & Nonfunctional Req \\
 \midrule
-\rref{FR_AssessmentHistory} & \nfrref{NFR_Accuracy} \\
+\rref{FR_AssessmentOverview} & \nfrref{NFR_Accuracy}, \nfrref{NFR_Usability}, \nfrref{NFR_Performance} \\
+\rref{FR_DetectInterference} & \nfrref{NFR_Accuracy} \\
+\rref{FR_QuestionTimestamp} & \nfrref{NFR_Usability}, \nfrref{NFR_Performance} \\
+\rref{FR_ManualEvaluation} & \nfrref{NFR_Usability} \\
+\rref{FR_ChildEngagement} & \nfrref{NFR_Usability} \\
 \bottomrule
 \caption{Traceability Between Functional and Nonfunctional Requirements}
 \label{tab:FR2Rtm}
