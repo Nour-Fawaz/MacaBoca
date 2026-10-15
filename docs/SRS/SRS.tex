@@ -437,32 +437,128 @@ numbers.}
 \plt{Typically 8-15 substantial use cases.}
 
 \refstepcounter{ucnum} \label{UC_Label1}
-\subsection{\ucref{UC_Label1}: Example Use Case}
+\subsection{\ucref{UC_Label1}: Assign Speaker Roles to the Auto-Generated Transcript}
 
 \textbf{Primary Actor}
 
-TODO
+Clinician, System
 
 \textbf{Preconditions}
 \begin{itemize}
-\item TODO
+\item The clinician must be logged into their account in the system
+\item The clinician has selected a patient and opened one of that patient’s video assessments
 \end{itemize}
 
 \textbf{Main Success Scenario}
 \begin{enumerate}
-\item TODO
-\item TODO
-\item TODO
+\item The clinician selects and loads the video assessment they want to analyze 
+\item The system auto-generates transcriptions for the video assessment 
+\item The system displays the video playback along with the auto-generated transcriptions as chunks of text
+\item The clinician selects a chunk 
+\item The system indicates which chunk is selected and presents that chunk’s details for editing
+\item The clinician selects the “Speaker” dropdown in the chunk’s detail view
+\item The system displays the following list of options for different possible speakers
+    \begin{itemize}
+      \item System
+      \item Child
+      \item Parent
+      \item Experimenter
+      \item Multiple Speakers
+      \item Others
+    \end{itemize}
+\item The clinician selects the correct role for the current speaker
+\item The system labels the chunk with the selected role
+\item The clinician repeats steps 4-9 for the remaining chunks
 \end{enumerate}
 
 \textbf{Alternative Flows}
 \begin{itemize}
-\item TODO
+\item The clinician may select any segment in any order, and the system indicates the newly selected segment. The clinician can then make any edits to the chunk of text using the given options.
 \end{itemize}
 
 \textbf{Postconditions}
 \begin{itemize}
-\item TODO
+\item Each segment the clinician labeled has its assigned speaker role, and the roles are saved with the transcript.
+\item The labeled roles are still shown when the clinician reopens the assessment.
+\end{itemize}
+
+\refstepcounter{ucnum} \label{UC_Label2}
+\subsection{\ucref{UC_Label2}: Edit and Update Assessment Results}
+
+\textbf{Primary Actor}
+
+Clinician
+
+\textbf{Preconditions}
+\begin{itemize}
+\item The clinician has an account and is logged in
+\item The clinician is analyzing one of their patient’s speech assessments
+\end{itemize}
+
+\textbf{Main Success Scenario}
+\begin{enumerate}
+\item The clinician opens the assessment questions for the assessment
+\item The system displays the assessment questions alongside the video of the point in the recording where each question was asked
+\item The system indicates which questions have potential interference behavior
+\item The clinician selects a flagged question
+\item The clinician decides the flag is unjustified and removes it
+\item The system saves the change and shows the question without the flag
+\item The clinician moves on to another part of the analysis, such as annotating the transcript
+\item The clinician notices interference behavior from a parent in a part of the recording they had previously cleared
+\item The clinician returns to the affected question
+\item The clinician flags the question again and adds a note describing the parent interference
+\item The system saves the flag and notes and shows them with the question
+\end{enumerate}
+
+\textbf{Alternative Flows}
+\begin{itemize}
+\item The system does not flag a question, but the clinician notices interference while working on another part of the analysis. The clinician returns to that question, flags it, and adds a note.
+\item The clinician changes their mind again and removes the flag or edits the note. The system saves the update and shows the latest version.
+\end{itemize}
+
+\textbf{Postconditions}
+\begin{itemize}
+\item The question shows the clinician’s latest flag status and notes
+\item The latest flag status and notes are included in the generated assessment report.
+\end{itemize}
+
+% ----
+\refstepcounter{ucnum} \label{UC_Label3}
+\subsection{\ucref{UC_Label3}: View Assessment Results and Patient Progress}
+
+\textbf{Primary Actor}
+
+Clinician
+
+\textbf{Preconditions}
+\begin{itemize}
+\item The clinician has an account and is logged in
+\item The clinician has a patient with at least one completed assessment
+\end{itemize}
+
+\textbf{Main Success Scenario}
+\begin{enumerate}
+\item The clinician selects a patient from their list of clients
+\item The system displays an overview of the patient, showing their performance trends across attempts and a list of their completed assessments
+\item The clinician selects an assessment from the list
+\item The system displays a summary of that assessment session, including:
+    \begin{itemize}
+      \item The date of the assessment
+      \item The overall score
+      \item The recording of the session
+      \item The list of questions asked
+    \end{itemize}
+\end{enumerate}
+
+\textbf{Alternative Flows}
+\begin{itemize}
+\item The clinician wants to see how the patient’s performance has changed over time. Hence, the clinician reviews the trends shown in the patient overview, where the system presents the patient’s results across multiple attempts.
+\item The clinician wants to narrow the information shown in the patient overview. Therefore, the clinician applies a filter, and the system updates the information displayed accordingly.
+\end{itemize}
+
+\textbf{Postconditions}
+\begin{itemize}
+\item The clinician has seen a single assessment’s results as a session summary along with the patient’s progress across different attempts as a trend.
 \end{itemize}
 
 % ============================================================== 
