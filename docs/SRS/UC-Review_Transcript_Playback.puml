@@ -1,0 +1,36 @@
+@startuml UC-Review_Transcript_Playback
+!pragma layout smetana
+left to right direction
+skinparam packageStyle rectangle
+
+actor Clinician
+actor Researcher
+
+rectangle Annotation_Tool {
+  usecase "Open Assessment Transcript" as Open
+  usecase "Display Video Playback" as Video
+  usecase "Display Time-Coded\nTranscript Segments" as Segments
+  usecase "Play Recording" as Play
+  usecase "Highlight Current Segment" as Highlight
+  usecase "Scroll to Highlighted Segment" as Scroll
+  usecase "Select Transcript Segment" as Select
+  usecase "Jump Playback to\nSelected Moment" as Seek
+  usecase "Select Assessment Question" as Question
+}
+
+Clinician --> Open
+Clinician --> Play
+Clinician --> Select
+Clinician --> Question
+Researcher --> Open
+Researcher --> Play
+Researcher --> Select
+
+Open ..> Video : <<include>>
+Open ..> Segments : <<include>>
+Play ..> Highlight : <<include>>
+Highlight ..> Scroll : <<include>>
+Select ..> Seek : <<include>>
+Seek ..> Highlight : <<include>>
+Question ..> Seek : <<include>>
+@enduml
