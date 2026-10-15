@@ -232,7 +232,7 @@ Report & A detailed breakdown of a patient’s results for a single speech asses
 \midrule
 Speech Language Pathologist & They can also be referred to as a speech clinician. \\
 \midrule
-Health Insurance Portability and Accountability Act & An American federal law that permits the use of sensitive patient health information while protecting their privacy. [1]\\
+Health Insurance Portability and Accountability Act & An American federal law that permits the use of sensitive patient health information while protecting their privacy \citep{CDC_HIPAA_1996}.\\
 \midrule
 Finite State Machine & A mathematical model that represents a sequential workflow as a set of states and transitions between them. A state may have one or more transitions leading to different states, which allows for multiple pathways through the workflow. At any given moment, the workflow is in exactly one state and may move to another state through a defined transition.\\
 \midrule
@@ -821,7 +821,7 @@ The system integrates a speech recognition model that was suggested and provided
 The model was not created by the capstone team. \\
 
 The model used is OpenAI’s Whisper-1, a general-purpose, multilingual automatic speech recognition and translation model. 
-It is accessed through an API and takes audio or text as input [2].
+It is accessed through an API and takes audio or text as input \citep{OpenAI_Whisper}.
 
 \subsection{Model Inputs}
 
@@ -851,7 +851,7 @@ The model could be evaluated in the future by comparing the original auto-genera
 
 \subsection{Known Limitations}
 
-The model’s website describes its performance as average, so the following failure modes are expected when it is used in MERLS [3].
+The model’s website describes its performance as average, so the following failure modes are expected when it is used in MERLS \citep{Laumann_Whisper_2022}.
 \begin{itemize}
   \item \textbf{Incorrect transcription or translation:} since the model’s overall performance is average, some transcribed or translated text can be wrong. If these errors go unnoticed, clinicians may draw incorrect conclusions about a child’s speech abilities.
   \item \textbf{Incorrect transcription of difficult non-English words: }: the model is known to incorrectly transcribe difficult words in languages other than English. This is concerning for MERLS considering the system is used to assess bilingual children.
@@ -929,7 +929,27 @@ referencing.}
 
 \subsection{Appendix A: Additional Materials}
 
-TODO
+This section presents key notes and quotes gathered during the requirements elicitation process for the project.
+
+
+Several requirements were drawn from research papers describing the system and an experiment conducted by the project supervisor’s team in the United States. 
+Although the papers have not yet been released, they describe the entire system and report usability tests with 10 speech clinicians. 
+The following highlights the preferences and feedback participants shared while testing the MERLS system and the SAFA annotation tool.
+
+\begin{itemize}
+  \item Participant 2 expressed frustration with the amount of time it takes to transcribe assessments: “It would be perfect to have this feature, because doing the annotation part is very time consuming.”
+  \item Participant 3 disliked transcribing speech assessments and was enthusiastic about saving time: “when you say that it decreases transcription time, I got very excited about having less time in analyzing speech samples.”
+  \item Participant 3 also commented on how BeViz displays results: “I would definitely use the chart/graph/percentages.” This is in regard BeViz in terms of displaying results.
+  \item Participant 3 further said they preferred having analysis results summarized as scores, summaries, and patterns rather than as a spreadsheet: “quick and helpful, instead of everything in a spreadsheet.”
+  \item Participant 5 suggested what the report should contain: “The whole transcripts for all the [assessment] conversations would be useful to include in the report.”
+  \item Participant 5 also raised a concern about data privacy: “the challenge will be the HIPAA, and who has access to data, and how the data could be shared with the parents and the educator.”
+  \item Participant 7 appreciated the idea of auto-generated transcripts with human verification in the loop: “we can see a real-time transcription when we play the recording, so that we can do the analysis and give feedback.”
+  \item Several clinicians emphasized keeping a human in the loop during the assessment analysis portion of the workflow. For example, Participant 9 stated, “[the system should] allow the clinician to make the final judgment; this is a tool that does not replace our judgment.”
+  \item Several clinicians found the system straightforward. For example, participant 10 stated: “I think it’s straightforward. You can see the video recording, originals, [and] place to write notes.”
+  \item Clinicians appreciated that the system covered the different aspects of the speech assessment workflow, particularly the ability to move from overall results to an individual question and review its prompt and response. Participant 10 stated, “you have the ‘proof’ there to support your clinical decision and your assessment.”
+  \item Participants preferred to have results presented in both English and Mandarin side by side, and to have assessments organized meaningfully by semantics, grammar, and phonology. Participant 10 elaborated: “if you have a feature comparing two languages, side by side in the same graph that would probably be helpful to decide differences vs. disorder.”
+\end{itemize}
+
 
 \subsection{Appendix B: Development Plan}
 
@@ -953,15 +973,38 @@ Their values are defined in this section for easy maintenance.}
 TODO
 
 \subsection{Appendix D: Generative AI Disclosure}
+\subsubsection{AI Tools Used}
+\begin{itemize}
+  \item Claude Sonnet 5 (Medium)
+  \item ChatGPT-5.6 Luna
+\end{itemize}
 
-\plt{Provide full transparency on how generative AI was used in the creation of
-  this document.  This includes any text, figures, or tables that were generated
-  by AI.  If any skills were created for AI agents to review the documentation,
-  those should be disclosed here.}
+\subsubsection{How and Where Used}
+Both models were used in all the sections to do the following:
+\begin{itemize}
+  \item Check that each written section answered every question asked and met the rubric requirements
+  \item Improve the wording, clarity and the flow of written sections
+  \item Debug possible LaTeX errors
+\end{itemize}
+
+The models were used to do the following in specific sections:
+\begin{itemize}
+  \item Help brainstorm non-functional requirements in section 8, more specifically for security requirements
+  \item Help verify correctness of the FSM diagrams to ensure workflows matched those specified in the research paper in the functional requirements section (Section 6). 
+  \item Brainstorm possible non-functional requirements in section 8
+\end{itemize}
+
+\subsubsection{Verification of AI-Generated Content}
+
+To verify the output of the LLM, each team member went over their section and presented their work to the group, explaining what they had completed since the previous meeting. 
+Each member was able to successfully explain their sections. 
+Additionally, before any pull request was approved, a team member who had not written the section reviewed the work to ensure it was cohesive, accurate, and consistent with the rest of the document.\\
+
+The factual content of the documents came from the research of the group members. The writer of each section researched, obtained, and documented all referenced sources. 
+After the models suggested wording improvements, the writer re-read the section to confirm that it still conveyed the same point and that the research was not altered.
+
 
 \subsection{Appendix E: Reflection}
-
-\plt{This isn't part of the SRS, but it is part of the course.}
 
 The information in this section will be used to evaluate the team members on the
 graduate attribute of Lifelong Learning.  
@@ -969,6 +1012,61 @@ graduate attribute of Lifelong Learning.
 \input{../Reflection.text}
 
 \input{../SRS_Reflection.text}
+\subsection{Nour}
+\subsubsection*{Question 1}
+Writing the functional requirements was more straightforward than we expected because we had enough resources to understand what our supervisors wanted from the project. 
+They provided us with a couple of unreleased research papers that described the system architecture, clinician workflows, including a study they conducted on 10 clinicians to test the TeLaC (now MERLS) platform. 
+With this information we were able to create a mental model of the MERLS, SAFA, and BeViz modules and what the purpose for each is. 
+Moreover, our supervisors provided us with the GitHub repositories of the annotation tool SAFA and the MERLS system (which is the overall TeleHealth system). 
+That let us write requirements that were realistic in how the system behaves and how it should behave once we integrate SAFA. 
+Additionally, it made it easier to write use cases that reflected the different clinician workflows detailed in the research papers which are, direct analysis, annotation first analysis, and on-demand refinement. 
+These three are the main important workflows and should be enabled by the system very seamlessly. 
+Moreover, after speaking with our supervisors, we also learned which areas they are prioritizing and what the main features of the updated system should be. 
+This helped us determine what requirements could change and what shouldn’t change in the system. 
+
+\subsubsection*{Question 2}
+Creating user personas was my biggest challenge. 
+The part of the system our group is working on is mainly for clinicians, so it was hard to identify different types of users, and we were worried the personas would end up looking nearly identical. 
+Hence, we created different “types” of clinicians who might use the platform and differentiated them by their work environment and capabilities, such as how heavy their workload is and how comfortable they are with technology. 
+This gave us personas that reflect real differences in how the system might be used, which also helped us write non-functional requirements around usability.
+
+Additionally, deciding how detailed each use case should be was also a bit difficult. 
+I wasn’t sure where in the workflow each one should start, and simulating the whole workflow from when the clinician enters the system felt like too much. 
+It would have repeated the same steps, such as logging in and selecting a patient in every use case. 
+Hence, I scoped each use case to a single clinician goal and used the preconditions to set the starting point. 
+For example, the clinician is already logged in and has opened a patient’s assessment. 
+I also kept the steps focused on what the clinician does and how the system responds, and left out screen-level details, since the interface may change during the redesign.
+
+\subsubsection*{Question 4}
+I took SFWRENG 4AL3, the applications of machine learning course. 
+It helped me understand the kinds of models our supervisors may have used when building the SAFA tool, and I am comfortable with the machine learning terminology in our documents, such as word error rate and model inputs and outputs. 
+Although we did not develop the model and it is not currently being evaluated, I understand how the audio files are segmented and sent to the model for transcription, and I can reason about its known limitations, such as weaker performance on non-English words. 
+This is relevant because our users work with bilingual children. The course also taught me why disclosing AI use matters. 
+We learned about the negative effects of large language models, including their large carbon footprint, and about the importance of being transparent about how they were used in our documents. 
+
+\subsubsection*{Question 5}
+Team management is extremely important for completing the project successfully. 
+Our work is split across documents for different milestones, and each member’s section has to fit with the others, so we need a clear picture of who is doing what and when it is due. 
+Having good team management lets us stay on top of tasks, stay on the same page, and catch problems early on. 
+Moreover, it means regular meetings where each member explains what they have completed since the last one, and discussion regarding the next project steps. 
+This is important considering we are balancing the project along with our other courses. 
+Furthermore, considering we are building on an existing system with already busy supervisors, we need to communicate regularly with them and record their feedback during meetings. 
+Without this, it would be easy for sections to become inconsistent with each other and for team members to be lost or have a different understanding of the project vision and next steps.
+
+Additionally, understanding of how SAFA uses AI to create transcriptions is also important. 
+Integrating SAFA into the existing MERLS system is the main focus of our project, so we need to understand how the audio is sent to the model, what the model returns, and where its transcriptions may be wrong, so we can design the system around this.
+
+\subsubsection*{Question 6}
+For team management, one approach is keeping a planner or schedule that lists upcoming deadlines, notes, and future meetings. 
+It keeps the team on track and helps us balance the project with other courses. 
+Another is writing meeting minutes after each meeting. 
+Minutes help the team manager see everyone’s tasks and what still needs to be done, so that work is finished on time and with good quality. 
+I chose to pursue team management because I have experience with group projects and prefer to know what is happening at all times during a project.
+
+As for understanding how SAFA uses AI, one approach is reading the documentation for the speech recognition model and for SAFA, as well as going through SAFA’s code. 
+Another is asking our supervisors to walk the team through how transcriptions are generated and where they tend to fail. 
+I will pursue this skill as well, mainly through the documentation and code review, because my machine learning course gave me a background in AI systems and their typical pitfalls, which should help me read the code and judge where the transcriptions may be unreliable.
+
 
 \newpage
 
