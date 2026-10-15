@@ -473,7 +473,7 @@ Clinician, System
 
 \textbf{Alternative Flows}
 \begin{itemize}
-\item The clinician may select any segment in any order, and the system indicates the newly selected segment. The clinician can then make any edits to the chunk of text using the given options.
+\item[10a.] The clinician may select any segment in any order, and the system indicates the newly selected segment. The clinician can then make any edits to the chunk of text using the given options.
 \end{itemize}
 
 \textbf{Postconditions}
@@ -513,8 +513,8 @@ Clinician
 
 \textbf{Alternative Flows}
 \begin{itemize}
-\item The system does not flag a question, but the clinician notices interference while working on another part of the analysis. The clinician returns to that question, flags it, and adds a note.
-\item The clinician changes their mind again and removes the flag or edits the note. The system saves the update and shows the latest version.
+\item[3a.] The system does not flag a question, but the clinician notices interference while working on another part of the analysis. The clinician returns to that question, flags it, and adds a note.
+\item[10a.] The clinician changes their mind again and removes the flag or edits the note. The system saves the update and shows the latest version.
 \end{itemize}
 
 \textbf{Postconditions}
@@ -553,8 +553,7 @@ Clinician
 
 \textbf{Alternative Flows}
 \begin{itemize}
-\item The clinician wants to see how the patient’s performance has changed over time. Hence, the clinician reviews the trends shown in the patient overview, where the system presents the patient’s results across multiple attempts.
-\item The clinician wants to narrow the information shown in the patient overview. Therefore, the clinician applies a filter, and the system updates the information displayed accordingly.
+\item[3a.] The clinician wants to see how the patient’s performance has changed over time. Hence, the clinician reviews the trends shown in the patient overview, where the system presents the patient’s results across multiple attempts.
 \end{itemize}
 
 \textbf{Postconditions}
@@ -564,66 +563,116 @@ Clinician
 
 % ============================================================== 
 \section{Functional Requirements}
-\plt{Functional requirements describe what the system should do.  They are typically
-expressed as a set of conditions or capabilities that the system must have.  These
-requirements are usually derived from the stakeholder requirements and use cases.}
-
-\plt{Use SHALL statements. Requirements must be atomic, testable, and traceable.}
 
 \noindent \begin{itemize}
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label1}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label1}:] The system shall ...
+\\ \textbf{Rationale:}
+\\ \textbf{Fit Criterion:}
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label2}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label2}:] The system shall ...
+\\ \textbf{Rationale:}
+\\ \textbf{Fit Criterion:}
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label3}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label3}:] The system shall ...
+\\ \textbf{Rationale:}
+\\ \textbf{Fit Criterion:}
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label4}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label4}:] The system shall ...
+\\ \textbf{Rationale:}
+\\ \textbf{Fit Criterion:}
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label5}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label5}:] The system shall ...
+\\ \textbf{Rationale:}
+\\ \textbf{Fit Criterion:}
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label6}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label6}:] The system shall allow clinicians to assign speaker roles and filter assessment transcripts by speaker.
+\\ \textbf{Rationale:} Automatically generated transcripts do not identify who is speaking. Clinicians need to distinguish the child’s speech from that of adults, such as the parent or clinician, to analyze the child’s language and identify interfering parent behavior.
+\\ \textbf{Fit Criterion:} The system must label every transcript segment from a speaker with the role assigned to that speaker once the clinician assigns it. 
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label7}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label7}:] The system shall generate detailed assessment reports from transcriptions, including any edits made by clinicians.
+\\ \textbf{Rationale:} Clinicians review and correct the automatically generated transcription, adjust flagged assessment questions, and add notes to individual questions. The report must reflect these changes so that it includes the clinician’s judgment.
+\\ \textbf{Fit Criterion:} The system must include any changes made throughout the analysis process made by the clinician, otherwise it outputs the automatically generated content in the report.
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label8}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label8}:] The system shall allow clinicians to edit and update assessment results at any time.
+\\ \textbf{Rationale:} Clinicians do not always analyze assessments sequentially. They may notice an error in a result or change their judgment after reviewing more of the recording, so they need to be able to go back and change results at any stage. 
+\\ \textbf{Fit Criterion:} The system must display the updated result once the clinician submits a change. 
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label9}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label9}:] The system shall display a list of all assigned patients to the logged-in clinician.
+\\ \textbf{Rationale:} Clinicians care for multiple patients and need access to their information to properly care for each one. Additionally, they need a quick starting point for their work. 
+\\ \textbf{Fit Criterion:} The system must display every patient assigned to the clinician once they log in. The system must display an empty list when the clinician has no assigned patients.
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label10}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label10}:] The system shall allow clinicians to add new patients.
+\\ \textbf{Rationale:} Clinicians regularly take on new patients and need to create a profile for each one so that the patient’s assessments and records can be managed in the system.
+\\ \textbf{Fit Criterion:} The system must add the new patient to the clinician’s list of patients once the clinician creates the profile.
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label11}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label11}:] The system shall ...
+\\ \textbf{Rationale:}
+\\ \textbf{Fit Criterion:}
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label12}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label12}:] The system shall ...
+\\ \textbf{Rationale:}
+\\ \textbf{Fit Criterion:}
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label13}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label13}:] The system shall ...
+\\ \textbf{Rationale:}
+\\ \textbf{Fit Criterion:}
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label14}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label14}:] The system shall ...
+\\ \textbf{Rationale:}
+\\ \textbf{Fit Criterion:}
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label15}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label15}:] The system shall ...
+\\ \textbf{Rationale:}
+\\ \textbf{Fit Criterion:}
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label16}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label16}:] The system shall ...
+\\ \textbf{Rationale:}
+\\ \textbf{Fit Criterion:}
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label17}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label17}:] The system shall ...
+\\ \textbf{Rationale:}
+\\ \textbf{Fit Criterion:}
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label18}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label18}:] The system shall ...
+\\ \textbf{Rationale:}
+\\ \textbf{Fit Criterion:}
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label19}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label19}:] The system shall ...
+\\ \textbf{Rationale:}
+\\ \textbf{Fit Criterion:}
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label20}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label20}:] The system shall ...
+\\ \textbf{Rationale:}
+\\ \textbf{Fit Criterion:}
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label21}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label21}:] The system shall ...
+\\ \textbf{Rationale:}
+\\ \textbf{Fit Criterion:}
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label22}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label22}:] The system shall display assessment results in a format suited to the assessment’s purpose.
+\\ \textbf{Rationale:} Clinicians use progress-monitoring assessments to track change over time and diagnostic or screening assessments to evaluate a patient at a single point in time. Each purpose requires a different view of the results to be interpreted correctly.
+\\ \textbf{Fit Criterion:} The system must show progress-monitoring results as change over time and diagnostic or screening results as a single-session summary.
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label23}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label23}:] The system shall ...
+\\ \textbf{Rationale:}
+\\ \textbf{Fit Criterion:}
 
-\item[FR\refstepcounter{reqnum}\thereqnum \label{FR_Label24}:] The system shall ...
+\item[\textbf{FR\refstepcounter{reqnum}\thereqnum} \label{FR_Label24}:] The system shall ...
+\\ \textbf{Rationale:}
+\\ \textbf{Fit Criterion:}
 
 \end{itemize}
 
-\plt{The requirements are given labels so that they can be referenced in other
-parts of the SRS.  The label names should be meaningful mnemonics, not numbers.}
+\subsection{Formal Specification}
+\subsubsection{Workflow A: Direct Analysis}
+\begin{figure}[H]
+\begin{center}
+ \includegraphics[width=0.75\textwidth]{WorkflowA_State_Diagram.png}
+\caption{A finite state machine illustrating the direct analysis workflow (Workflow A) of a clinician when using the MERLS system.}
+\label{WorkflowA_State_Diagram} 
+\end{center}
+\end{figure}
 
 % ============================================================== 
 \section{Data Requirements}
