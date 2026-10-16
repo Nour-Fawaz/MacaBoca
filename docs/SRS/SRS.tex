@@ -412,54 +412,36 @@ The system has two main types of users. The usability requirements (e.g., \nfrre
 \end{itemize}
 
 \subsection{System Constraints}
-\label{sec_SystemConstraints}
 
 \begin{itemize}
-\item \textbf{Integration with MERLS:} The system must be built as an extension of the
-  existing MERLS telehealth platform, including its React and Node.js web application and
-  its Amazon S3 storage, and accessed through the clinician dashboard rather than as a
-  separate standalone application. SAFA’s existing annotation features must be reused
-  within this platform. \textit{Rationale:} Clinician workflows require more than just the
-  analysis of a single assessment. In order to connect their work, they need a platform
-  that is able to help collect, review, transcribe, and annotate assessments across
-  multiple patients and time.
+\item \textbf{Integration with MERLS:} The system must be integrated into the
+  existing MERLS telehealth platform and accessed through the clinician dashboard,
+  rather than as a separate standalone application. \textit{Rationale:} Clinician
+  workflows require more than just the analysis of a single assessment. In order to 
+  connect their work, they have should a platform that is able to help collect, review,
+  transcribe, and annotate assessments across multiple patients and time.
 
 \item \textbf{Web-based deployment:} The system must be a web application, deployed
-  to a server and accessible through a desktop web browser without installing any software.
-  The SAFA module, which is currently a Python desktop application, must be adapted to run
-  within this web-based environment. \textit{Rationale:} MERLS is a web-based platform, so
-  SAFA must also run in the browser to work within it. This also means clinicians can access
-  the system from any device with a web browser, without needing to install or maintain a
-  separate desktop application.
+  to a server and accessible through the web. The SAFA module, which is currently a
+  Python desktop application, must be adapted to run within this web-based environment.
+  \textit{Rationale:} MERLS is a web-based platform, so SAFA must also run in the
+  browser to work within it. This also means clinicians can access the system from
+  any device with a web browser, without needing to install or maintain a separate
+  desktop application.
 
-\item \textbf{Mandated third-party software:} For automatic transcription, the system must
-  use OpenAI’s pre-trained Whisper model \citep{OpenAI_Whisper}; no other models will be
-  trained or used for transcription. The system must also keep using the existing Google
-  MediaPipe face detection and Deepgram keyword detection services for interference
-  detection. \textit{Rationale:} The research team's existing workflow uses Whisper to
-  generate the transcripts reviewed in SAFA, and training a new model is outside the
-  project scope.
+\item \textbf{Assessment transcriptions:} For automatic transcription within
+  assessments, the system must use
+  the pre-trained Whisper model under OpenAI, no other models will be trained and used for
+  transcription. \textit{Rationale:} The research team's existing workflow uses 
+  Whisper to generate the transcripts reviewed in SAFA, and training a new model 
+  is outside the project scope.
 
-\item \textbf{Health and privacy regulations:} The system is primarily intended for
-  U.S.-based clinicians, so it must be designed to comply with the HIPAA Privacy and
-  Security Rules for all patient health information it stores or processes
-  \citep{CDC_HIPAA_1996}, and with the equivalent regulations in any other country where
-  it is used. \textit{Rationale:} The system stores recordings and records of children,
-  which are protected health information. Leakage of such private information could have
-  serious consequences for these families, as well as legal consequences for the research
-  team.
-
-\item \textbf{Third-party services:} Any external service that receives or stores patient
-  health information must permit HIPAA-regulated use and be covered by a Business Associate
-  Agreement. A service that cannot meet this condition must not receive patient data.
-  \textit{Rationale:} Under HIPAA, the clinic remains responsible for patient data that it
-  shares with outside services.
-
-\item \textbf{Development and test data:} Only synthetic data, or data that the research
-  team has approved for development use, may be used during development and testing. Real
-  patient recordings and records must not be stored in source code repositories,
-  development environments, or test data. \textit{Rationale:} Development environments are
-  not protected to the same level as the deployed system.
+\item \textbf{Health and privacy regulations:} The system must comply with all
+  health and privacy regulations in the country that it's used in (e.g., HIPAA
+  in the United States). \textit{Rationale:} The system stores
+  recordings and records of children, which are protected health information.
+  Leakage of such private information could have serious consequences for these
+  families, as well as legal consequences for the research team.
 \end{itemize}
 
 % ============================================================== 
@@ -1335,9 +1317,9 @@ The system stores recordings, transcripts, and health information about children
   \item \textbf{Access control:} A clinician can only access the patients, assessments, recordings, transcripts, and reports of patients assigned to them (\nfrref{NFR-S1}). Guardians can only access their own child’s assessments on the patient-facing site.
   \item \textbf{Encryption:} Recordings, transcripts, and patient records are encrypted in transit and in storage (\nfrref{NFR-S3}). 
   \item \textbf{Consent:} A guardian must consent to the recording of assessments and their processing by third-party services before the patient can complete an assessment.
-  \item \textbf{Third-party processing:} Audio is sent to external speech recognition and keyword detection services (Whisper and Deepgram). Voice recordings can identify a patient, so these services must be covered by a Business Associate Agreement (Section~\ref{sec_SystemConstraints}). Only the audio needed for transcription is sent, without names or other patient details.
+  \item \textbf{Third-party processing:} Audio is sent to external speech recognition and keyword detection services (Whisper and Deepgram). Voice recordings can identify a patient, so these services must be covered by a Business Associate Agreement. Only the audio needed for transcription is sent, without names or other patient details.
   \item \textbf{Exports and reports:} Downloaded reports, transcripts, exported data, and video clips leave the system’s protection. Only the assigned clinician may export them, each export is recorded, and exported reports are marked as confidential.
-  \item \textbf{Development data:} Real patient data is never to be used in development or testing (Section~\ref{sec_SystemConstraints}).
+  \item \textbf{Development data:} Real patient data is never to be used in development or testing.
   \item \textbf{Retention:} Patient records, recordings, transcripts, and reports are kept for the RETENTION period, after which they are deleted. Backups follow the same retention period (\nfrref{NFR-M1}).
   \item \textbf{Deletion:} When a guardian withdraws consent or requests deletion, the patient’s recordings, transcripts, and assessment data are deleted, including from backups, within DELETE\_WINDOW, except where a regulation requires them to be kept.
   \item \textbf{Auditing:} Every view, change, download, and export of patient information is recorded with the user and time, and these records are kept for LOG\_RETENTION (\nfrref{NFR-S4}).
@@ -1496,7 +1478,7 @@ The system stores recordings, transcripts, and health information about children
 \label{NFR-CO1}
   The system shall meet the technical safeguards of the HIPAA Security Rule for the patient health information it stores and processes.
   \\ \textbf{Rationale:} The system stores recordings, transcripts, and assessment results of children, which are protected health information for U.S.-based clinicians. Removing names is not enough to de-identify this data: under HIPAA, full-face images and voice recordings can themselves identify a patient. Clinicians identified HIPAA compliance and control over who can access data as conditions for adopting the system, and institutions must approve tools before clinicians can use them \citep{CDC_HIPAA_1996}.
-  \\ \textbf{Fit Criterion:} Each HIPAA technical safeguard (access control, audit controls, integrity, person or entity authentication, and transmission security) must be mapped to at least one implemented mechanism in the system, and a review of the system against this mapping must find no unaddressed safeguard. Every third-party service that stores or processes patient health information, including recordings and audio, must be covered by a Business Associate Agreement (Section~\ref{sec_SystemConstraints}).
+  \\ \textbf{Fit Criterion:} Each HIPAA technical safeguard (access control, audit controls, integrity, person or entity authentication, and transmission security) must be mapped to at least one implemented mechanism in the system, and a review of the system against this mapping must find no unaddressed safeguard. Every third-party service that stores or processes patient health information, including recordings and audio, must be covered by a Business Associate Agreement.
 
 \end{itemize}
 
