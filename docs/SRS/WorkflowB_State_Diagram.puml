@@ -1,0 +1,32 @@
+@startuml WorkflowB_State_Diagram
+!pragma layout smetana
+hide empty description
+
+state "Patient Summary View" as Summary
+state "Individual Patient View" as Patient
+state "Individual Assessment View" as Assessment
+state "Annotation View" as Annotation
+state "Individual Question View" as Question
+state "Report View" as Report
+
+[*] --> Summary
+Summary --> Summary : View List of Patients
+Summary --> Patient : Select Patient
+Patient --> Summary : Return to Patient Summary View
+Patient --> Patient : View Patient Assessment\nTrends and Previous Assessments
+Patient --> Assessment : Select Assessment
+Assessment --> Patient : Return to Patient Overview
+
+Assessment --> Annotation : Open Annotation Tool
+Annotation --> Annotation : Review Segments with Playback,\nEdit Text, Speaker, and Language,\nand Mark Segments as Verified
+Annotation --> Assessment : Complete Annotation\n(Save to Assessment Record)
+
+Assessment --> Assessment : Review and Interpret Results\nwith Annotated Transcript
+Assessment --> Question : Select Question
+Question --> Question : Review and Adjust Question
+Question --> Assessment : Return to Individual\nAssessment View
+
+Assessment --> Report : Generate and View Report
+Report --> Report : Download Report
+Report --> Assessment : Return to Individual\nAssessment View
+@enduml
