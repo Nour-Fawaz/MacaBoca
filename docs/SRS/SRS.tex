@@ -947,7 +947,7 @@ Clinician
 \end{itemize}
 
 \subsection{Use Case Diagrams}
-The following use case diagram shows the interactions between the clinician and the system for certain use cases described above. 
+The following use case diagrams show the interactions between the clinician and the system for certain use cases described above. 
 \begin{figure}[H]
 \begin{center}
  \includegraphics[width=0.75\textwidth]{UC1-Annnotation_Tool.png}
@@ -961,6 +961,15 @@ The following use case diagram shows the interactions between the clinician and 
  \includegraphics[width=\textwidth]{UC-Review_Transcript_Playback.png}
 \caption{Use case diagram showing how a clinician or researcher reviews an assessment transcript alongside its video playback in MERLS, including the synchronized highlighting of transcript segments and jumping to a selected segment or question. A detailed description is given in Use Case~\ref{UC_ReviewTranscriptPlayback}.}
 \label{UC-Review_Transcript_Playback}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+ \includegraphics[width=0.75\textwidth]{UC4-Select_Assessment.png}
+\caption{Use case diagram showing how a clinician selects a patient's 
+submitted assessment in MERLS before deeper analysis. A detailed description is given in Use Case~\ref{UC_Label4}.}
+\label{UC4-Select_Assessment}
 \end{center}
 \end{figure}
 
@@ -1040,9 +1049,9 @@ The following use case diagram shows the interactions between the clinician and 
 \\ \textbf{Fit Criterion:} Selecting a question or specific moment in a conversation starts video playback at that specific point in the assessment.
 
 \refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_Label15}:] The system shall allow the clinician to manually evaluate questions that cannot be automatically evaluated, using video playback of the recorded answer.
-\\ \textbf{Rationale:} Some responses, such as open-ended answers, cannot be evaluated automatically and require clinical judgement. Other times, the system simply might not be able to automatically evaluate a question, so the clinician must manually evaluate it.
-\\ \textbf{Fit Criterion:} For each question without an automatic result, the clinician can play the recorded answer and enter their evaluation, which is then saved to the assessment results.
+\item[\textbf{\rthereqnum} \label{FR_Label15}:] The system shall allow the clinician to choose which questions or portions of an assessment to open in the SAFA tool for in-depth transcription and annotation.
+\\ \textbf{Rationale:} Clinicians don't always need a full transcript of every assessment. After looking at the overview (\rref{FR_Label12}), they may only want to go deeper on a few flagged or unclear questions, which saves time compared to annotating the whole recording.
+\\ \textbf{Fit Criterion:} From the assessment overview, the clinician can select one or more questions, or the full assessment, and the system opens only those portions of the recording and transcript in the SAFA tool.
 
 \refstepcounter{reqnum}
 \item[\textbf{\rthereqnum} \label{FR_ManualEvaluation}:] The system shall allow clinicians to manually evaluate assessment questions that cannot be graded automatically, while playing back the portion of the recording in which the question was answered.
@@ -1444,8 +1453,8 @@ The system stores recordings, transcripts, and health information about children
 \item[\textbf{\rthenfrnum}:]
 \label{NFR-PF1}
   The system shall respond quickly enough that clinicians can review assessments without noticeable waiting or lag.
-  \\ \textbf{Rationale:} Clinicians review many assessments in one sitting, so small delays can add up, especially if they are working on a tight schedule. Jumping to a question also needs to feel instant so clinicians can quickly compare responses.
-  \\ \textbf{Fit Criterion:} On a connection of at least MIN\_BANDWIDTH, the assessment overview (\rref{FR_Label12}) loads within OVERVIEW\_LOAD\_TIME seconds, and selecting a question (\rref{FR_Label14}) starts video playback at its timestamp within SEEK\_TIME seconds. Transcript synchronization during playback is covered by \nfrref{NFR-P2}.
+  \\ \textbf{Rationale:} Clinicians review many assessments in one sitting, so small delays can add up, especially if they are working on a tight schedule.
+  \\ \textbf{Fit Criterion:} On a connection of at least MIN\_BANDWIDTH, the assessment overview (\rref{FR_Label12}) loads within OVERVIEW\_LOAD\_TIME seconds. Jumping to a question or segment in the recording (\rref{FR_Label14}) is covered by \nfrref{NFR-P2}.
 
 \refstepcounter{nfrnum}
 \item[\textbf{\rthenfrnum}:]
@@ -1552,6 +1561,7 @@ Stakeholder Req & Use Case & Functional Req \\
 \midrule
 \srref{SR_ClinicianFinalJudgment} & -- & \rref{FR_ManualEvaluation} \\
 \srref{SR_EvidenceTraceability} & -- & \rref{FR_ManualEvaluation} \\
+\srref{SR_FlexibleWorkflows} & \ucref{UC_Label4} & \rref{FR_Label15} \\
 \srref{SR_CompiledReports} & \ucref{UC_GenerateReport} & \rref{FR_Label7} \\
 \srref{SR_ClinicianFinalJudgment} & \ucref{UC_GenerateReport} & \rref{FR_Label7} \\
 \srref{SR_CompiledReports} & -- & \rref{FR_QuestionNotes} \\
@@ -1583,7 +1593,7 @@ Functional Req & Nonfunctional Req \\
 \rref{FR_Label22} & \nfrref{NFR-U1} \\
 \rref{FR_Label12} & \nfrref{NFR-A1}, \nfrref{NFR-PF1} \\
 \rref{FR_Label13} & \nfrref{NFR-A1} \\
-\rref{FR_Label14} & \nfrref{NFR-PF1} \\
+\rref{FR_Label14} & \nfrref{NFR-P2} \\
 \rref{FR_ManualEvaluation} & \nfrref{NFR-S4} \\
 \rref{FR_ManualEvaluation} & \nfrref{NFR-UN1} \\
 \rref{FR_QuestionNotes} & \nfrref{NFR-S4} \\
@@ -1604,12 +1614,49 @@ Functional Req & Nonfunctional Req \\
 
 \section{Rationale}
 
-\plt{Provide a rationale for the decisions made in the documentation.  Rationale
-should be provided for scope decisions, functional requirements, nonfunctioanl
-requirements, data requirements, and AI requirements.  You don't need a
-rationale for everything, ust the major decisions that are not obvious.  You
-should have traceability to the entities in the document that you are
-referencing.}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.30\textwidth} >{\raggedright\arraybackslash}p{0.38\textwidth} >{\raggedright\arraybackslash}p{0.24\textwidth}}
+\toprule
+Decision & Rationale & Related Sections\\
+\midrule
+\endhead
+Integrate SAFA into MERLS instead of keeping it as a standalone tool & 
+Right now, clinicians need to download video recordings, upload them to SAFA, and then export any output files from SAFA and move them by hand. This takes a lot of time and separates annotations from the patient's record. Having everything in one platform lets clinicians review, annotate, and report on an assessment without switching tools. & Goals \newline System Constraints \newline \srref{SR_SinglePlatform} \newline \rref{FR_AnnotationsInRecord} \newline Appendix B\\
+\midrule
+Build the system as a web application, with desktop as the main platform & 
+MERLS is already a web-based platform, so SAFA needs to run in the browser in order to work within it. This means clinicians shouldn't need to install anything, and that a desktop or laptop screen will give them enough space to watch the video and edit the transcript side by side. & System Constraints \newline Appendix B\\
+\midrule
+Use the existing Whisper model instead of training a new speech model & 
+The research team already uses Whisper in their workflow and training a new model would require a large dataset of previous assessments and labelled children's speech for training, which we don't have. Whisper's known limitations are already handled by having clinicians review and correct the transcripts. & System Constraints \newline AI and Machine Learning Requirements \newline \nfrref{NFR-P1}\\
+\midrule
+Keep clinicians in the loop, so automatic outputs are suggestions and flags that clinicians review rather than final results & 
+Whisper hasn't been evaluated on our use case, and children's and bilingual speech are hard to transcribe. Clinicians have already stated that automated results should only be cues, since the clinical decision is theirs to make. & \srref{SR_ClinicianFinalJudgment} \newline \rref{FR_Label8} \newline \rref{FR_ManualEvaluation} \newline \rref{FR_LinguisticPatternDetection} \newline \nfrref{NFR-A1} \newline \nfrref{NFR-UN1} \newline Appendix A\\
+\midrule
+Provide an assessment overview that works without a transcript, and let clinicians choose which parts to analyze in depth in SAFA & 
+Not every assessment needs a full transcript, and clinicians with large caseloads need results quickly. The overview and flags let them decide where to look, so they only have to spend time transcribing the parts that actually need it. & \srref{SR_FlexibleWorkflows} \newline \rref{FR_Label12} \newline \rref{FR_Label13} \newline \rref{FR_Label15} \newline \nfrref{NFR-PF1} \newline Figures~\ref{WorkflowA_State_Diagram}--\ref{WorkflowC_State_Diagram}\\
+\midrule
+Link every result, flag, and transcript segment to its moment in the recording & 
+Clinicians need evidence to support their decisions, and checking against the video is how they catch mistakes in the transcript or flags. Jumping straight to the right moment also saves them from having to sit through an entire recording. & \srref{SR_EvidenceTraceability} \newline \rref{FR_Label14} \newline \rref{FR_TranscriptHighlight} \newline \rref{FR_SegmentSeek} \newline \nfrref{NFR-P2}\\
+\midrule
+Only accept recordings that meet a minimum video and audio quality & 
+Poor audio makes the transcript less accurate, and poor video makes it hard to detect faces and interference. It's better to catch this as soon as the assessment is submitted, rather than when the clinician opens the assessment only to find that it's unreliable. & \nfrref{NFR-P1} \newline \nfrref{NFR-A1}\\
+\midrule
+Restrict each clinician's access to their own patients, and encrypt and log access to all patient data & 
+The system stores sensitive information on patients, and even just having a face and voice can lead to the identification of a patient. Tracking access of data protects everyone involved and is also required under HIPAA. & \srref{SR_PatientPrivacy} \newline \nfrref{NFR-S1} \newline \nfrref{NFR-S2} \newline \nfrref{NFR-S3} \newline \nfrref{NFR-S4} \newline Privacy and Data Retention\\
+\midrule
+Send only the audio needed for transcription to third-party services, without patient details & 
+Transcription and keyword detection rely on outside services (Whisper and Deepgram), so some data has to leave the system. Sending as little as possible, under a Business Associate Agreement, limits what can be exposed. & Privacy and Data Retention \newline \nfrref{NFR-S3} \newline \nfrref{NFR-CO1}\\
+\midrule
+Design the system to meet HIPAA's technical safeguards, and leave administrative and physical safeguards to the institutions using it & 
+The team is building the software, so the technical safeguards are what we can actually control. Things like staff training and breach procedures will depend on the specific clinic or institution. & System Constraints \newline \nfrref{NFR-CO1} \newline Privacy and Data Retention\\
+\midrule
+Organize results by clinical domain, language, and the assessment's purpose & 
+Clinicians think about results in terms of topics like grammar and phonology, and comparing languages side by side helps tell a language difference from a disorder. Progress-monitoring and diagnostic assessments are used for different purposes, so they need different views to be read correctly. & \srref{SR_BilingualSupport} \newline \srref{SR_ProgressOverTime} \newline \rref{FR_Label22} \newline \rref{FR_Label23} \newline \rref{FR_ResultVisualization}\\
+\midrule
+Prioritize integration and usability first, and leave features like result visualization and patient-facing reports for later & 
+The project's supervisors have stated what parts they want completed first, so the system has to be integrated and usable before new features are worth adding. Anything not finished during the course will be documented as future work. & Appendix B \newline \rref{FR_ResultVisualization}\\
+\bottomrule
+\caption{Rationale for Major Decisions} \label{tab:Rationale}
+\end{longtable}
 
 \section{Likely Changes}    
 
