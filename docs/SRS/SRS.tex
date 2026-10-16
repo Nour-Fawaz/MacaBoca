@@ -1695,7 +1695,7 @@ The system shall preserve saved transcription edits and annotations across sessi
 \label{NFR-CV1}
 The system shall respond to clinician interactions within an acceptable time throughout the assessment process.
   \\ \textbf{Rationale:} Clinicians need to review and annotate assessments efficiently. Delayed responses can interrupt their workflow and increase the time required to complete assessments.
-  \\ \textbf{Fit Criterion:} At least AVG\_INTERACTIONS\% of common interactions related to transcription editing (\rref{FR_TranscriptionEditing}) and annotation data export (\rref{FR_AnnotationExport}) shall complete within INTERACTION\_TIME under normal operating conditions, excluding processing-intensive tasks.
+  \\ \textbf{Fit Criterion:} At least AVG\_INTERACTIONS\% of common interactions related to transcription editing (\rref{FR_TranscriptionEditing}) and annotation data export shall complete within INTERACTION\_TIME under normal operating conditions, excluding processing-intensive tasks.
 
 \refstepcounter{nfrnum}
 \item[\textbf{\rthenfrnum}:]
@@ -1709,7 +1709,7 @@ The system shall allow clinicians to access their annotation work from different
 \label{NFR-PE3}
 The system shall minimize repetitive interactions when clinicians complete annotations and manage patient assessments.
   \\ \textbf{Rationale:} Repetitive actions, such as manually saving work or repeatedly entering the same information, increase administrative workload and can interrupt the assessment process.
-  \\ \textbf{Fit Criterion:} The system shall automatically save or otherwise preserve changes to transcription edits (\rref{FR_TranscriptionEditing}) and annotation data (\rref{FR_AnnotationExport}) when clinicians navigate between assessment workflow stages (FR24), without requiring them to manually save their work on each page.
+  \\ \textbf{Fit Criterion:} The system shall automatically save or otherwise preserve changes to transcription edits (\rref{FR_TranscriptionEditing}) and annotation data (\rref{FR_AnnotationExport}) when clinicians navigate between assessment workflow stages (\rref{FR_AssessmentWorkflowNavigation}), without requiring them to manually save their work on each page.
 \end{itemize}
 
 
@@ -1813,6 +1813,10 @@ Functional Req & Nonfunctional Req \\
 \rref{FR_SegmentSeek} & \nfrref{NFR-P2} \\
 \rref{FR_ResultVisualization} & \nfrref{NFR-U2} \\
 \rref{FR_LinguisticPatternDetection} & \nfrref{NFR-UN1} \\
+\rref{FR_TranscriptionEditing} & \nfrref{NFR-CV1} \\
+\rref{FR_AnnotationExport} & \nfrref{NFR-RE2}, \nfrref{NFR-PE3} \\
+\rref{FR_AssessmentWorkflowNavigation} & \nfrref{NFR-PE3} \\
+
 \bottomrule
 \caption{Traceability Between Functional and Nonfunctional Requirements}
 \label{tab:FR2Rtm}
@@ -1992,6 +1996,17 @@ NUM\_\allowbreak{}CLINICIANS* & 10 clinicians & A small clinic or research study
 CASELOAD* & 30 patients & An estimate of one clinician's active caseload, to be confirmed with the research team.\\
 ASMTS\_\allowbreak{}PER\_\allowbreak{}PT* & 10 assessments & Several assessment types in each supported language, repeated for progress monitoring.\\
 LINK\_\allowbreak{}EXPIRY & 60 minutes & Taken from the existing TeleHealth platform, whose recording links expire after 60 minutes. This keeps a shared link short-lived while lasting through a typical review session; links are renewed while in use.\\
+
+GENERATE\_\allowbreak{}SUCCESS* & 95 & Ensures that transcription generation succeeds for nearly all valid, supported assessment videos, reducing delays and the need for manual transcription.\\
+
+SAVE\_\allowbreak{}SUCCESS* & 100 & Ensures that saved transcription edits and annotation data remain available and unchanged when an assessment is reopened.\\
+
+AVG\_\allowbreak{}INTERACTIONS* & 95 & Ensures that common transcription editing and annotation export interactions complete within the specified response time under normal operating conditions.\\
+
+INTERACTION\_\allowbreak{}TIME* & 2 seconds & Keeps common clinician interactions responsive to minimize workflow interruptions during transcription editing and annotation export.\\
+
+MIN\_\allowbreak{}SUPPORTED\_\allowbreak{}DEVICES* & 2 devices & Ensures clinicians can access and continue editing the same saved annotation data from at least two supported devices through a web browser.\\
+
 \end{longtable}
 
 \textbf{Policy values} describe how long data is kept. They are set in the system’s configuration and checked by review, since they cannot be tested within the project’s timeline.
