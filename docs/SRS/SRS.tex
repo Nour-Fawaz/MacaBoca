@@ -41,6 +41,7 @@
 \usepackage{siunitx}
 \usepackage{booktabs}
 \usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
 \usepackage{pdflscape}
 \usepackage{afterpage}
 
@@ -1089,27 +1090,32 @@ Clinician
 
 \subsection{Use Case Diagrams}
 The following use case diagrams show the interactions between the clinician and the system for certain use cases described above. 
+\noindent To tell the child's speech apart from an adult's, the clinician assigns speaker roles to the auto-generated transcript, as shown in Figure~\ref{UC1-Annotation_Tool}.
+
 \begin{figure}[H]
 \begin{center}
  \includegraphics[width=0.75\textwidth]{UC1-Annnotation_Tool.png}
-\caption{Use case diagram showing how a clinician assigns speaker roles to an assessment transcript using the annotation tool in TeLaC. A detailed description is given in Use Case~\ref{UC_Label5}.}
+\caption{Use case diagram for Assign Speaker Roles (\ucref{UC_Label5})}
 \label{UC1-Annotation_Tool}
 \end{center}
 \end{figure}
 
+\noindent When reviewing a transcript, the clinician or researcher can watch the video alongside it, with the transcript following along during playback, as shown in Figure~\ref{UC-Review_Transcript_Playback}.
+
 \begin{figure}[H]
 \begin{center}
  \includegraphics[width=\textwidth]{UC-Review_Transcript_Playback.png}
-\caption{Use case diagram showing how a clinician or researcher reviews an assessment transcript alongside its video playback in TeLaC, including the synchronized highlighting of transcript segments and jumping to a selected segment or question. A detailed description is given in Use Case~\ref{UC_ReviewTranscriptPlayback}.}
+\caption{Use case diagram for Review Transcript with Video Playback (\ucref{UC_ReviewTranscriptPlayback})}
 \label{UC-Review_Transcript_Playback}
 \end{center}
 \end{figure}
 
+\noindent Before analyzing an assessment in more depth, the clinician first finds and opens one of the patient's submitted assessments, as shown in Figure~\ref{UC4-Select_Assessment}.
+
 \begin{figure}[H]
 \begin{center}
  \includegraphics[width=0.75\textwidth]{UC4-Select_Assessment.png}
-\caption{Use case diagram showing how a clinician selects a patient's 
-submitted assessment in TeLaC before deeper analysis. A detailed description is given in Use Case~\ref{UC_Label4}.}
+\caption{Use case diagram for Select a Submitted Assessment (\ucref{UC_Label4})}
 \label{UC4-Select_Assessment}
 \end{center}
 \end{figure}
@@ -1279,29 +1285,34 @@ submitted assessment in TeLaC before deeper analysis. A detailed description is 
 
 \subsection{Formal Specification}
 \subsubsection{Workflow A: Direct Analysis}
+In this workflow, the clinician reviews the assessment results directly, without annotating the recording first. After selecting a patient and one of their assessments, the clinician reviews and interprets the results in the assessment view, and can then open individual questions to review and adjust them. The clinician then views and edits the report, which can be downloaded once it is complete. This workflow is shown in Figure~\ref{WorkflowA_State_Diagram}.
 \begin{figure}[H]
 \begin{center}
- \includegraphics[width=0.75\textwidth]{WorkflowA_State_Diagram.png}
-\caption{A finite state machine illustrating the direct analysis workflow (Workflow A) of a clinician when using the TeLaC system.}
+ \includegraphics[width=0.65\textwidth]{WorkflowA_State_Diagram.png}
+\caption{State diagram for Workflow A: Direct Analysis}
 \label{WorkflowA_State_Diagram} 
 \end{center}
 \end{figure}
 
 \subsubsection{Workflow B: Annotation-First Analysis}
-In this workflow, the clinician chooses to annotate the assessment recording before reviewing the results. The clinician is provided the ability to edit and correct the auto-generated transcript in the annotation view, where the annotated transcript is then saved to the assessment record. The clinician then reviews the questions and results, and prepares the report, using the annotated transcript as evidence.
+In this workflow, the clinician chooses to annotate the assessment recording before reviewing the results. The clinician is provided the ability to edit and correct the auto-generated transcript in the annotation view, where the annotated transcript is then saved to the assessment record. The clinician then reviews the questions and results, and prepares the report, using the annotated transcript as evidence. This workflow is shown in Figure~\ref{WorkflowB_State_Diagram}.
 \begin{figure}[H]
 \begin{center}
- \includegraphics[width=\textwidth]{WorkflowB_State_Diagram.png}
-\caption{A finite state machine illustrating the annotation-first analysis workflow (Workflow B) of a clinician when using the TeLaC system.}
+ \includegraphics[width=1.0\textwidth]{WorkflowB_State_Diagram.png}
+\caption{State diagram for Workflow B: Annotation-First Analysis}
 \label{WorkflowB_State_Diagram} 
 \end{center}
 \end{figure}
 
 \subsubsection{Workflow C: On-Demand Refinement}
+In this workflow, the clinician reviews an assessment at a high level, identifying areas that need refinement. From the assessment view, 
+the clinician selects segments to refine with SAFA for transcription and edits. 
+Results are then returned to the assessment view.
+The clinician can then view, edit, and download the report as in Workflow A. This workflow is shown in Figure~\ref{WorkflowC_State_Diagram}.
 \begin{figure}[H]
 \begin{center}
- \includegraphics[width=0.70\textwidth]{WorkflowC_State_Diagram.png}
-\caption{A finite state machine illustrating the on-demand refinement workflow (Workflow C) of a clinician when using the TeLaC system.}
+ \includegraphics[width=0.65\textwidth]{WorkflowC_State_Diagram.png}
+\caption{State diagram for Workflow C: On-Demand Refinement}
 \label{WorkflowC_State_Diagram}
 \end{center}
 \end{figure}
