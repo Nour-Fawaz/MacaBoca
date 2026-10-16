@@ -90,7 +90,7 @@
 
 \begin{document}
 
-\title{Software Requirements Specification for \progname: subtitle describing software} 
+\title{Software Requirements Specification for TeLaC} 
 \author{\authname}
 \date{\today}
 	
@@ -206,21 +206,21 @@ The purpose of this project is to solve the usability and workflow challenges fa
 
 \plt{The scope section is relevant for understanding the boundaries of the system. It is also relevant for later determining typical values of inputs. The scope should make it clear what inputs are reasonable to expect. This is a distinction between scope and context (context is a later section).  Scope affects the inputs while context affects how the software will be used.}
 
-Currently, assessment recordings on the MERLS platform and the existing software tool (SAFA) used by clinicians to annotate and analyze these recordings are not fully integrated. Additionally, the existing annotation tool has usability limitations that can make the assessment process less intuitive and efficient.
+Currently, assessment recordings on the TeLaC platform and the existing software tool (SAFA) used by clinicians to annotate and analyze these recordings are not fully integrated. Additionally, the existing annotation tool has usability limitations that can make the assessment process less intuitive and efficient.
 
-The intended users are speech-language pathologists conducting remote speech assessments of bilingual pediatric patients through telehealth services. The software will integrate speech assessment annotation functionality into the existing MERLS platform, providing clinicians with a centralized interface to review assessment recordings, edit automatically generated transcriptions, annotate speech, and export annotation data.
+The intended users are speech-language pathologists conducting remote speech assessments of bilingual pediatric patients through telehealth services. The software will integrate speech assessment annotation functionality into the existing TeLaC platform, providing clinicians with a centralized interface to review assessment recordings, edit automatically generated transcriptions, annotate speech, and export annotation data.
 
 The software aims to streamline the clinical workflow by reducing the need to switch between separate tools, improving the usability of annotation features, and supporting the organization and review of assessment results. These improvements are intended to help clinicians conduct assessments more efficiently and consistently while supporting the ongoing monitoring of pediatric patients' speech development.
 
-The software is intended to accommodate all SLPs who use the MERLS platform for the supported assessment workflow, regardless of their individual clinical needs or the number of patients they assess. However, the current scope is limited to Mandarin-English bilingual speech assessments. Assessments involving other language combinations are not expected to be supported. The software is intended to assist clinicians with transcription and annotation rather than independently diagnose speech disorders or replace professional clinical judgment.
+The software is intended to accommodate all SLPs who use the TeLaC platform for the supported assessment workflow, regardless of their individual clinical needs or the number of patients they assess. However, the current scope is limited to Mandarin-English bilingual speech assessments. Assessments involving other language combinations are not expected to be supported. The software is intended to assist clinicians with transcription and annotation rather than independently diagnose speech disorders or replace professional clinical judgment.
                                     
 
 \subsection{Stakeholders}
 
-The following stakeholders have an interest in the integrated MERLS system.
+The following stakeholders have an interest in the integrated TeLaC system.
 
 \begin{itemize}
-\item \textbf{Customer and Project Sponsor:} Dr.\ Irene Yuan and the research team (Dr.\ Du, Dr.\ Wu, and collaborators) who designed the MERLS platform, SAFA, and BeViz.
+\item \textbf{Customer and Project Sponsor:} Dr.\ Irene Yuan and the research team (Dr.\ Du, Dr.\ Wu, and collaborators) who designed the TeLaC platform, SAFA, and BeViz.
 They require an integrated system that supports multiple clinician workflows for analyzing uploaded assessments, is consistent with their existing data collection pipeline, and can be extended in future research.
 
 \item \textbf{End Users (Speech-Language Pathologists):} The primary users of the system.
@@ -245,7 +245,7 @@ They must approve tools that handle patient data and need the system to meet pri
 \toprule
 Term & Definition\\
 \midrule
-MERLS & A web platform for Mandarin-English child language assessment. It brings together the assessment tools clinicians need, so they can complete their entire workflow in one place.\\
+TeLaC & A web platform for Mandarin-English child language assessment. It brings together the assessment tools clinicians need, so they can complete their entire workflow in one place.\\
 \midrule
 BeViz & Software that organizes and visualizes assessment results. It also detects potential interfering behaviors during an assessment (such as parent prompting) so clinicians can review them.\\
 \midrule
@@ -253,9 +253,9 @@ SAFA & Stands for “Speech Annotation For Application, Access, Accuracy.” It 
 \midrule
 Clinician & A direct user of the system, typically an SLP (speech-language pathologist). Each clinician cares for one or more patients. Clinicians review assessment recordings, verify transcriptions and assessment results, and analyze overall performance.\\
 \midrule
-Patient & An individual who uses MERLS to complete online speech assessments from home. Each patient is assigned to a clinician who oversees their care. Patients can also be referred to as clients.\\
+Patient & An individual who uses TeLaC to complete online speech assessments from home. Each patient is assigned to a clinician who oversees their care. Patients can also be referred to as clients.\\
 \midrule
-Report & A detailed breakdown of a patient’s results for a single speech assessment completed on the MERLS platform.\\
+Report & A detailed breakdown of a patient’s results for a single speech assessment completed on the TeLaC platform.\\
 \midrule
 Speech Language Pathologist & They can also be referred to as a speech clinician. \\
 \midrule
@@ -306,7 +306,7 @@ constraints.
 
 \plt{Current situation, problem, impact, desired improvement.  You will likely borrow some text from your problem description document.}
 
-Currently, speech-language pathologists (SLPs) conducting remote assessments of bilingual pediatric patients face challenges annotating, managing, and analyzing patient assessments through telehealth. These challenges can limit assessment efficiency and consistency, particularly in pediatric telehealth settings where clinicians rely on digital tools to evaluate and monitor speech development. The existing annotation tool, SAFA, is hosted locally and operates separately from the MERLS telehealth platform used by patients and their guardians. This separation creates a disjointed workflow between patient assessments and clinician annotation. Additionally, SAFA has a limited and unintuitive user interface, resulting in a poor user experience for clinicians. Its functionality also does not fully support the clinician-side assessment, record-keeping, and analysis workflows required by SLPs.
+Currently, speech-language pathologists (SLPs) conducting remote assessments of bilingual pediatric patients face challenges annotating, managing, and analyzing patient assessments through telehealth. These challenges can limit assessment efficiency and consistency, particularly in pediatric telehealth settings where clinicians rely on digital tools to evaluate and monitor speech development. The existing annotation tool, SAFA, is hosted locally and operates separately from the TeLaC telehealth platform used by patients and their guardians. This separation creates a disjointed workflow between patient assessments and clinician annotation. Additionally, SAFA has a limited and unintuitive user interface, resulting in a poor user experience for clinicians. Its functionality also does not fully support the clinician-side assessment, record-keeping, and analysis workflows required by SLPs.
 
 Overall, the lack of integration between patient assessments and clinician tools, combined with limitations in interface usability and functionality, creates barriers to an efficient and cohesive speech assessment workflow.
 
@@ -317,11 +317,11 @@ By integrating SAFA’s annotation tools into the platform and incorporating pat
 
 \subsubsection{Goals}
 \begin{enumerate}
-    \item \textbf{Integrate SAFA Into the MERLS platform: }Clinicians should be able to annotate assessments, meaning review and correct the written transcript of a recorded session, without leaving MERLS. SAFA is currently a standalone tool, and bringing it into the platform removes the need to switch between systems.
+    \item \textbf{Integrate SAFA Into the TeLaC platform: }Clinicians should be able to annotate assessments, meaning review and correct the written transcript of a recorded session, without leaving TeLaC. SAFA is currently a standalone tool, and bringing it into the platform removes the need to switch between systems.
     \item \textbf{Improve SAFA’s Usability: }The annotation interface should be simple and guided enough that any speech clinician can use it with confidence, regardless of technical background.
-    \item \textbf{Speed Up Speech Annotation: }Annotating a bilingual speech assessment should take significantly less time than manual transcription. SAFA has already been shown to reduce annotation time by roughly one-third, and the goal is to preserve or improve on that once SAFA is part of MERLS.
+    \item \textbf{Speed Up Speech Annotation: }Annotating a bilingual speech assessment should take significantly less time than manual transcription. SAFA has already been shown to reduce annotation time by roughly one-third, and the goal is to preserve or improve on that once SAFA is part of TeLaC.
     \item \textbf{Provide a Clinician Record and Analysis Hub: }Clinicians should be able to find a patient’s records and past assessments in a centralized hub. This will simplify clinicians’ workflow, allowing them to quickly reference patient history without navigating multiple disconnected systems.
-    \item \textbf{Protect Patient Data: }MERLS handles sensitive health information online; hence the system must keep patient data private and secure. Only authorized clinicians can access a patient’s records, recordings, and assessment results.
+    \item \textbf{Protect Patient Data: }TeLaC handles sensitive health information online; hence the system must keep patient data private and secure. Only authorized clinicians can access a patient’s records, recordings, and assessment results.
 \end{enumerate}
 
 
@@ -329,8 +329,8 @@ By integrating SAFA’s annotation tools into the platform and incorporating pat
 \subsection{System Context}
 
 Figure~\ref{Fig_SystemContext} shows the context between the Speech Assessment
-Web Platform (MERLS) and the users and external systems it interacts with. The platform
-integrates SAFA into MERLS, which was previously known as TeleHealth. Three types
+Web Platform (TeLaC) and the users and external systems it interacts with. The platform
+integrates SAFA into TeLaC, which was previously known as TeleHealth. Three types
 of users will interact with the platform directly, the first being patients and caregivers; they'll
 complete assessments by submitting video and audio responses, and will receive
 assessment reports as they progress. Clinicians review transcripts 
@@ -428,8 +428,8 @@ The system has two main types of users. The usability requirements (e.g., \nfrre
 \subsection{System Constraints}
 
 \begin{itemize}
-\item \textbf{Integration with MERLS:} The system must be integrated into the
-  existing MERLS telehealth platform and accessed through the clinician dashboard,
+\item \textbf{Integration with TeLaC:} The system must be integrated into the
+  existing TeLaC telehealth platform and accessed through the clinician dashboard,
   rather than as a separate standalone application. \textit{Rationale:} Clinician
   workflows require more than just the analysis of a single assessment. In order to 
   connect their work, they have should a platform that is able to help collect, review,
@@ -438,7 +438,7 @@ The system has two main types of users. The usability requirements (e.g., \nfrre
 \item \textbf{Web-based deployment:} The system must be a web application, deployed
   to a server and accessible through the web. The SAFA module, which is currently a
   Python desktop application, must be adapted to run within this web-based environment.
-  \textit{Rationale:} MERLS is a web-based platform, so SAFA must also run in the
+  \textit{Rationale:} TeLaC is a web-based platform, so SAFA must also run in the
   browser to work within it. This also means clinicians can access the system from
   any device with a web browser, without needing to install or maintain a separate
   desktop application.
@@ -542,7 +542,7 @@ Clinician, Researcher
 
 \textbf{Preconditions}
 \begin{itemize}
-\item User has an existing MERLS account with a clinician or researcher
+\item User has an existing TeLaC account with a clinician or researcher
   role.
 \item User is on the platform's login page.
 \end{itemize}
@@ -1092,7 +1092,7 @@ The following use case diagrams show the interactions between the clinician and 
 \begin{figure}[H]
 \begin{center}
  \includegraphics[width=0.75\textwidth]{UC1-Annnotation_Tool.png}
-\caption{Use case diagram showing how a clinician assigns speaker roles to an assessment transcript using the annotation tool in MERLS. A detailed description is given in Use Case~\ref{UC_Label5}.}
+\caption{Use case diagram showing how a clinician assigns speaker roles to an assessment transcript using the annotation tool in TeLaC. A detailed description is given in Use Case~\ref{UC_Label5}.}
 \label{UC1-Annotation_Tool}
 \end{center}
 \end{figure}
@@ -1100,7 +1100,7 @@ The following use case diagrams show the interactions between the clinician and 
 \begin{figure}[H]
 \begin{center}
  \includegraphics[width=\textwidth]{UC-Review_Transcript_Playback.png}
-\caption{Use case diagram showing how a clinician or researcher reviews an assessment transcript alongside its video playback in MERLS, including the synchronized highlighting of transcript segments and jumping to a selected segment or question. A detailed description is given in Use Case~\ref{UC_ReviewTranscriptPlayback}.}
+\caption{Use case diagram showing how a clinician or researcher reviews an assessment transcript alongside its video playback in TeLaC, including the synchronized highlighting of transcript segments and jumping to a selected segment or question. A detailed description is given in Use Case~\ref{UC_ReviewTranscriptPlayback}.}
 \label{UC-Review_Transcript_Playback}
 \end{center}
 \end{figure}
@@ -1109,7 +1109,7 @@ The following use case diagrams show the interactions between the clinician and 
 \begin{center}
  \includegraphics[width=0.75\textwidth]{UC4-Select_Assessment.png}
 \caption{Use case diagram showing how a clinician selects a patient's 
-submitted assessment in MERLS before deeper analysis. A detailed description is given in Use Case~\ref{UC_Label4}.}
+submitted assessment in TeLaC before deeper analysis. A detailed description is given in Use Case~\ref{UC_Label4}.}
 \label{UC4-Select_Assessment}
 \end{center}
 \end{figure}
@@ -1282,7 +1282,7 @@ submitted assessment in MERLS before deeper analysis. A detailed description is 
 \begin{figure}[H]
 \begin{center}
  \includegraphics[width=0.75\textwidth]{WorkflowA_State_Diagram.png}
-\caption{A finite state machine illustrating the direct analysis workflow (Workflow A) of a clinician when using the MERLS system.}
+\caption{A finite state machine illustrating the direct analysis workflow (Workflow A) of a clinician when using the TeLaC system.}
 \label{WorkflowA_State_Diagram} 
 \end{center}
 \end{figure}
@@ -1292,7 +1292,7 @@ In this workflow, the clinician chooses to annotate the assessment recording bef
 \begin{figure}[H]
 \begin{center}
  \includegraphics[width=\textwidth]{WorkflowB_State_Diagram.png}
-\caption{A finite state machine illustrating the annotation-first analysis workflow (Workflow B) of a clinician when using the MERLS system.}
+\caption{A finite state machine illustrating the annotation-first analysis workflow (Workflow B) of a clinician when using the TeLaC system.}
 \label{WorkflowB_State_Diagram} 
 \end{center}
 \end{figure}
@@ -1301,7 +1301,7 @@ In this workflow, the clinician chooses to annotate the assessment recording bef
 \begin{figure}[H]
 \begin{center}
  \includegraphics[width=0.70\textwidth]{WorkflowC_State_Diagram.png}
-\caption{A finite state machine illustrating the on-demand refinement workflow (Workflow C) of a clinician when using the MERLS system.}
+\caption{A finite state machine illustrating the on-demand refinement workflow (Workflow C) of a clinician when using the TeLaC system.}
 \label{WorkflowC_State_Diagram}
 \end{center}
 \end{figure}
@@ -1750,14 +1750,14 @@ The model could be evaluated in the future by comparing the original auto-genera
 
 \subsection{Known Limitations}
 
-The model’s website describes its performance as average, so the following failure modes are expected when it is used in MERLS \citep{Laumann_Whisper_2022}.
+The model’s website describes its performance as average, so the following failure modes are expected when it is used in TeLaC \citep{Laumann_Whisper_2022}.
 \begin{itemize}
   \item \textbf{Incorrect transcription or translation:} since the model’s overall performance is average, some transcribed or translated text can be wrong. If these errors go unnoticed, clinicians may draw incorrect conclusions about a child’s speech abilities.
-  \item \textbf{Incorrect transcription of difficult non-English words: }: the model is known to incorrectly transcribe difficult words in languages other than English. This is concerning for MERLS considering the system is used to assess bilingual children.
+  \item \textbf{Incorrect transcription of difficult non-English words: }: the model is known to incorrectly transcribe difficult words in languages other than English. This is concerning for TeLaC considering the system is used to assess bilingual children.
   \item \textbf{Uneven performance across different languages:} The model generally performs best on languages with a decent amount of training data, such as Spanish, German, Italian, and English. Transcript accuracy may vary by language, and languages with fewer resources may be transcribed less reliably.
 \end{itemize}
 
-Because of these expected failures, MERLS doesn’t treat the model’s output as final. 
+Because of these expected failures, TeLaC doesn’t treat the model’s output as final. 
 Clinicians review the auto-generated transcript against the video playback and correct any errors before relying on it.
 
 % ============================================================== 
@@ -1832,11 +1832,11 @@ Functional Req & Nonfunctional Req \\
 Decision & Rationale & Related Sections\\
 \midrule
 \endhead
-Integrate SAFA into MERLS instead of keeping it as a standalone tool & 
+Integrate SAFA into TeLaC instead of keeping it as a standalone tool & 
 Right now, clinicians need to download video recordings, upload them to SAFA, and then export any output files from SAFA and move them by hand. This takes a lot of time and separates annotations from the patient's record. Having everything in one platform lets clinicians review, annotate, and report on an assessment without switching tools. & Goals \newline System Constraints \newline \srref{SR_SinglePlatform} \newline \rref{FR_AnnotationsInRecord} \newline Appendix B\\
 \midrule
 Build the system as a web application, with desktop as the main platform & 
-MERLS is already a web-based platform, so SAFA needs to run in the browser in order to work within it. This means clinicians shouldn't need to install anything, and that a desktop or laptop screen will give them enough space to watch the video and edit the transcript side by side. & System Constraints \newline Appendix B\\
+TeLaC is already a web-based platform, so SAFA needs to run in the browser in order to work within it. This means clinicians shouldn't need to install anything, and that a desktop or laptop screen will give them enough space to watch the video and edit the transcript side by side. & System Constraints \newline Appendix B\\
 \midrule
 Use the existing Whisper model instead of training a new speech model & 
 The research team already uses Whisper in their workflow and training a new model would require a large dataset of previous assessments and labelled children's speech for training, which we don't have. Whisper's known limitations are already handled by having clinicians review and correct the transcripts. & System Constraints \newline AI and Machine Learning Requirements \newline \nfrref{NFR-P1}\\
@@ -1893,9 +1893,9 @@ The project's supervisors have stated what parts they want completed first, so t
 
 \item[\textbf{ULC\refstepcounter{ulcnum}\theulcnum}\label{ULC_IntendedUserGroup}:] Intended user group: The primary users will remain speech-language pathologists conducting remote speech assessments of bilingual pediatric patients.
 
-\item[\textbf{ULC\refstepcounter{ulcnum}\theulcnum}\label{ULC_Platform}:] Platform: The software will continue to work with the existing MERLS telehealth platform and SAFA annotation tool.
+\item[\textbf{ULC\refstepcounter{ulcnum}\theulcnum}\label{ULC_Platform}:] Platform: The software will continue to work with the existing TeLaC telehealth platform and SAFA annotation tool.
 
-\item[\textbf{ULC\refstepcounter{ulcnum}\theulcnum}\label{ULC_DataSource}:] Data source: Patient assessment recordings will continue to be submitted through the existing MERLS platform.
+\item[\textbf{ULC\refstepcounter{ulcnum}\theulcnum}\label{ULC_DataSource}:] Data source: Patient assessment recordings will continue to be submitted through the existing TeLaC platform.
 
 \item[\textbf{ULC\refstepcounter{ulcnum}\theulcnum}\label{ULC_SupportedLanguages}:] Supported languages: The software is unlikely to expand beyond English as the primary second language used in bilingual assessments.
 
@@ -1911,7 +1911,7 @@ This section presents key notes and quotes gathered during the requirements elic
 
 Several requirements were drawn from research papers describing the system and an experiment conducted by the project supervisor’s team in the United States. 
 Although the papers have not yet been released, they describe the entire system and report usability tests with 10 speech clinicians. 
-The following highlights the preferences and feedback participants shared while testing the MERLS system and the SAFA annotation tool.
+The following highlights the preferences and feedback participants shared while testing the TeLaC system and the SAFA annotation tool.
 
 \begin{itemize}
   \item Participant 2 expressed frustration with the amount of time it takes to transcribe assessments: “It would be perfect to have this feature, because doing the annotation part is very time consuming.”
@@ -1937,11 +1937,11 @@ The timing of each phase then follows the milestones outlined in the Development
 
 \begin{enumerate}
   \item \textbf{Phase 1: Integration.} The first phase focuses on integrating SAFA
-  into the existing MERLS platform, so clinicians can review and annotate assessments
+  into the existing TeLaC platform, so clinicians can review and annotate assessments
   without ever having to leave the platform. This includes connecting SAFA's existing transcription
-  and annotation Python modules to MERLS's patient records and recorded assessments,
+  and annotation Python modules to TeLaC's patient records and recorded assessments,
   and making sure that patient data stays secure as it moves in between. This phase
-  covers the \textit{Integrate SAFA Into the MERLS platform} and \textit{Protect
+  covers the \textit{Integrate SAFA Into the TeLaC platform} and \textit{Protect
   Patient Data} goals, and will be demonstrated in the proof of concept.
 
   \item \textbf{Phase 2: Enhance the SAFA User Interface.} Once SAFA is
@@ -2069,16 +2069,16 @@ graduate attribute of Lifelong Learning.
 \input{../SRS_Reflection.text}
 \subsection{All}
 \subsubsection*{Question 3}
-Nearly all of our requirements were inspired by our supervisor’s team meetings and research papers. Since MERLS is an existing research project, several papers documented studies in which SLPs and patients tested previous iterations of the software and provided feedback on their experiences. These studies were particularly insightful in helping us identify requirements specific to different stakeholders and understand the limitations of the current software. However, due to the long history of the project, the amount of information and changes withing the projects lifetime was overwhelming to our group, which lead us to seek further guidance before continuing writing requirements.
+Nearly all of our requirements were inspired by our supervisor’s team meetings and research papers. Since TeLaC is an existing research project, several papers documented studies in which SLPs and patients tested previous iterations of the software and provided feedback on their experiences. These studies were particularly insightful in helping us identify requirements specific to different stakeholders and understand the limitations of the current software. However, due to the long history of the project, the amount of information and changes withing the projects lifetime was overwhelming to our group, which lead us to seek further guidance before continuing writing requirements.
 Our discussions with our supervisor and their team were another major influence. Early in the project, our supervisor outlined the main deliverables we were expected to fulfill and provided access to relevant research papers and drafts. Through these resources and team meetings, we identified the three key workflows that our system needed to support. Together, the supervisor’s guidance and existing research formed the foundation for most of our requirements. For any requirements that were not primarily informed by these sources, we conducted additional research into common telehealth practices. This was particularly important for identifying requirements related to security and privacy standards. Overall, our requirements were primarily grounded in research, stakeholder feedback, and our client’s guidance.
 
 
 \subsection{Nour}
 \subsubsection*{Question 1}
 Writing the functional requirements was more straightforward than we expected because we had enough resources to understand what our supervisors wanted from the project. 
-They provided us with a couple of unreleased research papers that described the system architecture, clinician workflows, including a study they conducted on 10 clinicians to test the TeLaC (now MERLS) platform. 
-With this information we were able to create a mental model of the MERLS, SAFA, and BeViz modules and what the purpose for each is. 
-Moreover, our supervisors provided us with the GitHub repositories of the annotation tool SAFA and the MERLS system (which is the overall TeleHealth system). 
+They provided us with a couple of unreleased research papers that described the system architecture, clinician workflows, including a study they conducted on 10 clinicians to test the TeLaC platform. 
+With this information we were able to create a mental model of the TeLaC, SAFA, and BeViz modules and what the purpose for each is. 
+Moreover, our supervisors provided us with the GitHub repositories of the annotation tool SAFA and the TeLaC system (which is the overall TeleHealth system). 
 That let us write requirements that were realistic in how the system behaves and how it should behave once we integrate SAFA. 
 Additionally, it made it easier to write use cases that reflected the different clinician workflows detailed in the research papers which are, direct analysis, annotation first analysis, and on-demand refinement. 
 These three are the main important workflows and should be enabled by the system very seamlessly. 
@@ -2115,7 +2115,7 @@ Furthermore, considering we are building on an existing system with already busy
 Without this, it would be easy for sections to become inconsistent with each other and for team members to be lost or have a different understanding of the project vision and next steps.
 
 Additionally, understanding of how SAFA uses AI to create transcriptions is also important. 
-Integrating SAFA into the existing MERLS system is the main focus of our project, so we need to understand how the audio is sent to the model, what the model returns, and where its transcriptions may be wrong, so we can design the system around this.
+Integrating SAFA into the existing TeLaC system is the main focus of our project, so we need to understand how the audio is sent to the model, what the model returns, and where its transcriptions may be wrong, so we can design the system around this.
 
 \subsubsection*{Question 6}
 For team management, one approach is keeping a planner or schedule that lists upcoming deadlines, notes, and future meetings. 
@@ -2195,7 +2195,7 @@ deliverable is trying to do for our capstone. Thinking through edge cases in
 our use cases and discussing alternative flows can help us define early on what
 our system needs in terms of requirements. This will be especially important
 once we start integrating SAFA, which was built as a standalone tool, into the existing
-MERLS platform, since there are a lot of moving parts and missing a requirement now
+TeLaC platform, since there are a lot of moving parts and missing a requirement now
 could mean having to go back and rework large parts of the system later.
 
 \subsubsection*{Question 5}
@@ -2203,7 +2203,7 @@ Two areas that our team will need to learn more about will firstly be front-end 
 and making sure that the user experience is as smooth and intuitive as possible, and secondly 
 more on security and how we can set up our system to be more secure. 
 On the front end, a big part of our project
-is bringing SAFA's interface into the MERLS web platform and making it easier for
+is bringing SAFA's interface into the TeLaC web platform and making it easier for
 clinicians to use, so the team will need to be comfortable building interfaces with
 frameworks like React and potentially using frontend component libraries. 
 Security seems like a pretty large problem for our project as some of the largest
@@ -2216,7 +2216,7 @@ areas I will be focusing on for the team.
 \subsubsection*{Question 6}
 For front-end development, one approach is to follow how different fullstack projects and tutorials
 work online, or using React's official documentation or AI as a direct tutor. Another is to learn by working directly 
-in the existing SAFA and MERLS code, as there's some frontend work already done. I believe as a team, we'll likely
+in the existing SAFA and TeLaC code, as there's some frontend work already done. I believe as a team, we'll likely
 do a mix of everything, since there's not really a one-size-fits-all approach. I personally learn best by doing, so I'd likely focus on working directly in the existing
 code, and refer to tutorials or documentation whenever I get stuck.
 

@@ -12,7 +12,7 @@
     urlcolor=cyan           % color of external links
 }
 
-\title{Hazard Analysis\\\progname}
+\title{Hazard Analysis\\ TeLaC}
 
 \author{\authname}
 
@@ -54,19 +54,19 @@ Date2 & Name(s) & Description of changes\\
 
 \section{Introduction}
 
-MERLS is a telehealth platform for assessing the speech of bilingual children at home. 
+TeLaC is a telehealth platform for assessing the speech of bilingual children at home. 
 Patients complete speech assessments online, and speech clinicians use the platform to review the recordings, verify the results, and manage their patients’ records and analytics. 
-MERLS streamlines the clinician’s workflow by combining speech annotation and assessment analysis in one system. 
+TeLaC streamlines the clinician’s workflow by combining speech annotation and assessment analysis in one system. 
 Annotation is supported by automatically generated transcripts that clinicians can review and correct, and analysis is supported by organized, visualized results that point out behaviors needing the clinician’s attention.
 
-Because MERLS handles sensitive health information and supports clinical decisions about children, failures in the system could have serious consequences. 
+Because TeLaC handles sensitive health information and supports clinical decisions about children, failures in the system could have serious consequences. 
 A hazard is defined as any condition or state of the system that, under certain circumstances, could lead to harm to patients, such as an incorrect clinical conclusion or the disclosure of sensitive information. 
-This document identifies the hazards in MERLS, analyzes how they could arise, and describes how the system’s design and requirements reduce them.
+This document identifies the hazards in TeLaC, analyzes how they could arise, and describes how the system’s design and requirements reduce them.
 
 
 \section{Scope and Purpose of Hazard Analysis}
 
-This document examines the hazards in each component of MERLS outlined below. 
+This document examines the hazards in each component of TeLaC outlined below. 
 For each hazard, the analysis determines the possible failures, along with their effects, causes, and recommended actions. 
 It covers both technical hazards and user interaction hazards, because clinicians rely on the system’s outputs when assessing a child’s language ability, and the information it stores is confidential. 
 If these hazards are not addressed, patients and clinicians could suffer losses such as the exposure of private health information, incorrect clinical conclusions that affect a child’s care, the permanent loss of assessment data, and a loss of confidence in the platform.
@@ -251,7 +251,7 @@ familiar with.
 \subsection*{Question 2}
 This deliverable was relatively straightforward, and our team did not run into any major issues while completing it. 
 We began by brainstorming the components of the system together, and we were able to identify what could go wrong with each one and possible hazards that could result. 
-MERLS is a privacy-critical system, so security and data breaches were extremely important for us to address. 
+TeLaC is a privacy-critical system, so security and data breaches were extremely important for us to address. 
 The system also depends on performance and quality for different features to work, which made it easy to determine its high-level components. 
 Because we share a strong understanding of the system, prioritizing the safety requirements was not difficult. 
 Our supervisors also mentioned which parts of the system they wanted completed first, which gave us a clear direction as to what were the most important parts of the system.
