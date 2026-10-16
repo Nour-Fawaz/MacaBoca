@@ -753,12 +753,21 @@ Clinician
 \end{itemize}
 
 \subsection{Use Case Diagrams}
-The following use case diagram shows the interactions between the clinician and the system for certain use cases described above. 
+The following use case diagrams show the interactions between the clinician and the system for certain use cases described above. 
 \begin{figure}[H]
 \begin{center}
  \includegraphics[width=0.75\textwidth]{UC1-Annnotation_Tool.png}
 \caption{Use case diagram showing how a clinician assigns speaker roles to an assessment transcript using the annotation tool in MERLS. A detailed description is given in Use Case~\ref{UC_Label5}.}
 \label{UC1-Annotation_Tool} 
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+ \includegraphics[width=0.75\textwidth]{UC4-Select_Assessment.png}
+\caption{Use case diagram showing how a clinician selects a patient's 
+submitted assessment in MERLS before deeper analysis. A detailed description is given in Use Case~\ref{UC_Label4}.}
+\label{UC4-Select_Assessment}
 \end{center}
 \end{figure}
 
@@ -1163,6 +1172,30 @@ requirements, data requirements, and AI requirements.  You don't need a
 rationale for everything, ust the major decisions that are not obvious.  You
 should have traceability to the entities in the document that you are
 referencing.}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.30\textwidth} >{\raggedright\arraybackslash}p{0.38\textwidth} >{\raggedright\arraybackslash}p{0.24\textwidth}}
+\toprule
+Decision & Rationale & Related Sections\\
+\midrule
+\endhead
+Integrate SAFA into MERLS instead of keeping it as a standalone tool & TODO & System Constraints \newline Goals\\
+\midrule
+Build the system as a web application, with desktop as the main platform and mobile and tablet support out of scope & TODO & System Constraints \newline Appendix B\\
+\midrule
+Use the existing Whisper model instead of training a new speech model & TODO & System Constraints \newline AI and ML Requirements \newline \rref{FR_Label6}\\
+\midrule
+Keep clinicians in the loop, so automatic outputs are drafts and flags that clinicians review rather than final results & TODO & \rref{FR_Label8} \newline \rref{FR_Label15} \newline \nfrref{NFR-A1} \newline Appendix A\\
+\midrule
+Provide an assessment overview that works without a transcript, before any in-depth analysis in SAFA & TODO & \rref{FR_Label12} \newline \rref{FR_Label13} \newline \rref{FR_Label14} \newline \nfrref{NFR-PF1}\\
+\midrule
+Restrict each clinician's access to their own patients and encrypt all recordings and transcripts & TODO & System Constraints \newline \nfrref{NFR-S1} \newline \nfrref{NFR-S2} \newline \nfrref{NFR-S3}\\
+\midrule
+Define requirement thresholds as symbolic constants with values in Appendix C & TODO & Non-Functional Requirements \newline Appendix C\\
+\midrule
+TODO: decisions behind teammates' requirements (FR1--5, FR16--21, FR24) & TODO & TODO\\
+\bottomrule
+\caption{Rationale for Major Decisions} \label{tab:Rationale}
+\end{longtable}
 
 \section{Likely Changes}    
 
