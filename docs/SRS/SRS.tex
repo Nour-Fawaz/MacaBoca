@@ -316,7 +316,7 @@ Overall, the lack of integration between patient assessments and clinician tools
 The purpose of this product is to give speech clinicians a single, centralized telehealth platform for reviewing, annotating, and analyzing speech assessments of bilingual children. 
 By integrating SAFA’s annotation tools into the platform and incorporating patient records in one place, the product aims to make the assessment analysis process faster, simpler, and easier to use.
 
-\subsubsection{Goals}
+\subsubsection{Goals} \label{sec:Goals}
 \begin{enumerate}
     \item \textbf{Integrate SAFA Into the TeLaC platform: }Clinicians should be able to annotate assessments, meaning review and correct the written transcript of a recorded session, without leaving TeLaC. SAFA is currently a standalone tool, and bringing it into the platform removes the need to switch between systems.
     \item \textbf{Improve SAFA’s Usability: }The annotation interface should be simple and guided enough that any speech clinician can use it with confidence, regardless of technical background.
@@ -426,7 +426,7 @@ The system has two main types of users. The usability requirements (e.g., \nfrre
   \item \textbf{Role:} Reviews and aggregates assessment data, and does not make clinical decisions.
 \end{itemize}
 
-\subsection{System Constraints}
+\subsection{System Constraints} \label{sec:SystemConstraints}
 
 \begin{itemize}
 \item \textbf{Integration with TeLaC:} The system must be integrated into the
@@ -1491,7 +1491,7 @@ time & Date and time & System & When the action occurred\\
 \caption{Data Dictionary} \label{tab:DataDictionary}
 \end{longtable}
 
-\subsection{Privacy and Data Retention}
+\subsection{Privacy and Data Retention} \label{sec:PrivacyRetention}
 
 The system stores recordings, transcripts, and health information about children, so the following apply to all data listed above:
 
@@ -1725,7 +1725,7 @@ The system shall minimize repetitive interactions when clinicians complete annot
 
 
 % ============================================================== 
-\section{AI and Machine Learning Requirements}
+\section{AI and Machine Learning Requirements} \label{sec:AIML}
 
 The system integrates a speech recognition model that was suggested and provided by the capstone team’s supervisors. 
 The model was not created by the capstone team. \\
@@ -1844,16 +1844,16 @@ Decision & Rationale & Related Sections\\
 \midrule
 \endhead
 Integrate SAFA into TeLaC instead of keeping it as a standalone tool & 
-Right now, clinicians need to download video recordings, upload them to SAFA, and then export any output files from SAFA and move them by hand. This takes a lot of time and separates annotations from the patient's record. Having everything in one platform lets clinicians review, annotate, and report on an assessment without switching tools. & Goals \newline System Constraints \newline \srref{SR_SinglePlatform} \newline \rref{FR_AnnotationsInRecord} \newline Appendix B\\
+Right now, clinicians need to download video recordings, upload them to SAFA, and then export any output files from SAFA and move them by hand. This takes a lot of time and separates annotations from the patient's record. Having everything in one platform lets clinicians review, annotate, and report on an assessment without switching tools. & \hyperref[sec:Goals]{Goals (\ref*{sec:Goals})} \newline \hyperref[sec:SystemConstraints]{System Constraints (\ref*{sec:SystemConstraints})} \newline \srref{SR_SinglePlatform} \newline \rref{FR_AnnotationsInRecord} \newline \hyperref[sec:AppendixB]{Appendix B}\\
 \midrule
 Build the system as a web application, with desktop as the main platform & 
-TeLaC is already a web-based platform, so SAFA needs to run in the browser in order to work within it. This means clinicians shouldn't need to install anything, and that a desktop or laptop screen will give them enough space to watch the video and edit the transcript side by side. & System Constraints \newline Appendix B\\
+TeLaC is already a web-based platform, so SAFA needs to run in the browser in order to work within it. This means clinicians shouldn't need to install anything, and that a desktop or laptop screen will give them enough space to watch the video and edit the transcript side by side. & \hyperref[sec:SystemConstraints]{System Constraints (\ref*{sec:SystemConstraints})} \newline \hyperref[sec:AppendixB]{Appendix B}\\
 \midrule
 Use the existing Whisper model instead of training a new speech model & 
-The research team already uses Whisper in their workflow and training a new model would require a large dataset of previous assessments and labelled children's speech for training, which we don't have. Whisper's known limitations are already handled by having clinicians review and correct the transcripts. & System Constraints \newline AI and Machine Learning Requirements \newline \nfrref{NFR-P1}\\
+The research team already uses Whisper in their workflow and training a new model would require a large dataset of previous assessments and labelled children's speech for training, which we don't have. Whisper's known limitations are already handled by having clinicians review and correct the transcripts. & \hyperref[sec:SystemConstraints]{System Constraints (\ref*{sec:SystemConstraints})} \newline \hyperref[sec:AIML]{AI and Machine Learning Requirements (\ref*{sec:AIML})} \newline \nfrref{NFR-P1}\\
 \midrule
 Keep clinicians in the loop, so automatic outputs are suggestions and flags that clinicians review rather than final results & 
-Whisper hasn't been evaluated on our use case, and children's and bilingual speech are hard to transcribe. Clinicians have already stated that automated results should only be cues, since the clinical decision is theirs to make. & \srref{SR_ClinicianFinalJudgment} \newline \rref{FR_Label8} \newline \rref{FR_ManualEvaluation} \newline \rref{FR_LinguisticPatternDetection} \newline \nfrref{NFR-A1} \newline \nfrref{NFR-UN1} \newline Appendix A\\
+Whisper hasn't been evaluated on our use case, and children's and bilingual speech are hard to transcribe. Clinicians have already stated that automated results should only be cues, since the clinical decision is theirs to make. & \srref{SR_ClinicianFinalJudgment} \newline \rref{FR_Label8} \newline \rref{FR_ManualEvaluation} \newline \rref{FR_LinguisticPatternDetection} \newline \nfrref{NFR-A1} \newline \nfrref{NFR-UN1} \newline \hyperref[sec:AppendixA]{Appendix A}\\
 \midrule
 Provide an assessment overview that works without a transcript, and let clinicians choose which parts to analyze in depth in SAFA & 
 Not every assessment needs a full transcript, and clinicians with large caseloads need results quickly. The overview and flags let them decide where to look, so they only have to spend time transcribing the parts that actually need it. & \srref{SR_FlexibleWorkflows} \newline \rref{FR_Label12} \newline \rref{FR_Label13} \newline \rref{FR_Label15} \newline \nfrref{NFR-PF1} \newline Figures~\ref{WorkflowA_State_Diagram}--\ref{WorkflowC_State_Diagram}\\
@@ -1865,19 +1865,19 @@ Only accept recordings that meet a minimum video and audio quality &
 Poor audio makes the transcript less accurate, and poor video makes it hard to detect faces and interference. It's better to catch this as soon as the assessment is submitted, rather than when the clinician opens the assessment only to find that it's unreliable. & \nfrref{NFR-P1} \newline \nfrref{NFR-A1}\\
 \midrule
 Restrict each clinician's access to their own patients, and encrypt and log access to all patient data & 
-The system stores sensitive information on patients, and even just having a face and voice can lead to the identification of a patient. Tracking access of data protects everyone involved and is also required under HIPAA. & \srref{SR_PatientPrivacy} \newline \nfrref{NFR-S1} \newline \nfrref{NFR-S2} \newline \nfrref{NFR-S3} \newline \nfrref{NFR-S4} \newline Privacy and Data Retention\\
+The system stores sensitive information on patients, and even just having a face and voice can lead to the identification of a patient. Tracking access of data protects everyone involved and is also required under HIPAA. & \srref{SR_PatientPrivacy} \newline \nfrref{NFR-S1} \newline \nfrref{NFR-S2} \newline \nfrref{NFR-S3} \newline \nfrref{NFR-S4} \newline \hyperref[sec:PrivacyRetention]{Privacy and Data Retention (\ref*{sec:PrivacyRetention})}\\
 \midrule
 Send only the audio needed for transcription to third-party services, without patient details & 
-Transcription and keyword detection rely on outside services (Whisper and Deepgram), so some data has to leave the system. Sending as little as possible, under a Business Associate Agreement, limits what can be exposed. & Privacy and Data Retention \newline \nfrref{NFR-S3} \newline \nfrref{NFR-CO1}\\
+Transcription and keyword detection rely on outside services (Whisper and Deepgram), so some data has to leave the system. Sending as little as possible, under a Business Associate Agreement, limits what can be exposed. & \hyperref[sec:PrivacyRetention]{Privacy and Data Retention (\ref*{sec:PrivacyRetention})} \newline \nfrref{NFR-S3} \newline \nfrref{NFR-CO1}\\
 \midrule
 Design the system to meet HIPAA's technical safeguards, and leave administrative and physical safeguards to the institutions using it & 
-The team is building the software, so the technical safeguards are what we can actually control. Things like staff training and breach procedures will depend on the specific clinic or institution. & System Constraints \newline \nfrref{NFR-CO1} \newline Privacy and Data Retention\\
+The team is building the software, so the technical safeguards are what we can actually control. Things like staff training and breach procedures will depend on the specific clinic or institution. & \hyperref[sec:SystemConstraints]{System Constraints (\ref*{sec:SystemConstraints})} \newline \nfrref{NFR-CO1} \newline \hyperref[sec:PrivacyRetention]{Privacy and Data Retention (\ref*{sec:PrivacyRetention})}\\
 \midrule
 Organize results by clinical domain, language, and the assessment's purpose & 
 Clinicians think about results in terms of topics like grammar and phonology, and comparing languages side by side helps tell a language difference from a disorder. Progress-monitoring and diagnostic assessments are used for different purposes, so they need different views to be read correctly. & \srref{SR_BilingualSupport} \newline \srref{SR_ProgressOverTime} \newline \rref{FR_Label22} \newline \rref{FR_Label23} \newline \rref{FR_ResultVisualization}\\
 \midrule
 Prioritize integration and usability first, and leave features like result visualization and patient-facing reports for later & 
-The project's supervisors have stated what parts they want completed first, so the system has to be integrated and usable before new features are worth adding. Anything not finished during the course will be documented as future work. & Appendix B \newline \rref{FR_ResultVisualization}\\
+The project's supervisors have stated what parts they want completed first, so the system has to be integrated and usable before new features are worth adding. Anything not finished during the course will be documented as future work. & \hyperref[sec:AppendixB]{Appendix B} \newline \rref{FR_ResultVisualization}\\
 \bottomrule
 \caption{Rationale for Major Decisions} \label{tab:Rationale}
 \end{longtable}
@@ -1915,7 +1915,7 @@ The project's supervisors have stated what parts they want completed first, so t
 
 \section{Appendices}
 
-\subsection{Appendix A: Additional Materials}
+\subsection{Appendix A: Additional Materials} \label{sec:AppendixA}
 
 This section presents key notes and quotes gathered during the requirements elicitation process for the project.
 
@@ -1939,7 +1939,7 @@ The following highlights the preferences and feedback participants shared while 
 \end{itemize}
 
 
-\subsection{Appendix B: Development Plan}
+\subsection{Appendix B: Development Plan} \label{sec:AppendixB}
 
 Development of the system will be split into three phases, with each phase 
 building on the previous one so that the most important goals are completed first.
