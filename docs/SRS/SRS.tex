@@ -82,6 +82,10 @@
 \newcommand{\lthelcnum}{LC\thelcnum}
 \newcommand{\lcref}[1]{LC\ref{#1}}
 
+\newcounter{ulcnum} %Unlikely Change (ULC) Number
+\newcommand{\ulctheulcnum}{ULC\theulcnum}
+\newcommand{\ulcref}[1]{ULC\ref{#1}}
+
 \usepackage{fullpage}
 
 \begin{document}
@@ -1867,21 +1871,31 @@ The project's supervisors have stated what parts they want completed first, so t
 
 \noindent \begin{itemize}
 
-\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_meaningfulLabel}:] \plt{Give
-    the likely changes, with traceability to the entity that is likely to change.}
+\item[\textbf{LC\refstepcounter{lcnum}\thelcnum}\label{LC_AssessmentFunctionality}:] Assessment functionality: The types of annotations and transcription editing capabilities may change as clinicians identify more important functionality.
+
+\item[\textbf{LC\refstepcounter{lcnum}\thelcnum}\label{LC_DataVisualization}:] Data visualization: The types of visualizations available to clinicians and researchers may change as requirements for tracking patient progress develop and patient data increases.
+
+\item[\textbf{LC\refstepcounter{lcnum}\thelcnum}\label{LC_ReportGeneration}:] Report generation: The content and formatting of assessment reports may evolve as clinicians relay professional standards and needs.
+
+\item[\textbf{LC\refstepcounter{lcnum}\thelcnum}\label{LC_ReportTypes}:] Report types: Assessment reports may change to accommodate various audiences, from researchers to patients. This would affect the language, confidentiality of information, and formatting of reports.
 
 \end{itemize}
 
-\section{Unlikely Changes}    
 
-\noindent \begin{itemize}
+\section{Unlikely Changes}
 
-\item[LC\refstepcounter{lcnum}\thelcnum\label{LC_meaningfulLabel}:] \plt{Give
-    the unlikely changes.  The design can assume that the changes listed will
-    not occur.}
+\noindent
+\begin{itemize}
+
+\item[\textbf{ULC\refstepcounter{ulcnum}\theulcnum}\label{ULC_IntendedUserGroup}:] Intended user group: The primary users will remain speech-language pathologists conducting remote speech assessments of bilingual pediatric patients.
+
+\item[\textbf{ULC\refstepcounter{ulcnum}\theulcnum}\label{ULC_Platform}:] Platform: The software will continue to work with the existing MERLS telehealth platform and SAFA annotation tool.
+
+\item[\textbf{ULC\refstepcounter{ulcnum}\theulcnum}\label{ULC_DataSource}:] Data source: Patient assessment recordings will continue to be submitted through the existing MERLS platform.
+
+\item[\textbf{ULC\refstepcounter{ulcnum}\theulcnum}\label{ULC_SupportedLanguages}:] Supported languages: The software is unlikely to expand beyond English as the primary second language used in bilingual assessments.
 
 \end{itemize}
-
 \newpage{}
 
 \section{Appendices}
