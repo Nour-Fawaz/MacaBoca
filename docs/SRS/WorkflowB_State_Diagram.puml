@@ -26,7 +26,7 @@ Assessment --> Question : Select Question
 Question --> Question : Review and Adjust Question
 Question --> Assessment : Return to Individual\nAssessment View
 
-Assessment --> Report : View and Edit Report
+Assessment --> Report : Generate and View Report
 Report --> Report : Download Report
 Report --> Assessment : Return to Individual\nAssessment View
 @enduml
