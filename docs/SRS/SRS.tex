@@ -204,12 +204,27 @@ The description here should be in the problem space, not the solution space.}
 TODO
 
 \subsection{Stakeholders}
+
+The following stakeholders have an interest in the integrated MERLS system.
+
 \begin{itemize}
-\item Customer
-\item End Users
-\item Project Sponsor
-\item Development Team
-\item Administrators
+\item \textbf{Customer and Project Sponsor:} Dr.\ Irene Yuan and the research team (Dr.\ Du, Dr.\ Wu, and collaborators) who designed the MERLS platform, SAFA, and BeViz.
+They require an integrated system that supports multiple clinician workflows for analyzing uploaded assessments, is consistent with their existing data collection pipeline, and can be extended in future research.
+
+\item \textbf{End Users (Speech-Language Pathologists):} The primary users of the system.
+SLPs review the recorded assessments, evaluate answers, verify and correct auto-generated transcripts, add notes, and use the results to make diagnostic decisions by writing clinical reports.
+
+\item \textbf{Secondary Users (Researchers):} Speech and language researchers who study assessment data and evaluate how well the technology supports clinicians.
+They need access to assessments at every stage of analysis in order to determine the accuracy and efficacy of a software.
+
+\item \textbf{Patients and Guardians:} Bilingual children who complete assessments at home on the patient-facing site, supervised by a parent or guardian.
+They do not use the clinician side of the system, but they depend on it to keep their recordings private and to be assessed accurately and promptly.
+
+\item \textbf{Development Team:} Team 24 (Maca Boca), who design, implement, test, and maintain the system during the project.
+They need clear, testable, and traceable requirements, as well as access to the existing TeleHealth and SAFA code bases.
+
+\item \textbf{Institutions and Regulatory Bodies:} Clinics, schools, and hospitals that employ SLPs, and regulators of health information (e.g., HIPAA \citep{CDC_HIPAA_1996} for U.S.-based clinicians).
+They must approve tools that handle patient data and need the system to meet privacy, consent, and data retention obligations.
 \end{itemize}
 
 \subsection{Definitions and Acronyms}
@@ -232,7 +247,7 @@ Report & A detailed breakdown of a patient’s results for a single speech asses
 \midrule
 Speech Language Pathologist & They can also be referred to as a speech clinician. \\
 \midrule
-Health Insurance Portability and Accountability Act & An American federal law that permits the use of sensitive patient health information while protecting their privacy \citep{CDC_HIPAA_1996}.\\
+HIPAA & Health Insurance Portability and Accountability Act, which is an American federal law that permits the use of sensitive patient health information while protecting their privacy \citep{CDC_HIPAA_1996}.\\
 \midrule
 Finite State Machine & A mathematical model that represents a sequential workflow as a set of states and transitions between them. A state may have one or more transitions leading to different states, which allows for multiple pathways through the workflow. At any given moment, the workflow is in exactly one state and may move to another state through a defined transition.\\
 \midrule
@@ -245,28 +260,19 @@ HCD & Human-Centered Design\\
 FR & Functional Requirement\\
 \midrule
 NFR & Non-Functional Requirement\\
-\midrule
-HIPAA & Health Insurance Portability and Accountability Act\\
 \bottomrule
 \caption{Definitions and Acronyms} \label{tab:DefinitionsAndAcronyms}
 \end{longtable}
 
 \subsection{Characteristics of Intended Reader} \label{sec_IntendedReader}
 
-\plt{This section summarizes the skills and knowledge of the readers of the
-  SRS.  It does NOT have the same purpose as the ``User Characteristics''
-  section (Section~\ref{SecUserCharacteristics}).  The intended readers are the
-  people that will read, review and maintain the SRS.  They are the people that
-  will conceivably design the software that is intended to meet the
-  requirements.  The user, on the other hand, is the person that uses the
-  software that is built.  They may never read this SRS document.  Of course,
-  the same person could be a ``user'' and an ``intended reader.''}
-
-\plt{The intended reader characteristics should be written as unambiguously and
-  as specifically as possible.  Rather than say, the user should have an
-  understanding of physics, say what kind of physics and at what level.  For
-  instance, is high school physics adequate, or should the reader have had a
-  graduate course on advanced quantum mechanics?}
+The intended readers of this document are the development team, future developers who maintain the system, the course instructor and teaching assistants, and the supervisor and research team. Readers are expected to have a level of understanding detailed as follows:
+\begin{itemize}
+  \item \textbf{Software engineering:} Third-year undergraduate knowledge of requirements engineering. This includes reading use cases, functional and non-functional requirements, fit criteria, and finite state machines (the level of McMaster’s SFWRENG 3RA3 course).
+  \item \textbf{Web development:} Working knowledge of client-server web applications, REST APIs, and cloud storage (e.g., Amazon S3), or enough to relate the requirements to the existing TeleHealth system.
+  \item \textbf{Machine learning:} An introductory understanding of automatic speech recognition. This includes what a model’s inputs and outputs are and what word error rate measures. Knowledge of training or tuning models is not required.
+  \item \textbf{Domain knowledge:} No training in speech-language pathology is required. Clinical terms used in this document are defined in Table~\ref{tab:DefinitionsAndAcronyms}.
+\end{itemize}
 
 % ============================================================== 
 \section{System Overview}
@@ -386,14 +392,24 @@ McSCert uses in their automotive hazard analyses.}
 
 \subsection{User Characteristics} \label{SecUserCharacteristics}
 
-\plt{This section summarizes the knowledge/skills expected of the user.
-  Measuring usability, which is often a required non-function requirement,
-  requires knowledge of a typical user.  As mentioned above, the user is a
-  different role from the ``intended reader,'' as given in
-  Section~\ref{sec_IntendedReader}.  As in Section~\ref{sec_IntendedReader}, the
-  user characteristics should be specific an unambiguous.  For instance, ``The
-  end user of \progname{} should have an understanding of undergraduate Level 1
-  Calculus and Physics.''}
+The system has two main types of users. The usability requirements (e.g., \nfrref{NFR-U1}) are measured against the typical users described below.
+
+\subsubsection{Speech-Language Pathologists}
+\begin{itemize}
+  \item \textbf{Education:} A graduate degree in speech-language pathology and a licence or certification to practice.
+  \item \textbf{Experience:} 1 to 10 years of clinical practice with children aged 0 to 18, in schools, hospitals, or private clinics. This is based on the clinicians in the research team’s study (Appendix~A).
+  \item \textbf{Domain knowledge:} Regularly conducts child language assessments 
+  (e.g., the Preschool Language Scales) and understands language sample analysis terms such as utterance, morpheme, and code-switching.
+  \item \textbf{Language:} Fluent in English. Clinicians who verify another language must also have complete fluency in that language.
+  \item \textbf{Technical ability:} Uses everyday office and web software on a desktop or laptop computer. No programming experience or knowledge of speech recognition is expected.
+\end{itemize}
+
+\subsubsection{Researchers}
+\begin{itemize}
+  \item \textbf{Education:} A graduate degree, or graduate study, in speech-language pathology, linguistics, or a related field. 
+  \item \textbf{Technical ability:} Is familiar with spreadsheets, editing tools, and exported data files such as CSV. No programming experience is expected.
+  \item \textbf{Role:} Reviews and aggregates assessment data, and does not make clinical decisions.
+\end{itemize}
 
 \subsection{System Constraints}
 
@@ -430,30 +446,42 @@ McSCert uses in their automotive hazard analyses.}
 
 % ============================================================== 
 \section{Stakeholder Requirements}
-
-\plt{Technology-independent requirements.  These come from statements made by
-the stakeholders.  You will find these through interviews and surveys.  They are
-often expressed in natural language.  They are not necessarily testable, but
-they should be verifiable.}
-
-\plt{The stakeholder requirements are numbered so that you can have traceability to other parts of your document.}
+This section provides requirements directly stated by our stakeholders in documented interviews, as referenced in Appendix A.
 
 \noindent \begin{itemize}
 
 \refstepcounter{srnum}
-\item[SR\thesrnum] \label{SR_Label1} TODO
+\item[\textbf{SR\thesrnum}] \label{SR_ReduceAnnotationTime} Clinicians want to spend less time transcribing and annotating recorded assessments, so they can focus on clinical analysis.
+Clinicians reported that annotating a 20-minute session can take up to four hours, and that the annotation part is ``very time consuming''.
 
 \refstepcounter{srnum}
-\item[SR\thesrnum] \label{SR_Label2} TODO
+\item[\textbf{SR\thesrnum}] \label{SR_SinglePlatform} Clinicians want to review, annotate, analyze, and report on an assessment in one place, without having to switch between tools or moving files between them.
 
 \refstepcounter{srnum}
-\item[SR\thesrnum] \label{SR_Label3} TODO
+\item[\textbf{SR\thesrnum}] \label{SR_ClinicianFinalJudgment} Clinicians want a system that ``allow(s) the clinician to make the final judgement”. Automated transcripts, scores, and flags should act as suggestions that the clinician can review, accept, or correct.
+
+\refstepcounter{srnum}
+\item[\textbf{SR\thesrnum}] \label{SR_EvidenceTraceability} Clinicians want every result, flag, and transcript segment to be linked to the part of the recording it came from, so they have ``proof'' to support their clinical decisions.
+
+\refstepcounter{srnum}
+\item[\textbf{SR\thesrnum}] \label{SR_FlexibleWorkflows} Clinicians want to choose how in-depth they would like each assessment to be, whether that be full results first or partial transcription.
+
+\refstepcounter{srnum}
+\item[\textbf{SR\thesrnum}] \label{SR_CompiledReports} Clinicians want their scores, notes, transcripts, and selected evidence to be compiled into a clinical report for them, instead of assembling the report by hand from a spreadsheet.
+
+\refstepcounter{srnum}
+\item[\textbf{SR\thesrnum}] \label{SR_PatientPrivacy} Patients, guardians, and institutions want patient recordings and records to be accessible only to the clinicians responsible for them.
+
+\refstepcounter{srnum}
+\item[\textbf{SR\thesrnum}] \label{SR_LowLearningCurve} Clinicians want a system they can learn and use without formal training, regardless of their technical background.
+
+\refstepcounter{srnum}
+\item[\textbf{SR\thesrnum}] \label{SR_BilingualSupport} Clinicians want to analyze assessments that include speech that switches between two languages in order to compare a child’s performance in each language.
+
+\refstepcounter{srnum}
+\item[\textbf{SR\thesrnum}] \label{SR_ProgressOverTime} Clinicians want to see how a patient’s performance changes across assessments over time, as well as the results of a single assessment.
 
 \end{itemize}
-
-\plt{You should give your SRs meaningful labels, so that you can refer to them
-in other parts of the SRS.  The label names should be meaningful mnemonics, not
-numbers.}
 
 % ============================================================== 
 \section{User Personas}
@@ -467,13 +495,13 @@ numbers.}
 \item Technical Ability: James is comfortable with the basic tools he uses every day, but he is not technically fluent. He finds it difficult to move between different software systems and prefers to learn one tool well.
 \end{itemize}
 
-\subsection{Persona 2}
+\subsection{Detail-Oriented SLP Who Prioritizes Control Over Automated Analysis}
 \begin{itemize}
-\item Name:
-\item Description:
-\item Goals:
-\item Frustrations:
-\item Technical Ability:
+\item Name: Mei Zhang
+\item Description: Mei is a bilingual speech clinician with eight years of experience who runs a small private clinic. She and her staff deal with select clients that are more complex, where nearly all of them are bilingual children referred for a full diagnostic evaluation. Her main responsibility is deciding whether a child’s results indicate a language disorder. Her name is on every report that families, schools, and other professionals rely on. Due to the unique nature of any child's background, she does not accept a result at face value. She wants to see the evidence behind every score and flag, adjust the analysis to each child, and decide for herself how much of the process to automate. She values automation for removing repetitive work, but not for making decisions on her behalf.
+\item Goals: Choose the level of automation for each assessment, understand and trace automated results to the exact moment in the recording, review and override outputs with a clear record of changes, add clinical interpretations for individual answers and the session as a whole, and build a comprehensive picture of each child’s strengths and needs to produce reports she can confidently defend.
+\item Frustrations: Mei distrusts tools that present results without showing how they were reached, or that do not let her change them. She is frustrated by all-or-nothing automation, where she is forced to either accept an automated output entirely or redo the work from scratch. She worries that automated summaries can hide details that matter clinically, such as an unusual response or an ambiguous sound, and that corrections might overwrite the original output so she can no longer compare them. She is also frustrated when her notes and decisions are scattered across files and tools instead of being kept with the assessment they belong to.
+\item Technical Ability: Mei is confident with technology and enjoys exploring a tool’s features in depth. She is willing to spend time learning a system if it gives her finer control over her work, and she expects to be able to customize how she reviews and organizes information. 
 \end{itemize}
 
 % ============================================================== 
@@ -752,13 +780,187 @@ Clinician
 \item The clinician has seen a single assessment’s results as a session summary along with the patient’s progress across different attempts as a trend.
 \end{itemize}
 
+% ----
+\refstepcounter{ucnum} \label{UC_ReviewTranscriptPlayback}
+\subsection{\ucref{UC_ReviewTranscriptPlayback}: Review Transcript with Video Playback}
+
+\textbf{Primary Actor}
+
+Clinician, Researcher
+
+\textbf{Preconditions}
+\begin{itemize}
+\item The user is logged into their account in the system
+\item The user has selected and opened a patient’s video assessment that has an auto-generated transcript
+\end{itemize}
+
+\textbf{Main Success Scenario}
+\begin{enumerate}
+\item The user opens the transcript of the assessment
+\item The system displays the video playback alongside the transcript, divided into time-coded segments, and marks the start of each segment on the playback timeline
+\item The user starts playback
+\item The system highlights the segment being spoken at the current playback position and scrolls the transcript to keep it visible
+\item The user notices a segment they want to review more closely and selects it
+\item The system moves playback to the start of the selected segment and highlights it
+\item The user replays the segment as many times as needed
+\item The user pauses playback once they have finished reviewing
+\item The user closes the transcript if they would like
+\end{enumerate}
+
+\textbf{Alternative Flows}
+\begin{itemize}
+\item[2a.] The transcript has not finished generating. The system displays the video playback and indicates that the transcript is still being generated. The use case resumes at step 2 once the transcript is ready.
+\item[3a.] The user selects a segment before starting playback. The system moves playback to the start of that segment, and the use case continues at step 4 when the user starts playback.
+\item[4a.] No speech occurs at the current playback position. The system does not highlight any segment of the transcript until playback reaches the next segment.
+\end{itemize}
+
+\textbf{Postconditions}
+\begin{itemize}
+\item The highlighted segment matches the current playback position.
+\item The transcript and assessment results are unchanged.
+\end{itemize}
+
+% ----
+\refstepcounter{ucnum} \label{UC_CorrectTranscriptChunk}
+\subsection{\ucref{UC_CorrectTranscriptChunk}: Correct a Transcript Chunk}
+
+\textbf{Primary Actor}
+
+Clinician, Researcher
+
+\textbf{Preconditions}
+\begin{itemize}
+\item The user is logged into their account in the system
+\item The user is reviewing an assessment’s transcript alongside its video playback (\ucref{UC_ReviewTranscriptPlayback})
+\end{itemize}
+
+\textbf{Main Success Scenario}
+\begin{enumerate}
+\item The user selects a segment they determine includes inconsistencies (text does not match what is said in the recording)
+\item The system moves playback to the start of the segment, highlights it, and displays all additional details. The system indicates that the segment has not yet been verified.
+\item The user replays the segment
+\item The user corrects the text of the segment
+\item The user changes the segment’s language tag to reflect the language spoken (can be more than one)
+\item The user saves the changes
+\item The system saves the edited segment, keeps the original auto-generated version, and displays the differences between the two
+\item The system marks the segment as verified and records who made the change and when
+\end{enumerate}
+
+\textbf{Alternative Flows}
+\begin{itemize}
+\item[1a.] The user selects a segment that is already correct. The user marks it as verified without editing it, and the system marks it as verified and records who verified it and when.
+\item[6a.] The user decides to discard their edits. The system restores the segment to its last saved version.
+\item[6b.] The user tries to leave the transcript with unsaved changes. The system asks the user whether to save or discard them before leaving.
+\item[8a.] The user later reverts a verified segment to its original auto-generated version. The system restores the original text and metadata, and records the change.
+\end{itemize}
+
+\textbf{Postconditions}
+\begin{itemize}
+\item The segment shows the user’s corrected version and is marked as verified.
+\item The original auto-generated version of the segment is preserved and can be compared with the corrected version.
+\item The system has recorded who changed the segment and when.
+\end{itemize}
+
+% ----
+\refstepcounter{ucnum} \label{UC_ReturnAnnotationsToRecord}
+\subsection{\ucref{UC_ReturnAnnotationsToRecord}: Return Annotated Results to the Patient Record}
+
+\textbf{Primary Actor}
+
+Clinician
+
+\textbf{Preconditions}
+\begin{itemize}
+\item The clinician is logged into their account in the system
+\item The clinician has reviewed and corrected the transcript of one of their patient’s assessments (\ucref{UC_CorrectTranscriptChunk})
+\end{itemize}
+
+\textbf{Main Success Scenario}
+\begin{enumerate}
+\item The clinician indicates that they have finished annotating the transcript
+\item The system shows how many segments have been verified and how many have not
+\item The clinician confirms that the annotation is complete
+\item The system saves the annotated transcript to the patient’s assessment record and marks the transcript as verified
+\item The system returns the clinician to the assessment’s results
+\item The system shows the annotated transcript as part of the assessment, alongside its results and notes
+\end{enumerate}
+
+\textbf{Alternative Flows}
+\begin{itemize}
+\item[2a.] Unverified segments still remain. The clinician chooses to return to the transcript, and the system moves to the first unverified segment. The use case resumes at step 1 once the clinician finishes.
+\item[3a.] The clinician completes the annotation with unverified segments remaining. The system saves the transcript to the record and indicates which segments are still unverified.
+\item[4a.] The clinician annotated only a selected portion of the recording (on-demand refinement). The system saves the annotated segments to the assessment record and returns the clinician to the assessment question they were reviewing.
+\item[4b.] The system cannot save the annotation, for example because the network connection was lost. The system keeps the clinician’s work, informs the clinician that the save failed, and lets them try again.
+\end{itemize}
+
+\textbf{Postconditions}
+\begin{itemize}
+\item The annotated transcript is stored in the patient’s assessment record without the clinician exporting, transferring, or importing any files.
+\item The annotated transcript is shown when the assessment is opened from any of the clinician’s views, and is used when the clinician generates the report.
+\end{itemize}
+
+% ----
+\refstepcounter{ucnum} \label{UC_GenerateReport}
+\subsection{\ucref{UC_GenerateReport}: Generate and Download an Assessment Report}
+
+\textbf{Primary Actor}
+
+Clinician
+
+\textbf{Preconditions}
+\begin{itemize}
+\item The clinician is logged into their account in the system
+\item The clinician has reviewed one of their patient’s assessments, using any of the three analysis workflows
+\end{itemize}
+
+\textbf{Main Success Scenario}
+\begin{enumerate}
+\item The clinician chooses to generate a report for the assessment
+\item The system compiles the report from the assessment’s current results, including:
+    \begin{itemize}
+      \item The patient and assessment details, such as the date, language, and assessment type
+      \item The overall score and the evaluation of each question
+      \item The interference flags the clinician kept
+      \item The clinician’s notes on each question and on the assessment as a whole
+      \item The annotated transcript
+    \end{itemize}
+\item The system displays a preview of the report
+\item The clinician reviews the preview
+\item The clinician downloads the report
+\item The system provides the report as a PDF file and records the download
+\end{enumerate}
+
+\textbf{Alternative Flows}
+\begin{itemize}
+\item[1a.] A report has already been generated for the assessment, and the assessment has not changed since. The system displays the existing report, and the use case continues at step 4.
+\item[1b.] The assessment has changed since its report was generated. The system indicates that the report is out of date, and the clinician chooses to generate a new one. The use case continues at step 2.
+\item[2a.] The transcript has not been annotated, or some segments have not been verified. The system includes the automatically generated text and marks it in the report as unverified.
+\item[4a.] The clinician notices an error in the results while reviewing the preview. The clinician returns to the assessment, corrects the result, and generates the report again.
+\item[5a.] The clinician only wants to view the report. The clinician closes the preview, and the report remains available from the assessment.
+\end{itemize}
+
+\textbf{Postconditions}
+\begin{itemize}
+\item The report reflects the assessment’s results, flags, notes, and transcript at the time it was generated, including every change made by the clinician.
+\item The report is available from the assessment and can be viewed or downloaded again later.
+\item The download is recorded with the clinician and the time.
+\end{itemize}
+
 \subsection{Use Case Diagrams}
 The following use case diagrams show the interactions between the clinician and the system for certain use cases described above. 
 \begin{figure}[H]
 \begin{center}
  \includegraphics[width=0.75\textwidth]{UC1-Annnotation_Tool.png}
 \caption{Use case diagram showing how a clinician assigns speaker roles to an assessment transcript using the annotation tool in MERLS. A detailed description is given in Use Case~\ref{UC_Label5}.}
-\label{UC1-Annotation_Tool} 
+\label{UC1-Annotation_Tool}
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+ \includegraphics[width=\textwidth]{UC-Review_Transcript_Playback.png}
+\caption{Use case diagram showing how a clinician or researcher reviews an assessment transcript alongside its video playback in MERLS, including the synchronized highlighting of transcript segments and jumping to a selected segment or question. A detailed description is given in Use Case~\ref{UC_ReviewTranscriptPlayback}.}
+\label{UC-Review_Transcript_Playback}
 \end{center}
 \end{figure}
 
@@ -792,19 +994,19 @@ submitted assessment in MERLS before deeper analysis. A detailed description is 
 \\ \textbf{Fit Criterion:}
 
 \refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_Label4}:]The system shall ...
+\item[\textbf{\rthereqnum} \label{FR_Label4}:] The system shall ...
 \\ \textbf{Rationale:}
 \\ \textbf{Fit Criterion:}
 
 \refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_Label5}:]The system shall ...
+\item[\textbf{\rthereqnum} \label{FR_Label5}:] The system shall ...
 \\ \textbf{Rationale:}
 \\ \textbf{Fit Criterion:}
 
 \refstepcounter{reqnum}
 \item[\textbf{\rthereqnum} \label{FR_Label6}:] The system shall allow clinicians to assign speaker roles and filter assessment transcripts by speaker.
 \\ \textbf{Rationale:} Automatically generated transcripts do not identify who is speaking. Clinicians need to distinguish the child’s speech from that of adults, such as the parent or clinician, to analyze the child’s language and identify interfering parent behavior.
-\\ \textbf{Fit Criterion:} The system must label every transcript segment from a speaker with the role assigned to that speaker once the clinician assigns it. 
+\\ \textbf{Fit Criterion:} The system must label every transcript segment from a speaker with the role assigned to that speaker once the clinician assigns it.
 
 \refstepcounter{reqnum}
 \item[\textbf{\rthereqnum} \label{FR_Label7}:] The system shall generate detailed assessment reports from transcriptions, including any edits made by clinicians.
@@ -814,7 +1016,7 @@ submitted assessment in MERLS before deeper analysis. A detailed description is 
 \refstepcounter{reqnum}
 \item[\textbf{\rthereqnum} \label{FR_Label8}:] The system shall allow clinicians to edit and update assessment results at any time.
 \\ \textbf{Rationale:} Clinicians do not always analyze assessments sequentially. They may notice an error in a result or change their judgment after reviewing more of the recording, so they need to be able to go back and change results at any stage. 
-\\ \textbf{Fit Criterion:} The system must display the updated result once the clinician submits a change. 
+\\ \textbf{Fit Criterion:} The system must display the updated result once the clinician submits a change.
 
 \refstepcounter{reqnum}
 \item[\textbf{\rthereqnum} \label{FR_Label9}:] The system shall display a list of all assigned patients to the logged-in clinician.
@@ -847,39 +1049,39 @@ submitted assessment in MERLS before deeper analysis. A detailed description is 
 \\ \textbf{Fit Criterion:} Selecting a question or specific moment in a conversation starts video playback at that specific point in the assessment.
 
 \refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_Label15}:] The system shall allow the clinician to manually evaluate questions that cannot be automatically evaluated, using video playback of the recorded answer.
-\\ \textbf{Rationale:} Some responses, such as open-ended answers, cannot be evaluated automatically and require clinical judgement. Other times, the system simply might not be able to automatically evaluate a question, so the clinician must manually evaluate it.
-\\ \textbf{Fit Criterion:} For each question without an automatic result, the clinician can play the recorded answer and enter their evaluation, which is then saved to the assessment results.
+\item[\textbf{\rthereqnum} \label{FR_Label15}:] The system shall allow the clinician to choose which questions or portions of an assessment to open in the SAFA tool for in-depth transcription and annotation.
+\\ \textbf{Rationale:} Clinicians don't always need a full transcript of every assessment. After looking at the overview (\rref{FR_Label12}), they may only want to go deeper on a few flagged or unclear questions, which saves time compared to annotating the whole recording.
+\\ \textbf{Fit Criterion:} From the assessment overview, the clinician can select one or more questions, or the full assessment, and the system opens only those portions of the recording and transcript in the SAFA tool.
 
 \refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_Label16}:] The system shall ...
-\\ \textbf{Rationale:}
-\\ \textbf{Fit Criterion:}
+\item[\textbf{\rthereqnum} \label{FR_ManualEvaluation}:] The system shall allow clinicians to manually evaluate assessment questions that cannot be graded automatically, while playing back the portion of the recording in which the question was answered.
+\\ \textbf{Rationale:} Some question types, such as repetition questions where the child repeats a sentence, have no single correct option that the system can compare against. The clinician must listen to and watch the child’s response to judge it, and the recording is the evidence for that judgment.
+\\ \textbf{Fit Criterion:} For every question that is not automatically graded, the system must let the clinician play the recording segment for that question and record an evaluation (e.g., correct or incorrect). The saved evaluation must be shown with the question and included in the assessment’s score.
 
 \refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_Label17}:] The system shall ...
-\\ \textbf{Rationale:}
-\\ \textbf{Fit Criterion:}
+\item[\textbf{\rthereqnum} \label{FR_QuestionNotes}:] The system shall allow clinicians to add, edit, and delete a note on each individual assessment question.
+\\ \textbf{Rationale:} Clinicians record observations about specific answers, such as the type of error made or potential speech clues for that question's response. These observations support the final evaluation and must stay attached to the question they describe.
+\\ \textbf{Fit Criterion:} After the clinician saves a note on a question, the system must show that note with the question every time the assessment is reopened, unless the clinician edits or deletes it.
 
 \refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_Label18}:] The system shall ...
-\\ \textbf{Rationale:}
-\\ \textbf{Fit Criterion:}
+\item[\textbf{\rthereqnum} \label{FR_AssessmentNotes}:] The system shall allow clinicians to add, edit, and delete notes for an entire video assessment.
+\\ \textbf{Rationale:} Some observations apply to the whole session rather than a single question, such as the child’s attention, the home environment, or the recording quality. Clinicians need a place to record these alongside the assessment.
+\\ \textbf{Fit Criterion:} After the clinician saves a note on an assessment, the system must show that note on the assessment’s view every time the assessment is reopened, unless the clinician edits or deletes it.
 
 \refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_Label19}:] The system shall ...
-\\ \textbf{Rationale:}
-\\ \textbf{Fit Criterion:}
+\item[\textbf{\rthereqnum} \label{FR_AnnotationsInRecord}:] The system shall store completed transcript annotations in the patient’s assessment record.
+\\ \textbf{Rationale:} SAFA currently runs as a standalone tool, and its annotations exist only in files that clinicians export and move by hand. Annotations need to stay linked to the assessment and patient they belong to, so they can be reviewed later and used in reports.
+\\ \textbf{Fit Criterion:} After a clinician saves an annotation, the annotation must appear in that patient’s assessment record when it is opened from any of the clinician’s views, with no file upload or download step performed by the clinician.
 
 \refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_Label20}:] The system shall ...
-\\ \textbf{Rationale:}
-\\ \textbf{Fit Criterion:}
+\item[\textbf{\rthereqnum} \label{FR_TranscriptHighlight}:]The system shall highlight the transcript segment that corresponds to the current playback position of the assessment recording.
+\\ \textbf{Rationale:} Clinicians verify transcripts by watching and listening to the recording. Highlighting the segment being spoken lets them follow along without searching for their place in the transcript.
+\\ \textbf{Fit Criterion:} While the recording plays, the highlighted segment must be the segment whose start and end times contain the current playback position, and the transcript must scroll so that the highlighted segment is visible.
 
 \refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_Label21}:] The system shall ...
-\\ \textbf{Rationale:}
-\\ \textbf{Fit Criterion:}
+\item[\textbf{\rthereqnum} \label{FR_SegmentSeek}:] The system shall move the recording’s playback position to the start of a transcript segment when the clinician selects that segment.
+\\ \textbf{Rationale:} Clinicians often need to re-watch a specific moment, such as a child’s answer or a flagged interaction, to verify the transcript or their evaluation. Jumping directly to it avoids scrubbing through the recording by hand.
+\\ \textbf{Fit Criterion:} After the clinician selects a segment, the playback position must be set to the segment’s start time, and that segment must be highlighted.
 
 \refstepcounter{reqnum}
 \item[\textbf{\rthereqnum} \label{FR_Label22}:] The system shall display assessment results in a format suited to the assessment’s purpose.
@@ -901,6 +1103,16 @@ submitted assessment in MERLS before deeper analysis. A detailed description is 
 \\ \textbf{Rationale:} Children with limited attention or complex communication needs may disengage during long screen-based assessments.
 \\ \textbf{Fit Criterion:} The system presents an interactive break activity (e.g., an animation) after a set number of questions defined for each assessment, after which the assessment resumes where it left off.
 
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_ResultVisualization}:] The system shall visualize a patient’s assessment results by clinical domain (areas of speech) and language.
+\\ \textbf{Rationale:} Clinicians who tested the previous platform valued charts and percentages, and asked for results by language to be shown side by side and grouped into domains such as semantics, grammar, and phonology, to help tell a language difference from a disorder. This requirement is outside the current project scope and is linked to the Support Multiple Assessment Comparison stretch goal from the Problem Statement.
+\\ \textbf{Fit Criterion:} For an assessment completed in more than one language, the system must display the results for each clinical domain in a single, consolidated view.
+
+\refstepcounter{reqnum}
+\item[\textbf{\rthereqnum} \label{FR_LinguisticPatternDetection}:] The system shall automatically identify potential grammatical and phonological errors in the assessment transcript and present them to the clinician as suggestions for review.
+\\ \textbf{Rationale:} Clinicians see transcription as an intermediate step, and they asked for the system to identify grammatical and error patterns so they can focus on interpretation. Since ambiguous speech (e.g., a dialect feature versus an articulation error) can be clinically meaningful, detections must remain suggestions that the clinician confirms. This requirement is outside the current project scope.
+\\ \textbf{Fit Criterion:} Each detected error must be linked to its transcript segment and shown as unverified until the clinician accepts or rejects it. Only accepted errors may appear in the assessment report.
+
 \end{itemize}
 
 \subsection{Formal Specification}
@@ -910,6 +1122,16 @@ submitted assessment in MERLS before deeper analysis. A detailed description is 
  \includegraphics[width=0.75\textwidth]{WorkflowA_State_Diagram.png}
 \caption{A finite state machine illustrating the direct analysis workflow (Workflow A) of a clinician when using the MERLS system.}
 \label{WorkflowA_State_Diagram} 
+\end{center}
+\end{figure}
+
+\subsubsection{Workflow B: Annotation-First Analysis}
+In this workflow, the clinician chooses to annotate the assessment recording before reviewing the results. The clinician is provided the ability to edit and correct the auto-generated transcript in the annotation view, where the annotated transcript is then saved to the assessment record. The clinician then reviews the questions and results, and prepares the report, using the annotated transcript as evidence.
+\begin{figure}[H]
+\begin{center}
+ \includegraphics[width=\textwidth]{WorkflowB_State_Diagram.png}
+\caption{A finite state machine illustrating the annotation-first analysis workflow (Workflow B) of a clinician when using the MERLS system.}
+\label{WorkflowB_State_Diagram} 
 \end{center}
 \end{figure}
 
@@ -923,46 +1145,195 @@ submitted assessment in MERLS before deeper analysis. A detailed description is 
 \end{figure}
 
 % ============================================================== 
-\section{Data Requirements}
 
-\plt{The Data Requirements section describes what information the system must manage.
-  It includes the major data entities, their attributes, and the relationships
-  between them.  It also includes a data dictionary that defines the meaning of
-  each attribute.}
+\section{Data Requirements}
+This section comprises the major data entities and data dictionary below.
 
 \subsection{Major Data Entities}
 
-\plt{What information must exist for the system to accomplish its goals?}
+Table~\ref{tab:DataEntities} lists the information the system must manage, grouped by its role. Their relationships are described in the next section.
 
-\plt{For each entity, provide a short explanation.}
+\begin{longtable}{p{0.22\textwidth} p{0.70\textwidth}}
+\toprule
+Entity & Description\\
+\midrule
+\endhead
+\multicolumn{2}{l}{\textit{People}}\\
+\midrule
+User Account & The account a clinician, researcher, or administrator uses to sign in to the system. It determines what information the user may access.\\
+Clinician & A speech-language pathologist who uses the system to review their patients’ assessments.\\
+Patient & A child being assessed. Since patients are minors, the patient record also identifies their guardian (a parent or caregiver), who consents to the recording of assessments and acts on the patient’s behalf in privacy matters.\\
+\midrule
+\multicolumn{2}{l}{\textit{Assessment content}}\\
+\midrule
+Question & A test item in the question bank, such as a matching or repetition item, which is the same for every patient.\\
+Assessment & A single test session completed by a patient in one language. Its results are made up of its question responses, the overall score, and the clinician’s notes.\\
+Question Response & A patient’s answer to one question in an assessment, including the recording of a spoken answer, together with the clinician’s evaluation and note for that question.\\
+\midrule
+\multicolumn{2}{l}{\textit{Recording and annotations}}\\
+\midrule
+Recording & The video and audio recording of the whole assessment. Question responses, transcript segments, and interference flags all refer to points or periods on this recording’s timeline.\\
+Transcript & The written record of the speech in a recording.\\
+Transcript Segment & A time-coded part of a transcript, holding both the automatically generated version and the clinician’s edited version.\\
+Interference Flag & A moment in a recording where possible interference, such as parent prompting, was detected by the system or noted by the clinician.\\
+Assessment Note & A clinician’s note on an assessment as a whole.\\
+\midrule
+\multicolumn{2}{l}{\textit{Records}}\\
+\midrule
+Report & A clinical report summarizing a single assessment.\\
+Audit Log Entry & A record of a single view, change, download, or export of patient information (\nfrref{NFR-S4}).\\
+\bottomrule
+\caption{Major Data Entities} \label{tab:DataEntities}
+\end{longtable}
+
+\subsection{Relationships}
+The relationships between the data entities are as follows:
 
 \begin{itemize}
-\item User
-\item Song
-\item Session
-\item Report
+\item Each clinician, researcher, and administrator has one user account, and each audit log entry refers to the user account that performed the action.
+\item A clinician is assigned zero or more patients (one to many), and each patient is assigned to exactly one clinician.
+\item Each patient has zero or more assessments.
+\item An assessment has one recording, at most one transcript, one question response for each question asked, zero or more assessment notes, and zero or more reports.
+\item A transcript is made up of an ordered list of transcript segments.
+\item An interference flag belongs to the question response during which it occurred.
+\item Question responses and transcript segments are linked by time: the segments within a question’s period of the recording form the transcript for that question. A question’s period starts when the previous question was answered (or at the start of the recording, for the first question) and ends when the patient answers it.
+\end{itemize}
+
+\subsection{Annotations}
+
+In this document, an \textbf{annotation} is any information that is added to an assessment recording to describe it, beyond the recording itself. Annotations are generated automatically or by the clinician, and are then reviewed and corrected by the clinician. They are stored across the entities above:
+
+\begin{itemize}
+\item \textbf{Transcript annotations} (Transcript Segment): the text of each segment, its speaker and language, and its start and end times.
+\item \textbf{Question annotations} (Question Response): the clinician’s evaluation of the answer and the note on the question.
+\item \textbf{Behavior annotations} (Interference Flag): moments of possible interference detected by the system or added by the clinician, and whether the clinician kept each one.
+\item \textbf{Session annotations} (Assessment Note): the clinician’s notes on the assessment as a whole.
+\end{itemize}
+
+Every annotation also carries metadata describing where it came from, so that clinicians can judge how much to rely on it (\nfrref{NFR-UN1}) and so that changes can be traced (\nfrref{NFR-S4}):
+
+\begin{itemize}
+\item \textbf{Source:} whether it was generated automatically or added by a clinician.
+\item \textbf{Verification:} whether a clinician has reviewed it.
+\item \textbf{Original version:} for automatically generated annotations that a clinician has edited, the unedited version.
+\item \textbf{History:} who created or changed it and when, recorded in the audit log.
 \end{itemize}
 
 \subsection{Data Dictionary}
 
-\plt{For each entity, define all important attributes.}
+The table below lists attributes that the requirements in this document depend on. The \emph{Type} column gives the kind of value and, where there is a fixed set, the allowed values. The \emph{Source} column states where the value comes from: the patient-facing site (Patient), the question bank (Question bank), automatic processing (System), the clinician (Clinician), the account holder (User), or the system administrator (Administrator).
 
-\begin{longtable}{p{0.20\textwidth} p{0.20\textwidth} p{0.45\textwidth}}
+Times within a recording must be stored to the nearest tenth of a second or better, so that transcript segments and questions can be synchronized with playback within SYNC\_TOL (\nfrref{NFR-P2}).
+
+\begin{longtable}{p{0.19\textwidth} p{0.25\textwidth} p{0.13\textwidth} p{0.33\textwidth}}
 \toprule
-Attribute & Type & Description\\
+Attribute & Type & Source & Description\\
 \midrule
-user\_id & UUID & Unique identifier\\
-email & String & User email address\\
+\endhead
+\multicolumn{4}{l}{\textbf{User Account}}\\
+\midrule
+login identifier & Text (e.g., email address) & Administrator & Unique name the user signs in with\\
+credential & Protected secret & User & The secret used to confirm the user’s identity; never stored or displayed in readable form (\nfrref{NFR-CO1})\\
+role & Choice: clinician, researcher, administrator & Administrator & Determines what information the user may access (\nfrref{NFR-S1})\\
+\midrule
+\multicolumn{4}{l}{\textbf{Clinician}}\\
+\midrule
+name & Text & Clinician & Name of the clinician\\
+\midrule
+\multicolumn{4}{l}{\textbf{Patient}}\\
+\midrule
+name & Text & Clinician & Name of the child\\
+date of birth & Date & Clinician & Used to interpret results by age and to apply the RETENTION period\\
+guardian & Text & Patient & Name of the patient’s guardian\\
+guardian consent & Yes/No & Patient & Whether the guardian has consented to the recording and processing of the patient’s assessments\\
+\midrule
+\multicolumn{4}{l}{\textbf{Question}}\\
+\midrule
+language & Choice: one of the supported assessment languages & Question bank & Language of the question\\
+assessment type & Choice: matching, repetition, quantifier & Question bank & Type of task\\
+prompt & Media (audio and images) & Question bank & What is presented to the patient\\
+correct answer & Text & Question bank & The correct option; empty for questions that cannot be graded automatically\\
+\midrule
+\multicolumn{4}{l}{\textbf{Assessment}}\\
+\midrule
+date & Date and time & Patient & When the assessment was completed\\
+language & Choice: one of the supported assessment languages & Question bank & Language of the assessment\\
+assessment type & Choice: matching, repetition, quantifier & Question bank & Type of task in the assessment\\
+score & Percentage & System & Share of questions evaluated as correct\\
+status & Choice: processing, ready for review, reviewed & System or Clinician & Progress of the assessment: processing while the transcript and interference flags are generated, then ready for review, then reviewed once the clinician marks it complete\\
+\midrule
+\multicolumn{4}{l}{\textbf{Question Response}}\\
+\midrule
+patient answer & Text & Patient & The option selected by the patient; empty for questions answered aloud\\
+answer audio & Media (audio) & Patient & Recording of the patient’s spoken answer, for questions answered aloud (e.g., repetition)\\
+answered at & Recording time & System & The moment in the recording when the patient submitted their answer\\
+evaluation & Choice: correct, incorrect, undetermined & System or Clinician & Whether the answer is correct (\rref{FR_ManualEvaluation})\\
+evaluated by & Choice: system, clinician & System & Who set the evaluation\\
+note & Text & Clinician & Clinician’s note on the question (\rref{FR_QuestionNotes})\\
+\midrule
+\multicolumn{4}{l}{\textbf{Recording}}\\
+\midrule
+video and audio & Media (video) & Patient & The recording of the whole assessment\\
+duration & Recording time & System & Length of the recording\\
+\midrule
+\multicolumn{4}{l}{\textbf{Interference Flag}}\\
+\midrule
+time & Recording time & System or Clinician & When the event occurred\\
+reason & Text & System or Clinician & What was detected or observed, e.g., the number of faces and the keyword heard\\
+source & Choice: system, clinician & System & Whether the flag was detected automatically or added by a clinician\\
+decision & Choice: pending, kept, dismissed & Clinician & Whether the clinician kept the flag after reviewing it; only kept flags appear in reports\\
+\midrule
+\multicolumn{4}{l}{\textbf{Transcript}}\\
+\midrule
+generated by & Text & System & The speech recognition model and version that produced the draft\\
+generated at & Date and time & System & When the draft was produced\\
+status & Choice: being generated, draft, verified & System & Progress of the transcript (\ucref{UC_ReturnAnnotationsToRecord})\\
+\midrule
+\multicolumn{4}{l}{\textbf{Transcript Segment}}\\
+\midrule
+start, end & Recording time & System or Clinician & The period of the recording covered by the segment\\
+text & Text & System or Clinician & What was said\\
+speaker & Choice: System, Child, Parent, Experimenter, Multiple Speakers, Others & Clinician & Who was speaking (\rref{FR_Label6})\\
+language & Choice: one or more of the supported assessment languages & System or Clinician & Language or languages spoken in the segment, including segments that switch between languages\\
+original version & Text and times & System & The automatically generated text, speaker, language, and times, kept unchanged after edits\\
+verified & Yes/No & Clinician & Whether a clinician has reviewed the segment (\nfrref{NFR-UN1})\\
+\midrule
+\multicolumn{4}{l}{\textbf{Assessment Note}}\\
+\midrule
+text & Text & Clinician & Content of the note (\rref{FR_AssessmentNotes})\\
+\midrule
+\multicolumn{4}{l}{\textbf{Report}}\\
+\midrule
+generated at & Date and time & System & When the report was generated, so it can be compared with later changes to the assessment (\ucref{UC_GenerateReport})\\
+generated by & Reference & System & The clinician who generated the report\\
+file & Document (PDF) & System & The report that the clinician views and downloads\\
+\midrule
+\multicolumn{4}{l}{\textbf{Audit Log Entry}}\\
+\midrule
+user & Reference & System & The user account that performed the action\\
+action & Choice: view, change, delete, download, export & System & What the user did\\
+item & Reference & System & The patient information that was affected\\
+time & Date and time & System & When the action occurred\\
 \bottomrule
 \caption{Data Dictionary} \label{tab:DataDictionary}
 \end{longtable}
 
 \subsection{Privacy and Data Retention}
 
-\plt{Discuss storage, retention, deletion, privacy controls,
- consent, encryption, and compliance requirements.}
+The system stores recordings, transcripts, and health information about children, so the following apply to all data listed above:
 
-TODO
+\begin{itemize}
+  \item \textbf{Access control:} A clinician can only access the patients, assessments, recordings, transcripts, and reports of patients assigned to them (\nfrref{NFR-S1}). Guardians can only access their own child’s assessments on the patient-facing site.
+  \item \textbf{Encryption:} Recordings, transcripts, and patient records are encrypted in transit and in storage (\nfrref{NFR-S3}). 
+  \item \textbf{Consent:} A guardian must consent to the recording of assessments and their processing by third-party services before the patient can complete an assessment.
+  \item \textbf{Third-party processing:} Audio is sent to external speech recognition and keyword detection services (Whisper and Deepgram). Voice recordings can identify a patient, so these services must be covered by a Business Associate Agreement. Only the audio needed for transcription is sent, without names or other patient details.
+  \item \textbf{Exports and reports:} Downloaded reports, transcripts, exported data, and video clips leave the system’s protection. Only the assigned clinician may export them, each export is recorded, and exported reports are marked as confidential.
+  \item \textbf{Development data:} Real patient data is never to be used in development or testing.
+  \item \textbf{Retention:} Patient records, recordings, transcripts, and reports are kept for the RETENTION period, after which they are deleted. Backups follow the same retention period (\nfrref{NFR-M1}).
+  \item \textbf{Deletion:} When a guardian withdraws consent or requests deletion, the patient’s recordings, transcripts, and assessment data are deleted, including from backups, within DELETE\_WINDOW, except where a regulation requires them to be kept.
+  \item \textbf{Auditing:} Every view, change, download, and export of patient information is recorded with the user and time, and these records are kept for LOG\_RETENTION (\nfrref{NFR-S4}).
+  \item \textbf{Compliance:} The system is designed to meet the HIPAA technical safeguards (\nfrref{NFR-CO1}). Administrative and physical safeguards, such as staff training and breach notification procedures, are the responsibility of the institutions that use the system and are outside the scope of this project.
+\end{itemize}
 
 % ============================================================== 
 \section{Non-Functional Requirements}
@@ -1026,6 +1397,13 @@ TODO
   \\ \textbf{Rationale:} Assessment recordings and transcripts contain private patient information. The annotation service sends video assessments to a third-party transcription service, and the recordings are also kept in the system’s storage. Hence, they must be protected in both places so that anyone who intercepts the data or gains access to the storage cannot read it.
   \\ \textbf{Fit Criterion:} The system must transmit all recordings and transcripts to third-party services using TRANSIT\_ENCRYPTION\_STANDARD and must store them using STORAGE\_ENCRYPTION\_STANDARD.
 
+\refstepcounter{nfrnum}
+\item[\textbf{\rthenfrnum}:]
+\label{NFR-S4}
+  The system shall record who accessed or changed patient information, and when.
+  \\ \textbf{Rationale:} HIPAA requires a record of activity in systems that contain patient health information, so that unauthorized access can be detected and investigated. Assessment results also inform clinical decisions and reports, so clinicians may need to review how a result changed over time.
+  \\ \textbf{Fit Criterion:} For every view, change, download, or export of a patient’s records, recordings, transcripts, evaluations, notes, annotations, or reports, the system must store the identity of the user, the action performed, the item affected, and the date and time. These records must not be editable by clinicians or researchers and must be kept for LOG\_RETENTION.
+
 \end{itemize}
 
 \subsection{Maintainability}
@@ -1075,8 +1453,54 @@ TODO
 \item[\textbf{\rthenfrnum}:]
 \label{NFR-PF1}
   The system shall respond quickly enough that clinicians can review assessments without noticeable waiting or lag.
-  \\ \textbf{Rationale:} Clinicians review many assessments in one sitting, so small delays can add up, especially if they are working on a tight schedule. Jumping to a question also needs to feel instant so clinicians can quickly compare responses.
-  \\ \textbf{Fit Criterion:} On a connection of at least MIN\_BANDWIDTH, the assessment overview (\rref{FR_Label12}) loads within OVERVIEW\_LOAD\_TIME seconds, and selecting a question (\rref{FR_Label14}) starts video playback at its timestamp within SEEK\_TIME seconds. During playback, the highlighted transcript chunk stays within SYNC\_TOLERANCE seconds of the video.
+  \\ \textbf{Rationale:} Clinicians review many assessments in one sitting, so small delays can add up, especially if they are working on a tight schedule.
+  \\ \textbf{Fit Criterion:} On a connection of at least MIN\_BANDWIDTH, the assessment overview (\rref{FR_Label12}) loads within OVERVIEW\_LOAD\_TIME seconds. Jumping to a question or segment in the recording (\rref{FR_Label14}) is covered by \nfrref{NFR-P2}.
+
+\refstepcounter{nfrnum}
+\item[\textbf{\rthenfrnum}:]
+\label{NFR-P2}
+  The system shall keep the transcript synchronized with the recording during playback and navigation.
+  \\ \textbf{Rationale:} Clinicians verify transcripts and evaluate answers by matching text to what they see and hear. If the highlighted segment lags behind the recording, or a selected segment starts at the wrong moment, clinicians may attribute speech to the wrong segment or question.
+  \\ \textbf{Fit Criterion:} For recordings up to MAX\_REC\_LEN minutes long, the difference between the playback position and the stored start time of the highlighted or selected segment must not exceed SYNC\_TOL milliseconds, and playback must begin within SEEK\_TIME seconds of the clinician selecting a segment.
+
+\end{itemize}
+
+\subsection{Understandability}
+
+\noindent \begin{itemize}
+
+\refstepcounter{nfrnum}
+\item[\textbf{\rthenfrnum}:]
+\label{NFR-UN1}
+  The system shall make it clear to clinicians which content was generated automatically and which has been verified or edited by a clinician.
+  \\ \textbf{Rationale:} Clinicians emphasized that automated results are cues for review, not final judgments. To decide what still needs their attention and how much to rely on a result, they need to understand at a glance where each transcript segment, score, and flag came from.
+  \\ \textbf{Fit Criterion:} In usability testing, at least TASK\_SUCCESS\_RATE\% of clinicians must correctly identify which items on a screen are unverified automated content and which are clinician-verified, without assistance.
+
+\end{itemize}
+
+\subsection{Compliance}
+
+\noindent \begin{itemize}
+
+\refstepcounter{nfrnum}
+\item[\textbf{\rthenfrnum}:]
+\label{NFR-CO1}
+  The system shall meet the technical safeguards of the HIPAA Security Rule for the patient health information it stores and processes.
+  \\ \textbf{Rationale:} The system stores recordings, transcripts, and assessment results of children, which are protected health information for U.S.-based clinicians. Removing names is not enough to de-identify this data: under HIPAA, full-face images and voice recordings can themselves identify a patient. Clinicians identified HIPAA compliance and control over who can access data as conditions for adopting the system, and institutions must approve tools before clinicians can use them \citep{CDC_HIPAA_1996}.
+  \\ \textbf{Fit Criterion:} Each HIPAA technical safeguard (access control, audit controls, integrity, person or entity authentication, and transmission security) must be mapped to at least one implemented mechanism in the system, and a review of the system against this mapping must find no unaddressed safeguard. Every third-party service that stores or processes patient health information, including recordings and audio, must be covered by a Business Associate Agreement.
+
+\end{itemize}
+
+\subsection{Capacity}
+
+\noindent \begin{itemize}
+
+\refstepcounter{nfrnum}
+\item[\textbf{\rthenfrnum}:]
+\label{NFR-CA1}
+  The system shall store the patients, assessments, recordings, and annotations of a full clinical caseload for every clinician using it.
+  \\ \textbf{Rationale:} Clinicians may each care for 30 or more patients, and every assessment adds a recording, a transcript, and annotations that must be kept for the full retention period. The system must hold this data without clinicians having to delete older assessments to make room for new ones.
+  \\ \textbf{Fit Criterion:} With NUM\_CLINICIANS clinicians, each with CASELOAD patients who have each completed ASMTS\_PER\_PT assessments with recordings of up to MAX\_REC\_LEN minutes, the system must store all of the data and still meet \nfrref{NFR-U4} and \nfrref{NFR-P2}.
 
 \end{itemize}
 
@@ -1135,7 +1559,21 @@ Clinicians review the auto-generated transcript against the video playback and c
 \toprule
 Stakeholder Req & Use Case & Functional Req \\
 \midrule
-\srref{SR_Label1} & \ucref{UC_Label1} & \rref{FR_Label1} \\
+\srref{SR_ClinicianFinalJudgment} & -- & \rref{FR_ManualEvaluation} \\
+\srref{SR_EvidenceTraceability} & -- & \rref{FR_ManualEvaluation} \\
+\srref{SR_FlexibleWorkflows} & \ucref{UC_Label4} & \rref{FR_Label15} \\
+\srref{SR_CompiledReports} & \ucref{UC_GenerateReport} & \rref{FR_Label7} \\
+\srref{SR_ClinicianFinalJudgment} & \ucref{UC_GenerateReport} & \rref{FR_Label7} \\
+\srref{SR_CompiledReports} & -- & \rref{FR_QuestionNotes} \\
+\srref{SR_CompiledReports} & -- & \rref{FR_AssessmentNotes} \\
+\srref{SR_SinglePlatform} & \ucref{UC_ReturnAnnotationsToRecord} & \rref{FR_AnnotationsInRecord} \\
+\srref{SR_ReduceAnnotationTime} & \ucref{UC_ReviewTranscriptPlayback} & \rref{FR_TranscriptHighlight} \\
+\srref{SR_EvidenceTraceability} & \ucref{UC_ReviewTranscriptPlayback} & \rref{FR_TranscriptHighlight} \\
+\srref{SR_ReduceAnnotationTime} & \ucref{UC_ReviewTranscriptPlayback} & \rref{FR_SegmentSeek} \\
+\srref{SR_EvidenceTraceability} & \ucref{UC_ReviewTranscriptPlayback} & \rref{FR_SegmentSeek} \\
+\srref{SR_BilingualSupport} & -- & \rref{FR_ResultVisualization} \\
+\srref{SR_ProgressOverTime} & -- & \rref{FR_ResultVisualization} \\
+\srref{SR_ClinicianFinalJudgment} & -- & \rref{FR_LinguisticPatternDetection} \\
 \bottomrule
 
 \caption{Traceability Between Stakeholder Requirements, Use Cases, and
@@ -1155,7 +1593,17 @@ Functional Req & Nonfunctional Req \\
 \rref{FR_Label22} & \nfrref{NFR-U1} \\
 \rref{FR_Label12} & \nfrref{NFR-A1}, \nfrref{NFR-PF1} \\
 \rref{FR_Label13} & \nfrref{NFR-A1} \\
-\rref{FR_Label14} & \nfrref{NFR-PF1} \\
+\rref{FR_Label14} & \nfrref{NFR-P2} \\
+\rref{FR_ManualEvaluation} & \nfrref{NFR-S4} \\
+\rref{FR_ManualEvaluation} & \nfrref{NFR-UN1} \\
+\rref{FR_QuestionNotes} & \nfrref{NFR-S4} \\
+\rref{FR_AssessmentNotes} & \nfrref{NFR-S4} \\
+\rref{FR_AnnotationsInRecord} & \nfrref{NFR-CA1} \\
+\rref{FR_AnnotationsInRecord} & \nfrref{NFR-CO1} \\
+\rref{FR_TranscriptHighlight} & \nfrref{NFR-P2} \\
+\rref{FR_SegmentSeek} & \nfrref{NFR-P2} \\
+\rref{FR_ResultVisualization} & \nfrref{NFR-U2} \\
+\rref{FR_LinguisticPatternDetection} & \nfrref{NFR-UN1} \\
 \bottomrule
 \caption{Traceability Between Functional and Nonfunctional Requirements}
 \label{tab:FR2Rtm}
@@ -1166,33 +1614,46 @@ Functional Req & Nonfunctional Req \\
 
 \section{Rationale}
 
-\plt{Provide a rationale for the decisions made in the documentation.  Rationale
-should be provided for scope decisions, functional requirements, nonfunctioanl
-requirements, data requirements, and AI requirements.  You don't need a
-rationale for everything, ust the major decisions that are not obvious.  You
-should have traceability to the entities in the document that you are
-referencing.}
-
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.30\textwidth} >{\raggedright\arraybackslash}p{0.38\textwidth} >{\raggedright\arraybackslash}p{0.24\textwidth}}
 \toprule
 Decision & Rationale & Related Sections\\
 \midrule
 \endhead
-Integrate SAFA into MERLS instead of keeping it as a standalone tool & TODO & System Constraints \newline Goals\\
+Integrate SAFA into MERLS instead of keeping it as a standalone tool & 
+Right now, clinicians need to download video recordings, upload them to SAFA, and then export any output files from SAFA and move them by hand. This takes a lot of time and separates annotations from the patient's record. Having everything in one platform lets clinicians review, annotate, and report on an assessment without switching tools. & Goals \newline System Constraints \newline \srref{SR_SinglePlatform} \newline \rref{FR_AnnotationsInRecord} \newline Appendix B\\
 \midrule
-Build the system as a web application, with desktop as the main platform and mobile and tablet support out of scope & TODO & System Constraints \newline Appendix B\\
+Build the system as a web application, with desktop as the main platform & 
+MERLS is already a web-based platform, so SAFA needs to run in the browser in order to work within it. This means clinicians shouldn't need to install anything, and that a desktop or laptop screen will give them enough space to watch the video and edit the transcript side by side. & System Constraints \newline Appendix B\\
 \midrule
-Use the existing Whisper model instead of training a new speech model & TODO & System Constraints \newline AI and ML Requirements \newline \rref{FR_Label6}\\
+Use the existing Whisper model instead of training a new speech model & 
+The research team already uses Whisper in their workflow and training a new model would require a large dataset of previous assessments and labelled children's speech for training, which we don't have. Whisper's known limitations are already handled by having clinicians review and correct the transcripts. & System Constraints \newline AI and Machine Learning Requirements \newline \nfrref{NFR-P1}\\
 \midrule
-Keep clinicians in the loop, so automatic outputs are drafts and flags that clinicians review rather than final results & TODO & \rref{FR_Label8} \newline \rref{FR_Label15} \newline \nfrref{NFR-A1} \newline Appendix A\\
+Keep clinicians in the loop, so automatic outputs are suggestions and flags that clinicians review rather than final results & 
+Whisper hasn't been evaluated on our use case, and children's and bilingual speech are hard to transcribe. Clinicians have already stated that automated results should only be cues, since the clinical decision is theirs to make. & \srref{SR_ClinicianFinalJudgment} \newline \rref{FR_Label8} \newline \rref{FR_ManualEvaluation} \newline \rref{FR_LinguisticPatternDetection} \newline \nfrref{NFR-A1} \newline \nfrref{NFR-UN1} \newline Appendix A\\
 \midrule
-Provide an assessment overview that works without a transcript, before any in-depth analysis in SAFA & TODO & \rref{FR_Label12} \newline \rref{FR_Label13} \newline \rref{FR_Label14} \newline \nfrref{NFR-PF1}\\
+Provide an assessment overview that works without a transcript, and let clinicians choose which parts to analyze in depth in SAFA & 
+Not every assessment needs a full transcript, and clinicians with large caseloads need results quickly. The overview and flags let them decide where to look, so they only have to spend time transcribing the parts that actually need it. & \srref{SR_FlexibleWorkflows} \newline \rref{FR_Label12} \newline \rref{FR_Label13} \newline \rref{FR_Label15} \newline \nfrref{NFR-PF1} \newline Figures~\ref{WorkflowA_State_Diagram}--\ref{WorkflowC_State_Diagram}\\
 \midrule
-Restrict each clinician's access to their own patients and encrypt all recordings and transcripts & TODO & System Constraints \newline \nfrref{NFR-S1} \newline \nfrref{NFR-S2} \newline \nfrref{NFR-S3}\\
+Link every result, flag, and transcript segment to its moment in the recording & 
+Clinicians need evidence to support their decisions, and checking against the video is how they catch mistakes in the transcript or flags. Jumping straight to the right moment also saves them from having to sit through an entire recording. & \srref{SR_EvidenceTraceability} \newline \rref{FR_Label14} \newline \rref{FR_TranscriptHighlight} \newline \rref{FR_SegmentSeek} \newline \nfrref{NFR-P2}\\
 \midrule
-Define requirement thresholds as symbolic constants with values in Appendix C & TODO & Non-Functional Requirements \newline Appendix C\\
+Only accept recordings that meet a minimum video and audio quality & 
+Poor audio makes the transcript less accurate, and poor video makes it hard to detect faces and interference. It's better to catch this as soon as the assessment is submitted, rather than when the clinician opens the assessment only to find that it's unreliable. & \nfrref{NFR-P1} \newline \nfrref{NFR-A1}\\
 \midrule
-TODO: decisions behind teammates' requirements (FR1--5, FR16--21, FR24) & TODO & TODO\\
+Restrict each clinician's access to their own patients, and encrypt and log access to all patient data & 
+The system stores sensitive information on patients, and even just having a face and voice can lead to the identification of a patient. Tracking access of data protects everyone involved and is also required under HIPAA. & \srref{SR_PatientPrivacy} \newline \nfrref{NFR-S1} \newline \nfrref{NFR-S2} \newline \nfrref{NFR-S3} \newline \nfrref{NFR-S4} \newline Privacy and Data Retention\\
+\midrule
+Send only the audio needed for transcription to third-party services, without patient details & 
+Transcription and keyword detection rely on outside services (Whisper and Deepgram), so some data has to leave the system. Sending as little as possible, under a Business Associate Agreement, limits what can be exposed. & Privacy and Data Retention \newline \nfrref{NFR-S3} \newline \nfrref{NFR-CO1}\\
+\midrule
+Design the system to meet HIPAA's technical safeguards, and leave administrative and physical safeguards to the institutions using it & 
+The team is building the software, so the technical safeguards are what we can actually control. Things like staff training and breach procedures will depend on the specific clinic or institution. & System Constraints \newline \nfrref{NFR-CO1} \newline Privacy and Data Retention\\
+\midrule
+Organize results by clinical domain, language, and the assessment's purpose & 
+Clinicians think about results in terms of topics like grammar and phonology, and comparing languages side by side helps tell a language difference from a disorder. Progress-monitoring and diagnostic assessments are used for different purposes, so they need different views to be read correctly. & \srref{SR_BilingualSupport} \newline \srref{SR_ProgressOverTime} \newline \rref{FR_Label22} \newline \rref{FR_Label23} \newline \rref{FR_ResultVisualization}\\
+\midrule
+Prioritize integration and usability first, and leave features like result visualization and patient-facing reports for later & 
+The project's supervisors have stated what parts they want completed first, so the system has to be integrated and usable before new features are worth adding. Anything not finished during the course will be documented as future work. & Appendix B \newline \rref{FR_ResultVisualization}\\
 \bottomrule
 \caption{Rationale for Major Decisions} \label{tab:Rationale}
 \end{longtable}
@@ -1277,36 +1738,59 @@ The timing of each phase then follows the milestones outlined in the Development
 
 \subsection{Appendix C: Values of Auxiliary Constants}
 
-\plt{Show the values of the symbolic parameters introduced in the report.}
+Values marked with an asterisk (*) are initial estimates that we will confirm with the supervisor and research team, and will be updated in this document once their values are known. Tested values will be verified during testing of the system.
 
-\plt{The definition of the requirements will likely call for SYMBOLIC\_CONSTANTS.
-Their values are defined in this section for easy maintenance.}
-
-\plt{The value of FRACTION, for the Maintainability NFR would be given here.}
-
-\begin{longtable}{p{0.40\textwidth} p{0.20\textwidth} p{0.25\textwidth}}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.27\textwidth} >{\raggedright\arraybackslash}p{0.20\textwidth} p{0.43\textwidth}}
 \toprule
-Constant & Value & Used In\\
+Constant & Value & Justification\\
 \midrule
-FLAG\_DETECTION\_RATE & 80 & \nfrref{NFR-A1}\\
-FLAG\_FALSE\_ALARM\_RATE & 20 & \nfrref{NFR-A1}\\
-FLAG\_TIME\_TOLERANCE & 2 & \nfrref{NFR-A1}\\
-MIN\_BANDWIDTH & 25 Mbps & \nfrref{NFR-PF1}\\
-OVERVIEW\_LOAD\_TIME & 3 & \nfrref{NFR-PF1}\\
-SEEK\_TIME & 1 & \nfrref{NFR-PF1}\\
-SYNC\_TOLERANCE & 0.5 & \nfrref{NFR-PF1}\\
-TASK\_SUCCESS\_RATE & TBD & \nfrref{NFR-U1}, \nfrref{NFR-U2}\\
-TASK\_TIME & TBD & \nfrref{NFR-U1}\\
-MAX\_NAV\_STEPS & TBD & \nfrref{NFR-U3}\\
-SYSTEM\_FEEDBACK\_TIME & TBD & \nfrref{NFR-U4}\\
-IDLE\_TIMEOUT & TBD & \nfrref{NFR-S2}\\
-TRANSIT\_ENCRYPTION\_STANDARD & TBD & \nfrref{NFR-S3}\\
-STORAGE\_ENCRYPTION\_STANDARD & TBD & \nfrref{NFR-S3}\\
-BACKUP\_INTERVAL & TBD & \nfrref{NFR-M1}\\
-MIN\_VIDEO\_RESOLUTION & TBD & \nfrref{NFR-P1}\\
-MIN\_AUDIO\_LEVEL & TBD & \nfrref{NFR-P1}\\
+\endhead
+\midrule
+\multicolumn{3}{r}{\textit{Continued on next page}}\\
+\endfoot
 \bottomrule
-\caption{Values of Auxiliary Constants} \label{tab:Constants}
+\caption{Tested Values of Auxiliary Constants} \label{tab:AuxConstants}
+\endlastfoot
+TASK\_\allowbreak{}SUCCESS\_\allowbreak{}RATE* & 80\% & Slightly above the average completion rate of about 78\% found across more than 1,100 tasks in usability tests \citep{Sauro_CompletionRate}; used by \nfrref{NFR-U1}, \nfrref{NFR-U2}, and \nfrref{NFR-UN1}.\\
+TASK\_\allowbreak{}TIME* & 5 minutes & Long enough to complete a single core task (e.g., add a patient) by a first-time user.\\
+MAX\_\allowbreak{}NAV\_\allowbreak{}STEPS* & 3 steps & Any stage of the workflow (patient list, assessment, question, transcript) is within three levels of navigation.\\
+SYSTEM\_\allowbreak{}FEEDBACK\_\allowbreak{}TIME & 2 seconds & Keeps the response within the range users perceive as immediate for a saved change.\\
+IDLE\_\allowbreak{}TIMEOUT* & 15 minutes & HIPAA requires automatic sign-out after a set period of inactivity but does not specify the period \citep{eCFR_164_312}; 15 minutes is a common choice for applications that display health information.\\
+TRANSIT\_\allowbreak{}ENCRYPTION\_\allowbreak{}STANDARD & TLS 1.2 or higher & The minimum version NIST requires for protecting data sent over a network \citep{NIST_SP800_52r2}. HHS refers to this guideline for securing health information in transit \citep{HHS_UnsecuredPHI}.\\
+STORAGE\_\allowbreak{}ENCRYPTION\_\allowbreak{}STANDARD & AES-256 & The encryption standard approved by NIST \citep{NIST_FIPS197}, consistent with HHS guidance for securing stored health information \citep{HHS_UnsecuredPHI}. Supported by the existing cloud storage (Amazon S3).\\
+BACKUP\_\allowbreak{}INTERVAL & 24 hours & Daily backups limit any data loss to a single working day.\\
+MIN\_\allowbreak{}VIDEO\_\allowbreak{}RESOLUTION* & 640 $\times$ 480 pixels & Minimum resolution at which faces can be reliably detected for interference detection.\\
+MIN\_\allowbreak{}AUDIO\_\allowbreak{}LEVEL* & $-$30 dBFS average & Minimum speech level at which the transcription model can reliably recognize speech.\\
+FLAG\_\allowbreak{}DETECTION\_\allowbreak{}RATE* & 80\% & Catches most moments of interference, so clinicians can rely on the flags to decide where to look, while still making the final judgment.\\
+FLAG\_\allowbreak{}FALSE\_\allowbreak{}ALARM\_\allowbreak{}RATE* & 20\% & Keeps incorrect flags rare enough that clinicians do not stop trusting them.\\
+FLAG\_\allowbreak{}TIME\_\allowbreak{}TOLERANCE* & 2 seconds & The existing interference detection pairs a detected face with a keyword heard within 1.5 seconds, so a flag can be placed up to about this far from the moment itself.\\
+MIN\_\allowbreak{}BANDWIDTH* & 25 Mbps & A common home or clinic broadband speed, comfortably above what is needed to stream assessment video.\\
+OVERVIEW\_\allowbreak{}LOAD\_\allowbreak{}TIME* & 3 seconds & Short enough that clinicians stay focused when moving between assessments.\\
+SYNC\_\allowbreak{}TOL & 500 ms & Browsers report the playback position every 15 to 250 ms during playback \citep{WHATWG_HTML_Media}, so 500 ms can be met reliably. It is measured against the times stored for each segment, since the accuracy of the speech recognition model’s own timestamps is outside the system’s control.\\
+SEEK\_\allowbreak{}TIME & 2 seconds & Allows for loading the requested part of a recording streamed from cloud storage.\\
+MAX\_\allowbreak{}REC\_\allowbreak{}LEN & 30 minutes & Taken from the existing TeleHealth platform, whose requirements set the maximum assessment length to 30 minutes. Integrating SAFA does not change the length of an assessment.\\
+NUM\_\allowbreak{}CLINICIANS* & 10 clinicians & A small clinic or research study; can be tested by loading generated records.\\
+CASELOAD* & 30 patients & An estimate of one clinician's active caseload, to be confirmed with the research team.\\
+ASMTS\_\allowbreak{}PER\_\allowbreak{}PT* & 10 assessments & Several assessment types in each supported language, repeated for progress monitoring.\\
+LINK\_\allowbreak{}EXPIRY & 60 minutes & Taken from the existing TeleHealth platform, whose recording links expire after 60 minutes. This keeps a shared link short-lived while lasting through a typical review session; links are renewed while in use.\\
+\end{longtable}
+
+\textbf{Policy values} describe how long data is kept. They are set in the system’s configuration and checked by review, since they cannot be tested within the project’s timeline.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.27\textwidth} >{\raggedright\arraybackslash}p{0.20\textwidth} p{0.43\textwidth}}
+\toprule
+Constant & Value & Justification\\
+\midrule
+\endhead
+\midrule
+\multicolumn{3}{r}{\textit{Continued on next page}}\\
+\endfoot
+\bottomrule
+\caption{Policy Values of Auxiliary Constants} \label{tab:AuxPolicyConstants}
+\endlastfoot
+LOG\_\allowbreak{}RETENTION & 6 years & HIPAA requires security documentation to be kept for six years \citep{eCFR_164_316}. Activity records are kept for the same period.\\
+RETENTION* & 7 years after the last assessment, or until the patient turns 19, whichever is later & California requires medical records of minors to be kept until at least one year after the patient turns 18, and for no less than seven years \citep{CA_HSC_123145}. This rule was also used by the previous TeleHealth project. It is an estimate because the state where clinicians practise has not been confirmed.\\
+DELETE\_\allowbreak{}WINDOW* & 30 days & Allows deletion to reach all storage and backups.\\
 \end{longtable}
 
 \subsection{Appendix D: Generative AI Disclosure}
@@ -1404,6 +1888,32 @@ As for understanding how SAFA uses AI, one approach is reading the documentation
 Another is asking our supervisors to walk the team through how transcriptions are generated and where they tend to fail. 
 I will pursue this skill as well, mainly through the documentation and code review, because my machine learning course gave me a background in AI systems and their typical pitfalls, which should help me read the code and judge where the transcriptions may be unreliable.
 
+\subsection{Javayria}
+\subsubsection*{Question 1}
+Although this deliverable was definitely more difficult and time-consuming than the previous one, the research papers we had access to were very helpful in showing us what the system needed to do from the very start. We were also given very clear “must-haves” from both our supervisor (Dr. Irene Yuan) and the researchers we are working with. They stressed from the beginning that their main goal was integrating the two systems (TeleHealth and SAFA) and redesigning the interface, and that anything beyond that would be a nice-to-have. This made it much easier to decide what belonged in our core requirements and what should be marked as a stretch goal. For example, clinicians in the study suggested features such as visualizing results by clinical domain and automatically detecting grammatical errors. Because we knew our priorities, we could include these as stretch requirements without letting them expand our scope.
+
+The research papers also already contained feedback from ten clinicians who had tested the platform, which was a great way for us to gather requirements without having to interview clinicians ourselves within the past few weeks (which were very busy due to our courseloads). Their direct quotes gave us a clear, traceable source for our stakeholder requirements. The papers also described the three clinician workflows (direct analysis, annotation-first analysis, and on-demand refinement), which gave us a natural structure for our use cases and state diagrams. Having the previous TeleHealth team’s SRS and code as a reference helped us see what had already been built, so we could focus our requirements on what the integrated system still needs.
+
+\subsubsection*{Question 2}
+
+One of the main pain points was getting the information we needed to write our requirements. Our project is unique in that it integrates two existing tools, so we needed access to both repositories to understand what was already built. However, delays in responses from our supervisors meant we did not receive access until much later into writing the deliverable. In the meantime, we had to start writing requirements based on the research papers alone, which made it difficult to separate the requirements of the overall system from the ones our own work needed to meet.
+
+Since our project builds on the work of others, we also spent a significant amount of time learning what the existing systems already do and how our work needs to fit into them. For example, the previous TeleHealth team built the interface that records children’s assessments. We were not sure whether to include requirements for handling that data, since it was not our work, but it would still be part of the system we would deliver at the very end. We resolved this by deciding that any requirement the final system must meet belongs in our SRS, even if another team previously contributed to that part. This turned out to be very important, because we found out that the existing platform does not enforce authentication or data privacy, and our supervisor stressed that the integrated system must protect patient data and follow HIPAA. Once we had access to the repositories, we compared our requirements against the existing code and the previous team’s SRS, and updated the ones that did not match how the system actually works.
+
+\subsubsection*{Question 3}
+TO-DO
+
+\subsubsection*{Question 4}
+Security and data privacy are a major part of this capstone, and I am currently taking COMPSCI 4CR3: Introduction to Cryptography. Our system handles assessment recordings, transcripts, and reports. These are sensitive health information, as patients' faces and voices count as identifiers under HIPAA. Any sensitive information sent over a network has to be encrypted so that attackers cannot read or tamper with it in transit. It also needs protecting while it is in storage. We learned about modern ciphers such as AES, along with key management and secure communication protocols. This can help our team choose suitable standards for encrypting patient data and understand why they are secure, not just how to use them. However, we would first need to work out where in the system data needs to be encrypted, for example when it is uploaded, stored, or shared through download links. We would also need to plan how to decrypt it efficiently when clinicians retrieve it, so that video playback stays responsive. Not all data needs this level of protection, so we will also have to evaluate which parts of the system are worth guarding this way. 
+
+
+\subsubsection*{Question 5}
+Our capstone involves taking a proof of concept and turning it into a software that clinicians can rely on, so the team will need to learn a lot beyond what the existing systems use in order to implement the backend. Currently, TeleHealth is a Node/React web application that stores its data as JSON files, while SAFA is a Python desktop application whose transcription model runs as a separate script, and its output has to be uploaded into SAFA by hand. To build one integrated system, we will need to learn how to connect services written in different languages and run long tasks like transcribing a 30-minute recording in the background. We will also need to track each assessment's progress through the pipeline so clinicians stay in control of every stage. One member will focus on this service integration and pipeline design. Another member will learn how to deploy and evaluate Whisper efficiently, since children's speech and recordings in more than one language are known weak points for speech recognition.
+
+Since the current system has no database, I will focus on learning database design so we can properly link patients, assessments, transcript segments, annotations, and reports, and keep the original AI transcript alongside clinicians' edits. Because the existing platform also has no login sessions or access control, one other team member will focus on authentication, encryption, audit logging, and the HIPAA technical safeguards. As a team, we will also need to learn browser media handling to rebuild SAFA's synchronized video and transcript playback in React, as well as the PDF report generation. Finally, we all need enough domain knowledge of speech-language pathology to understand how clinicians conduct and interpret assessments, so that the workflows we design actually make sense for their daily work.
+
+\subsubsection*{Question 6}
+TO-DO
 
 \subsection{Catherine}
 \subsubsection*{Question 1}
