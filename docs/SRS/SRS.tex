@@ -302,7 +302,9 @@ constraints.
 
 \plt{Current situation, problem, impact, desired improvement.  You will likely borrow some text from your problem description document.}
 
-TODO
+Currently, speech-language pathologists (SLPs) conducting remote assessments of bilingual pediatric patients face challenges annotating, managing, and analyzing patient assessments through telehealth. These challenges can limit assessment efficiency and consistency, particularly in pediatric telehealth settings where clinicians rely on digital tools to evaluate and monitor speech development. The existing annotation tool, SAFA, is hosted locally and operates separately from the MERLS telehealth platform used by patients and their guardians. This separation creates a disjointed workflow between patient assessments and clinician annotation. Additionally, SAFA has a limited and unintuitive user interface, resulting in a poor user experience for clinicians. Its functionality also does not fully support the clinician-side assessment, record-keeping, and analysis workflows required by SLPs.
+
+Overall, the lack of integration between patient assessments and clinician tools, combined with limitations in interface usability and functionality, creates barriers to an efficient and cohesive speech assessment workflow.
 
 \subsection{Product Vision}
 
@@ -512,6 +514,13 @@ Clinicians reported that annotating a 20-minute session can take up to four hour
 \item Technical Ability: Mei is confident with technology and enjoys exploring a tool’s features in depth. She is willing to spend time learning a system if it gives her finer control over her work, and she expects to be able to customize how she reviews and organizes information. 
 \end{itemize}
 
+\subsection{Curious Researcher Interested in Software Assisting Speech Therapy}
+\begin{itemize}
+\item Name: Georgia Curios
+\item Description: Georgia is a speech therapy researcher that has worked in the field for over three decades. Throughout her career, she has witnessed the benefits and limitations of technological advancements in speech therapy. Unlike clinicians, who primarily focus on conducting individual patient assessments, Georgia is interested in evaluating the broader effectiveness, usability, and performance of speech therapy software. She seeks to understand how technology supports clinical practice, maintains assessment reliability, and contributes to patient outcomes over time.
+\item Frustrations: Georgia is overwhelmed by the numerous software tools available, as they are hosted on separate platforms. She can only view one assessment at a time, making it difficult to compare multiple assessments. She also finds it difficult to identify trends in patient outcomes using current data visualization and aggregation tools. Additionally, she is uncertain about the accuracy and reliability of software-assisted annotation.
+\item Technical Ability: Georgia is technically proficient and experienced with speech therapy software. Although she is adaptable to new technologies, she compares their capabilities and features with existing tools and traditional practices. She is also comfortable interpreting assessment data and performance metrics, but cannot fully verify clinical decisions.
+\end{itemize}
 % ============================================================== 
 \section{Use Cases}
 \plt{Use cases are a way to describe the interactions between users and the system.
@@ -952,6 +961,126 @@ Clinician
 \item The report reflects the assessment’s results, flags, notes, and transcript at the time it was generated, including every change made by the clinician.
 \item The report is available from the assessment and can be viewed or downloaded again later.
 \item The download is recorded with the clinician and the time.
+\end{itemize}
+
+\refstepcounter{ucnum} \label{UC_Label12}
+
+\subsection{\ucref{UC_Label12}: Create Clinician Account}
+
+\textbf{Primary Actor}
+
+Clinician
+
+\textbf{Preconditions}
+
+\begin{itemize}
+\item The clinician is on the clinician account creation page.
+\end{itemize}
+
+\textbf{Main Success Scenario}
+
+\begin{enumerate}
+\item The clinician enters the required account information, including their name, email, and password.
+\item The system validates the entered information.
+\item The system creates the clinician's account.
+\item The system confirms that the account has been created successfully.
+\item The system prompts the clinician to verify their email address.
+\item The clinician verifies their email address.
+\item The system redirects the clinician to the login page.
+\end{enumerate}
+
+\textbf{Alternative Flows}
+
+\begin{itemize}
+\item[2a.] The entered information is invalid or incomplete. The system displays an error message and prompts the clinician to correct the information.
+\item[2b.] An account already exists with the entered email address. The system informs the clinician and prompts them to use a different email address or log in.
+\item[6a.] The clinician is unable to verify their email address. The system displays an error message and prompts the clinician to check the email address or resend the verification email.
+\end{itemize}
+
+\textbf{Postconditions}
+
+\begin{itemize}
+\item The clinician's account has been created and can be used to log in to the system after email verification.
+\end{itemize}
+
+\refstepcounter{ucnum} \label{UC_Label13}
+
+\subsection{\ucref{UC_Label13}: View Patient Records}
+
+\textbf{Primary Actor}
+
+Clinician, Researcher
+
+\textbf{Preconditions}
+
+\begin{itemize}
+\item The user is logged in (\ucref{UC_Label1}) with a Clinician or Researcher role.
+\item The user has selected a patient from their patient list (\ucref{UC_Label3}).
+\end{itemize}
+
+\textbf{Main Success Scenario}
+
+\begin{enumerate}
+\item The system displays the selected patient's profile and assessment history.
+\item The user selects the patient assessment they want to view.
+\item The system displays the selected assessment, including relevant assessment details, results, and any available annotations or reports.
+\item The user reviews the records and may select another assessment to view.
+\end{enumerate}
+
+\textbf{Alternative Flows}
+
+\begin{itemize}
+\item[1a.] The patient has no available assessment records. The system displays a message indicating that no records are available.
+\item[3a.] The selected assessment contains missing or unavailable information. The system indicates which information is unavailable.
+\end{itemize}
+
+\textbf{Postconditions}
+
+\begin{itemize}
+\item The user has viewed the selected patient's records.
+\item The patient's records remain unchanged.
+\end{itemize}
+
+\refstepcounter{ucnum} \label{UC_Label14}
+
+\subsection{\ucref{UC_Label14}: Mark Patient Recording as Reviewed}
+
+\textbf{Primary Actor}
+
+Clinician
+
+\textbf{Preconditions}
+
+\begin{itemize}
+\item The clinician is logged in (\ucref{UC_Label1}).
+\item The clinician has selected a patient and opened one of their video assessments (\ucref{UC_Label4}).
+\item The assessment contains a recording that has not been marked as reviewed.
+\end{itemize}
+
+\textbf{Main Success Scenario}
+
+\begin{enumerate}
+\item The clinician opens the recording they want to review.
+\item The system displays the recording alongside its available assessment information.
+\item The clinician reviews the recording.
+\item The clinician selects the option to mark the recording as reviewed.
+\item The system updates the recording's review status.
+\item The system displays the updated review status to the clinician.
+\end{enumerate}
+
+\textbf{Alternative Flows}
+
+\begin{itemize}
+\item[3a.] The clinician has not finished reviewing the recording. The clinician may return to the recording and continue reviewing it at another time before marking it as reviewed.
+\item[4a.] The clinician attempts to exit the assessment without marking the recording as reviewed. The system prompts the clinician to mark the recording as reviewed if they have finished reviewing it or continue exiting without doing so.
+\item[5a.] The system cannot save the updated review status. The system informs the clinician that the update failed and allows them to try again.
+\end{itemize}
+
+\textbf{Postconditions}
+
+\begin{itemize}
+\item The recording is marked as reviewed.
+\item The updated review status is displayed with the recording.
 \end{itemize}
 
 \subsection{Use Case Diagrams}
