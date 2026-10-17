@@ -1707,21 +1707,77 @@ It is accessed through an API and takes audio or text as input \citep{OpenAI_Whi
 
 \subsection{Model Inputs}
 
-Individual segments of the assessment’s audio file (.wav), each under 25 MB.
+\begin{itemize}
+  \item Individual segments of the assessment’s audio file (.wav), each under 25 MB.
+\end{itemize}
 
 \subsection{Model Outputs}
 
-A JSON object containing the start and end times of each segment, formatted as MM:SS (minutes:seconds), and a text field with the words spoken in the segment.
+\begin{itemize}
+    \item A verbose JSON object containing the following:
+    \begin{itemize}
+        \item \texttt{duration} (double): duration of the input audio
+        \item \texttt{language} (string): language of the input audio
+        \item \texttt{text} (string): the transcribed text
+        \item \texttt{segments} (array of JSON objects, optional): details of the transcribed text, given in segments. Each segment contains the following:
+        \begin{itemize}
+            \item \texttt{id}: a unique identification number
+            \item \texttt{avg\_logprob} (float): the average log probability of the segment
+            \item \texttt{compression\_ratio} (float): the compression ratio of the segment
+            \item \texttt{end} (double): the end time of the segment in seconds
+            \item \texttt{no\_speech\_prob} (float): the probability that there is no speech in the segment
+            \item \texttt{seek}: the seek offset
+            \item \texttt{start} (double): the start time of the segment in seconds
+            \item \texttt{temperature} (float): the temperature parameter used for generating the segment
+            \item \texttt{text} (string): the content of the segment
+            \item \texttt{tokens} (array of numbers): the token IDs for the text content of the segment
+        \end{itemize}
+        \item \texttt{usage} (object, optional): usage statistics for the model, given the input audio duration
+        \begin{itemize}
+            \item \texttt{seconds} (double): the duration of the input audio in seconds
+            \item \texttt{type}: the type of the usage object, which is always \texttt{duration}
+        \end{itemize}
+        \item \texttt{words} (array, optional): the words and their corresponding timestamps
+        \begin{itemize}
+            \item \texttt{end} (double): the end time of the word in seconds
+            \item \texttt{start} (double): the start time of the word in seconds
+            \item \texttt{word} (string): the text content of the word
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
 
 \subsubsection{Example Output}
 \begin{verbatim}
-  [
+{
+  "duration": 2.1,
+  "language": "english",
+  "text": "I like cats and dogs",
+  "segments": [
     {
-    "start": "00:00",
-    "end": "00:05",
-    "text": "Recognized words."
+      "id": 0,
+      "seek": 0,
+      "start": 0.0,
+      "end": 2.1,
+      "text": "I like cats and dogs",
+      "tokens": [50364, 286, 411, 11111, 293, 7197],
+      "temperature": 0.0,
+      "avg_logprob": -0.2,
+      "compression_ratio": 1.0,
+      "no_speech_prob": 0.02
     }
-  ]
+  ],
+  "words": [
+    {"word": "I", "start": 0.0, "end": 0.2},
+    {"word": "like", "start": 0.2, "end": 0.6},
+    {"word": "cats", "start": 0.6, "end": 1.2},
+    {"word": "and", "start": 1.2, "end": 1.4},
+    {"word": "dogs", "start": 1.4, "end": 2.1}
+  ],
+  "usage": {
+    "type": "duration",
+    "seconds": 2
+  }
+}
 \end{verbatim}
 
 \subsection{Evaluation Metrics}
