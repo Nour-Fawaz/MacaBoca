@@ -1126,29 +1126,29 @@ The following use case diagrams show the interactions between the clinician and 
 \noindent \begin{itemize}
 
 \refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_Label1}:] The system shall ...
-\\ \textbf{Rationale:}
-\\ \textbf{Fit Criterion:}
+\item[\textbf{\rthereqnum} \label{FR_AutomaticTranscription}:] The system shall automatically generate a text transcription for uploaded patient assessment videos.
+\\ \textbf{Rationale:} Manually transcribing assessment recordings is time-consuming and increases the workload of speech-language pathologists (SLPs). Since transcription provides the foundation for subsequent annotation and analysis, automating this task allows clinicians to focus on reviewing and interpreting speech rather than manually transcribing recordings.
+\\ \textbf{Fit Criterion:} For every successfully uploaded supported assessment video, the system shall automatically generate a corresponding text transcription without requiring clinician intervention and make the transcription available for clinician review upon completion.
 
 \refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_Label2}:] The system shall ...
-\\ \textbf{Rationale:}
-\\ \textbf{Fit Criterion:}
+\item[\textbf{\rthereqnum} \label{FR_TranscriptionEditing}:] The system shall allow clinicians to edit automatically generated transcriptions.
+\\ \textbf{Rationale:} Automatically generated transcriptions may contain errors or inaccuracies, particularly with code-mixing bilingual patients. Clinicians require the ability to correct transcription errors to ensure that subsequent annotations and analyses are based on accurate text.
+\\ \textbf{Fit Criterion:} Clinicians shall be able to add, delete, and modify transcription text and save their changes. Saved changes shall persist when the recording is reopened for assessment.
 
 \refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_Label3}:] The system shall ...
-\\ \textbf{Rationale:}
-\\ \textbf{Fit Criterion:}
+\item[\textbf{\rthereqnum} \label{FR_AnnotationExport}:] The system shall allow clinicians to export annotation data from assessments.
+\\ \textbf{Rationale:} Clinicians need to record, review, and share assessment results for documentation, patient monitoring, and further analysis. Exporting annotation data reduces reliance on manually transferring information between tools and supports record-keeping.
+\\ \textbf{Fit Criterion:} Clinicians shall be able to export annotation data from an assessment in a supported file format. The exported file shall contain all approved annotations associated with that assessment.
 
 \refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_Label4}:] The system shall ...
-\\ \textbf{Rationale:}
-\\ \textbf{Fit Criterion:}
+\item[\textbf{\rthereqnum} \label{FR_SpeakerIdentification}:] The system shall distinguish between different speakers in video assessments.
+\\ \textbf{Rationale:} Remote speech assessments may involve multiple speakers, including the child and their guardian. Distinguishing between speakers helps SLPs annotate the correct individuals and account for distractions or outside influences.
+\\ \textbf{Fit Criterion:} For assessments containing multiple identified speakers, the system shall visually distinguish each speaker's utterances using consistent labels, tags, or highlighting. Clinicians shall be able to determine which identified speaker corresponds to each displayed utterance.
 
 \refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_Label5}:] The system shall ...
-\\ \textbf{Rationale:}
-\\ \textbf{Fit Criterion:}
+\item[\textbf{\rthereqnum} \label{FR_AssessmentWorkflowNavigation}:] The system shall allow clinicians to navigate between different stages of the speech assessment analysis workflow.
+\\ \textbf{Rationale:} The assessment process involves multiple stages, from reviewing and editing recordings to exporting results. Clear navigation helps clinicians move between these stages, understand their current progress, and complete assessments more flexibly.
+\\ \textbf{Fit Criterion:} Clinicians shall be able to navigate between all implemented stages of the annotation workflow without losing saved work. The system shall indicate both the current and completed stages of the assessment.
 
 \refstepcounter{reqnum}
 \item[\textbf{\rthereqnum} \label{FR_Label6}:] The system shall allow clinicians to assign speaker roles and filter assessment transcripts by speaker.
@@ -1241,7 +1241,7 @@ The following use case diagrams show the interactions between the clinician and 
 \\ \textbf{Fit Criterion:} Every question in an assessment is assigned to a domain, and the clinician can view results grouped and summarized by domain.
 
 \refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_Label25}:] The system shall provide breaks during assessments to keep children engaged.
+\item[\textbf{\rthereqnum} \label{FR_Label24}:] The system shall provide breaks during assessments to keep children engaged.
 \\ \textbf{Rationale:} Children with limited attention or complex communication needs may disengage during long screen-based assessments.
 \\ \textbf{Fit Criterion:} The system presents an interactive break activity (e.g., an animation) after a set number of questions defined for each assessment, after which the assessment resumes where it left off.
 
@@ -1254,31 +1254,6 @@ The following use case diagrams show the interactions between the clinician and 
 \item[\textbf{\rthereqnum} \label{FR_LinguisticPatternDetection}:] The system shall automatically identify potential grammatical and phonological errors in the assessment transcript and present them to the clinician as suggestions for review.
 \\ \textbf{Rationale:} Clinicians see transcription as an intermediate step, and they asked for the system to identify grammatical and error patterns so they can focus on interpretation. Since ambiguous speech (e.g., a dialect feature versus an articulation error) can be clinically meaningful, detections must remain suggestions that the clinician confirms. This requirement is outside the current project scope.
 \\ \textbf{Fit Criterion:} Each detected error must be linked to its transcript segment and shown as unverified until the clinician accepts or rejects it. Only accepted errors may appear in the assessment report.
-
-\refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_AutomaticTranscription}:] The system shall automatically generate a text transcription for uploaded patient assessment videos.
-\\\ \textbf{Rationale:} Manually transcribing assessment recordings is time-consuming and increases the workload of speech-language pathologists (SLPs). Since transcription provides the foundation for subsequent annotation and analysis, automating this task allows clinicians to focus on reviewing and interpreting speech rather than manually transcribing recordings.
-\\\ \textbf{Fit Criterion:} For every successfully uploaded supported assessment video, the system shall automatically generate a corresponding text transcription without requiring clinician intervention and make the transcription available for clinician review upon completion.
-
-\refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_TranscriptionEditing}:] The system shall allow clinicians to edit automatically generated transcriptions.
-\\\ \textbf{Rationale:} Automatically generated transcriptions may contain errors or inaccuracies, particularly with code-mixing bilingual patients. Clinicians require the ability to correct transcription errors to ensure that subsequent annotations and analyses are based on accurate text.
-\\\ \textbf{Fit Criterion:} Clinicians shall be able to add, delete, and modify transcription text and save their changes. Saved changes shall persist when the recording is reopened for assessment.
-
-\refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_AnnotationExport}:] The system shall allow clinicians to export annotation data from assessments.
-\\\ \textbf{Rationale:} Clinicians need to record, review, and share assessment results for documentation, patient monitoring, and further analysis. Exporting annotation data reduces reliance on manually transferring information between tools and supports record-keeping.
-\\\ \textbf{Fit Criterion:} Clinicians shall be able to export annotation data from an assessment in a supported file format. The exported file shall contain all approved annotations associated with that assessment.
-
-\refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_SpeakerIdentification}:] The system shall distinguish between different speakers in video assessments.
-\\\ \textbf{Rationale:} Remote speech assessments may involve multiple speakers, including the child and their guardian. Distinguishing between speakers helps SLPs annotate the correct individuals and account for distractions or outside influences.
-\\\ \textbf{Fit Criterion:} For assessments containing multiple identified speakers, the system shall visually distinguish each speaker's utterances using consistent labels, tags, or highlighting. Clinicians shall be able to determine which identified speaker corresponds to each displayed utterance.
-
-\refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_AssessmentWorkflowNavigation}:] The system shall allow clinicians to navigate between different stages of the speech assessment analysis workflow.
-\\\ \textbf{Rationale:} The assessment process involves multiple stages, from reviewing and editing recordings to exporting results. Clear navigation helps clinicians move between these stages, understand their current progress, and complete assessments more flexibly.
-\\\ \textbf{Fit Criterion:} Clinicians shall be able to navigate between all implemented stages of the annotation workflow without losing saved work. The system shall indicate both the current and completed stages of the assessment.
 
 \end{itemize}
 
