@@ -3,6 +3,17 @@
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage[shortlabels]{enumitem}
+\usepackage{float}
+\usepackage{array}
+\usepackage{pdflscape}
+\usepackage{tabularx,ragged2e,booktabs,caption}
+\usepackage{longtable}
+\usepackage{ulem}
+\usepackage{ltablex}
+\usepackage[round]{natbib}
 
 \hypersetup{
     colorlinks=true,       % false: boxed links; true: colored links
@@ -158,6 +169,82 @@ requirements.}
 entered in the table, including strategies involving providing additional
 documentation, and/or test cases.}
 
+The following FMEA table is a breakdown of the hazards that could occur within the system, along with recommended actions to mitigate them.
+
+\newgeometry{margin=0.5in}
+\begin{landscape}
+  \begin{longtable}{|p{2.4cm}|p{3.2cm}|p{4cm}|p{3.6cm}|p{4.8cm}|p{1.8cm}|p{2.2cm}|}
+  \caption{Failure Mode and Effect Analysis} \label{FMEA}\\
+  \hline
+   Component & Failure Modes & Effects of Failure & Causes of Failure & Recommended Action & SR & Ref.  \\ 
+  \hline
+  \endfirsthead
+  \multicolumn{7}{r}{Table \thetable\ Continued from previous page}\\ 
+  \hline
+   Component & Failure Modes & Effects of Failure & Causes of Failure & Recommended Action & SR & Ref.  \\ 
+  \hline
+  \endhead
+  \multicolumn{7}{r}{{Continued on next page}}\\
+  \endfoot
+  \multicolumn{7}{r}{{Concluded}}\\
+  \endlastfoot
+  ML Transcription Model & 
+  \begin{enumerate}[leftmargin=*]
+      \item Model omits speech or invents text that was not said
+      \item Audio is sent to the external API without adequate protection
+  \end{enumerate} & 
+  \begin{enumerate}[leftmargin=*]
+      \item Missed or hallucinated utterances falsify the child's speech assessment, which can lead to incorrect conclusions about their abilities.
+      \item Private recordings of children's assessments are exposed, which is a breach of sensitive data and a potential violation of privacy regulations such as HIPAA.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item Low-volume audio, silence or noise misread as speech, or model hallucination.
+    \item Unencrypted transmission, or data leaks, since OpenAI may store submitted data for up to 30 days \citep{openai-data-controls}.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item Flag segments the model is less certain about and prompt the clinician to review them against the video playback.
+    \item Encrypt transmissions, and apply for Zero Data Retention to prevent OpenAI from keeping the recordings \citep{openai-data-controls}.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item FR13
+       \item NFR7
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item HA-MLTM1
+       \item HA-MLTM2
+  \end{enumerate} \\
+  \hline
+  Video Recording & 
+  \begin{enumerate}[leftmargin=*]
+      \item Poor audio or video quality
+      \item Recording is saved but corrupted or unplayable
+  \end{enumerate} & 
+  \begin{enumerate}[leftmargin=*]
+      \item Transcription and face or behavior detection is unreliable, so the assessment may be wrongly critiqued and analyzed.
+      \item The clinician cannot review the assessment, and the data cannot be recreated.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item Low-quality microphone, background noise, poor lighting, low-quality camera.
+       \item Interrupted upload, format or encoding error, storage failure.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item Provide a setup tutorial and run a quality check before conducting the assessment.
+       \item Keep a temporary copy of the recording in the patient's browser until the system confirms the upload succeeded, verify that the recording is complete and playable, and back up the recording once it is verified.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item NFR9
+       \item NFR8
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item HA-VR1
+       \item HA-VR2
+  \end{enumerate} \\
+  \hline
+  \end{longtable}
+\end{landscape}
+\restoregeometry
+\newpage
+
 \section{Safety and Security Requirements}
 
 \wss{Newly discovered requirements.  These should also be added to the SRS.  (A
@@ -171,7 +258,6 @@ Which requirements will be implemented in the future?}
 \newpage{}
 
 \section{Appendix --- Generative AI Use Disclosure}
-
 
 \subsection{AI Tools Used}
 
@@ -277,5 +363,12 @@ if the internet cuts out partway through an assessment, or
 if the child happens to need a lot of help from a parent during their assessment and the parent
 happens to interfere too much. Trying to decide whether these should be assumptions or actual 
 hazards made us think more about what we could realistically control, and if so then how.
+
+\newpage{}
+\bibliographystyle {plainnat}
+\bibliography {../../refs/References}
+\newpage{}
+
+
 
 \end{document}
