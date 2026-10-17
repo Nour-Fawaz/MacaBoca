@@ -246,7 +246,7 @@ They must approve tools that handle patient data and need the system to meet pri
 \toprule
 Term & Definition\\
 \midrule
-TeLaC & A web platform for Mandarin-English child language assessment. It brings together the assessment tools clinicians need, so they can complete their entire workflow in one place.\\
+TeLaC & A web platform for Mandarin-English child language assessment. It brings together the assessment tools clinicians need, so they can complete their entire workflow in one place. TeLaC stands for Telehealth Language Assessment for Children.\\
 \midrule
 BeViz & Software that organizes and visualizes assessment results. It also detects potential interfering behaviors during an assessment (such as parent prompting) so clinicians can review them.\\
 \midrule
@@ -264,15 +264,11 @@ HIPAA & Health Insurance Portability and Accountability Act, which is an America
 \midrule
 Finite State Machine & A mathematical model that represents a sequential workflow as a set of states and transitions between them. A state may have one or more transitions leading to different states, which allows for multiple pathways through the workflow. At any given moment, the workflow is in exactly one state and may move to another state through a defined transition.\\
 \midrule
+TeLaC & Telehealth Language Assessment for Children\\ 
 SLP & Speech-Language Pathologist\\
-\midrule
-HCI & Human-Computer Interface\\
-\midrule
-HCD & Human-Centered Design\\
-\midrule
 FR & Functional Requirement\\
-\midrule
 NFR & Non-Functional Requirement\\
+SR & Stakeholder Requirement\\
 \bottomrule
 \caption{Definitions and Acronyms} \label{tab:DefinitionsAndAcronyms}
 \end{longtable}
@@ -696,8 +692,8 @@ Clinician, System
 \item The system auto-generates transcriptions for the video assessment 
 \item The system displays the video playback along with the auto-generated transcriptions as chunks of text
 \item The clinician selects a chunk 
-\item The system indicates which chunk is selected and presents that chunk’s details for editing
-\item The clinician selects the “Speaker” dropdown in the chunk’s detail view
+\item The system indicates which chunk is selected and presents that chunk’s details for editing, including a role selection dropdown for each speaker it predicts in the chunk
+\item The clinician selects the role dropdown for one of the speakers
 \item The system displays the following list of options for different possible speakers
     \begin{itemize}
       \item System
@@ -707,14 +703,16 @@ Clinician, System
       \item Multiple Speakers
       \item Others
     \end{itemize}
-\item The clinician selects the correct role for the current speaker
-\item The system labels the chunk with the selected role
-\item The clinician repeats steps 4-9 for the remaining chunks
+\item The clinician selects the correct role for that speaker
+\item The system labels that speaker’s part of the chunk with the selected role.
+\item The clinician repeats steps 6-9 for any other speakers in the chunk.
+\item The clinician repeats steps 4-10 for the remaining chunks.
 \end{enumerate}
 
 \textbf{Alternative Flows}
 \begin{itemize}
-\item[10a.] The clinician may select any segment in any order, and the system indicates the newly selected segment. The clinician can then make any edits to the chunk of text using the given options.
+  \item[10a.] There is only one speaker in the chunk, so the clinician only needs to select a role for that speaker.
+  \item[11a.] The clinician may select any segment in any order, and the system indicates the newly selected segment. The clinician can then make any edits to the chunk of text using the given options.
 \end{itemize}
 
 \textbf{Postconditions}
@@ -1151,10 +1149,9 @@ The following use case diagrams show the interactions between the clinician and 
 \\ \textbf{Fit Criterion:} Clinicians shall be able to navigate between all implemented stages of the annotation workflow without losing saved work. The system shall indicate both the current and completed stages of the assessment.
 
 \refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_Label6}:] The system shall allow clinicians to assign speaker roles and filter assessment transcripts by speaker.
-\\ \textbf{Rationale:} Automatically generated transcripts do not identify who is speaking. Clinicians need to distinguish the child’s speech from that of adults, such as the parent or clinician, to analyze the child’s language and identify interfering parent behavior.
-\\ \textbf{Fit Criterion:} The system must label every transcript segment from a speaker with the role assigned to that speaker once the clinician assigns it.
-
+\item[\textbf{\rthereqnum} \label{FR_Label6}:] The system shall allow clinicians to assign a role to each speaker distinguished by the system, and to filter assessment transcripts by speaker role.
+\\ \textbf{Rationale:} As mentioned in \rref{FR_SpeakerIdentification}, the system distinguishes between speakers in automatically generated transcripts, but it makes educated guesses and does not know who each speaker is. Clinicians need to identify the child's speech and separate it from the adults, such as the parent or clinician, to analyze the child's language and identify interfering parent behavior. The system therefore separates the speakers, and the clinician assigns each one a role.
+\\ \textbf{Fit Criterion:} The system must label every transcript segment from a distinguished speaker with their corresponding role once the clinician assigns it.
 \refstepcounter{reqnum}
 \item[\textbf{\rthereqnum} \label{FR_Label7}:] The system shall generate detailed assessment reports from transcriptions, including any edits made by clinicians.
 \\ \textbf{Rationale:} Clinicians review and correct the automatically generated transcription, adjust flagged assessment questions, and add notes to individual questions. The report must reflect these changes so that it includes the clinician’s judgment.
@@ -1754,7 +1751,7 @@ Clinicians review the auto-generated transcript against the video playback and c
 \toprule
 Stakeholder Req & Use Case & Functional Req \\
 \midrule
-\srref{SR_ClinicianFinalJudgment} & -- & \rref{FR_ManualEvaluation} \\
+\srref{SR_ClinicianFinalJudgment} & \ucref{UC_Label5} &  \rref{FR_SpeakerIdentification}, \ref{FR_Label6} \\
 \srref{SR_EvidenceTraceability} & -- & \rref{FR_ManualEvaluation} \\
 \srref{SR_FlexibleWorkflows} & \ucref{UC_Label4} & \rref{FR_Label15} \\
 \srref{SR_CompiledReports} & \ucref{UC_GenerateReport} & \rref{FR_Label7} \\
@@ -1762,11 +1759,13 @@ Stakeholder Req & Use Case & Functional Req \\
 \srref{SR_CompiledReports} & -- & \rref{FR_QuestionNotes} \\
 \srref{SR_CompiledReports} & -- & \rref{FR_AssessmentNotes} \\
 \srref{SR_SinglePlatform} & \ucref{UC_ReturnAnnotationsToRecord} & \rref{FR_AnnotationsInRecord} \\
+\srref{SR_SinglePlatform} & \ucref{UC_Label6} & \rref{FR_Label8}, \rref{FR_Label14} \\
 \srref{SR_ReduceAnnotationTime} & \ucref{UC_ReviewTranscriptPlayback} & \rref{FR_TranscriptHighlight} \\
 \srref{SR_EvidenceTraceability} & \ucref{UC_ReviewTranscriptPlayback} & \rref{FR_TranscriptHighlight} \\
 \srref{SR_ReduceAnnotationTime} & \ucref{UC_ReviewTranscriptPlayback} & \rref{FR_SegmentSeek} \\
 \srref{SR_EvidenceTraceability} & \ucref{UC_ReviewTranscriptPlayback} & \rref{FR_SegmentSeek} \\
 \srref{SR_BilingualSupport} & -- & \rref{FR_ResultVisualization} \\
+\srref{SR_ProgressOverTime} & \ucref{UC_Label7} & \rref{FR_Label22}, \rref{FR_Label23} \\
 \srref{SR_ProgressOverTime} & -- & \rref{FR_ResultVisualization} \\
 \srref{SR_ClinicianFinalJudgment} & -- & \rref{FR_LinguisticPatternDetection} \\
 \bottomrule
