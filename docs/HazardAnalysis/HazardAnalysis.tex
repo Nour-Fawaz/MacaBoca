@@ -63,7 +63,7 @@ Date2 & Name(s) & Description of changes\\
 \pagenumbering{arabic}
 
 
-\section{Introduction}
+\section{Introduction} \label{sec:Introduction}
 
 TeLaC is a telehealth platform for assessing the speech of bilingual children at home. 
 Patients complete speech assessments online, and speech clinicians use the platform to review the recordings, verify the results, and manage their patients’ records and analytics. 
@@ -75,14 +75,14 @@ A hazard is defined as any condition or state of the system that, under certain 
 This document identifies the hazards in TeLaC, analyzes how they could arise, and describes how the system’s design and requirements reduce them.
 
 
-\section{Scope and Purpose of Hazard Analysis}
+\section{Scope and Purpose of Hazard Analysis} \label{sec:Scope}
 
 This document examines the hazards in each component of TeLaC outlined below. 
 For each hazard, the analysis determines the possible failures, along with their effects, causes, and recommended actions. 
 It covers both technical hazards and user interaction hazards, because clinicians rely on the system’s outputs when assessing a child’s language ability, and the information it stores is confidential. 
 If these hazards are not addressed, patients and clinicians could suffer losses such as the exposure of private health information, incorrect clinical conclusions that affect a child’s care, the permanent loss of assessment data, and a loss of confidence in the platform.
 
-\section{System Boundaries and Components}
+\section{System Boundaries and Components} \label{sec:Boundaries}
 
 \wss{Dividing the system into components will help you brainstorm the hazards.
 You shouldn't do a full design of the components, just get a feel for the major
@@ -120,7 +120,7 @@ clinician's dashboard.
 TODO
 
 
-\section{Critical Assumptions}
+\section{Critical Assumptions} \label{sec:Assumptions}
 
 \wss{These assumptions that are made about the software or system.  You should
 minimize the number of assumptions that remove potential hazards.  For instance,
@@ -158,7 +158,8 @@ this potential failure mode.}
     \end{itemize}
 \end{itemize}
 
-\section{Failure Mode and Effect Analysis}
+
+\section{Failure Mode and Effect Analysis} \label{sec:FMEASection}
 
 \wss{Include your FMEA table here. This is the most important part of this document.}
 \wss{The safety requirements in the table do not have to have the prefix SR.
@@ -245,12 +246,12 @@ The following FMEA table is a breakdown of the hazards that could occur within t
 \restoregeometry
 \newpage
 
-\section{Safety and Security Requirements}
+\section{Safety and Security Requirements} \label{sec:SafetySecurity}
 
 \wss{Newly discovered requirements.  These should also be added to the SRS.  (A
 rationale design process how and why to fake it.)}
 
-\section{Roadmap}
+\section{Roadmap} \label{sec:Roadmap}
 
 \wss{Which safety requirements will be implemented as part of the capstone timeline?
 Which requirements will be implemented in the future?}
@@ -268,15 +269,94 @@ Which requirements will be implemented in the future?}
 
 \subsection{How and Where Used}
 
-Both models were used in all the sections to do the following:
+The following uses of AI applied throughout the entire document. If a section is not listed below, no additional AI use occurred in that section.
+
 \begin{itemize}
-    \item Check that each written section answered every question asked and met the rubric requirements
-    \item Improve the wording, clarity and the flow of written sections
-    \item Debug LaTeX compilation errors
+  \item Fixing grammar and spelling
+  \begin{itemize}
+    \item \textit{Prompt: ``can you fix the grammar and spelling in this section but keep the wording close to mine: [insert section text]''}
+  \end{itemize}
+  \item Performing a final check over the document at the end, comparing each section against the original document comments and the rubric to ensure nothing was missed
+  \begin{itemize}
+    \item \textit{Prompt: ``here is the rubric for this deliverable: [insert rubric]. here is the document: [insert document code]. can you go through each section and check it against the rubric, and tell me if we missed anything''}
+  \end{itemize}
+  \item Organizing what each team member used AI for (listed as bullet points) into the corresponding sections of this appendix
+  \begin{itemize}
+    \item \textit{Prompt: ``here is a list of how everyone on the team used ai: [insert bullet points]. can you organize these into the sections of the document they belong to''}
+  \end{itemize}
+  \item Debugging possible \LaTeX{} errors
+  \item Creating references
+  \begin{itemize}
+    \item \textit{Prompt: ``can you format this in a citation for me: [insert link]. here is an example: [insert example citation]''}
+  \end{itemize}
 \end{itemize}
-The models were used to do the following in specific sections
+
+\textbf{\hyperref[sec:Introduction]{Section~\ref*{sec:Introduction}: Introduction}}
 \begin{itemize}
-    \item Brainstorm possible failure modes for the system components in section 5
+  \item Claude was used to fix the wording and flesh out the introduction.
+  \begin{itemize}
+    \item \textit{Prompt: ``can you elaborate on this intro and make it sound better: [insert introduction]''}
+  \end{itemize}
+\end{itemize}
+
+\textbf{\hyperref[sec:Scope]{Section~\ref*{sec:Scope}: Scope and Purpose of Hazard Analysis}}
+\begin{itemize}
+  \item Claude was used to fix the wording and flesh out the scope and purpose.
+  \begin{itemize}
+    \item \textit{Prompt: ``can you help me re-word and fix this: [insert paragraph]. the question being asked: [insert question from the template]''}
+  \end{itemize}
+\end{itemize}
+
+\textbf{\hyperref[sec:Boundaries]{Section~\ref*{sec:Boundaries}: System Boundaries and Components}}
+\begin{itemize}
+  \item Claude was used to fix the wording of the component descriptions.
+  \begin{itemize}
+    \item \textit{Prompt: ``can you fix the wording: [insert component description]''}
+  \end{itemize}
+\end{itemize}
+
+\textbf{\hyperref[sec:Assumptions]{Section~\ref*{sec:Assumptions}: Critical Assumptions}}
+\begin{itemize}
+  \item Claude was used to help brainstorm critical assumptions.
+  \begin{itemize}
+    \item \textit{Prompt: ``what are some critical assumptions we could make for the system: [insert system description]''}
+  \end{itemize}
+  \item Claude was used to fix the wording of the assumptions.
+  \begin{itemize}
+    \item \textit{Prompt: ``can you fix the wording: [insert assumptions]''}
+  \end{itemize}
+\end{itemize}
+
+\textbf{\hyperref[sec:FMEASection]{Section~\ref*{sec:FMEASection}: Failure Mode and Effect Analysis}}
+\begin{itemize}
+  \item Claude was used to put the group's data into the \LaTeX{} table.
+  \begin{itemize}
+    \item \textit{Prompt: ``can u make a table with this format: [insert example table] but remove all the data in it and put this instead: [insert data]''}
+  \end{itemize}
+  \item Claude was used to help brainstorm failure modes for the components.
+  \begin{itemize}
+    \item \textit{Prompt: ``can you help me identify failure modes for [insert component]''}
+  \end{itemize}
+\end{itemize}
+
+\textbf{\hyperref[sec:SafetySecurity]{Section~\ref*{sec:SafetySecurity}: Safety and Security Requirements}}
+\begin{itemize}
+  \item Claude was used to help brainstorm safety and security requirements.
+  \begin{itemize}
+    \item \textit{Prompt: ``can you help me come up with safety and security requirements for the failure modes in this table: [insert FMEA table]''}
+  \end{itemize}
+  \item Claude was used to check the wording of the requirements.
+  \begin{itemize}
+    \item \textit{Prompt: ``can you check the wording of these requirements: [insert requirements]''}
+  \end{itemize}
+\end{itemize}
+
+\textbf{\hyperref[sec:Roadmap]{Section~\ref*{sec:Roadmap}: Roadmap}}
+\begin{itemize}
+  \item Claude was used to check the wording.
+  \begin{itemize}
+    \item \textit{Prompt: ``can you check the wording of this: [insert roadmap]''}
+  \end{itemize}
 \end{itemize}
 
 
