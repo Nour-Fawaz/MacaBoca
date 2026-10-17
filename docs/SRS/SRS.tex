@@ -1660,15 +1660,15 @@ The system stores recordings, transcripts, and health information about children
 \item[\textbf{\rthenfrnum}:]
 \label{NFR-RE1}
 The system shall reliably generate transcriptions for supported patient assessment videos.
-  \\ \textbf{Rationale:} Transcriptions are essential to the annotation workflow. Failed or incomplete transcription generation can delay assessments and require clinicians to repeat work manually.
-  \\ \textbf{Fit Criterion:} For at least GENERATE\_SUCCESS\% of valid, supported assessment videos tested, the system shall successfully generate a transcription as specified in FR2 without requiring the clinician to restart the process manually.
+  \\ \textbf{Rationale:} Transcriptions are essential to the annotation workflow. Failed or incomplete transcription generation can delay assessments and prevent accurate identification of speakers (\rref{FR_SpeakerIdentification}).
+  \\ \textbf{Fit Criterion:} For at least GENERATE\_SUCCESS\% of valid, supported assessment videos tested, the system shall successfully generate a transcription as specified in {\rref{FR_AutomaticTranscription}} without requiring the clinician to restart the process manually.
 
 \refstepcounter{nfrnum}
 \item[\textbf{\rthenfrnum}:]
 \label{NFR-RE2}
 The system shall preserve saved transcription edits and annotations across sessions.
   \\ \textbf{Rationale:} Clinicians may complete assessments over multiple sessions. Losing saved work would increase workload, compromise record-keeping, and potentially affect the consistency of assessment results.
-  \\ \textbf{Fit Criterion:} For at least SAVE\_SUCCESS\% of successfully saved transcription edits \rref{FR_TranscriptionEditing} and annotation data (\rref{FR_AnnotationExport}), the system shall ensure that the data remains available and unchanged after the clinician leaves the assessment and reopens it.
+  \\ \textbf{Fit Criterion:} For at least SAVE\_SUCCESS\% of saved transcription edits (\rref{FR_TranscriptionEditing}) and annotation data (\rref{FR_AnnotationExport}) tested, the data shall remain available and unchanged after the clinician ends the session, logs back in, and reopens the assessment.
 
 \end{itemize}
 
@@ -1681,21 +1681,22 @@ The system shall preserve saved transcription edits and annotations across sessi
 \label{NFR-CV1}
 The system shall respond to clinician interactions within an acceptable time throughout the assessment process.
   \\ \textbf{Rationale:} Clinicians need to review and annotate assessments efficiently. Delayed responses can interrupt their workflow and increase the time required to complete assessments.
-  \\ \textbf{Fit Criterion:} At least AVG\_INTERACTIONS\% of common interactions related to transcription editing (\rref{FR_TranscriptionEditing}) and annotation data export shall complete within INTERACTION\_TIME under normal operating conditions, excluding processing-intensive tasks.
+  \\ \textbf{Fit Criterion:} At least AVG\_INTERACTIONS\% of common interactions related to transcription editing and annotation data export (\rref{FR_AnnotationExport}) shall complete within INTERACTION\_TIME seconds under normal operating conditions, excluding processing-intensive tasks.
 
 \refstepcounter{nfrnum}
 \item[\textbf{\rthenfrnum}:]
 \label{NFR-CV2}
 The system shall allow clinicians to access their annotation work from different devices through a web browser.
   \\ \textbf{Rationale:} Clinicians may need to access assessment records from different work environments. Browser-based access reduces reliance on a specific device and eliminates the need to manually transfer annotation files.
-  \\ \textbf{Fit Criterion:} Clinicians shall be able to access and continue editing the same saved annotation data (\rref{FR_TranscriptionEditing}) from at least two supported devices through a web browser without manually transferring files.
+  \\ \textbf{Fit Criterion:} Clinicians shall be able to access and continue editing the same saved transcription edits and annotation data (\rref{FR_TranscriptionEditing}, \rref{FR_AnnotationExport}) from at least two supported devices through a web browser without manually transferring files.
 
-  \refstepcounter{nfrnum}
+\refstepcounter{nfrnum}
 \item[\textbf{\rthenfrnum}:]
-\label{NFR-PE3}
+\label{NFR-CV3}
 The system shall minimize repetitive interactions when clinicians complete annotations and manage patient assessments.
-  \\ \textbf{Rationale:} Repetitive actions, such as manually saving work or repeatedly entering the same information, increase administrative workload and can interrupt the assessment process.
-  \\ \textbf{Fit Criterion:} The system shall automatically save or otherwise preserve changes to transcription edits (\rref{FR_TranscriptionEditing}) and annotation data (\rref{FR_AnnotationExport}) when clinicians navigate between assessment workflow stages (\rref{FR_AssessmentWorkflowNavigation}), without requiring them to manually save their work on each page.
+  \\ \textbf{Rationale:} Repetitive actions, such as manually saving work or repeatedly entering the same information already known to the system, increase administrative workload and can interrupt the assessment process.
+  \\ \textbf{Fit Criterion:} The system shall automatically preserve changes to transcription edits and annotation data when clinicians navigate between assessment workflow stages (\rref{FR_AssessmentWorkflowNavigation}), and shall pre-fill fields with information already stored in the system (e.g., patient name and assessment date) so that the clinician does not need to re-enter it.
+
 \end{itemize}
 
 
@@ -1780,6 +1781,11 @@ Functional Requirements} \label{tab:SR2UC2FRtm}
 \toprule
 Functional Req & Nonfunctional Req \\
 \midrule
+\rref{FR_AutomaticTranscription} & \nfrref{NFR-RE1} \\
+\rref{FR_TranscriptionEditing} & \nfrref{NFR-RE2}, \nfrref{NFR-CV2} \\
+\rref{FR_SpeakerIdentification} & \nfrref{NFR-RE1} \\
+\rref{FR_AnnotationExport} & \nfrref{NFR-RE2}, \nfrref{NFR-CV1} \\
+\rref{FR_AssessmentWorkflowNavigation} & \nfrref{NFR-CV3} \\
 \rref{FR_Label6} & \nfrref{NFR-U2} \\
 \rref{FR_Label7} & \nfrref{NFR-U4} \\
 \rref{FR_Label8} & \nfrref{NFR-U3} \\
@@ -1799,9 +1805,6 @@ Functional Req & Nonfunctional Req \\
 \rref{FR_SegmentSeek} & \nfrref{NFR-P2} \\
 \rref{FR_ResultVisualization} & \nfrref{NFR-U2} \\
 \rref{FR_LinguisticPatternDetection} & \nfrref{NFR-UN1} \\
-\rref{FR_TranscriptionEditing} & \nfrref{NFR-CV1} \\
-\rref{FR_AnnotationExport} & \nfrref{NFR-RE2}, \nfrref{NFR-PE3} \\
-\rref{FR_AssessmentWorkflowNavigation} & \nfrref{NFR-PE3} \\
 
 \bottomrule
 \caption{Traceability Between Functional and Nonfunctional Requirements}
