@@ -1710,7 +1710,7 @@ It is accessed through an API and takes audio or text as input \citep{OpenAI_Whi
   \item Individual segments of the assessment’s audio file (.wav), each under 25 MB.
 \end{itemize}
 
-\subsection{Model Outputs}
+\subsection{Model Outputs} \label{sec:AIModelOutputs}
 
 \begin{itemize}
     \item A verbose JSON object containing the following \citep{openai-create-transcription}:
@@ -1780,13 +1780,14 @@ It is accessed through an API and takes audio or text as input \citep{OpenAI_Whi
 \end{verbatim}
 
 \subsection{Evaluation Metrics}
-
 The model is not currently being evaluated. The annotation tool does, however, let speech clinicians edit transcriptions in chunks, viewing the text next to the audio playback, so incorrect auto-generated transcriptions can be corrected.
 
-The model could be evaluated in the future by comparing the original auto-generated transcriptions against the clinician-edited versions and calculating the word error rate.
+As mentioned in {\hyperref[sec:AIModelOutputs]{Section~\ref*{sec:AIModelOutputs}: AI Model Outputs}}, the model's verbose JSON output also includes values for each transcript segment that indicate how reliable the transcription is: \texttt{avg\_logprob} (the average log probability of the segment), \texttt{no\_speech\_prob} (the probability that the segment contains no speech), and \texttt{compression\_ratio} (high values can indicate repetitive and/or hallucinated text). Converting \texttt{avg\_logprob} to a probability gives a rough confidence score for each segment. The system could display this score next to each transcript segment and highlight segments that fall below a threshold, so clinicians can review the least certain parts of a transcript first and decide where to spend their time.
 
+It should be noted however, these values are the model's own estimates, and the model can be wrong. Hence, the confidence scores should only be a guide to a clinician's review.
 
-\subsection{Known Limitations} \subsection{Known Limitations} \label{sec:KnownLimitations}
+The model could be evaluated in the future by comparing the original auto-generated transcriptions against the clinician-edited versions and calculating the word error rate. 
+\subsection{Known Limitations} \label{sec:KnownLimitations}
 
 The model’s website describes its performance as average, so the following failure modes are expected when it is used in TeLaC \citep{Laumann_Whisper_2022}.
 \begin{itemize}
