@@ -44,7 +44,6 @@
 \captionsetup{font=small,labelfont=bf}
 \usepackage{pdflscape}
 \usepackage{afterpage}
-
 \usepackage[round]{natbib}
 
 %\usepackage{refcheck}
@@ -246,7 +245,7 @@ They must approve tools that handle patient data and need the system to meet pri
 \toprule
 Term & Definition\\
 \midrule
-TeLaC & A web platform for Mandarin-English child language assessment. It brings together the assessment tools clinicians need, so they can complete their entire workflow in one place.\\
+TeLaC & A web platform for Mandarin-English child language assessment. It brings together the assessment tools clinicians need, so they can complete their entire workflow in one place. TeLaC stands for Telehealth Language Assessment for Children.\\
 \midrule
 BeViz & Software that organizes and visualizes assessment results. It also detects potential interfering behaviors during an assessment (such as parent prompting) so clinicians can review them.\\
 \midrule
@@ -264,15 +263,11 @@ HIPAA & Health Insurance Portability and Accountability Act, which is an America
 \midrule
 Finite State Machine & A mathematical model that represents a sequential workflow as a set of states and transitions between them. A state may have one or more transitions leading to different states, which allows for multiple pathways through the workflow. At any given moment, the workflow is in exactly one state and may move to another state through a defined transition.\\
 \midrule
+TeLaC & Telehealth Language Assessment for Children\\ 
 SLP & Speech-Language Pathologist\\
-\midrule
-HCI & Human-Computer Interface\\
-\midrule
-HCD & Human-Centered Design\\
-\midrule
 FR & Functional Requirement\\
-\midrule
 NFR & Non-Functional Requirement\\
+SR & Stakeholder Requirement\\
 \bottomrule
 \caption{Definitions and Acronyms} \label{tab:DefinitionsAndAcronyms}
 \end{longtable}
@@ -288,7 +283,7 @@ The intended readers of this document are the development team, future developer
 \end{itemize}
 
 % ============================================================== 
-\section{System Overview}
+\section{System Overview} \label{sec:SystemOverview}
 
 This section provides general information about the system.  It identifies the
 problem, the vision, and the interfaces between the system and its environment.
@@ -499,7 +494,7 @@ Clinicians reported that annotating a 20-minute session can take up to four hour
 \end{itemize}
 
 % ============================================================== 
-\section{User Personas}
+\section{User Personas} \label{sec:UserPersonas}
 
 \subsection{Overworked SLP in Favour of Automating the Speech Analysis Process}
 \begin{itemize}
@@ -527,7 +522,7 @@ Clinicians reported that annotating a 20-minute session can take up to four hour
 \item Technical Ability: Georgia is technically proficient and experienced with speech therapy software. Although she is adaptable to new technologies, she compares their capabilities and features with existing tools and traditional practices. She is also comfortable interpreting assessment data and performance metrics, but cannot fully verify clinical decisions.
 \end{itemize}
 % ============================================================== 
-\section{Use Cases}
+\section{Use Cases} \label{sec:UseCases}
 \plt{Use cases are a way to describe the interactions between users and the system.
   They are typically written in natural language and describe the steps that a
   user takes to achieve a specific goal.  Use cases can be used to identify
@@ -696,8 +691,8 @@ Clinician, System
 \item The system auto-generates transcriptions for the video assessment 
 \item The system displays the video playback along with the auto-generated transcriptions as chunks of text
 \item The clinician selects a chunk 
-\item The system indicates which chunk is selected and presents that chunk’s details for editing
-\item The clinician selects the “Speaker” dropdown in the chunk’s detail view
+\item The system indicates which chunk is selected and presents that chunk’s details for editing, including a role selection dropdown for each speaker it predicts in the chunk
+\item The clinician selects the role dropdown for one of the speakers
 \item The system displays the following list of options for different possible speakers
     \begin{itemize}
       \item System
@@ -707,14 +702,16 @@ Clinician, System
       \item Multiple Speakers
       \item Others
     \end{itemize}
-\item The clinician selects the correct role for the current speaker
-\item The system labels the chunk with the selected role
-\item The clinician repeats steps 4-9 for the remaining chunks
+\item The clinician selects the correct role for that speaker
+\item The system labels that speaker’s part of the chunk with the selected role.
+\item The clinician repeats steps 6-9 for any other speakers in the chunk.
+\item The clinician repeats steps 4-10 for the remaining chunks.
 \end{enumerate}
 
 \textbf{Alternative Flows}
 \begin{itemize}
-\item[10a.] The clinician may select any segment in any order, and the system indicates the newly selected segment. The clinician can then make any edits to the chunk of text using the given options.
+  \item[10a.] There is only one speaker in the chunk, so the clinician only needs to select a role for that speaker.
+  \item[11a.] The clinician may select any segment in any order, and the system indicates the newly selected segment. The clinician can then make any edits to the chunk of text using the given options.
 \end{itemize}
 
 \textbf{Postconditions}
@@ -1121,7 +1118,7 @@ The following use case diagrams show the interactions between the clinician and 
 \end{figure}
 
 % ============================================================== 
-\section{Functional Requirements}
+\section{Functional Requirements} \label{sec:FunctionalRequirements}
 
 \noindent \begin{itemize}
 
@@ -1151,10 +1148,9 @@ The following use case diagrams show the interactions between the clinician and 
 \\ \textbf{Fit Criterion:} Clinicians shall be able to navigate between all implemented stages of the annotation workflow without losing saved work. The system shall indicate both the current and completed stages of the assessment.
 
 \refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_Label6}:] The system shall allow clinicians to assign speaker roles and filter assessment transcripts by speaker.
-\\ \textbf{Rationale:} Automatically generated transcripts do not identify who is speaking. Clinicians need to distinguish the child’s speech from that of adults, such as the parent or clinician, to analyze the child’s language and identify interfering parent behavior.
-\\ \textbf{Fit Criterion:} The system must label every transcript segment from a speaker with the role assigned to that speaker once the clinician assigns it.
-
+\item[\textbf{\rthereqnum} \label{FR_Label6}:] The system shall allow clinicians to assign a role to each speaker distinguished by the system, and to filter assessment transcripts by speaker role.
+\\ \textbf{Rationale:} As mentioned in \rref{FR_SpeakerIdentification}, the system distinguishes between speakers in automatically generated transcripts, but it makes educated guesses and does not know who each speaker is. Clinicians need to identify the child's speech and separate it from the adults, such as the parent or clinician, to analyze the child's language and identify interfering parent behavior. The system therefore separates the speakers, and the clinician assigns each one a role.
+\\ \textbf{Fit Criterion:} The system must label every transcript segment from a distinguished speaker with their corresponding role once the clinician assigns it.
 \refstepcounter{reqnum}
 \item[\textbf{\rthereqnum} \label{FR_Label7}:] The system shall generate detailed assessment reports from transcriptions, including any edits made by clinicians.
 \\ \textbf{Rationale:} Clinicians review and correct the automatically generated transcription, adjust flagged assessment questions, and add notes to individual questions. The report must reflect these changes so that it includes the clinician’s judgment.
@@ -1294,7 +1290,7 @@ The clinician can then view, edit, and download the report as in Workflow A. Thi
 
 % ============================================================== 
 
-\section{Data Requirements}
+\section{Data Requirements} \label{sec:DataRequirements}
 This section comprises the major data entities and data dictionary below.
 
 \subsection{Major Data Entities}
@@ -1334,7 +1330,7 @@ Audit Log Entry & A record of a single view, change, download, or export of pati
 \caption{Major Data Entities} \label{tab:DataEntities}
 \end{longtable}
 
-\subsection{Relationships}
+\subsection{Relationships} \label{sec:Relationships}
 The relationships between the data entities are as follows:
 
 \begin{itemize}
@@ -1347,7 +1343,7 @@ The relationships between the data entities are as follows:
 \item Question responses and transcript segments are linked by time: the segments within a question’s period of the recording form the transcript for that question. A question’s period starts when the previous question was answered (or at the start of the recording, for the first question) and ends when the patient answers it.
 \end{itemize}
 
-\subsection{Annotations}
+\subsection{Annotations} \label{sec:Annotations}
 
 In this document, an \textbf{annotation} is any information that is added to an assessment recording to describe it, beyond the recording itself. Annotations are generated automatically or by the clinician, and are then reviewed and corrected by the clinician. They are stored across the entities above:
 
@@ -1484,7 +1480,7 @@ The system stores recordings, transcripts, and health information about children
 \end{itemize}
 
 % ============================================================== 
-\section{Non-Functional Requirements}
+\section{Non-Functional Requirements} \label{sec:NFR}
 
 \subsection{Usability}
 
@@ -1710,31 +1706,88 @@ It is accessed through an API and takes audio or text as input \citep{OpenAI_Whi
 
 \subsection{Model Inputs}
 
-Individual segments of the assessment’s audio file (.wav), each under 25 MB.
+\begin{itemize}
+  \item Individual segments of the assessment’s audio file (.wav), each under 25 MB.
+\end{itemize}
 
-\subsection{Model Outputs}
+\subsection{Model Outputs} \label{sec:AIModelOutputs}
 
-A JSON object containing the start and end times of each segment, formatted as MM:SS (minutes:seconds), and a text field with the words spoken in the segment.
+\begin{itemize}
+    \item A verbose JSON object containing the following \citep{openai-create-transcription}:
+    \begin{itemize}
+        \item \texttt{duration} (double): duration of the input audio
+        \item \texttt{language} (string): language of the input audio
+        \item \texttt{text} (string): the transcribed text
+        \item \texttt{segments} (array of JSON objects, optional): details of the transcribed text, given in segments. Each segment contains the following:
+        \begin{itemize}
+            \item \texttt{id}: a unique identification number
+            \item \texttt{avg\_logprob} (float): the average log probability of the segment
+            \item \texttt{compression\_ratio} (float): the compression ratio of the segment
+            \item \texttt{end} (double): the end time of the segment in seconds
+            \item \texttt{no\_speech\_prob} (float): the probability that there is no speech in the segment
+            \item \texttt{seek}: the seek offset
+            \item \texttt{start} (double): the start time of the segment in seconds
+            \item \texttt{temperature} (float): the temperature parameter used for generating the segment
+            \item \texttt{text} (string): the content of the segment
+            \item \texttt{tokens} (array of numbers): the token IDs for the text content of the segment
+        \end{itemize}
+        \item \texttt{usage} (object, optional): usage statistics for the model, given the input audio duration
+        \begin{itemize}
+            \item \texttt{seconds} (double): the duration of the input audio in seconds
+            \item \texttt{type}: the type of the usage object, which is always \texttt{duration}
+        \end{itemize}
+        \item \texttt{words} (array, optional): the words and their corresponding timestamps
+        \begin{itemize}
+            \item \texttt{end} (double): the end time of the word in seconds
+            \item \texttt{start} (double): the start time of the word in seconds
+            \item \texttt{word} (string): the text content of the word
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
 
-\subsubsection{Example Output}
+\subsubsection{Example Output} \label{sec:ExampleOutput}
 \begin{verbatim}
-  [
+{
+  "duration": 2.1,
+  "language": "english",
+  "text": "I like cats and dogs",
+  "segments": [
     {
-    "start": "00:00",
-    "end": "00:05",
-    "text": "Recognized words."
+      "id": 0,
+      "seek": 0,
+      "start": 0.0,
+      "end": 2.1,
+      "text": "I like cats and dogs",
+      "tokens": [50364, 286, 411, 11111, 293, 7197],
+      "temperature": 0.0,
+      "avg_logprob": -0.2,
+      "compression_ratio": 1.0,
+      "no_speech_prob": 0.02
     }
-  ]
+  ],
+  "words": [
+    {"word": "I", "start": 0.0, "end": 0.2},
+    {"word": "like", "start": 0.2, "end": 0.6},
+    {"word": "cats", "start": 0.6, "end": 1.2},
+    {"word": "and", "start": 1.2, "end": 1.4},
+    {"word": "dogs", "start": 1.4, "end": 2.1}
+  ],
+  "usage": {
+    "type": "duration",
+    "seconds": 2
+  }
+}
 \end{verbatim}
 
 \subsection{Evaluation Metrics}
-
 The model is not currently being evaluated. The annotation tool does, however, let speech clinicians edit transcriptions in chunks, viewing the text next to the audio playback, so incorrect auto-generated transcriptions can be corrected.
 
-The model could be evaluated in the future by comparing the original auto-generated transcriptions against the clinician-edited versions and calculating the word error rate.
+As mentioned in {\hyperref[sec:AIModelOutputs]{Section~\ref*{sec:AIModelOutputs}: AI Model Outputs}}, the model's verbose JSON output also includes values for each transcript segment that indicate how reliable the transcription is: \texttt{avg\_logprob} (the average log probability of the segment), \texttt{no\_speech\_prob} (the probability that the segment contains no speech), and \texttt{compression\_ratio} (high values can indicate repetitive and/or hallucinated text). Converting \texttt{avg\_logprob} to a probability gives a rough confidence score for each segment. The system could display this score next to each transcript segment and highlight segments that fall below a threshold, so clinicians can review the least certain parts of a transcript first and decide where to spend their time.
 
+It should be noted however, these values are the model's own estimates, and the model can be wrong. Hence, the confidence scores should only be a guide to a clinician's review.
 
-\subsection{Known Limitations}
+The model could be evaluated in the future by comparing the original auto-generated transcriptions against the clinician-edited versions and calculating the word error rate. 
+\subsection{Known Limitations} \label{sec:KnownLimitations}
 
 The model’s website describes its performance as average, so the following failure modes are expected when it is used in TeLaC \citep{Laumann_Whisper_2022}.
 \begin{itemize}
@@ -1754,7 +1807,7 @@ Clinicians review the auto-generated transcript against the video playback and c
 \toprule
 Stakeholder Req & Use Case & Functional Req \\
 \midrule
-\srref{SR_ClinicianFinalJudgment} & -- & \rref{FR_ManualEvaluation} \\
+\srref{SR_ClinicianFinalJudgment} & \ucref{UC_Label5} &  \rref{FR_SpeakerIdentification}, \ref{FR_Label6} \\
 \srref{SR_EvidenceTraceability} & -- & \rref{FR_ManualEvaluation} \\
 \srref{SR_FlexibleWorkflows} & \ucref{UC_Label4} & \rref{FR_Label15} \\
 \srref{SR_CompiledReports} & \ucref{UC_GenerateReport} & \rref{FR_Label7} \\
@@ -1762,11 +1815,13 @@ Stakeholder Req & Use Case & Functional Req \\
 \srref{SR_CompiledReports} & -- & \rref{FR_QuestionNotes} \\
 \srref{SR_CompiledReports} & -- & \rref{FR_AssessmentNotes} \\
 \srref{SR_SinglePlatform} & \ucref{UC_ReturnAnnotationsToRecord} & \rref{FR_AnnotationsInRecord} \\
+\srref{SR_SinglePlatform} & \ucref{UC_Label6} & \rref{FR_Label8}, \rref{FR_Label14} \\
 \srref{SR_ReduceAnnotationTime} & \ucref{UC_ReviewTranscriptPlayback} & \rref{FR_TranscriptHighlight} \\
 \srref{SR_EvidenceTraceability} & \ucref{UC_ReviewTranscriptPlayback} & \rref{FR_TranscriptHighlight} \\
 \srref{SR_ReduceAnnotationTime} & \ucref{UC_ReviewTranscriptPlayback} & \rref{FR_SegmentSeek} \\
 \srref{SR_EvidenceTraceability} & \ucref{UC_ReviewTranscriptPlayback} & \rref{FR_SegmentSeek} \\
 \srref{SR_BilingualSupport} & -- & \rref{FR_ResultVisualization} \\
+\srref{SR_ProgressOverTime} & \ucref{UC_Label7} & \rref{FR_Label22}, \rref{FR_Label23} \\
 \srref{SR_ProgressOverTime} & -- & \rref{FR_ResultVisualization} \\
 \srref{SR_ClinicianFinalJudgment} & -- & \rref{FR_LinguisticPatternDetection} \\
 \bottomrule
@@ -1811,7 +1866,7 @@ Functional Req & Nonfunctional Req \\
 
 % ============================================================== 
 
-\section{Rationale}
+\section{Rationale} \section{Rationale} \label{sec:Rationale}
 
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.30\textwidth} >{\raggedright\arraybackslash}p{0.38\textwidth} >{\raggedright\arraybackslash}p{0.24\textwidth}}
 \toprule
@@ -1945,7 +2000,7 @@ The timing of each phase then follows the milestones outlined in the Development
   the course will be documented as future work.
 \end{enumerate}
 
-\subsection{Appendix C: Values of Auxiliary Constants}
+\subsection{Appendix C: Values of Auxiliary Constants} \label{sec:AppendixC}
 
 Values marked with an asterisk (*) are initial estimates that we will confirm with the supervisor and research team, and will be updated in this document once their values are known. Tested values will be verified during testing of the system.
 
@@ -2017,22 +2072,135 @@ DELETE\_\allowbreak{}WINDOW* & 30 days & Allows deletion to reach all storage an
 \subsubsection{AI Tools Used}
 \begin{itemize}
   \item Claude Sonnet 5 (Medium)
+  \item Claude Opus 5.5
   \item ChatGPT-5.6 Luna
 \end{itemize}
 
 \subsubsection{How and Where Used}
-Both models were used in all the sections to do the following:
+The following lists the uses of AI applied throughout the entire document. If a section is not listed below, no additional AI use occurred in that section.
+
 \begin{itemize}
-  \item Check that each written section answered every question asked and met the rubric requirements
-  \item Improve the wording, clarity and the flow of written sections
-  \item Debug possible LaTeX errors
+  \item Fixing grammar and spelling
+  \begin{itemize}
+    \item \textit{Prompt: ``can you fix the grammar and spelling in this section but keep the wording close to mine: [insert section text]''}
+  \end{itemize}
+  \item Debugging possible \LaTeX{} errors
+  \item Performing a final check over the document at the end, comparing each section against the original document comments and the rubric to ensure nothing was missed
+  \begin{itemize}
+    \item \textit{Prompt: ``here is the rubric for this deliverable: [insert rubric]. here is the document: [insert document code]. can you go through each section and check it against the rubric, and tell me if we missed anything''}
+  \end{itemize}
+  \item Creating references
+  \begin{itemize}
+    \item \textit{Prompt: ``can you format this in a citation for me: [insert link]. here is an example: [insert example citation]''}
+  \end{itemize}
 \end{itemize}
 
-The models were used to do the following in specific sections:
+\textbf{\hyperref[sec:SystemOverview]{Section~\ref*{sec:SystemOverview}: System Overview}}
 \begin{itemize}
-  \item Help brainstorm non-functional requirements in section 8, more specifically for security requirements
-  \item Help verify correctness of the FSM diagrams to ensure workflows matched those specified in the research paper in the functional requirements section (Section 6). 
-  \item Brainstorm possible non-functional requirements in section 8
+  \item Claude was used to help brainstorm user characteristics.
+  \item Claude was used to verify that the flow of the system context diagram (\hyperref[Fig_SystemContext]{Figure~\ref*{Fig_SystemContext}}) makes sense.
+\end{itemize}
+
+\textbf{\hyperref[sec:UserPersonas]{Section~\ref*{sec:UserPersonas}: User Personas}}
+\begin{itemize}
+  \item ChatGPT was used to help brainstorm user personas.
+  \item ChatGPT was used to flesh out the goals and frustrations of the personas.
+  \begin{itemize}
+    \item \textit{Prompt: ``here are some goals and frustrations of an example user: [insert goals and frustrations]. can you turn it into a paragraph''}
+  \end{itemize}
+\end{itemize}
+
+\textbf{\hyperref[sec:UseCases]{Section~\ref*{sec:UseCases}: Use Cases}}
+\begin{itemize}
+  \item Claude was used to ensure the flow of the use cases makes sense.
+  \begin{itemize}
+    \item \textit{Prompt: ``does this make sense: [insert use case]''}
+  \end{itemize}
+  \item Claude was used to help brainstorm alternative flows for some of the use cases.
+  \item Claude was used to verify that the use case diagrams make sense.
+  \begin{itemize}
+    \item \textit{Prompt: ``does this use case diagram make sense for the use case below: [insert diagram code or image] [insert use case]''}
+  \end{itemize}
+\end{itemize}
+
+\textbf{\hyperref[sec:FunctionalRequirements]{Section~\ref*{sec:FunctionalRequirements}: Functional Requirements}}
+\begin{itemize}
+  \item Claude was used to improve the wording of the functional requirements.
+  \begin{itemize}
+    \item \textit{Prompt: ``can you make this sound better and fix the wording: [insert functional requirement]''}
+  \end{itemize}
+  \item Claude was used to help come up with fit criteria for certain functional requirements.
+  \begin{itemize}
+    \item \textit{Prompt: ``can you help me come up with a fit criterion for this: [insert functional requirement and rationale]''}
+  \end{itemize}
+  \item Claude was used to verify the state machines and make sure the flows matched the workflow descriptions.
+  \begin{itemize}
+    \item \textit{Prompt: ``this is a description of a speech clinician workflow: [insert workflow description]. does it match the state diagram I sent you: [insert image of state diagram]''}
+  \end{itemize}
+\end{itemize}
+
+\textbf{\hyperref[sec:DataRequirements]{Section~\ref*{sec:DataRequirements}: Data Requirements}}
+\begin{itemize}
+  \item Claude was used to research where to find information on HIPAA and data privacy. It was asked which regulations may apply to children's data, and its answers were checked manually.
+  \item Claude was used to create the tables.
+  \begin{itemize}
+    \item \textit{Prompt: ``can you organize the following data into a table in latex: [insert data]''}
+  \end{itemize}
+  \item Claude was asked whether Sections \hyperref[sec:Relationships]{\ref*{sec:Relationships}} (Relationships), \hyperref[sec:Annotations]{\ref*{sec:Annotations}} (Annotations), and \hyperref[sec:PrivacyRetention]{\ref*{sec:PrivacyRetention}} (Privacy and Data Retention) make sense.
+  \begin{itemize}
+    \item \textit{Prompt: ``does this make sense: [insert section text]''}
+  \end{itemize}
+\end{itemize}
+
+\textbf{\hyperref[sec:NFR]{Section~\ref*{sec:NFR}: Non-Functional Requirements}}
+\begin{itemize}
+  \item Claude was used to help brainstorm non-functional requirements for the system.
+  \item Claude was used to improve the wording of some of the non-functional requirements.
+  \begin{itemize}
+    \item \textit{Prompt: ``can you make this sound better and fix the wording: [insert non-functional requirement]''}
+  \end{itemize}
+  \item Claude was used to help come up with fit criteria for some of the non-functional requirements.
+  \begin{itemize}
+    \item \textit{Prompt: ``can you help me come up with a fit criterion for this: [insert non-functional requirement and rationale]''}
+  \end{itemize}
+  \item Claude was used to find any overalpping non-functional requirements.
+  \begin{itemize}
+    \item \textit{Prompt: ``are there any non-functional requirements that are overlapping: [insert list of non-functional requirements]''}
+  \end{itemize}
+\end{itemize}
+
+\textbf{\hyperref[sec:AIML]{Section~\ref*{sec:AIML}: AI and Machine Learning Requirements}}
+\begin{itemize}
+  \item Claude was used to format a Word document containing a bulleted list of parameters for \LaTeX{}.
+  \begin{itemize}
+    \item \textit{Prompt: ``can u format this for latex, i want the parameters to have the code font thing: [insert bullet list of parameters]''}
+  \end{itemize}
+  \item Claude was used in \hyperref[sec:ExampleOutput]{Section~\ref*{sec:ExampleOutput}} (Example Output) to create an example output from the list of parameters.
+  \item Claude was used to flesh out the explanations in \hyperref[sec:KnownLimitations]{Section~\ref*{sec:KnownLimitations}} (Known Limitations).
+\end{itemize}
+
+\textbf{\hyperref[sec:Rationale]{Section~\ref*{sec:Rationale}: Rationale}}
+\begin{itemize}
+  \item Claude was used to format the data into the table.
+  \begin{itemize}
+    \item \textit{Prompt: ``can you organize the following data into a table in latex: [insert data]''}
+  \end{itemize}
+\end{itemize}
+
+\textbf{\hyperref[sec:AppendixA]{Appendix A: Additional Materials}}
+\begin{itemize}
+  \item Claude was used to format a Word bullet list into \LaTeX{}.
+  \begin{itemize}
+    \item \textit{Prompt: ``can you format this for latex: [insert bullet list]''}
+  \end{itemize}
+\end{itemize}
+
+\textbf{\hyperref[sec:AppendixC]{Appendix C: Values of Auxiliary Constants}}
+\begin{itemize}
+  \item Claude was used to organize the data into the table.
+  \begin{itemize}
+    \item \textit{Prompt: ``can you organize the following data into a table in latex: [insert data]''}
+  \end{itemize}
 \end{itemize}
 
 \subsubsection{Verification of AI-Generated Content}
