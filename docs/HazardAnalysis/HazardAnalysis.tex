@@ -241,6 +241,58 @@ The following FMEA table is a breakdown of the hazards that could occur within t
        \item HA-VR2
   \end{enumerate} \\
   \hline
+  Account System & 
+  \begin{enumerate}[leftmargin=*]
+      \item User cannot log in
+      \item Patient is mistakenly given access to the clinician view
+  \end{enumerate} & 
+  \begin{enumerate}[leftmargin=*]
+      \item The clinician cannot reach patient records or assessments, which delays annotation.
+      \item Other patients' recordings, annotations, and assessment results are exposed and could be altered, which is a potential violation of HIPAA.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item Incorrect login credentials, email not yet verified, or authentication service unavailable.
+       \item Role is not checked or is checked incorrectly, or the wrong role is assigned at sign-up.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item Show error messages that specify the cause, including when the service is unavailable.
+       \item Check the account's role on every server request, and deny access by default unless the role permits it.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item NFR2
+       \item NFR5, NFR15
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item HA-AS1
+       \item HA-AS2
+  \end{enumerate} \\
+  \hline
+  Web Platform & 
+  \begin{enumerate}[leftmargin=*]
+      \item Annotation progress is lost between sessions
+      \item Automated annotations cannot be distinguished from clinician-reviewed content
+  \end{enumerate} & 
+  \begin{enumerate}[leftmargin=*]
+      \item Clinicians must spend time redoing annotation work.
+      \item Clinicians rely on unchecked transcripts or flags in their reports.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item No autosave or save prompts, session timeout, or browser closed.
+       \item Missing or unclear labels for unverified content.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item Autosave on each change and when navigating between tasks, and warn the user about unsaved changes before they leave.
+       \item Visually label unverified segments, scores, and flags, and show the number of unverified items before the annotation can be marked complete.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item NFR18, NFR21, FR31
+       \item NFR14
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item HA-WP1
+       \item HA-WP2
+  \end{enumerate} \\
+  \hline
   \end{longtable}
 \end{landscape}
 \restoregeometry
