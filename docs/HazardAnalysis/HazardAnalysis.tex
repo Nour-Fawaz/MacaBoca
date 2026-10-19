@@ -306,7 +306,7 @@ rationale design process how and why to fake it.)}
 The following requirements were identified through the FMEA in Section~\ref{sec:FMEASection} and were not originally covered by the existing requirements in the SRS. 
 
 \subsection{Security Requirements}
-\begin{enumerate}[label={HA-SER\arabic*.}, leftmargin=*]
+\begin{enumerate}[label={HA-SER\arabic*.}, ref={HA-SER\arabic*}, leftmargin=*]
     \item \label{HA-SER1} The system shall only send the audio track of a recording to the external transcription service, with no patient-identifying information.\\
     \textbf{Rationale:} Since OpenAI may keep submitted data for up to 30 days \citep{openai-data-controls}, it is crucial to control what data the system sends them. Sending only audio without identifiers limits the harm if OpenAI's copy is ever exposed.\\
     \textbf{Fit Criterion:} Inspection of every request sent to the transcription service must show that it contains no video frames and no patient names or identifiers in the file name or metadata.
@@ -320,7 +320,7 @@ The following requirements were identified through the FMEA in Section~\ref{sec:
     \textbf{Fit Criterion:} Every request for a patient's records, reports, or recordings shall be rejected unless that patient is assigned to the logged-in clinician. \end{enumerate}
 
 \subsection{Safety Requirements}
-\begin{enumerate}[label={HA-SAR\arabic*.}, leftmargin=*]
+\begin{enumerate}[label={HA-SAR\arabic*.}, ref={HA-SAR\arabic*}, leftmargin=*]
     \item \label{HA-SAR1} The system shall allow clinicians to continue reviewing and annotating assessments when the transcription service is unavailable.\\
     \textbf{Rationale:} Transcription relies on an external service outside the team's control, so an outage must not stop clinicians from reviewing recordings or editing saved transcripts.\\
     \textbf{Fit Criterion:} When the transcription service cannot be reached, clinicians shall be able to view recordings, edit previously saved transcripts, add annotations and notes, and transcribe a recording manually. Each failed transcription job will display its status to the clinician and be retried automatically.
@@ -333,8 +333,17 @@ The following requirements were identified through the FMEA in Section~\ref{sec:
 
 \section{Roadmap} \label{sec:Roadmap}
 
-\wss{Which safety requirements will be implemented as part of the capstone timeline?
-Which requirements will be implemented in the future?}
+From conducting the hazard analysis, a set of new safety and security requirements
+were identified. Due to the time constraints of the capstone project, not all of
+them will be implemented at this stage. \progname{} will prioritize
+\ref{HA-SER1}, \ref{HA-SER2}, \ref{HA-SER3}, and \ref{HA-SAR2}, as they protect
+sensitive patient data and ensure that unverified model output never appears in a
+clinical report. \ref{HA-SER1} and \ref{HA-SER3} is thought to be implemented during the process of
+integrating SAFA into \progname{}, since this is when recordings are first sent to the
+transcription service and patient data is first requested through the platform. \ref{HA-SAR1} will be addressed in
+future development phases after the capstone timeline, since transcription service
+outages are expected to be rare and clinicians can still review manually and previously
+transcribed assessments in the meantime.
 
 \newpage{}
 
