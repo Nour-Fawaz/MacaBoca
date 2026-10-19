@@ -1905,32 +1905,46 @@ The project's supervisors have stated what parts they want completed first, so t
 \end{longtable}
 
 \section{Likely Changes}    
+The following changes are expected during or after the project. Parts of the
+system affected by these changes should be designed so that they can be modified
+without redesigning the rest of the system.
+
+\section{Likely Changes}    
 
 \noindent \begin{itemize}
 
 \item[\textbf{LC\refstepcounter{lcnum}\thelcnum}\label{LC_AssessmentFunctionality}:] Assessment functionality: The types of annotations and transcription editing capabilities may change as clinicians identify more important functionality.
+  \\ \textbf{Rationale:} SAFA is still under development, and the research team's study reports several clinician feature requests that have not yet been prioritized. The interface redesign and usability testing are also likely to reveal new needs, so the annotation and editing features should be easy to extend.
 
 \item[\textbf{LC\refstepcounter{lcnum}\thelcnum}\label{LC_DataVisualization}:] Data visualization: The types of visualizations available to clinicians and researchers may change as requirements for tracking patient progress develop and patient data increases.
+  \\ \textbf{Rationale:} Clinicians asked for charts, percentages, and side-by-side comparisons of results by language and domain, but the exact views have not been specified. As more assessments are collected for each patient, new ways of summarizing progress over time will also become useful.
 
 \item[\textbf{LC\refstepcounter{lcnum}\thelcnum}\label{LC_ReportGeneration}:] Report generation: The content and formatting of assessment reports may evolve as clinicians relay professional standards and needs.
+  \\ \textbf{Rationale:} Report requirements are currently based on a small number of clinician comments, and the clinics, schools, and hospitals that employ SLPs may each require specific report contents or formats.
 
 \item[\textbf{LC\refstepcounter{lcnum}\thelcnum}\label{LC_ReportTypes}:] Report types: Assessment reports may change to accommodate various audiences, from researchers to patients. This would affect the language, confidentiality of information, and formatting of reports.
+  \\ \textbf{Rationale:} Patient-facing reports are a stretch goal of the project. A report written for guardians would need plain language and must exclude clinical notes that are not meant for them, while a report for researchers may need de-identified data.
 
 \end{itemize}
 
 
 \section{Unlikely Changes}
-
+The following are not expected to change. The system is designed on the
+assumption that they hold.
 \noindent
 \begin{itemize}
 
 \item[\textbf{ULC\refstepcounter{ulcnum}\theulcnum}\label{ULC_IntendedUserGroup}:] Intended user group: The primary users will remain speech-language pathologists conducting remote speech assessments of bilingual pediatric patients.
+  \\ \textbf{Rationale:} The \progname{} platform, SAFA, and the research team's studies are all built around this user group. Serving a different group would require a different product rather than a change to this one.
 
 \item[\textbf{ULC\refstepcounter{ulcnum}\theulcnum}\label{ULC_Platform}:] Platform: The software will continue to work with the existing TeLaC telehealth platform and SAFA annotation tool.
+  \\ \textbf{Rationale:} Integrating these two systems is the main goal set by the project supervisor. Replacing either one would remove the basis of the project.
 
 \item[\textbf{ULC\refstepcounter{ulcnum}\theulcnum}\label{ULC_DataSource}:] Data source: Patient assessment recordings will continue to be submitted through the existing TeLaC platform.
+  \\ \textbf{Rationale:} The patient-facing assessment site was built and tested by a previous capstone team and is outside the scope of this project. The system can therefore rely on the format of incoming recordings and their linked assessment data.
 
 \item[\textbf{ULC\refstepcounter{ulcnum}\theulcnum}\label{ULC_SupportedLanguages}:] Supported languages: The software is unlikely to expand beyond English as the primary second language used in bilingual assessments.
+  \\ \textbf{Rationale:} The research team's assessments, question bank, and participating clinicians are English-based, and clinicians using the system are expected to be fluent in English. Supporting a different primary language would require new assessments and new clinician users.
 
 \end{itemize}
 \newpage{}
