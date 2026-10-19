@@ -32,7 +32,6 @@
 \input{../Comments.text}
 \input{../Common.text}
 
-
 \begin{document}
 
 \maketitle
@@ -91,7 +90,7 @@ The system can be separated into six major components, some of which work togeth
 to form the complete system, as described below.
 
 \subsection{ML Transcription Model}
-TODO
+The ML (Machine Learning) Transcription Model is an external speech recognition service (OpenAI's Whisper) that MERLS uses to automatically convert the audio of recorded assessments into timestamped text. The system sends audio segments to the service and receives the transcribed text back along with segment timings and reliability values.
 
 \subsection{Database}
 The database stores all of the data that the system relies on, including patient and clinician
@@ -100,10 +99,10 @@ generated reports. This component also stores video recordings and sensitive hea
 making it one of the most sensitive parts of the system.
 
 \subsection{Account System}
-TODO
+The account system handles authentication and role-based access control. This component verifies each user’s identity during sign-up and login. It assigns each account a role, such as clinician or patient, which determines the  parts of the interface and functionality that account role is able to access.
 
 \subsection{Web Platform}
-TODO
+The web platform is responsible for hosting the patient-facing interface and the clinician interface together. The clinician interface includes a clinician dashboard, where clinicians are able to view their patients and assessment history.  It also includes the annotation interface where assessment videos and their transcriptions are displayed and ready for annotation. The web platform maps user actions to the other system components and displays their results.
 
 \subsection{Report Generation}
 This component compiles the results of an assessment into a report that
@@ -114,7 +113,7 @@ Once generated, reports are saved to the database and shown on the
 clinician's dashboard.
 
 \subsection{Video Recording}
-TODO
+The Video Recording component captures the video and audio of a live assessment session between a clinician and a patient, and uploads the recording to the system once the session ends.
 
 
 \section{Critical Assumptions} \label{sec:Assumptions}
@@ -294,6 +293,58 @@ The following FMEA table is a breakdown of the hazards that could occur within t
        \item HA-VR2
   \end{enumerate} \\
   \hline
+  Account System & 
+  \begin{enumerate}[leftmargin=*]
+      \item User cannot log in
+      \item Patient is mistakenly given access to the clinician view
+  \end{enumerate} & 
+  \begin{enumerate}[leftmargin=*]
+      \item The clinician cannot reach patient records or assessments, which delays annotation.
+      \item Other patients' recordings, annotations, and assessment results are exposed and could be altered, which is a potential violation of HIPAA.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item Incorrect login credentials, email not yet verified, or authentication service unavailable.
+       \item Role is not checked or is checked incorrectly, or the wrong role is assigned at sign-up.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item Show error messages that specify the cause, including when the service is unavailable.
+       \item Check the account's role on every server request, and deny access by default unless the role permits it.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item NFR2
+       \item NFR5, NFR15
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item HA-AS1
+       \item HA-AS2
+  \end{enumerate} \\
+  \hline
+  Web Platform & 
+  \begin{enumerate}[leftmargin=*]
+      \item Annotation progress is lost between sessions
+      \item Automated annotations cannot be distinguished from clinician-reviewed content
+  \end{enumerate} & 
+  \begin{enumerate}[leftmargin=*]
+      \item Clinicians must spend time redoing annotation work.
+      \item Clinicians rely on unchecked transcripts or flags in their reports.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item No autosave or save prompts, session timeout, or browser closed.
+       \item Missing or unclear labels for unverified content.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item Autosave on each change and when navigating between tasks, and warn the user about unsaved changes before they leave.
+       \item Visually label unverified segments, scores, and flags, and show the number of unverified items before the annotation can be marked complete.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item NFR21, FR31
+       \item NFR14
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item HA-WP1
+       \item HA-WP2
+  \end{enumerate} \\
+  \hline
   \end{longtable}
 \end{landscape}
 \restoregeometry
@@ -306,7 +357,7 @@ The following FMEA table is a breakdown of the hazards that could occur within t
 The following requirements were identified through the FMEA in Section~\ref{sec:FMEASection} and were not originally covered by the existing requirements in the SRS. 
 
 \subsection{Security Requirements}
-\begin{enumerate}[label={HA-SER\arabic*.}, leftmargin=*]
+\begin{enumerate}[label={HA-SER\arabic*.}, ref={HA-SER\arabic*}, leftmargin=*]
     \item \label{HA-SER1} The system shall only send the audio track of a recording to the external transcription service, with no patient-identifying information.\\
     \textbf{Rationale:} Since OpenAI may keep submitted data for up to 30 days \citep{openai-data-controls}, it is crucial to control what data the system sends them. Sending only audio without identifiers limits the harm if OpenAI's copy is ever exposed.\\
     \textbf{Fit Criterion:} Inspection of every request sent to the transcription service must show that it contains no video frames and no patient names or identifiers in the file name or metadata.
@@ -320,7 +371,7 @@ The following requirements were identified through the FMEA in Section~\ref{sec:
     \textbf{Fit Criterion:} Every request for a patient's records, reports, or recordings shall be rejected unless that patient is assigned to the logged-in clinician. \end{enumerate}
 
 \subsection{Safety Requirements}
-\begin{enumerate}[label={HA-SAR\arabic*.}, leftmargin=*]
+\begin{enumerate}[label={HA-SAR\arabic*.}, ref={HA-SAR\arabic*}, leftmargin=*]
     \item \label{HA-SAR1} The system shall allow clinicians to continue reviewing and annotating assessments when the transcription service is unavailable.\\
     \textbf{Rationale:} Transcription relies on an external service outside the team's control, so an outage must not stop clinicians from reviewing recordings or editing saved transcripts.\\
     \textbf{Fit Criterion:} When the transcription service cannot be reached, clinicians shall be able to view recordings, edit previously saved transcripts, add annotations and notes, and transcribe a recording manually. Each failed transcription job will display its status to the clinician and be retried automatically.
@@ -333,7 +384,17 @@ The following requirements were identified through the FMEA in Section~\ref{sec:
 
 \section{Roadmap} \label{sec:Roadmap}
 
-
+From conducting the hazard analysis, a set of new safety and security requirements
+were identified. Due to the time constraints of the capstone project, not all of
+them will be implemented at this stage. \progname{} will prioritize
+\ref{HA-SER1}, \ref{HA-SER2}, \ref{HA-SER3}, and \ref{HA-SAR2}, as they protect
+sensitive patient data and ensure that unverified model output never appears in a
+clinical report. \ref{HA-SER1} and \ref{HA-SER3} is thought to be implemented during the process of
+integrating SAFA into \progname{}, since this is when recordings are first sent to the
+transcription service and patient data is first requested through the platform. \ref{HA-SAR1} will be addressed in
+future development phases after the capstone timeline, since transcription service
+outages are expected to be rare and clinicians can still review manually and previously
+transcribed assessments in the meantime.
 
 \newpage{}
 
@@ -494,6 +555,12 @@ familiar with.
 
 \subsubsection*{Javayria}
 Overall, our team was much better prepared for this deliverable. It was directly relevant to our project given that we will be handling protected health records and audio recordings of children. Because we had already spent a large amount of time brainstorming and discussing security concerns with our supervisors while drafting the SRS, the Hazard Analysis flowed naturally. Since we are becoming more knowledgeable and aware of associated risks, we were able to easily identify potential failure modes and define additional safety and security requirements. Our supervisors also set clear expectations for security by saying that data protection should be our highest priority. While other safety or security features can be added after the core integration and functionality are complete, enforcing authorized access and defending against attacks are absolutely non-negotiable. Having priorities early on is extremely helpful, and will give us enough time to research and implement them properly.
+
+\subsubsection*{Yilin}
+Since our patient-facing platform was originally developed by a previous year’s capstone team, 
+reading their hazard analysis was helpful, particularly for judging whether the hazards we were considering fell within the scope of our project. With this strong reference, 
+the team was able to divide the document efficiently, and each member worked independently until we came together 
+for a document review. Working in two rounds, first individually and then as a group, was effective for iterating on and improving our initial work.
 
 \subsection*{Question 2}
 \subsubsection*{Nour}
