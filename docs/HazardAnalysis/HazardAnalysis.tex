@@ -136,7 +136,7 @@ this potential failure mode.}
     \begin{itemize}
         \item This assumption is made since the system is designed to be used on a desktop or laptop with a web browser. If the clinician doesn't have access to such a device or stable internet connection, they would not be able to use the system.
     \end{itemize}
-    \item Assume that clinicians review the system's flags and transcripts before relying on them, so that they're making the final judgement.
+    \item Assume that clinicians review the system's flags and transcripts before relying on them, so that they make the final judgement.
     \begin{itemize}
         \item This assumption is made since the system is designed to assist clinicians, not replace them. If clinicians rely on automatically generated results without reviewing them, then errors in transcription or flagging may lead to incorrect conclusions about a child.
     \end{itemize}
@@ -154,7 +154,7 @@ this potential failure mode.}
     \end{itemize}
     \item Assume that the clinician has instructed a patient with speech or language difficulties to use this system, and that the patient is able to use the system without any assistance.
     \begin{itemize}
-        \item This assumption is made since the system is designed to be used by patients with speech or language difficulties. If the patient is not able to use the system without lots of assistance from an external body, then the assessment may not be completed accurately.
+        \item This assumption is made since the system is designed to be used by patients with speech or language difficulties. If the patient is not able to use the system without significant assistance from another person, then the assessment may not be completed accurately.
     \end{itemize}
 \end{itemize}
 
@@ -221,7 +221,7 @@ The following FMEA table is a breakdown of the hazards that could occur within t
       \item Recording is saved but corrupted or unplayable
   \end{enumerate} & 
   \begin{enumerate}[leftmargin=*]
-      \item Transcription and face or behavior detection is unreliable, so the assessment may be wrongly critiqued and analyzed.
+      \item Transcription and face or behavior detection are unreliable, so the assessment may be wrongly critiqued and analyzed.
       \item The clinician cannot review the assessment, and the data cannot be recreated.
   \end{enumerate} &
   \begin{enumerate}[leftmargin=*]
@@ -261,7 +261,7 @@ The following requirements were identified through the FMEA in Section~\ref{sec:
 
     \item \label{HA-SER2} The system shall protect all database queries and displayed user input against injection attacks.\\
     \textbf{Rationale:} Free-text fields, such as notes and transcript edits, accept arbitrary input. This could be used to read or alter highly sensitive patient records through SQL injection.\\
-    \textbf{Fit Criterion:} All database access shall be handled using a well-known secure method, such as parameterized queries or an Object-Relational Mapping (ORM) tool. Queries cannot be built by simply concatenating user input.
+    \textbf{Fit Criterion:} All database access shall be handled using a well-known secure method, such as parameterized queries or an Object-Relational Mapping (ORM) tool. Queries shall not be built by concatenating user input.
 
     \item \label{HA-SER3} The system shall verify on the server that the logged-in clinician is authorized to access a patient's data before responding to any request for it.\\
     \textbf{Rationale:} While NFR5 controls which patients a clinician sees listed, it does not specify which records the server returns. Changing an ID in a request could expose another clinician's patients, which is a violation of privacy.\\
@@ -297,7 +297,7 @@ Which requirements will be implemented in the future?}
 
 \subsection{How and Where Used}
 
-The following uses of AI applied throughout the entire document. If a section is not listed below, no additional AI use occurred in that section.
+The following uses of AI apply throughout the entire document. If a section is not listed below, no additional AI use occurred in that section.
 
 \begin{itemize}
   \item Fixing grammar and spelling
@@ -419,47 +419,48 @@ After the models suggested wording improvements, the writer re-read the section 
     software products. Why are they important to consider?
 \end{enumerate}
 
-\subsection*{Question 1}
-\subsubsection*{Nour}
+\subsection*{Nour}
+\subsubsection*{Question 1}
 What went well with this deliverable was determining possible failure modes regarding the ML Transcription model. 
 There are several things to be wary of when dealing with external APIs and using machine learning models that have been tuned for our case. 
-This is because they are not always predictable. Models typically have some form of evaluation, and we were given the model already chosen by our supervisors and seeing that it has not been evaluated was a bit concerning since it is hard to be certain how well such a model will perform. 
+This is because they are not always predictable. Models typically have some form of evaluation, but the model was already chosen by our supervisors, and seeing that it has not been evaluated was a bit concerning since it is hard to be certain how well such a model will perform. 
 
 What reassures me is that speech clinicians can go back and verify the model’s output against the video playback, which is extremely important. However, this places the responsibility on the clinician, including how much time they are willing to spend annotating and whether they will watch the entire assessment instead of skimming through it.
 
 Another worrying issue is data retention. 
-If Zero Data Retention was not applied for when the team started using OpenAI’s Whisper model, client information is being stored by OpenAI. 
+If Zero Data Retention was not applied for when the team started using OpenAI’s Whisper model, client information has been stored by OpenAI. 
 OpenAI doesn’t use this data to train its models unless a user explicitly agrees to share it, but the data is still stored on its servers. 
-OpenAI is a large and popular company that could experience cyber attacks, so having sensitive data stored in multiple places is not ideal.
+OpenAI is a large and popular company that could experience cyberattacks, so having sensitive data stored in multiple places is not ideal.
 
-\subsubsection*{Catherine}
-As a team, hazards and risks had already been heavily discussed throughout the project, so
-during meetings, we were able to easily brainstorm and discuss each section of the deliverable,
-and divvy up all the parts. As we now had quite a bit more resources, it was also easier to
-ask more guided questions when we were confused or not aligned with one another on a concept
-related to our project, so communication was also a lot more clear for this deliverable. 
-Pre-splitting the system into components also made it easy 
-to divide the work between us, since each person could focus on the parts they were most
-familiar with.
-
-\subsection*{Question 2}
+\subsubsection*{Question 2}
 This deliverable was relatively straightforward, and our team did not run into any major issues while completing it. 
 We began by brainstorming the components of the system together, and we were able to identify what could go wrong with each one and possible hazards that could result. 
 TeLaC is a privacy-critical system, so security and data breaches were extremely important for us to address. 
 The system also depends on performance and quality for different features to work, which made it easy to determine its high-level components. 
 Because we share a strong understanding of the system, prioritizing the safety requirements was not difficult. 
-Our supervisors also mentioned which parts of the system they wanted completed first, which gave us a clear direction as to what were the most important parts of the system.
+Our supervisors also mentioned which parts of the system they wanted completed first, which gave us a clear direction as to which parts of the system were the most important.
 
-\subsection*{Question 3}
+\subsection*{Catherine}
+\subsubsection*{Question 1}
+As a team, hazards and risks had already been heavily discussed throughout the project, so
+during meetings, we were able to easily brainstorm and discuss each section of the deliverable,
+and divvy up all the parts. As we now had many more resources, it was also easier to
+ask more guided questions when we were confused or not aligned with one another on a concept
+related to our project, so communication was also a lot clearer for this deliverable. 
+Pre-splitting the system into components also made it easy 
+to divide the work between us, since each person could focus on the parts they were most
+familiar with.
+
+\subsubsection*{Question 3}
 Before starting this deliverable, we had already thought about and discussed in pretty
 deep detail different risks and hazards to consider, especially for a project that touches
 real patients and health practices. For instance, as mentioned throughout the deliverable,
 because the system stores video recordings and health records of children, privacy and 
 data security were something we talked about extensively from the start. They also 
-come up in our previous deliverables. We also knew that the transcription model could
+came up in our previous deliverables. We also knew that the transcription model could
 have trouble differentiating between speakers, different languages, or sentences in general,
-so we also knew that a clinician would always have to be within the loop and ensure that
-everything has been reviewed and verified by a licensed clinician.
+so we knew that a licensed clinician would always have to be in the loop to review
+and verify everything.
 
 Other risks only came up while doing the Hazard Analysis, where going through each component
 made us think about how each part could fail on its own, instead of just the system as a
@@ -470,14 +471,13 @@ Writing the critical assumptions also brought up risks we hadn't considered, lik
 if the internet cuts out partway through an assessment, or
 if the child happens to need a lot of help from a parent during their assessment and the parent
 happens to interfere too much. Trying to decide whether these should be assumptions or actual 
-hazards made us think more about what we could realistically control, and if so then how.
+hazards made us think more about what we could realistically control and, if so, how.
 
-\subsubsection*{Javayria}
-
-\subsection*{Question 1}
+\subsection*{Javayria}
+\subsubsection*{Question 1}
 Overall, our team was much better prepared for this deliverable. It was directly relevant to our project given that we will be handling protected health records and audio recordings of children. Because we had already spent a large amount of time brainstorming and discussing security concerns with our supervisors while drafting the SRS, the Hazard Analysis flowed naturally. Since we are becoming more knowledgeable and aware of associated risks, we were able to easily identify potential failure modes and define additional safety and security requirements. Our supervisors also set clear expectations for security by saying that data protection should be our highest priority. While other safety or security features can be added after the core integration and functionality are complete, enforcing authorized access and defending against attacks are absolutely non-negotiable. Having priorities early on is extremely helpful, and will give us enough time to research and implement them properly.
 
-\subsection*{Question 4}
+\subsubsection*{Question 4}
 Two other types of risk in software products are ethical risks and privacy/security risks. Although they are often not given the highest priority, ethical risks are important to consider because software is never isolated. It is built to be used by real people, and the decisions it makes or supports affect their lives in many ways. Detection software is especially prone to this type of risk, since it often relies on pre-trained models that may be biased by the data they were trained on. A model that performs worse for certain population groups can treat those users unfairly without anyone noticing. Privacy and security risks are also very important to consider because software often handles large amounts of user data that must be protected from being leaked or accessed by unauthorized people. Information such as Social Insurance Numbers, home addresses, and a person's health or medical history is confidential, and exposing it can lead to identity theft. An example where this is extremely important to consider is banking software. A privacy breach could lead to financial theft, where an attacker gains access to someone else’s assets and financial information. This can cause the victim of such an attack to lose money or be locked out of their own accounts.
 
 
