@@ -334,49 +334,52 @@ file storage service is also used to securely store the data that the platform r
   For instance, saying ``material properties'' provides some information, but it
   stays away from the detail of listing every required properties.}
 
+The responsibilities of each entity in the system context are as follows:
+
 \begin{itemize}
-\item Patient and Caregiver Responsibilities:
+\item \textbf{Patient and Caregiver Responsibilities:}
 \begin{itemize}
-\item Complete assessments by submitting video and audio responses
-\item Record in a setting where the child can be clearly seen and heard
+\item Complete assessments by submitting video and audio responses.
+\item Record in a setting where the child can be clearly seen and heard.
 \end{itemize}
-\item Clinician Responsibilities:
+\item \textbf{Clinician Responsibilities:}
 \begin{itemize}
-\item Review flagged items, transcripts, and annotations before relying on them
-\item Provide manual evaluations, edits, and notes on assessment results
-\item Make the final clinical judgement for each patient
+\item Review flagged items, transcripts, and annotations before relying on them.
+\item Provide manual evaluations, edits, and notes on assessment results.
+\item Make the final clinical judgement for each patient.
 \end{itemize}
-\item Researcher Responsibilities:
+\item \textbf{Researcher Responsibilities:}
 \begin{itemize}
-\item Provide transcript corrections and speaker and language labels
-\item Handle exported data according to research ethics requirements
+\item Provide transcript corrections and speaker and language labels.
+\item Handle exported data according to research ethics requirements.
 \end{itemize}
-\item Speech and Language Model Responsibilities:
+\item \textbf{Speech and Language Model Responsibilities:}
 \begin{itemize}
-\item Return draft transcripts and detected patterns for a given recording
+\item Return draft transcripts and detected patterns for a given recording.
 \end{itemize}
-\item Database and File Storage Responsibilities:
+\item \textbf{Database and File Storage Responsibilities:}
 \begin{itemize}
-\item Securely store and return recordings and patient records
+\item Securely store and return recordings and patient records.
 \end{itemize}
-\item System Responsibilities:
+\item \textbf{System Responsibilities:}
 \begin{itemize}
-\item Check that submitted recordings meet minimum quality requirements
-\item Restrict access to patient data based on the user's role
-\item Send recordings to the speech and language models and display the results
-\item Generate assessment overviews, reports, and data exports
+\item Check that submitted recordings meet minimum quality requirements.
+\item Restrict access to patient data based on the user's role.
+\item Send recordings to the speech and language models and display the results.
+\item Generate assessment overviews, reports, and data exports.
 \end{itemize}
 \end{itemize}
 
-\plt{Identify in what context the software will typically be used.  Is it for
-exploration? education? engineering work? scientific work?. Identify whether it
-will be used for mission-critical or safety-critical applications.} 
+\progname{} will be used in a clinical context, where clinicians review and annotate
+remote assessments as a part of working with their patients. It will also bes used in 
+scientific work by researchers studying bilingual speech therapy and the effectiveness 
+of software-assisted annotation for remote assessments.
+Use of the system in a clinical setting means that errors may have serious consequences.
+An inaccurate transcription or flagged item may lead to wrong diagnosis. The failure to 
+securely store and return patient data may lead to exposing recordings and health records of children. Thus, while
+the system is not safety-critical, as it does not make diagnoses and cause direct physical harm to patients, accuracy
+and clinician control over the system is important.
 
-\plt{This additional context information is needed to determine how much effort
-should be devoted to the rationale section.  If the application is
-safety-critical, the bar is higher.  This is currently less structured, but
-analogous to, the idea to the Automotive Safety Integrity Levels (ASILs) that
-McSCert uses in their automotive hazard analyses.}
 
 \subsection{User Characteristics} \label{SecUserCharacteristics}
 
@@ -1065,9 +1068,7 @@ Clinician
 
 \subsection{Use Case Diagrams}
 The following use case diagrams show the interactions between the clinician and the system for certain use cases described above. 
-
-
-\noindent In order to access the functionality of the system, the clinician must first create a clinician account, as shown in Figure~\ref{UC12-Create_Clinician_Account}.
+First, in order to access the functionality of the system, the clinician must first create a clinician account, as shown in Figure~\ref{UC12-Create_Clinician_Account}.
 \begin{figure}[H]
 \begin{center}
  \includegraphics[width=0.75\textwidth]{UC12-Create_Clinician_Account.png}
