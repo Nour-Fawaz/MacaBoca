@@ -115,98 +115,26 @@ Date 2 & 1.1 & Notes\\
 \end{tabularx}
 
 ~\\
-\plt{All capstone SRS documents should have a reflection appendix.}
+
 
 \newpage
 
 \pagenumbering{arabic}
 
-\plt{This SRS template is based on the IEEE template, with input from co-pilot
-  and S. Smith. It will get you started.  You should not modify the section
-  headings, without first discussing the change with the course instructor.
-  Modification means you are not following the template, which loses some of the
-  advantage of a template, especially standardization.}
-
-\plt{Feel free to change the appearance of the report by modifying the LaTeX
-  commands.}
-
-\plt{This template document assumes that a single program is being documented.
-  If you are documenting a family of models, you should start with a commonality
-  analysis.}
-
-\plt{The SRS is not generally written, or read, sequentially.  The SRS is a
-  reference document.  It is generally read in an ad hoc order, as the need
-  arises.}
-
-\plt{Guiding principles for the SRS document:
-\begin{itemize}
-\item Do not repeat the same information at the same abstraction level.  If
-  information is repeated, the repetition should be at a different abstraction
-  level.
-\end{itemize}
-}
-
-\plt{The template description comments should be disabled before submitting this
-  document for grading.}
-
-\plt{You can borrow any wording from the text given in the template.  It is part
-  of the template, and not considered an instance of academic integrity.  Of
-  course, you need to cite the source of the template.}
-
-\plt{When the documentation is done, it should be possible to trace back to the
-  source of every piece of information.  Some information will come from
-  external sources, like terminology.}
-
-\plt{An SRS document should have the following qualities: unambiguous,
-  consistent, complete, validatable, abstract and traceable.}
-
-\plt{The overall goal of the SRS is that someone can learn,
-  understand and verify the captured domain knowledge.  They should not have to
-  trust the authors of the SRS on any statements.  They should be able to
-  independently verify/derive every statement made.}
-
 % ============================================================== 
 \section{Introduction} 
 % ==============================================================
 
-\plt{Explain what system is being specified. State purpose, users, and project goals.}
-
-\plt{Introduce the name of your software as \progname{}.  Using \progname{} as
-a command lets you change the name if necessary and have the change propagate to
-all documents.}
-
-\plt{Include a reference to the template this work is based on.  \citet{ISOIECIEEE29148_2018}
-justifies the SRS structure and \citet{ISOIECIEEE15288_2023} provides the
-broader life-cycle context that underlines modern requirements engineering
-practice.}
 
 This section provides an overview of the requirements document, including its overall purpose, required background, and relevant definitions/acronyms.
 
 \subsection{Purpose}
 
-\plt{State the purpose of the system.}
 
-\plt{The purpose should be in the context of the project itself, not in the
-  context of this course. Although the ``purpose'' of the document is to get a
-  grade, you should not mention this.  Instead, ``fake it'' as if this is a real
-  project.}
 
-\plt{What problem does your program solve?
-The description here should be in the problem space, not the solution space.}
 The purpose of this project is to solve the usability and workflow challenges faced by speech-language pathologists (SLPs) conducting remote speech assessments of bilingual pediatric patients. The lack of integration between assessment recordings and annotation tools, combined with limitations in the usability of existing tools, can make the assessment process inefficient and difficult to manage, potentially affecting the accuracy and consistency of clinical annotations.
 
 \subsection{Scope}
-\plt{Briefly describe:
-\begin{itemize}
-  \item Problem being solved
-  \item Intended users
-  \item Major functionality
-  \item Expected benefits
-  \item Clarifying the scope often means saying what the software doesn't do
-\end{itemize}
-}
-
-\plt{The scope section is relevant for understanding the boundaries of the system. It is also relevant for later determining typical values of inputs. The scope should make it clear what inputs are reasonable to expect. This is a distinction between scope and context (context is a later section).  Scope affects the inputs while context affects how the software will be used.}
 
 Currently, assessment recordings on the TeLaC platform and the existing software tool (SAFA) used by clinicians to annotate and analyze these recordings are not fully integrated. Additionally, the existing annotation tool has usability limitations that can make the assessment process less intuitive and efficient.
 
@@ -295,17 +223,11 @@ problem, the vision, and the interfaces between the system and its environment.
 This section also describes user characteristics and lists the system
 constraints.
 
-\plt{The purpose of this section is to provide general information about the
-  system so that the specific requirements in the later sections will be easier to
-  understand. The general system description section is designed to be
-  changeable independent of changes to the functional requirements documented in
-  the specific system description. The general system description provides a
-  context for a family of related models.  The general description can stay the
-  same, while specific details are changed between family members.}
+
 
 \subsection{Problem Statement}
 
-\plt{Current situation, problem, impact, desired improvement.  You will likely borrow some text from your problem description document.}
+
 
 Currently, speech-language pathologists (SLPs) conducting remote assessments of bilingual pediatric patients face challenges annotating, managing, and analyzing patient assessments through telehealth. These challenges can limit assessment efficiency and consistency, particularly in pediatric telehealth settings where clinicians rely on digital tools to evaluate and monitor speech development. The existing annotation tool, SAFA, is hosted locally and operates separately from the TeLaC telehealth platform used by patients and their guardians. This separation creates a disjointed workflow between patient assessments and clinician annotation. Additionally, SAFA has a limited and unintuitive user interface, resulting in a poor user experience for clinicians. Its functionality also does not fully support the clinician-side assessment, record-keeping, and analysis workflows required by SLPs.
 
@@ -351,15 +273,7 @@ file storage service is also used to securely store the data that the platform r
 \end{center}
 \end{figure}
 
-\plt{For each of the entities in the system context diagram its responsibilities
-  should be listed.  Whenever possible the system should check for data quality,
-  but for some cases the user will need to assume that responsibility.  The list
-  of responsibilities should be about the inputs and outputs only, and they
-  should be abstract.  Details should not be presented here.  However, the
-  information should not be so abstract as to just say ``inputs'' and
-  ``outputs''.  A summarizing phrase can be used to characterize the inputs.
-  For instance, saying ``material properties'' provides some information, but it
-  stays away from the detail of listing every required properties.}
+
 
 \begin{itemize}
 \item Patient and Caregiver Responsibilities:
@@ -395,15 +309,6 @@ file storage service is also used to securely store the data that the platform r
 \end{itemize}
 \end{itemize}
 
-\plt{Identify in what context the software will typically be used.  Is it for
-exploration? education? engineering work? scientific work?. Identify whether it
-will be used for mission-critical or safety-critical applications.} 
-
-\plt{This additional context information is needed to determine how much effort
-should be devoted to the rationale section.  If the application is
-safety-critical, the bar is higher.  This is currently less structured, but
-analogous to, the idea to the Automotive Safety Integrity Levels (ASILs) that
-McSCert uses in their automotive hazard analyses.}
 
 \subsection{User Characteristics} \label{SecUserCharacteristics}
 
@@ -531,11 +436,8 @@ Three user personas, directly derived from our key stakeholders, are described i
 \section{Use Cases} \label{sec:UseCases}
 The following use cases describe key interactions between users and TeLaC.
 
-\plt{Use cases are a way to describe the interactions between users and the system.
-  They are typically written in natural language and describe the steps that a
-  user takes to achieve a specific goal.  Use cases can be used to identify
-  functional requirements and to create test cases.}  
-\plt{Typically 8-15 substantial use cases.}
+  
+
 
 \refstepcounter{ucnum} \label{UC_Label1}
 \subsection{\ucref{UC_Label1}: Log In}
@@ -2230,19 +2132,33 @@ After the models suggested wording improvements, the writer re-read the section 
 \subsection{Appendix E: Reflection}
 
 The information in this section will be used to evaluate the team members on the
-graduate attribute of Lifelong Learning.  
+graduate attribute of Lifelong Learning.
 
 \input{../Reflection.text}
 
-\input{../SRS_Reflection.text}
-\subsection{All}
-\subsubsection*{Question 3}
-Nearly all of our requirements were inspired by our supervisor’s team meetings and research papers. Since TeLaC is an existing research project, several papers documented studies in which SLPs and patients tested previous iterations of the software and provided feedback on their experiences. These studies were particularly insightful in helping us identify requirements specific to different stakeholders and understand the limitations of the current software. However, due to the long history of the project, the amount of information and changes within the project's lifetime was overwhelming to our group, which led us to seek further guidance before continuing to write requirements.
-Our discussions with our supervisor and their team were another major influence. Early in the project, our supervisor outlined the main deliverables we were expected to fulfill and provided access to relevant research papers and drafts. Through these resources and team meetings, we identified the three key workflows that our system needed to support. Together, the supervisor’s guidance and existing research formed the foundation for most of our requirements. For any requirements that were not primarily informed by these sources, we conducted additional research into common telehealth practices. This was particularly important for identifying requirements related to security and privacy standards. Overall, our requirements were primarily grounded in research, stakeholder feedback, and our client’s guidance.
+\begin{enumerate}
+\item What went well while writing this deliverable? 
+  \item What pain points did you experience during this deliverable, and how did
+  you resolve them?
+  \item How many of your requirements were inspired by speaking to your
+  client(s) or their proxies (e.g. your peers, stakeholders, potential users)?
+  \item Which of the courses you have taken, or are currently taking, will help
+  your team to be successful with your capstone project.
+  \item What knowledge and skills will the team collectively need to acquire to
+  successfully complete this capstone project?  Examples of possible knowledge
+  to acquire include domain specific knowledge from the domain of your
+  application, or software engineering knowledge, mechatronics knowledge or
+  computer science knowledge.  Skills may be related to technology, or writing,
+  or presentation, or team management, etc.  You should look to identify at
+  least one item for each team member.
+  \item For each of the knowledge areas and skills identified in the previous
+  question, what are at least two approaches to acquiring the knowledge or
+  mastering the skill?  Of the identified approaches, which will each team
+  member pursue, and why did they make this choice?
+\end{enumerate}
 
-
-\subsection{Nour}
-\subsubsection*{Question 1}
+\subsection*{Question 1}
+\subsubsection*{Nour}
 Writing the functional requirements was more straightforward than we expected because we had enough resources to understand what our supervisors wanted from the project. 
 They provided us with a couple of unreleased research papers that described the system architecture and clinician workflows, including a study they conducted on 10 clinicians to test the TeLaC platform. 
 With this information we were able to create a mental model of the TeLaC, SAFA, and BeViz modules and the purpose of each. 
@@ -2251,80 +2167,14 @@ That let us write requirements that were realistic in how the system behaves and
 Additionally, it made it easier to write use cases that reflected the different clinician workflows detailed in the research papers: direct analysis, annotation-first analysis, and on-demand refinement. 
 These are the three most important workflows, and the system should support them seamlessly. 
 Moreover, after speaking with our supervisors, we also learned which areas they are prioritizing and what the main features of the updated system should be. 
-This helped us determine what requirements could change and what shouldn’t change in the system. 
+This helped us determine what requirements could change and what shouldn’t change in the system.
 
-\subsubsection*{Question 2}
-Creating user personas was my biggest challenge. 
-The part of the system our group is working on is mainly for clinicians, so it was hard to identify different types of users, and we were worried the personas would end up looking nearly identical. 
-Hence, we created different “types” of clinicians who might use the platform and differentiated them by their work environment and capabilities, such as how heavy their workload is and how comfortable they are with technology. 
-This gave us personas that reflect real differences in how the system might be used, which also helped us write non-functional requirements around usability.
-
-Additionally, deciding how detailed each use case should be was also a bit difficult. 
-I wasn’t sure where in the workflow each one should start, and simulating the whole workflow from when the clinician enters the system felt like too much. 
-It would have repeated the same steps, such as logging in and selecting a patient in every use case. 
-Hence, I scoped each use case to a single clinician goal and used the preconditions to set the starting point. 
-For example, the clinician is already logged in and has opened a patient’s assessment. 
-I also kept the steps focused on what the clinician does and how the system responds, and left out screen-level details, since the interface may change during the redesign.
-
-\subsubsection*{Question 4}
-I took SFWRENG 4AL3, the applications of machine learning course. 
-It helped me understand the kinds of models our supervisors may have used when building the SAFA tool, and I am comfortable with the machine learning terminology in our documents, such as word error rate and model inputs and outputs. 
-Although we did not develop the model and it is not currently being evaluated, I understand how the audio files are segmented and sent to the model for transcription, and I can reason about its known limitations, such as weaker performance on non-English words. 
-This is relevant because our users work with bilingual children. The course also taught me why disclosing AI use matters. 
-We learned about the negative effects of large language models, including their large carbon footprint, and about the importance of being transparent about how they were used in our documents. 
-
-\subsubsection*{Question 5}
-Team management is extremely important for completing the project successfully. 
-Our work is split across documents for different milestones, and each member’s section has to fit with the others, so we need a clear picture of who is doing what and when it is due. 
-Having good team management lets us stay on top of tasks, stay on the same page, and catch problems early on. 
-Moreover, it means regular meetings where each member explains what they have completed since the last one, and discussion regarding the next project steps. 
-This is important considering we are balancing the project along with our other courses. 
-Furthermore, considering we are building on an existing system with already busy supervisors, we need to communicate regularly with them and record their feedback during meetings. 
-Without this, it would be easy for sections to become inconsistent with each other and for team members to be lost or have a different understanding of the project vision and next steps.
-
-Additionally, understanding how SAFA uses AI to create transcriptions is also important. 
-Integrating SAFA into the existing TeLaC system is the main focus of our project, so we need to understand how the audio is sent to the model, what the model returns, and where its transcriptions may be wrong, so we can design the system around this.
-
-\subsubsection*{Question 6}
-For team management, one approach is keeping a planner or schedule that lists upcoming deadlines, notes, and future meetings. 
-It keeps the team on track and helps us balance the project with other courses. 
-Another is writing meeting minutes after each meeting. 
-Minutes help the team manager see everyone’s tasks and what still needs to be done, so that work is finished on time and with good quality. 
-I chose to pursue team management because I have experience with group projects and prefer to know what is happening at all times during a project.
-
-As for understanding how SAFA uses AI, one approach is reading the documentation for the speech recognition model and for SAFA, as well as going through SAFA’s code. 
-Another is asking our supervisors to walk the team through how transcriptions are generated and where they tend to fail. 
-I will pursue this skill as well, mainly through the documentation and code review, because my machine learning course gave me a background in AI systems and their typical pitfalls, which should help me read the code and judge where the transcriptions may be unreliable.
-
-\subsection{Javayria}
-\subsubsection*{Question 1}
+\subsubsection*{Javayria}
 Although this deliverable was definitely more difficult and time-consuming than the previous one, the research papers we had access to were very helpful in showing us what the system needed to do from the very start. We were also given very clear “must-haves” from both our supervisor (Dr. Irene Yuan) and the researchers we are working with. They stressed from the beginning that their main goal was integrating the two systems (TeleHealth and SAFA) and redesigning the interface, and that anything beyond that would be a nice-to-have. This made it much easier to decide what belonged in our core requirements and what should be marked as a stretch goal. For example, clinicians in the study suggested features such as visualizing results by clinical domain and automatically detecting grammatical errors. Because we knew our priorities, we could include these as stretch requirements without letting them expand our scope.
 
 The research papers also already contained feedback from ten clinicians who had tested the platform, which was a great way for us to gather requirements without having to interview clinicians ourselves within the past few weeks (which were very busy due to our courseloads). Their direct quotes gave us a clear, traceable source for our stakeholder requirements. The papers also described the three clinician workflows (direct analysis, annotation-first analysis, and on-demand refinement), which gave us a natural structure for our use cases and state diagrams. Having the previous TeleHealth team’s SRS and code as a reference helped us see what had already been built, so we could focus our requirements on what the integrated system still needs.
 
-\subsubsection*{Question 2}
-
-One of the main pain points was getting the information we needed to write our requirements. Our project is unique in that it integrates two existing tools, so we needed access to both repositories to understand what was already built. However, delays in responses from our supervisors meant we did not receive access until much later into writing the deliverable. In the meantime, we had to start writing requirements based on the research papers alone, which made it difficult to separate the requirements of the overall system from the ones our own work needed to meet.
-
-Since our project builds on the work of others, we also spent a significant amount of time learning what the existing systems already do and how our work needs to fit into them. For example, the previous TeleHealth team built the interface that records children’s assessments. We were not sure whether to include requirements for handling that data, since it was not our work, but it would still be part of the system we would deliver at the very end. We resolved this by deciding that any requirement the final system must meet belongs in our SRS, even if another team previously contributed to that part. This turned out to be very important, because we found out that the existing platform does not enforce authentication or data privacy, and our supervisor stressed that the integrated system must protect patient data and follow HIPAA. Once we had access to the repositories, we compared our requirements against the existing code and the previous team’s SRS, and updated the ones that did not match how the system actually works.
-
-
-\subsubsection*{Question 4}
-Security and data privacy are a major part of this capstone, and I am currently taking COMPSCI 4CR3: Introduction to Cryptography. Our system handles assessment recordings, transcripts, and reports. These are sensitive health information, as patients' faces and voices count as identifiers under HIPAA. Any sensitive information sent over a network has to be encrypted so that attackers cannot read or tamper with it in transit. It also needs protecting while it is in storage. We learned about modern ciphers such as AES, along with key management and secure communication protocols. This can help our team choose suitable standards for encrypting patient data and understand why they are secure, not just how to use them. However, we would first need to work out where in the system data needs to be encrypted, for example when it is uploaded, stored, or shared through download links. We would also need to plan how to decrypt it efficiently when clinicians retrieve it, so that video playback stays responsive. Not all data needs this level of protection, so we will also have to evaluate which parts of the system are worth guarding this way. 
-
-
-\subsubsection*{Question 5}
-Our capstone involves taking a proof of concept and turning it into software that clinicians can rely on, so the team will need to learn a lot beyond what the existing systems use in order to implement the backend. Currently, TeleHealth is a Node/React web application that stores its data as JSON files, while SAFA is a Python desktop application whose transcription model runs as a separate script, and its output has to be uploaded into SAFA by hand. To build one integrated system, we will need to learn how to connect services written in different languages and run long tasks like transcribing a 30-minute recording in the background. We will also need to track each assessment's progress through the pipeline so clinicians stay in control of every stage. One member will focus on this service integration and pipeline design. Another member will learn how to deploy and evaluate Whisper efficiently, since children's speech and recordings in more than one language are known weak points for speech recognition.
-
-Since the current system has no database, I will focus on learning database design so we can properly link patients, assessments, transcript segments, annotations, and reports, and keep the original AI transcript alongside clinicians' edits. Because the existing platform also has no login sessions or access control, one other team member will focus on authentication, encryption, audit logging, and the HIPAA technical safeguards. As a team, we will also need to learn browser media handling to rebuild SAFA's synchronized video and transcript playback in React, as well as the PDF report generation. Finally, we all need enough domain knowledge of speech-language pathology to understand how clinicians conduct and interpret assessments, so that the workflows we design actually make sense for their daily work.
-
-\subsubsection*{Question 6}
-In the previous question, I identified back-end related topics our team needs to learn. Since a major part of our project involves running a transcription model locally, I plan to learn this hands-on through online guides. Amazon offers a great in-depth tutorial on hosting local LLMs and services so they can be exposed via an API endpoint: Amazon SageMaker Tutorial. By working through this interactive SageMaker Studio experience in my spare time, I plan to get hands-on experience with deploying LLMs and exposing them via an API. This way, I can be fully prepared when the time comes to implement this into our software capstone.
-The other major area of knowledge I identified is HIPAA compliance, which all our backend data and services must comply with. Because the internet is flooded with an overwhelming amount of information about what it means for software to be HIPAA-compliant, it is extremely hard to identify what our specific system actually requires. After all, it is currently a project mainly built for research purposes where sensitive data is not in use. I am quickly learning that it is not a simple checklist, but rather something we must design our software around from the very beginning. To prepare, I plan to review AWS policies for protected health information, as that is the cloud provider we are most likely to use. I will also talk to our capstone supervisor, Dr. Spencer Smith, to clarify the expected level of security for our team and understand any related legal consequences.
-
-
-\subsection{Catherine}
-\subsubsection*{Question 1}
+\subsubsection*{Catherine}
 I feel like because a lot of work for this deliverable had already been laid out in our Problem
 Statement and Development Plan, as well as from the many meetings we had with our
 supervisors and TA, I didn't feel like I was starting from scratch anymore.
@@ -2339,7 +2189,29 @@ requirements. For example, clinicians wanted results organized by specific domai
 and they also had concerns about children with limited attention. Both of these ended up
 becoming our functional requirements.
 
-\subsubsection*{Question 2}
+\subsubsection*{Yilin}
+Unlike the first deliverable, we were able to meet with our supervisor’s team from the beginning, which was very beneficial. Previously, we had relied heavily on reading their research papers to understand the project. Meeting with them allowed us to communicate the obstacles we were facing and receive immediate feedback. This also led to the informal TA meeting we held for this deliverable, where we came prepared with more specific questions and received feedback on more tangible progress than we had during the previous deliverable. Having this stronger foundation was particularly helpful when writing the scope and revising our problem statement to better reflect the updated specifications we had gathered. Overall, I found that establishing a clearer understanding of the project early on made the writing process more focused and productive. I hope to maintain this level of preparation and understanding for future deliverables.
+
+\subsection*{Question 2}
+\subsubsection*{Nour}
+Creating user personas was my biggest challenge. 
+The part of the system our group is working on is mainly for clinicians, so it was hard to identify different types of users, and we were worried the personas would end up looking nearly identical. 
+Hence, we created different “types” of clinicians who might use the platform and differentiated them by their work environment and capabilities, such as how heavy their workload is and how comfortable they are with technology. 
+This gave us personas that reflect real differences in how the system might be used, which also helped us write non-functional requirements around usability.
+
+Additionally, deciding how detailed each use case should be was also a bit difficult. 
+I wasn’t sure where in the workflow each one should start, and simulating the whole workflow from when the clinician enters the system felt like too much. 
+It would have repeated the same steps, such as logging in and selecting a patient in every use case. 
+Hence, I scoped each use case to a single clinician goal and used the preconditions to set the starting point. 
+For example, the clinician is already logged in and has opened a patient’s assessment. 
+I also kept the steps focused on what the clinician does and how the system responds, and left out screen-level details, since the interface may change during the redesign.
+
+\subsubsection*{Javayria}
+One of the main pain points was getting the information we needed to write our requirements. Our project is unique in that it integrates two existing tools, so we needed access to both repositories to understand what was already built. However, delays in responses from our supervisors meant we did not receive access until much later into writing the deliverable. In the meantime, we had to start writing requirements based on the research papers alone, which made it difficult to separate the requirements of the overall system from the ones our own work needed to meet.
+
+Since our project builds on the work of others, we also spent a significant amount of time learning what the existing systems already do and how our work needs to fit into them. For example, the previous TeleHealth team built the interface that records children’s assessments. We were not sure whether to include requirements for handling that data, since it was not our work, but it would still be part of the system we would deliver at the very end. We resolved this by deciding that any requirement the final system must meet belongs in our SRS, even if another team previously contributed to that part. This turned out to be very important, because we found out that the existing platform does not enforce authentication or data privacy, and our supervisor stressed that the integrated system must protect patient data and follow HIPAA. Once we had access to the repositories, we compared our requirements against the existing code and the previous team’s SRS, and updated the ones that did not match how the system actually works.
+
+\subsubsection*{Catherine}
 One of the biggest pain points for me was understanding and visualizing how use cases, functional
 requirements, and non-functional requirements all related to each other. 
 At first I wasn't sure if they were supposed to overlap or reference each other directly, and it was easy
@@ -2351,8 +2223,26 @@ statements, and non-functional requirements describe how well the system does it
 many times throughout our lectures. The traceability tables finally connect them all together,
 which also helped me understand the concept a lot better.
 
+\subsubsection*{Yilin}
+My biggest pain point was establishing traceability between the fit criteria of our non-functional requirements and our functional requirements. As we developed the requirements document, I found that our understanding of the project continued to expand, making it increasingly difficult to keep track of the growing number of requirements and incorporate both my ideas and those of my teammates. In particular, I struggled to establish concrete connections between non-functional requirements and the functional requirements they supported. Since our project has three main goals, I also found it challenging to ensure that each non-functional requirement could be verified while remaining relevant across the different goals. To address this, I focused on reviewing our requirements in the context of our project goals and identifying clearer connections between the system’s intended functionality and its quality attributes. This helped me better understand how our requirements fit together and reinforced the importance of maintaining traceability as our project evolves.
 
-\subsubsection*{Question 4}
+\subsection*{Question 3}
+\subsubsection*{All}
+Nearly all of our requirements were inspired by our supervisor’s team meetings and research papers. Since TeLaC is an existing research project, several papers documented studies in which SLPs and patients tested previous iterations of the software and provided feedback on their experiences. These studies were particularly insightful in helping us identify requirements specific to different stakeholders and understand the limitations of the current software. However, due to the long history of the project, the amount of information and changes within the project's lifetime was overwhelming to our group, which led us to seek further guidance before continuing to write requirements.
+Our discussions with our supervisor and their team were another major influence. Early in the project, our supervisor outlined the main deliverables we were expected to fulfill and provided access to relevant research papers and drafts. Through these resources and team meetings, we identified the three key workflows that our system needed to support. Together, the supervisor’s guidance and existing research formed the foundation for most of our requirements. For any requirements that were not primarily informed by these sources, we conducted additional research into common telehealth practices. This was particularly important for identifying requirements related to security and privacy standards. Overall, our requirements were primarily grounded in research, stakeholder feedback, and our client’s guidance.
+
+\subsection*{Question 4}
+\subsubsection*{Nour}
+I took SFWRENG 4AL3, the applications of machine learning course. 
+It helped me understand the kinds of models our supervisors may have used when building the SAFA tool, and I am comfortable with the machine learning terminology in our documents, such as word error rate and model inputs and outputs. 
+Although we did not develop the model and it is not currently being evaluated, I understand how the audio files are segmented and sent to the model for transcription, and I can reason about its known limitations, such as weaker performance on non-English words. 
+This is relevant because our users work with bilingual children. The course also taught me why disclosing AI use matters. 
+We learned about the negative effects of large language models, including their large carbon footprint, and about the importance of being transparent about how they were used in our documents.
+
+\subsubsection*{Javayria}
+Security and data privacy are a major part of this capstone, and I am currently taking COMPSCI 4CR3: Introduction to Cryptography. Our system handles assessment recordings, transcripts, and reports. These are sensitive health information, as patients' faces and voices count as identifiers under HIPAA. Any sensitive information sent over a network has to be encrypted so that attackers cannot read or tamper with it in transit. It also needs protecting while it is in storage. We learned about modern ciphers such as AES, along with key management and secure communication protocols. This can help our team choose suitable standards for encrypting patient data and understand why they are secure, not just how to use them. However, we would first need to work out where in the system data needs to be encrypted, for example when it is uploaded, stored, or shared through download links. We would also need to plan how to decrypt it efficiently when clinicians retrieve it, so that video playback stays responsive. Not all data needs this level of protection, so we will also have to evaluate which parts of the system are worth guarding this way.
+
+\subsubsection*{Catherine}
 One course that I remember taking was 2AA4, Intro to Software Development. It
 was a very technical course, but it also involved a lot of requirements and planning
 when trying to develop a solution or program to solve a problem. In the deliverables
@@ -2366,7 +2256,30 @@ once we start integrating SAFA, which was built as a standalone tool, into the e
 TeLaC platform, since there are a lot of moving parts and missing a requirement now
 could mean having to go back and rework large parts of the system later.
 
-\subsubsection*{Question 5}
+\subsubsection*{Yilin}
+SFWRENG 3RA3, Software Requirements, is particularly relevant to our capstone. It was my first experience developing a complete requirements document, and the open-ended nature of the project taught me to define requirements systematically despite having limited client feedback.
+The course also introduced diagrams to visualize software systems and emphasized focusing on the problem and solution space rather than prematurely narrowing requirements to a specific implementation. I believe this helped me keep our current deliverable problem-focused.
+Finally, the course emphasized iterative development through regular check-ins and feedback before submission. Since capstone follows a similar structure over two semesters, these experiences will help our team refine requirements, incorporate feedback, and adapt as we learn more about the project.
+
+\subsection*{Question 5}
+\subsubsection*{Nour}
+Team management is extremely important for completing the project successfully. 
+Our work is split across documents for different milestones, and each member’s section has to fit with the others, so we need a clear picture of who is doing what and when it is due. 
+Having good team management lets us stay on top of tasks, stay on the same page, and catch problems early on. 
+Moreover, it means regular meetings where each member explains what they have completed since the last one, and discussion regarding the next project steps. 
+This is important considering we are balancing the project along with our other courses. 
+Furthermore, considering we are building on an existing system with already busy supervisors, we need to communicate regularly with them and record their feedback during meetings. 
+Without this, it would be easy for sections to become inconsistent with each other and for team members to be lost or have a different understanding of the project vision and next steps.
+
+Additionally, understanding how SAFA uses AI to create transcriptions is also important. 
+Integrating SAFA into the existing TeLaC system is the main focus of our project, so we need to understand how the audio is sent to the model, what the model returns, and where its transcriptions may be wrong, so we can design the system around this.
+
+\subsubsection*{Javayria}
+Our capstone involves taking a proof of concept and turning it into software that clinicians can rely on, so the team will need to learn a lot beyond what the existing systems use in order to implement the backend. Currently, TeleHealth is a Node/React web application that stores its data as JSON files, while SAFA is a Python desktop application whose transcription model runs as a separate script, and its output has to be uploaded into SAFA by hand. To build one integrated system, we will need to learn how to connect services written in different languages and run long tasks like transcribing a 30-minute recording in the background. We will also need to track each assessment's progress through the pipeline so clinicians stay in control of every stage. One member will focus on this service integration and pipeline design. Another member will learn how to deploy and evaluate Whisper efficiently, since children's speech and recordings in more than one language are known weak points for speech recognition.
+
+Since the current system has no database, I will focus on learning database design so we can properly link patients, assessments, transcript segments, annotations, and reports, and keep the original AI transcript alongside clinicians' edits. Because the existing platform also has no login sessions or access control, one other team member will focus on authentication, encryption, audit logging, and the HIPAA technical safeguards. As a team, we will also need to learn browser media handling to rebuild SAFA's synchronized video and transcript playback in React, as well as the PDF report generation. Finally, we all need enough domain knowledge of speech-language pathology to understand how clinicians conduct and interpret assessments, so that the workflows we design actually make sense for their daily work.
+
+\subsubsection*{Catherine}
 Two areas that our team will need to learn more about are, firstly, front-end development 
 and making sure that the user experience is as smooth and intuitive as possible, and secondly, 
 security and how we can set up our system to be more secure. 
@@ -2381,7 +2294,26 @@ cloud storage services such as AWS, including how to encrypt data and control wh
 access to it so that clinicians can only see their own patients. These are the two
 areas I will be focusing on for the team.
 
-\subsubsection*{Question 6}
+\subsubsection*{Yilin}
+Two skills our team will need to continue developing are user interface design and presentation skills. First, user interface design is essential because a major component of our project involves improving the interface of SAFA to create a more intuitive experience for clinicians. We will need to understand how to apply user-centred design principles and incorporate stakeholder feedback to make informed design decisions. This includes considering accessibility, usability, and the specific needs of speech-language pathologists throughout the assessment and annotation process. Second, we will need to strengthen our presentation and communication skills. Communicating our progress, design decisions, and technical work will be important when meeting with our supervisor, TAs, and other stakeholders, as well as when presenting our project deliverables. We will need to explain our work clearly to audiences with different levels of technical knowledge and ensure that our presentations effectively communicate both our progress and the reasoning behind our decisions.
+
+\subsection*{Question 6}
+\subsubsection*{Nour}
+For team management, one approach is keeping a planner or schedule that lists upcoming deadlines, notes, and future meetings. 
+It keeps the team on track and helps us balance the project with other courses. 
+Another is writing meeting minutes after each meeting. 
+Minutes help the team manager see everyone’s tasks and what still needs to be done, so that work is finished on time and with good quality. 
+I chose to pursue team management because I have experience with group projects and prefer to know what is happening at all times during a project.
+
+As for understanding how SAFA uses AI, one approach is reading the documentation for the speech recognition model and for SAFA, as well as going through SAFA’s code. 
+Another is asking our supervisors to walk the team through how transcriptions are generated and where they tend to fail. 
+I will pursue this skill as well, mainly through the documentation and code review, because my machine learning course gave me a background in AI systems and their typical pitfalls, which should help me read the code and judge where the transcriptions may be unreliable.
+
+\subsubsection*{Javayria}
+In the previous question, I identified back-end related topics our team needs to learn. Since a major part of our project involves running a transcription model locally, I plan to learn this hands-on through online guides. Amazon offers a great in-depth tutorial on hosting local LLMs and services so they can be exposed via an API endpoint: Amazon SageMaker Tutorial. By working through this interactive SageMaker Studio experience in my spare time, I plan to get hands-on experience with deploying LLMs and exposing them via an API. This way, I can be fully prepared when the time comes to implement this into our software capstone.
+The other major area of knowledge I identified is HIPAA compliance, which all our backend data and services must comply with. Because the internet is flooded with an overwhelming amount of information about what it means for software to be HIPAA-compliant, it is extremely hard to identify what our specific system actually requires. After all, it is currently a project mainly built for research purposes where sensitive data is not in use. I am quickly learning that it is not a simple checklist, but rather something we must design our software around from the very beginning. To prepare, I plan to review AWS policies for protected health information, as that is the cloud provider we are most likely to use. I will also talk to our capstone supervisor, Dr. Spencer Smith, to clarify the expected level of security for our team and understand any related legal consequences.
+
+\subsubsection*{Catherine}
 For front-end development, one approach is to follow full-stack projects and tutorials
 online, or to use React's official documentation or AI as a direct tutor. Another is to learn by working directly 
 in the existing SAFA and TeLaC code, as there's some frontend work already done. I believe as a team, we'll likely
@@ -2395,26 +2327,10 @@ access them. I plan to do the prototype, since actually setting it up would give
 a solid understanding of the security measures needed. It would also show me where
 things can go wrong much better than just reading about it.
 
-\subsection{Yilin}
-\subsubsection*{Question 1}
-Unlike the first deliverable, we were able to meet with our supervisor’s team from the beginning, which was very beneficial. Previously, we had relied heavily on reading their research papers to understand the project. Meeting with them allowed us to communicate the obstacles we were facing and receive immediate feedback. This also led to the informal TA meeting we held for this deliverable, where we came prepared with more specific questions and received feedback on more tangible progress than we had during the previous deliverable. Having this stronger foundation was particularly helpful when writing the scope and revising our problem statement to better reflect the updated specifications we had gathered. Overall, I found that establishing a clearer understanding of the project early on made the writing process more focused and productive. I hope to maintain this level of preparation and understanding for future deliverables.
-
-\subsubsection*{Question 2}
-My biggest pain point was establishing traceability between the fit criteria of our non-functional requirements and our functional requirements. As we developed the requirements document, I found that our understanding of the project continued to expand, making it increasingly difficult to keep track of the growing number of requirements and incorporate both my ideas and those of my teammates. In particular, I struggled to establish concrete connections between non-functional requirements and the functional requirements they supported. Since our project has three main goals, I also found it challenging to ensure that each non-functional requirement could be verified while remaining relevant across the different goals. To address this, I focused on reviewing our requirements in the context of our project goals and identifying clearer connections between the system’s intended functionality and its quality attributes. This helped me better understand how our requirements fit together and reinforced the importance of maintaining traceability as our project evolves.
-
-\subsubsection*{Question 4}
-SFWRENG 3RA3, Software Requirements, is particularly relevant to our capstone. It was my first experience developing a complete requirements document, and the open-ended nature of the project taught me to define requirements systematically despite having limited client feedback.
-The course also introduced diagrams to visualize software systems and emphasized focusing on the problem and solution space rather than prematurely narrowing requirements to a specific implementation. I believe this helped me keep our current deliverable problem-focused.
-Finally, the course emphasized iterative development through regular check-ins and feedback before submission. Since capstone follows a similar structure over two semesters, these experiences will help our team refine requirements, incorporate feedback, and adapt as we learn more about the project.
-
-\subsubsection*{Question 5}
-Two skills our team will need to continue developing are user interface design and presentation skills. First, user interface design is essential because a major component of our project involves improving the interface of SAFA to create a more intuitive experience for clinicians. We will need to understand how to apply user-centred design principles and incorporate stakeholder feedback to make informed design decisions. This includes considering accessibility, usability, and the specific needs of speech-language pathologists throughout the assessment and annotation process. Second, we will need to strengthen our presentation and communication skills. Communicating our progress, design decisions, and technical work will be important when meeting with our supervisor, TAs, and other stakeholders, as well as when presenting our project deliverables. We will need to explain our work clearly to audiences with different levels of technical knowledge and ensure that our presentations effectively communicate both our progress and the reasoning behind our decisions.
-
-\subsubsection*{Question 6}
+\subsubsection*{Yilin}
 For user interface design, one approach is to study established design principles, such as Don Norman’s principles, and apply them when evaluating and developing our interface. We can also conduct user research and gather feedback from our supervisor, clinicians, and other relevant stakeholders to ensure that our designs address actual user needs. A second approach is to experiment with different design concepts and wireframes, iteratively refining them based on feedback and usability considerations. Personally, I would therefore prioritize creating and comparing different wireframes and interface concepts, then seeking feedback from my peers and, where possible, stakeholders. This would allow me to identify usability issues early and improve my ability to translate user needs into effective design decisions. Since interface design is central to our project, all team members should contribute to developing and evaluating design iterations, while taking advantage of opportunities to obtain reliable stakeholder feedback.
 
 For presentation skills, I believe effective presentations require both careful preparation and practice. As a team, we should initially divide preparation tasks according to our individual strengths, such as organizing content, developing visuals, or planning the presentation structure. This would allow us to work efficiently while making use of each member’s strengths. We should then regroup to rehearse the complete presentation and provide constructive feedback. Regardless of our individual responsibilities during preparation, every team member should be familiar with the content and prepared to present and answer questions. This approach would help us communicate our work consistently and confidently throughout the capstone project.
-
 
 \newpage
 
