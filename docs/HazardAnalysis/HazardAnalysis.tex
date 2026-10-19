@@ -215,6 +215,70 @@ The following FMEA table is a breakdown of the hazards that could occur within t
        \item HA-MLTM2
   \end{enumerate} \\
   \hline
+  Database &
+  \begin{enumerate}[leftmargin=*]
+      \item Patient data is accessed by an unauthorized user
+      \item Saved data is lost or has errors
+      \item Data gets linked to the wrong patient or assessment
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+      \item Recordings and health records of children are exposed, which is a breach of sensitive data and a potential violation of privacy regulations like HIPAA.
+      \item Recordings, assessment, or annotation data is lost and cannot be recreated, so the clinician must redo the assessment.
+      \item The clinician works on another patient's assessment by accident, which can lead to an inaccurate assessment and report about a child.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item Missing server-side authorization checks, injection attacks, unencrypted storage, or stolen credentials.
+       \item Storage failure, interrupted or partial writes, concurrent edits overwriting each other, or accidental deletion.
+       \item Incorrect record identifiers and errors when saving an uploaded recording.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item Encrypt stored data, verify on the server that the clinician is assigned to the patient before returning any record, use parameterized queries, and log every access.
+       \item Ensure that data is backed up regularly, with confirmation of each save to the clinician, while keeping the original auto-generated version of edited content.
+       \item Enforce links between patients, assessments, and recordings in the database, and display the patient's name and assessment date on every assessment view.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item HA-SER3
+       \item NFR9
+       \item FR19
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item HA-DB1
+       \item HA-DB2
+       \item HA-DB3
+  \end{enumerate} \\
+  \hline
+  Report Generation &
+  \begin{enumerate}[leftmargin=*]
+      \item Report does not accurately show the clinician's latest changes
+      \item Unverified automated content appears on the final report
+      \item Downloaded report is exposed to unauthorized people
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+      \item The report misrepresents the clinician's evaluation, and incorrect results may be shared with families, schools, or other professionals.
+      \item A transcription or flagging error is presented as the clinician's judgement, which can lead to an incorrect diagnosis.
+      \item A child's assessment results and health information leave the system's protection and are shown to unauthorized people.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item The report is generated from outdated data because edits were not saved before generation, or the assessment changed after the report was generated.
+       \item The clinician generates the report before reviewing all automated content, or the system lets the report be finalized without the required checks.
+       \item The file is sent to the wrong recipient, stored on a shared or lost device, or downloaded by a user who is not the assigned clinician.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item Save all edits before generating the report, stamp each report with its generation date and time, mark it as out of date if the assessment changes, and show a preview before download.
+       \item Label unverified content in the report, and prevent the report from being finalized until the clinician has reviewed all automated content.
+       \item Allow only the assigned clinician to download reports, record every download, and mark each report as confidential.
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item FR7
+       \item HA-SAR2
+       \item NFR5
+  \end{enumerate} &
+  \begin{enumerate}[leftmargin=*]
+       \item HA-RG1
+       \item HA-RG2
+       \item HA-RG3
+  \end{enumerate} \\
+  \hline
   Video Recording & 
   \begin{enumerate}[leftmargin=*]
       \item Poor audio or video quality
