@@ -94,7 +94,7 @@ The system can be separated into six major components, some of which work togeth
 to form the complete system, as described below.
 
 \subsection{ML Transcription Model}
-TODO
+The ML (Machine Learning) Transcription Model is an external speech recognition service (OpenAI's Whisper) that MERLS uses to automatically convert the audio of recorded assessments into timestamped text. The system sends audio segments to the service and receives the transcribed text back along with segment timings and reliability values.
 
 \subsection{Database}
 The database stores all of the data that the system relies on, including patient and clinician
@@ -117,7 +117,7 @@ Once generated, reports are saved to the database and shown on the
 clinician's dashboard.
 
 \subsection{Video Recording}
-TODO
+The Video Recording component captures the video and audio of a live assessment session between a clinician and a patient, and uploads the recording to the system once the session ends.
 
 
 \section{Critical Assumptions} \label{sec:Assumptions}
