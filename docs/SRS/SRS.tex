@@ -169,53 +169,31 @@ Date 2 & 1.1 & Notes\\
 \section{Introduction} 
 % ==============================================================
 
-\plt{Explain what system is being specified. State purpose, users, and project goals.}
-
-\plt{Introduce the name of your software as \progname{}.  Using \progname{} as
-a command lets you change the name if necessary and have the change propagate to
-all documents.}
-
-\plt{Include a reference to the template this work is based on.  \citet{ISOIECIEEE29148_2018}
-justifies the SRS structure and \citet{ISOIECIEEE15288_2023} provides the
-broader life-cycle context that underlines modern requirements engineering
-practice.}
+This document specifies the software requirements for \progname{}, a platform for remote speech and language assessment of bilingual children.
+This document follows the course IEEE SRS template, which is based on the IEEE recommended practice for software requirements specifications (SRS), incorporating the overall life-cycle context
+of current requirements engineering practice.
 
 This section provides an overview of the requirements document, including its overall purpose, required background, and relevant definitions/acronyms.
 
 \subsection{Purpose}
 
-\plt{State the purpose of the system.}
-
-\plt{The purpose should be in the context of the project itself, not in the
-  context of this course. Although the ``purpose'' of the document is to get a
-  grade, you should not mention this.  Instead, ``fake it'' as if this is a real
-  project.}
-
-\plt{What problem does your program solve?
-The description here should be in the problem space, not the solution space.}
-The purpose of this project is to solve the usability and workflow challenges faced by speech-language pathologists (SLPs) conducting remote speech assessments of bilingual pediatric patients. The lack of integration between assessment recordings and annotation tools, combined with limitations in the usability of existing tools, can make the assessment process inefficient and difficult to manage, potentially affecting the accuracy and consistency of clinical annotations.
+The purpose of \progname{} is to solve the usability and workflow challenges faced by speech-language pathologists (SLPs) conducting remote speech assessments of bilingual pediatric patients. The lack of integration between assessment recordings and annotation tools, combined with limitations in the usability of existing tools, can make the assessment process inefficient and difficult to manage, potentially affecting the accuracy and consistency of clinical annotations.
 
 \subsection{Scope}
-\plt{Briefly describe:
-\begin{itemize}
-  \item Problem being solved
-  \item Intended users
-  \item Major functionality
-  \item Expected benefits
-  \item Clarifying the scope often means saying what the software doesn't do
-\end{itemize}
-}
-
-\plt{The scope section is relevant for understanding the boundaries of the system. It is also relevant for later determining typical values of inputs. The scope should make it clear what inputs are reasonable to expect. This is a distinction between scope and context (context is a later section).  Scope affects the inputs while context affects how the software will be used.}
 
 Currently, assessment recordings on the TeLaC platform and the existing software tool (SAFA) used by clinicians to annotate and analyze these recordings are not fully integrated. Additionally, the existing annotation tool has usability limitations that can make the assessment process less intuitive and efficient.
 
-The intended users are speech-language pathologists conducting remote speech assessments of bilingual pediatric patients through telehealth services. The software will integrate speech assessment annotation functionality into the existing TeLaC platform, providing clinicians with a centralized interface to review assessment recordings, edit automatically generated transcriptions, annotate speech, and export annotation data.
+The intended users are speech-language pathologists conducting 
+remote speech assessments of bilingual pediatric patients through 
+telehealth. Speech and language researchers are secondary users who review the assessment data. The software will integrate speech assessment annotation 
+functionality into the existing TeLaC platform, providing clinicians 
+with a centralized interface to review assessment recordings, edit automatically generated transcriptions, annotate speech, and export annotation data.
 
 The software aims to streamline the clinical workflow by reducing the need to switch between separate tools, improving the usability of annotation features, and supporting the organization and review of assessment results. These improvements are intended to help clinicians conduct assessments more efficiently and consistently while supporting the ongoing monitoring of pediatric patients' speech development.
 
-The software is intended to accommodate all SLPs who use the TeLaC platform for the supported assessment workflow, regardless of their individual clinical needs or the number of patients they assess. However, the current scope is limited to Mandarin-English bilingual speech assessments. Assessments involving other language combinations are not expected to be supported. The software is intended to assist clinicians with transcription and annotation rather than independently diagnose speech disorders or replace professional clinical judgment.
-                                    
+The scope of \progname{} is intended to accommodate all SLPs who use the TeLaC platform for the supported assessment workflow, regardless of their individual clinical needs or the number of patients they assess. It is 
+limited to Mandarin-English bilingual speech assessments; other language combinations are not supported. Assessments involving other language combinations are not expected to be supported. The software is intended to assist clinicians with transcription and annotation rather than independently diagnose speech disorders or replace professional clinical judgment.
+Lastly, training new speech recognition models is outside the scope of this project.                                    
 
 \subsection{Stakeholders}
 
@@ -351,59 +329,52 @@ file storage service is also used to securely store the data that the platform r
 \end{center}
 \end{figure}
 
-\plt{For each of the entities in the system context diagram its responsibilities
-  should be listed.  Whenever possible the system should check for data quality,
-  but for some cases the user will need to assume that responsibility.  The list
-  of responsibilities should be about the inputs and outputs only, and they
-  should be abstract.  Details should not be presented here.  However, the
-  information should not be so abstract as to just say ``inputs'' and
-  ``outputs''.  A summarizing phrase can be used to characterize the inputs.
-  For instance, saying ``material properties'' provides some information, but it
-  stays away from the detail of listing every required properties.}
+The responsibilities of each entity in the system context are as follows:
 
 \begin{itemize}
-\item Patient and Caregiver Responsibilities:
+\item \textbf{Patient and Caregiver Responsibilities:}
 \begin{itemize}
-\item Complete assessments by submitting video and audio responses
-\item Record in a setting where the child can be clearly seen and heard
+\item Complete assessments by submitting video and audio responses.
+\item Record in a setting where the child can be clearly seen and heard.
 \end{itemize}
-\item Clinician Responsibilities:
+\item \textbf{Clinician Responsibilities:}
 \begin{itemize}
-\item Review flagged items, transcripts, and annotations before relying on them
-\item Provide manual evaluations, edits, and notes on assessment results
-\item Make the final clinical judgement for each patient
+\item Review flagged items, transcripts, and annotations before relying on them.
+\item Provide manual evaluations, edits, and notes on assessment results.
+\item Make the final clinical judgement for each patient.
 \end{itemize}
-\item Researcher Responsibilities:
+\item \textbf{Researcher Responsibilities:}
 \begin{itemize}
-\item Provide transcript corrections and speaker and language labels
-\item Handle exported data according to research ethics requirements
+\item Provide transcript corrections and speaker and language labels.
+\item Handle exported data according to research ethics requirements.
 \end{itemize}
-\item Speech and Language Model Responsibilities:
+\item \textbf{Speech and Language Model Responsibilities:}
 \begin{itemize}
-\item Return draft transcripts and detected patterns for a given recording
+\item Return draft transcripts and detected patterns for a given recording.
 \end{itemize}
-\item Database and File Storage Responsibilities:
+\item \textbf{Database and File Storage Responsibilities:}
 \begin{itemize}
-\item Securely store and return recordings and patient records
+\item Securely store and return recordings and patient records.
 \end{itemize}
-\item System Responsibilities:
+\item \textbf{System Responsibilities:}
 \begin{itemize}
-\item Check that submitted recordings meet minimum quality requirements
-\item Restrict access to patient data based on the user's role
-\item Send recordings to the speech and language models and display the results
-\item Generate assessment overviews, reports, and data exports
+\item Check that submitted recordings meet minimum quality requirements.
+\item Restrict access to patient data based on the user's role.
+\item Send recordings to the speech and language models and display the results.
+\item Generate assessment overviews, reports, and data exports.
 \end{itemize}
 \end{itemize}
 
-\plt{Identify in what context the software will typically be used.  Is it for
-exploration? education? engineering work? scientific work?. Identify whether it
-will be used for mission-critical or safety-critical applications.} 
+\progname{} will be used in a clinical context, where clinicians review and annotate
+remote assessments as a part of working with their patients. It will also bes used in 
+scientific work by researchers studying bilingual speech therapy and the effectiveness 
+of software-assisted annotation for remote assessments.
+Use of the system in a clinical setting means that errors may have serious consequences.
+An inaccurate transcription or flagged item may lead to wrong diagnosis. The failure to 
+securely store and return patient data may lead to exposing recordings and health records of children. Thus, while
+the system is not safety-critical, as it does not make diagnoses and cause direct physical harm to patients, accuracy
+and clinician control over the system is important.
 
-\plt{This additional context information is needed to determine how much effort
-should be devoted to the rationale section.  If the application is
-safety-critical, the bar is higher.  This is currently less structured, but
-analogous to, the idea to the Automotive Safety Integrity Levels (ASILs) that
-McSCert uses in their automotive hazard analyses.}
 
 \subsection{User Characteristics} \label{SecUserCharacteristics}
 
@@ -1095,6 +1066,15 @@ Clinician
 
 \subsection{Use Case Diagrams}
 The following use case diagrams show the interactions between the clinician and the system for certain use cases described above. 
+First, in order to access the functionality of the system, the clinician must first create a clinician account, as shown in Figure~\ref{UC12-Create_Clinician_Account}.
+\begin{figure}[H]
+\begin{center}
+ \includegraphics[width=0.75\textwidth]{UC12-Create_Clinician_Account.png}
+\caption{Use case diagram for Create a Clinician Account (\ucref{UC_Label12})}
+\label{UC12-Create_Clinician_Account}
+\end{center}
+\end{figure}
+
 \noindent To tell the child's speech apart from an adult's, the clinician assigns speaker roles to the auto-generated transcript, as shown in Figure~\ref{UC1-Annotation_Tool}.
 
 \begin{figure}[H]
@@ -1146,9 +1126,9 @@ The functional requirements are defined in this section. Each requirement has an
 \\ \textbf{Fit Criterion:} Clinicians shall be able to export annotation data from an assessment in a supported file format. The exported file shall contain all approved annotations associated with that assessment.
 
 \refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_SpeakerIdentification}:] The system shall distinguish between different speakers in video assessments.
-\\ \textbf{Rationale:} Remote speech assessments may involve multiple speakers, including the child and their guardian. Distinguishing between speakers helps SLPs annotate the correct individuals and account for distractions or outside influences.
-\\ \textbf{Fit Criterion:} For assessments containing multiple identified speakers, the system shall visually distinguish each speaker's utterances using consistent labels, tags, or highlighting. Clinicians shall be able to determine which identified speaker corresponds to each displayed utterance.
+\item[\textbf{\rthereqnum} \label{FR_SpeakerIdentification}:] The system shall distinguish between different speakers in video transcriptions.
+\\ \textbf{Rationale:} Remote speech recordings may involve multiple speakers, including the child and their guardian. Distinguishing between speakers helps SLPs annotate the correct individuals and account for distractions or outside influences.
+\\ \textbf{Fit Criterion:} For transcriptions containing multiple identified speakers, the system shall visually distinguish each speaker using consistent labels, tags, or highlighting. Clinicians shall be able to determine which identified speaker corresponds to each displayed utterance.
 
 \refstepcounter{reqnum}
 \item[\textbf{\rthereqnum} \label{FR_AssessmentWorkflowNavigation}:] The system shall allow clinicians to navigate between different stages of the speech assessment analysis workflow.
@@ -1549,7 +1529,7 @@ All NFRs are defined in this section. They are grouped into the following sectio
 \label{NFR-S3}
   The system shall encrypt patient recordings and transcripts in transit and in storage.
   \\ \textbf{Rationale:} Assessment recordings and transcripts contain private patient information. The annotation service sends video assessments to a third-party transcription service, and the recordings are also kept in the system’s storage. Hence, they must be protected in both places so that anyone who intercepts the data or gains access to the storage cannot read it.
-  \\ \textbf{Fit Criterion:} The system must transmit all recordings and transcripts to third-party services using TRANSIT\_ENCRYPTION\_STANDARD and must store them using STORAGE\_ENCRYPTION\_STANDARD.
+  \\ \textbf{Fit Criterion:} The system must transmit all recordings and transcripts to third-party services using TRANSIT\_ENCRYPTION\_STANDARD and must store them in patient records (\nfrref{FR_AnnotationsInRecord}) using STORAGE\_ENCRYPTION\_STANDARD.
 
 \refstepcounter{nfrnum}
 \item[\textbf{\rthenfrnum}:]
@@ -1666,15 +1646,15 @@ All NFRs are defined in this section. They are grouped into the following sectio
 \item[\textbf{\rthenfrnum}:]
 \label{NFR-RE1}
 The system shall reliably generate transcriptions for supported patient assessment videos.
-  \\ \textbf{Rationale:} Transcriptions are essential to the annotation workflow. Failed or incomplete transcription generation can delay assessments and require clinicians to repeat work manually.
-  \\ \textbf{Fit Criterion:} For at least GENERATE\_SUCCESS\% of valid, supported assessment videos tested, the system shall successfully generate a transcription as specified in \rref{FR_AutomaticTranscription} without requiring the clinician to restart the process manually.
+  \\ \textbf{Rationale:} Transcriptions are essential to the annotation workflow. Failed or incomplete transcription generation can delay assessments and prevent accurate identification of speakers (\rref{FR_SpeakerIdentification}).
+  \\ \textbf{Fit Criterion:} For at least GENERATE\_SUCCESS\% of valid, supported assessment videos tested, the system shall successfully generate a transcription as specified in {\rref{FR_AutomaticTranscription}} without requiring the clinician to restart the process manually.
 
 \refstepcounter{nfrnum}
 \item[\textbf{\rthenfrnum}:]
 \label{NFR-RE2}
 The system shall preserve saved transcription edits and annotations across sessions.
   \\ \textbf{Rationale:} Clinicians may complete assessments over multiple sessions. Losing saved work would increase workload, compromise record-keeping, and potentially affect the consistency of assessment results.
-  \\ \textbf{Fit Criterion:} For at least SAVE\_SUCCESS\% of successfully saved transcription edits (\rref{FR_TranscriptionEditing}) and annotation data (\rref{FR_AnnotationExport}), the system shall ensure that the data remains available and unchanged after the clinician leaves the assessment and reopens it.
+  \\ \textbf{Fit Criterion:} For at least SAVE\_SUCCESS\% of saved transcription edits (\rref{FR_TranscriptionEditing}) and annotation data (\rref{FR_AnnotationExport}) tested, the data shall remain available and unchanged after the clinician ends the session, logs back in, and reopens the assessment.
 
 \end{itemize}
 
@@ -1687,21 +1667,22 @@ The system shall preserve saved transcription edits and annotations across sessi
 \label{NFR-CV1}
 The system shall respond to clinician interactions within an acceptable time throughout the assessment process.
   \\ \textbf{Rationale:} Clinicians need to review and annotate assessments efficiently. Delayed responses can interrupt their workflow and increase the time required to complete assessments.
-  \\ \textbf{Fit Criterion:} At least AVG\_INTERACTIONS\% of common interactions related to transcription editing (\rref{FR_TranscriptionEditing}) and annotation data export shall complete within INTERACTION\_TIME seconds under normal operating conditions, excluding processing-intensive tasks.
+  \\ \textbf{Fit Criterion:} At least AVG\_INTERACTIONS\% of common interactions related to transcription editing and annotation data export (\rref{FR_AnnotationExport}) shall complete within INTERACTION\_TIME seconds under normal operating conditions, excluding processing-intensive tasks.
 
 \refstepcounter{nfrnum}
 \item[\textbf{\rthenfrnum}:]
 \label{NFR-CV2}
 The system shall allow clinicians to access their annotation work from different devices through a web browser.
   \\ \textbf{Rationale:} Clinicians may need to access assessment records from different work environments. Browser-based access reduces reliance on a specific device and eliminates the need to manually transfer annotation files.
-  \\ \textbf{Fit Criterion:} Clinicians shall be able to access and continue editing the same saved annotation data (\rref{FR_TranscriptionEditing}) from at least two supported devices through a web browser without manually transferring files.
+  \\ \textbf{Fit Criterion:} Clinicians shall be able to access and continue editing the same saved transcription edits and annotation data (\rref{FR_TranscriptionEditing}, \rref{FR_AnnotationExport}) from at least two supported devices through a web browser without manually transferring files.
 
-  \refstepcounter{nfrnum}
+\refstepcounter{nfrnum}
 \item[\textbf{\rthenfrnum}:]
-\label{NFR-PE3}
+\label{NFR-CV3}
 The system shall minimize repetitive interactions when clinicians complete annotations and manage patient assessments.
-  \\ \textbf{Rationale:} Repetitive actions, such as manually saving work or repeatedly entering the same information, increase administrative workload and can interrupt the assessment process.
-  \\ \textbf{Fit Criterion:} The system shall automatically save or otherwise preserve changes to transcription edits (\rref{FR_TranscriptionEditing}) and annotation data (\rref{FR_AnnotationExport}) when clinicians navigate between assessment workflow stages (\rref{FR_AssessmentWorkflowNavigation}), without requiring them to manually save their work on each page.
+  \\ \textbf{Rationale:} Repetitive actions, such as manually saving work or repeatedly entering the same information already known to the system, increase administrative workload and can interrupt the assessment process.
+  \\ \textbf{Fit Criterion:} The system shall automatically preserve changes to transcription edits and annotation data when clinicians navigate between assessment workflow stages (\rref{FR_AssessmentWorkflowNavigation}), and shall pre-fill fields with information already stored in the system (e.g., patient name and assessment date) so that the clinician does not need to re-enter it.
+
 \end{itemize}
 
 
@@ -1834,6 +1815,10 @@ Stakeholder Req & Use Case & Functional Req \\
 \srref{SR_ProgressOverTime} & \ucref{UC_Label7} & \rref{FR_Label22}, \rref{FR_Label23} \\
 \srref{SR_ProgressOverTime} & -- & \rref{FR_ResultVisualization} \\
 \srref{SR_ClinicianFinalJudgment} & -- & \rref{FR_LinguisticPatternDetection} \\
+\srref{SR_PatientPrivacy} & \ucref{UC_Label12} & \rref{FR_Label9} \\
+\srref{SR_SinglePlatform} & \ucref{UC_Label13} & \rref{FR_Label11}, \rref{FR_Label12} \\
+\srref{SR_ClinicianFinalJudgment} & \ucref{UC_Label14} & \rref{FR_Label11} \\
+
 \bottomrule
 
 \caption{Traceability Between Stakeholder Requirements, Use Cases, and
@@ -1845,6 +1830,11 @@ Functional Requirements} \label{tab:SR2UC2FRtm}
 \toprule
 Functional Req & Nonfunctional Req \\
 \midrule
+\rref{FR_AutomaticTranscription} & \nfrref{NFR-RE1}, \nfrref{NFR-P1} \\
+\rref{FR_TranscriptionEditing} & \nfrref{NFR-RE2}, \nfrref{NFR-CV2} \\
+\rref{FR_SpeakerIdentification} & \nfrref{NFR-RE1} \\
+\rref{FR_AnnotationExport} & \nfrref{NFR-RE2}, \nfrref{NFR-CV1} \\
+\rref{FR_AssessmentWorkflowNavigation} & \nfrref{NFR-CV3} \\
 \rref{FR_Label6} & \nfrref{NFR-U2} \\
 \rref{FR_Label7} & \nfrref{NFR-U4} \\
 \rref{FR_Label8} & \nfrref{NFR-U3} \\
@@ -1855,11 +1845,10 @@ Functional Req & Nonfunctional Req \\
 \rref{FR_Label13} & \nfrref{NFR-A1} \\
 \rref{FR_Label14} & \nfrref{NFR-P2} \\
 \rref{FR_ManualEvaluation} & \nfrref{NFR-S4} \\
-\rref{FR_ManualEvaluation} & \nfrref{NFR-UN1} \\
 \rref{FR_QuestionNotes} & \nfrref{NFR-S4} \\
 \rref{FR_AssessmentNotes} & \nfrref{NFR-S4} \\
-\rref{FR_AnnotationsInRecord} & \nfrref{NFR-CA1} \\
-\rref{FR_AnnotationsInRecord} & \nfrref{NFR-CO1} \\
+\rref{FR_AnnotationsInRecord} & \nfrref{NFR-CA1}, \nfrref{NFR-M1} \\
+\rref{FR_AnnotationsInRecord} & \nfrref{NFR-CO1}, \nfrref{NFR-S3} \\
 \rref{FR_TranscriptHighlight} & \nfrref{NFR-P2} \\
 \rref{FR_SegmentSeek} & \nfrref{NFR-P2} \\
 \rref{FR_ResultVisualization} & \nfrref{NFR-U2} \\
@@ -1925,33 +1914,47 @@ The project's supervisors have stated what parts they want completed first, so t
 \caption{Rationale for Major Decisions} \label{tab:Rationale}
 \end{longtable}
 
-\section{Likely Changes}   
+\section{Likely Changes}    
+The following changes are expected during or after the project. Parts of the
+system affected by these changes should be designed so that they can be modified
+without redesigning the rest of the system.
+
+\section{Likely Changes}    
 
 When building a system such as TeLaC, it is important to acknowledge that a lot will change once development starts. We fully expect functionality around assessments and scoring to evolve as we receive feedback from stakeholders. These likely changes are identified and explained in this section.
 \noindent \begin{itemize}
 
 \item[\textbf{LC\refstepcounter{lcnum}\thelcnum}\label{LC_AssessmentFunctionality}:] Assessment functionality: The types of annotations and transcription editing capabilities may change as clinicians identify more important functionality.
+  \\ \textbf{Rationale:} SAFA is still under development, and the research team's study reports several clinician feature requests that have not yet been prioritized. The interface redesign and usability testing are also likely to reveal new needs, so the annotation and editing features should be easy to extend.
 
 \item[\textbf{LC\refstepcounter{lcnum}\thelcnum}\label{LC_DataVisualization}:] Data visualization: The types of visualizations available to clinicians and researchers may change as requirements for tracking patient progress develop and patient data increases.
+  \\ \textbf{Rationale:} Clinicians asked for charts, percentages, and side-by-side comparisons of results by language and domain, but the exact views have not been specified. As more assessments are collected for each patient, new ways of summarizing progress over time will also become useful.
 
 \item[\textbf{LC\refstepcounter{lcnum}\thelcnum}\label{LC_ReportGeneration}:] Report generation: The content and formatting of assessment reports may evolve as clinicians relay professional standards and needs.
+  \\ \textbf{Rationale:} Report requirements are currently based on a small number of clinician comments, and the clinics, schools, and hospitals that employ SLPs may each require specific report contents or formats.
 
 \item[\textbf{LC\refstepcounter{lcnum}\thelcnum}\label{LC_ReportTypes}:] Report types: Assessment reports may change to accommodate various audiences, from researchers to patients. This would affect the language, confidentiality of information, and formatting of reports.
+  \\ \textbf{Rationale:} Patient-facing reports are a stretch goal of the project. A report written for guardians would need plain language and must exclude clinical notes that are not meant for them, while a report for researchers may need de-identified data.
 
 \end{itemize}
 
 \section{Unlikely Changes}
-
+The following are not expected to change. The system is designed on the
+assumption that they hold.
 \noindent
 \begin{itemize}
 
 \item[\textbf{ULC\refstepcounter{ulcnum}\theulcnum}\label{ULC_IntendedUserGroup}:] Intended user group: The primary users will remain speech-language pathologists conducting remote speech assessments of bilingual pediatric patients.
+  \\ \textbf{Rationale:} The \progname{} platform, SAFA, and the research team's studies are all built around this user group. Serving a different group would require a different product rather than a change to this one.
 
 \item[\textbf{ULC\refstepcounter{ulcnum}\theulcnum}\label{ULC_Platform}:] Platform: The software will continue to work with the existing TeLaC telehealth platform and SAFA annotation tool.
+  \\ \textbf{Rationale:} Integrating these two systems is the main goal set by the project supervisor. Replacing either one would remove the basis of the project.
 
 \item[\textbf{ULC\refstepcounter{ulcnum}\theulcnum}\label{ULC_DataSource}:] Data source: Patient assessment recordings will continue to be submitted through the existing TeLaC platform.
+  \\ \textbf{Rationale:} The patient-facing assessment site was built and tested by a previous capstone team and is outside the scope of this project. The system can therefore rely on the format of incoming recordings and their linked assessment data.
 
 \item[\textbf{ULC\refstepcounter{ulcnum}\theulcnum}\label{ULC_SupportedLanguages}:] Supported languages: The software is unlikely to expand beyond English as the primary second language used in bilingual assessments.
+  \\ \textbf{Rationale:} The research team's assessments, question bank, and participating clinicians are English-based, and clinicians using the system are expected to be fluent in English. Supporting a different primary language would require new assessments and new clinician users.
 
 \end{itemize}
 \newpage{}
