@@ -92,10 +92,10 @@ generated reports. This component also stores video recordings and sensitive hea
 making it one of the most sensitive parts of the system.
 
 \subsection{Account System}
-TODO
+The account system handles authentication and role-based access control. This component verifies each user’s identity during sign-up and login. It assigns each account a role, such as clinician or patient, which determines the  parts of the interface and functionality that account role is able to access.
 
 \subsection{Web Platform}
-TODO
+The web platform is responsible for hosting the patient-facing interface and the clinician interface together. The clinician interface includes a clinician dashboard, where clinicians are able to view their patients and assessment history.  It also includes the annotation interface where assessment videos and their transcriptions are displayed and ready for annotation. The web platform maps user actions to the other system components and displays their results.
 
 \subsection{Report Generation}
 This component compiles the results of an assessment into a report that
@@ -248,6 +248,11 @@ Pre-splitting the system into components also made it easy
 to divide the work between us, since each person could focus on the parts they were most
 familiar with.
 
+\subsubsection*{Yilin}
+Since our patient-facing platform was originally developed by a previous year’s capstone team, 
+reading their hazard analysis was helpful, particularly for judging whether the hazards we were considering fell within the scope of our project. With this strong reference, 
+the team was able to divide the document efficiently, and each member worked independently until we came together 
+for a document review. Working in two rounds, first individually and then as a group, was effective for iterating on and improving our initial work.
 \subsection*{Question 2}
 This deliverable was relatively straightforward, and our team did not run into any major issues while completing it. 
 We began by brainstorming the components of the system together, and we were able to identify what could go wrong with each one and possible hazards that could result. 
