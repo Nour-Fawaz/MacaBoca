@@ -324,16 +324,6 @@ file storage service is also used to securely store the data that the platform r
 \end{center}
 \end{figure}
 
-\plt{For each of the entities in the system context diagram its responsibilities
-  should be listed.  Whenever possible the system should check for data quality,
-  but for some cases the user will need to assume that responsibility.  The list
-  of responsibilities should be about the inputs and outputs only, and they
-  should be abstract.  Details should not be presented here.  However, the
-  information should not be so abstract as to just say ``inputs'' and
-  ``outputs''.  A summarizing phrase can be used to characterize the inputs.
-  For instance, saying ``material properties'' provides some information, but it
-  stays away from the detail of listing every required properties.}
-
 The responsibilities of each entity in the system context are as follows:
 
 \begin{itemize}
@@ -1529,7 +1519,7 @@ The system stores recordings, transcripts, and health information about children
 \label{NFR-S3}
   The system shall encrypt patient recordings and transcripts in transit and in storage.
   \\ \textbf{Rationale:} Assessment recordings and transcripts contain private patient information. The annotation service sends video assessments to a third-party transcription service, and the recordings are also kept in the system’s storage. Hence, they must be protected in both places so that anyone who intercepts the data or gains access to the storage cannot read it.
-  \\ \textbf{Fit Criterion:} The system must transmit all recordings and transcripts to third-party services using TRANSIT\_ENCRYPTION\_STANDARD and must store them using STORAGE\_ENCRYPTION\_STANDARD.
+  \\ \textbf{Fit Criterion:} The system must transmit all recordings and transcripts to third-party services using TRANSIT\_ENCRYPTION\_STANDARD and must store them in patient records (\nfrref{FR_AnnotationsInRecord}) using STORAGE\_ENCRYPTION\_STANDARD.
 
 \refstepcounter{nfrnum}
 \item[\textbf{\rthenfrnum}:]
@@ -1798,7 +1788,7 @@ Clinicians review the auto-generated transcript against the video playback and c
 \toprule
 Stakeholder Req & Use Case & Functional Req \\
 \midrule
-\srref{SR_ClinicianFinalJudgment} & \ucref{UC_Label5} &  \rref{FR_SpeakerIdentification}, \ref{FR_Label6} \\
+\srref{SR_ClinicianFinalJudgment} & \ucref{UC_Label5} &  \rref{FR_SpeakerIdentification}, \rref{FR_Label6} \\
 \srref{SR_EvidenceTraceability} & -- & \rref{FR_ManualEvaluation} \\
 \srref{SR_FlexibleWorkflows} & \ucref{UC_Label4} & \rref{FR_Label15} \\
 \srref{SR_CompiledReports} & \ucref{UC_GenerateReport} & \rref{FR_Label7} \\
@@ -1815,6 +1805,10 @@ Stakeholder Req & Use Case & Functional Req \\
 \srref{SR_ProgressOverTime} & \ucref{UC_Label7} & \rref{FR_Label22}, \rref{FR_Label23} \\
 \srref{SR_ProgressOverTime} & -- & \rref{FR_ResultVisualization} \\
 \srref{SR_ClinicianFinalJudgment} & -- & \rref{FR_LinguisticPatternDetection} \\
+\srref{SR_PatientPrivacy} & \ucref{UC_Label12} & \rref{FR_Label9} \\
+\srref{SR_SinglePlatform} & \ucref{UC_Label13} & \rref{FR_Label11}, \rref{FR_Label12} \\
+\srref{SR_ClinicianFinalJudgment} & \ucref{UC_Label14} & \rref{FR_Label11} \\
+
 \bottomrule
 
 \caption{Traceability Between Stakeholder Requirements, Use Cases, and
@@ -1826,7 +1820,7 @@ Functional Requirements} \label{tab:SR2UC2FRtm}
 \toprule
 Functional Req & Nonfunctional Req \\
 \midrule
-\rref{FR_AutomaticTranscription} & \nfrref{NFR-RE1} \\
+\rref{FR_AutomaticTranscription} & \nfrref{NFR-RE1}, \nfrref{NFR-P1} \\
 \rref{FR_TranscriptionEditing} & \nfrref{NFR-RE2}, \nfrref{NFR-CV2} \\
 \rref{FR_SpeakerIdentification} & \nfrref{NFR-RE1} \\
 \rref{FR_AnnotationExport} & \nfrref{NFR-RE2}, \nfrref{NFR-CV1} \\
@@ -1841,11 +1835,10 @@ Functional Req & Nonfunctional Req \\
 \rref{FR_Label13} & \nfrref{NFR-A1} \\
 \rref{FR_Label14} & \nfrref{NFR-P2} \\
 \rref{FR_ManualEvaluation} & \nfrref{NFR-S4} \\
-\rref{FR_ManualEvaluation} & \nfrref{NFR-UN1} \\
 \rref{FR_QuestionNotes} & \nfrref{NFR-S4} \\
 \rref{FR_AssessmentNotes} & \nfrref{NFR-S4} \\
-\rref{FR_AnnotationsInRecord} & \nfrref{NFR-CA1} \\
-\rref{FR_AnnotationsInRecord} & \nfrref{NFR-CO1} \\
+\rref{FR_AnnotationsInRecord} & \nfrref{NFR-CA1}, \nfrref{NFR-M1} \\
+\rref{FR_AnnotationsInRecord} & \nfrref{NFR-CO1}, \nfrref{NFR-S3} \\
 \rref{FR_TranscriptHighlight} & \nfrref{NFR-P2} \\
 \rref{FR_SegmentSeek} & \nfrref{NFR-P2} \\
 \rref{FR_ResultVisualization} & \nfrref{NFR-U2} \\
