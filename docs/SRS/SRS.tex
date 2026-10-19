@@ -173,6 +173,8 @@ This document specifies the software requirements for \progname{}, a platform fo
 This document follows the course IEEE SRS template, which is based on the IEEE recommended practice for software requirements specifications (SRS), incorporating the overall life-cycle context
 of current requirements engineering practice.
 
+This section provides an overview of the requirements document, including its overall purpose, required background, and relevant definitions/acronyms.
+
 \subsection{Purpose}
 
 The purpose of \progname{} is to solve the usability and workflow challenges faced by speech-language pathologists (SLPs) conducting remote speech assessments of bilingual pediatric patients. The lack of integration between assessment recordings and annotation tools, combined with limitations in the usability of existing tools, can make the assessment process inefficient and difficult to manage, potentially affecting the accuracy and consistency of clinical annotations.
@@ -205,7 +207,7 @@ They require an integrated system that supports multiple clinician workflows for
 SLPs review the recorded assessments, evaluate answers, verify and correct auto-generated transcripts, add notes, and use the results to make diagnostic decisions by writing clinical reports.
 
 \item \textbf{Secondary Users (Researchers):} Speech and language researchers who study assessment data and evaluate how well the technology supports clinicians.
-They need access to assessments at every stage of analysis in order to determine the accuracy and efficacy of a software.
+They need access to assessments at every stage of analysis in order to determine the accuracy and efficacy of the software.
 
 \item \textbf{Patients and Guardians:} Bilingual children who complete assessments at home on the patient-facing site, supervised by a parent or guardian.
 They do not use the clinician side of the system, but they depend on it to keep their recordings private and to be assessed accurately and promptly.
@@ -218,6 +220,7 @@ They must approve tools that handle patient data and need the system to meet pri
 \end{itemize}
 
 \subsection{Definitions and Acronyms}
+All definitions and acronyms used in this document are defined below in Table~\ref{tab:DefinitionsAndAcronyms}. 
 
 \begin{longtable}{p{0.25\textwidth} p{0.65\textwidth}}
 \toprule
@@ -235,16 +238,18 @@ Patient & An individual who uses TeLaC to complete online speech assessments fro
 \midrule
 Report & A detailed breakdown of a patient’s results for a single speech assessment completed on the TeLaC platform.\\
 \midrule
-Speech Language Pathologist & They can also be referred to as a speech clinician. \\
+Speech-Language Pathologist & A professional who assesses and treats speech and language difficulties. They can also be referred to as a speech clinician.\\
 \midrule
 HIPAA & Health Insurance Portability and Accountability Act, which is an American federal law that permits the use of sensitive patient health information while protecting their privacy \citep{CDC_HIPAA_1996}.\\
 \midrule
 Finite State Machine & A mathematical model that represents a sequential workflow as a set of states and transitions between them. A state may have one or more transitions leading to different states, which allows for multiple pathways through the workflow. At any given moment, the workflow is in exactly one state and may move to another state through a defined transition.\\
 \midrule
-TeLaC & Telehealth Language Assessment for Children\\ 
 SLP & Speech-Language Pathologist\\
+\midrule
 FR & Functional Requirement\\
+\midrule
 NFR & Non-Functional Requirement\\
+\midrule
 SR & Stakeholder Requirement\\
 \bottomrule
 \caption{Definitions and Acronyms} \label{tab:DefinitionsAndAcronyms}
@@ -305,7 +310,7 @@ By integrating SAFA’s annotation tools into the platform and incorporating pat
 Figure~\ref{Fig_SystemContext} shows the context between the Speech Assessment
 Web Platform (TeLaC) and the users and external systems it interacts with. The platform
 integrates SAFA into TeLaC, which was previously known as TeleHealth. Three types
-of users will interact with the platform directly, the first being patients and caregivers; they'll
+of users will interact with the platform directly. First, patients and caregivers will
 complete assessments by submitting video and audio responses, and will receive
 assessment reports as they progress. Clinicians review transcripts 
 and flagged insights from the system, then edit and annotate them to build reports for 
@@ -399,7 +404,7 @@ The system has two main types of users. The usability requirements (e.g., \nfrre
   existing TeLaC telehealth platform and accessed through the clinician dashboard,
   rather than as a separate standalone application. \textit{Rationale:} Clinician
   workflows require more than just the analysis of a single assessment. In order to 
-  connect their work, they have should a platform that is able to help collect, review,
+  connect their work, they should have a platform that is able to help collect, review,
   transcribe, and annotate assessments across multiple patients and time.
 
 \item \textbf{Web-based deployment:} The system must be a web application, deployed
@@ -412,7 +417,7 @@ The system has two main types of users. The usability requirements (e.g., \nfrre
 
 \item \textbf{Assessment transcriptions:} For automatic transcription within
   assessments, the system must use
-  the pre-trained Whisper model under OpenAI, no other models will be trained and used for
+  OpenAI's pre-trained Whisper model; no other models will be trained or used for
   transcription. \textit{Rationale:} The research team's existing workflow uses 
   Whisper to generate the transcripts reviewed in SAFA, and training a new model 
   is outside the project scope.
@@ -433,41 +438,42 @@ This section provides requirements directly stated by our stakeholders in docume
 
 \refstepcounter{srnum}
 \item[\textbf{SR\thesrnum}] \label{SR_ReduceAnnotationTime} Clinicians want to spend less time transcribing and annotating recorded assessments, so they can focus on clinical analysis.
-Clinicians reported that annotating a 20-minute session can take up to four hours, and that the annotation part is ``very time consuming''.
+Clinicians reported that annotating a 20-minute session can take up to four hours, and that the annotation part is ``very time consuming'' (\hyperref[sec:AppendixA]{Appendix A}, items \ref{AppA_P2TimeConsuming}, \ref{AppA_P3TranscriptionTime}).
 
 \refstepcounter{srnum}
-\item[\textbf{SR\thesrnum}] \label{SR_SinglePlatform} Clinicians want to review, annotate, analyze, and report on an assessment in one place, without having to switch between tools or moving files between them.
+\item[\textbf{SR\thesrnum}] \label{SR_SinglePlatform} Clinicians want to review, annotate, analyze, and report on an assessment in one place, without having to switch between tools or moving files between them (\hyperref[sec:AppendixA]{Appendix A}, items \ref{AppA_P10Straightforward}, \ref{AppA_P10Proof}).
 
 \refstepcounter{srnum}
-\item[\textbf{SR\thesrnum}] \label{SR_ClinicianFinalJudgment} Clinicians want a system that ``allow(s) the clinician to make the final judgement”. Automated transcripts, scores, and flags should act as suggestions that the clinician can review, accept, or correct.
+\item[\textbf{SR\thesrnum}] \label{SR_ClinicianFinalJudgment} Clinicians want a system that ``allow the clinician to make the final judgment''. Automated transcripts, scores, and flags should act as suggestions that the clinician can review, accept, or correct (\hyperref[sec:AppendixA]{Appendix A}, items \ref{AppA_P7RealTimeTranscript}, \ref{AppA_P9FinalJudgment}).
 
 \refstepcounter{srnum}
-\item[\textbf{SR\thesrnum}] \label{SR_EvidenceTraceability} Clinicians want every result, flag, and transcript segment to be linked to the part of the recording it came from, so they have ``proof'' to support their clinical decisions.
+\item[\textbf{SR\thesrnum}] \label{SR_EvidenceTraceability} Clinicians want every result, flag, and transcript segment to be linked to the part of the recording it came from, so they have ``proof'' to support their clinical decisions (\hyperref[sec:AppendixA]{Appendix A}, items \ref{AppA_P7RealTimeTranscript}, \ref{AppA_P10Proof}).
 
 \refstepcounter{srnum}
-\item[\textbf{SR\thesrnum}] \label{SR_FlexibleWorkflows} Clinicians want to choose how in-depth they would like each assessment to be, whether that be full results first or partial transcription.
+\item[\textbf{SR\thesrnum}] \label{SR_FlexibleWorkflows} Clinicians want to choose how in-depth they would like each assessment to be, whether that be full results first or partial transcription (\hyperref[sec:AppendixA]{Appendix A}, item \ref{AppA_P10Proof}).
 
 \refstepcounter{srnum}
-\item[\textbf{SR\thesrnum}] \label{SR_CompiledReports} Clinicians want their scores, notes, transcripts, and selected evidence to be compiled into a clinical report for them, instead of assembling the report by hand from a spreadsheet.
+\item[\textbf{SR\thesrnum}] \label{SR_CompiledReports} Clinicians want their scores, notes, transcripts, and selected evidence to be compiled into a clinical report for them, instead of assembling the report by hand from a spreadsheet (\hyperref[sec:AppendixA]{Appendix A}, items \ref{AppA_P3Summaries}, \ref{AppA_P5ReportTranscripts}).
 
 \refstepcounter{srnum}
-\item[\textbf{SR\thesrnum}] \label{SR_PatientPrivacy} Patients, guardians, and institutions want patient recordings and records to be accessible only to the clinicians responsible for them.
+\item[\textbf{SR\thesrnum}] \label{SR_PatientPrivacy} Patients, guardians, and institutions want patient recordings and records to be accessible only to the clinicians responsible for them (\hyperref[sec:AppendixA]{Appendix A}, item \ref{AppA_P5HIPAA}).
 
 \refstepcounter{srnum}
-\item[\textbf{SR\thesrnum}] \label{SR_LowLearningCurve} Clinicians want a system they can learn and use without formal training, regardless of their technical background.
+\item[\textbf{SR\thesrnum}] \label{SR_LowLearningCurve} Clinicians want a system they can learn and use without formal training, regardless of their technical background (\hyperref[sec:AppendixA]{Appendix A}, item \ref{AppA_P10Straightforward}).
 
 \refstepcounter{srnum}
-\item[\textbf{SR\thesrnum}] \label{SR_BilingualSupport} Clinicians want to analyze assessments that include speech that switches between two languages in order to compare a child’s performance in each language.
+\item[\textbf{SR\thesrnum}] \label{SR_BilingualSupport} Clinicians want to analyze assessments that include speech that switches between two languages in order to compare a child’s performance in each language (\hyperref[sec:AppendixA]{Appendix A}, item \ref{AppA_P10Languages}).
 
 \refstepcounter{srnum}
-\item[\textbf{SR\thesrnum}] \label{SR_ProgressOverTime} Clinicians want to see how a patient’s performance changes across assessments over time, as well as the results of a single assessment.
+\item[\textbf{SR\thesrnum}] \label{SR_ProgressOverTime} Clinicians want to see how a patient’s performance changes across assessments over time, as well as the results of a single assessment (\hyperref[sec:AppendixA]{Appendix A}, items \ref{AppA_P3Charts}, \ref{AppA_P3Summaries}).
 
 \end{itemize}
 
 % ============================================================== 
 \section{User Personas} \label{sec:UserPersonas}
 
-\subsection{Overworked SLP in Favour of Automating the Speech Analysis Process}
+Three user personas, directly derived from our key stakeholders, are described in detail. The first persona describes an SLP in favor of automation, the second describes an SLP that prioritizes control and transparency, and the third describes a researcher whose goal is data collection and analysis.
+\subsection{Overworked SLP in Favor of Automating the Speech Analysis Process}
 \begin{itemize}
 \item Name: James Caveat
 \item Description: James is a speech clinician at a large hospital, where he is responsible for more than 30 patients. His heavy workload means he must review many speech assessments during his working hours, leaving him little time to carefully absorb and transcribe what he is watching. As a result, it is difficult for him to give each assessment the attention it deserves.
@@ -479,7 +485,7 @@ Clinicians reported that annotating a 20-minute session can take up to four hour
 \subsection{Detail-Oriented SLP Who Prioritizes Control Over Automated Analysis}
 \begin{itemize}
 \item Name: Mei Zhang
-\item Description: Mei is a bilingual speech clinician with eight years of experience who runs a small private clinic. She and her staff deal with select clients that are more complex, where nearly all of them are bilingual children referred for a full diagnostic evaluation. Her main responsibility is deciding whether a child’s results indicate a language disorder. Her name is on every report that families, schools, and other professionals rely on. Due to the unique nature of any child's background, she does not accept a result at face value. She wants to see the evidence behind every score and flag, adjust the analysis to each child, and decide for herself how much of the process to automate. She values automation for removing repetitive work, but not for making decisions on her behalf.
+\item Description: Mei is a bilingual speech clinician with eight years of experience who runs a small private clinic. She and her staff work with a select group of more complex clients, nearly all of whom are bilingual children referred for a full diagnostic evaluation. Her main responsibility is deciding whether a child’s results indicate a language disorder. Her name is on every report that families, schools, and other professionals rely on. Due to the unique nature of any child's background, she does not accept a result at face value. She wants to see the evidence behind every score and flag, adjust the analysis to each child, and decide for herself how much of the process to automate. She values automation for removing repetitive work, but not for making decisions on her behalf.
 \item Goals: Choose the level of automation for each assessment, understand and trace automated results to the exact moment in the recording, review and override outputs with a clear record of changes, add clinical interpretations for individual answers and the session as a whole, and build a comprehensive picture of each child’s strengths and needs to produce reports she can confidently defend.
 \item Frustrations: Mei distrusts tools that present results without showing how they were reached, or that do not let her change them. She is frustrated by all-or-nothing automation, where she is forced to either accept an automated output entirely or redo the work from scratch. She worries that automated summaries can hide details that matter clinically, such as an unusual response or an ambiguous sound, and that corrections might overwrite the original output so she can no longer compare them. She is also frustrated when her notes and decisions are scattered across files and tools instead of being kept with the assessment they belong to.
 \item Technical Ability: Mei is confident with technology and enjoys exploring a tool’s features in depth. She is willing to spend time learning a system if it gives her finer control over her work, and she expects to be able to customize how she reviews and organizes information. 
@@ -488,12 +494,14 @@ Clinicians reported that annotating a 20-minute session can take up to four hour
 \subsection{Curious Researcher Interested in Software Assisting Speech Therapy}
 \begin{itemize}
 \item Name: Georgia Curios
-\item Description: Georgia is a speech therapy researcher that has worked in the field for over three decades. Throughout her career, she has witnessed the benefits and limitations of technological advancements in speech therapy. Unlike clinicians, who primarily focus on conducting individual patient assessments, Georgia is interested in evaluating the broader effectiveness, usability, and performance of speech therapy software. She seeks to understand how technology supports clinical practice, maintains assessment reliability, and contributes to patient outcomes over time.
+\item Description: Georgia is a speech therapy researcher who has worked in the field for over three decades. Throughout her career, she has witnessed the benefits and limitations of technological advancements in speech therapy. Unlike clinicians, who primarily focus on conducting individual patient assessments, Georgia is interested in evaluating the broader effectiveness, usability, and performance of speech therapy software. She seeks to understand how technology supports clinical practice, maintains assessment reliability, and contributes to patient outcomes over time.
 \item Frustrations: Georgia is overwhelmed by the numerous software tools available, as they are hosted on separate platforms. She can only view one assessment at a time, making it difficult to compare multiple assessments. She also finds it difficult to identify trends in patient outcomes using current data visualization and aggregation tools. Additionally, she is uncertain about the accuracy and reliability of software-assisted annotation.
 \item Technical Ability: Georgia is technically proficient and experienced with speech therapy software. Although she is adaptable to new technologies, she compares their capabilities and features with existing tools and traditional practices. She is also comfortable interpreting assessment data and performance metrics, but cannot fully verify clinical decisions.
 \end{itemize}
 % ============================================================== 
 \section{Use Cases} \label{sec:UseCases}
+The following use cases describe key interactions between users and TeLaC.
+
 \plt{Use cases are a way to describe the interactions between users and the system.
   They are typically written in natural language and describe the steps that a
   user takes to achieve a specific goal.  Use cases can be used to identify
@@ -566,7 +574,7 @@ Clinician, Researcher
 
 \textbf{Postconditions}
 \begin{itemize}
-\item User cannot access any data or their account again
+\item The user cannot access any data or their account again
   without logging back in.
 \end{itemize}
 
@@ -794,7 +802,7 @@ Clinician, Researcher
 \item The system moves playback to the start of the selected segment and highlights it
 \item The user replays the segment as many times as needed
 \item The user pauses playback once they have finished reviewing
-\item The user closes the transcript if they would like
+\item Optionally, the user closes the transcript
 \end{enumerate}
 
 \textbf{Alternative Flows}
@@ -1099,7 +1107,7 @@ First, in order to access the functionality of the system, the clinician must fi
 
 % ============================================================== 
 \section{Functional Requirements} \label{sec:FunctionalRequirements}
-
+The functional requirements are defined in this section. Each requirement has an accompanying rationale and fit criterion.
 \noindent \begin{itemize}
 
 \refstepcounter{reqnum}
@@ -1129,12 +1137,12 @@ First, in order to access the functionality of the system, the clinician must fi
 
 \refstepcounter{reqnum}
 \item[\textbf{\rthereqnum} \label{FR_Label6}:] The system shall allow clinicians to assign a role to each speaker distinguished by the system, and to filter assessment transcripts by speaker role.
-\\ \textbf{Rationale:} As mentioned in \rref{FR_SpeakerIdentification}, the system distinguishes between speakers in automatically generated transcripts, but it makes educated guesses and does not know who each speaker is. Clinicians need to identify the child's speech and separate it from the adults, such as the parent or clinician, to analyze the child's language and identify interfering parent behavior. The system therefore separates the speakers, and the clinician assigns each one a role.
+\\ \textbf{Rationale:} As mentioned in \rref{FR_SpeakerIdentification}, the system distinguishes between speakers in automatically generated transcripts, but it makes educated guesses and does not know who each speaker is. Clinicians need to identify the child's speech and separate it from that of the adults, such as the parent or clinician, to analyze the child's language and identify interfering parent behavior. The system therefore separates the speakers, and the clinician assigns each one a role.
 \\ \textbf{Fit Criterion:} The system must label every transcript segment from a distinguished speaker with their corresponding role once the clinician assigns it.
 \refstepcounter{reqnum}
 \item[\textbf{\rthereqnum} \label{FR_Label7}:] The system shall generate detailed assessment reports from transcriptions, including any edits made by clinicians.
 \\ \textbf{Rationale:} Clinicians review and correct the automatically generated transcription, adjust flagged assessment questions, and add notes to individual questions. The report must reflect these changes so that it includes the clinician’s judgment.
-\\ \textbf{Fit Criterion:} The system must include any changes made throughout the analysis process made by the clinician, otherwise it outputs the automatically generated content in the report.
+\\ \textbf{Fit Criterion:} The report must include every change the clinician made during the analysis process; where the clinician made no change, it must include the automatically generated content.
 
 \refstepcounter{reqnum}
 \item[\textbf{\rthereqnum} \label{FR_Label8}:] The system shall allow clinicians to edit and update assessment results at any time.
@@ -1142,7 +1150,7 @@ First, in order to access the functionality of the system, the clinician must fi
 \\ \textbf{Fit Criterion:} The system must display the updated result once the clinician submits a change.
 
 \refstepcounter{reqnum}
-\item[\textbf{\rthereqnum} \label{FR_Label9}:] The system shall display a list of all assigned patients to the logged-in clinician.
+\item[\textbf{\rthereqnum} \label{FR_Label9}:] The system shall display to the logged-in clinician a list of all patients assigned to them.
 \\ \textbf{Rationale:} Clinicians care for multiple patients and need access to their information to properly care for each one. Additionally, they need a quick starting point for their work. 
 \\ \textbf{Fit Criterion:} The system must display every patient assigned to the clinician once they log in. The system must display an empty list when the clinician has no assigned patients.
 
@@ -1168,7 +1176,7 @@ First, in order to access the functionality of the system, the clinician must fi
 
 \refstepcounter{reqnum}
 \item[\textbf{\rthereqnum} \label{FR_Label14}:] The system shall allow the clinician to navigate to the point in the video assessment where a selected question was asked or a selected moment occurred.
-\\ \textbf{Rationale:} When searching for a specific moment or question asked in an assessment, when a transcript is available, clinicians should not have to search through a full recording to review that moment.
+\\ \textbf{Rationale:} When a transcript is available and clinicians are looking for a specific moment or question in an assessment, they should not have to search through the full recording to find it.
 \\ \textbf{Fit Criterion:} Selecting a question or specific moment in a conversation starts video playback at that specific point in the assessment.
 
 \refstepcounter{reqnum}
@@ -1228,13 +1236,14 @@ First, in order to access the functionality of the system, the clinician must fi
 
 \refstepcounter{reqnum}
 \item[\textbf{\rthereqnum} \label{FR_LinguisticPatternDetection}:] The system shall automatically identify potential grammatical and phonological errors in the assessment transcript and present them to the clinician as suggestions for review.
-\\ \textbf{Rationale:} Clinicians see transcription as an intermediate step, and they asked for the system to identify grammatical and error patterns so they can focus on interpretation. Since ambiguous speech (e.g., a dialect feature versus an articulation error) can be clinically meaningful, detections must remain suggestions that the clinician confirms. This requirement is outside the current project scope.
+\\ \textbf{Rationale:} Clinicians see transcription as an intermediate step, and they asked for the system to identify grammatical and phonological error patterns so they can focus on interpretation. Since ambiguous speech (e.g., a dialect feature versus an articulation error) can be clinically meaningful, detections must remain suggestions that the clinician confirms. This requirement is outside the current project scope.
 \\ \textbf{Fit Criterion:} Each detected error must be linked to its transcript segment and shown as unverified until the clinician accepts or rejects it. Only accepted errors may appear in the assessment report.
 
 \end{itemize}
 
 
 \subsection{Formal Specification}
+There are three main clinician-defined workflows that TeLaC must support. Each workflow has clearly defined steps and outcomes that can be formalized into state diagrams.
 \subsubsection{Workflow A: Direct Analysis}
 In this workflow, the clinician reviews the assessment results directly, without annotating the recording first. After selecting a patient and one of their assessments, the clinician reviews and interprets the results in the assessment view, and can then open individual questions to review and adjust them. The clinician then views and edits the report, which can be downloaded once it is complete. This workflow is shown in Figure~\ref{WorkflowA_State_Diagram}.
 \begin{figure}[H]
@@ -1461,6 +1470,7 @@ The system stores recordings, transcripts, and health information about children
 
 % ============================================================== 
 \section{Non-Functional Requirements} \label{sec:NFR}
+All NFRs are defined in this section. They are grouped into the following sections: Usability, Security, Maintainability, Recording Quality, Accuracy, Performance, Understandability, Compliance, Capacity, Reliability, and Convenience.
 
 \subsection{Usability}
 
@@ -1765,7 +1775,7 @@ The model is not currently being evaluated. The annotation tool does, however, l
 
 As mentioned in {\hyperref[sec:AIModelOutputs]{Section~\ref*{sec:AIModelOutputs}: AI Model Outputs}}, the model's verbose JSON output also includes values for each transcript segment that indicate how reliable the transcription is: \texttt{avg\_logprob} (the average log probability of the segment), \texttt{no\_speech\_prob} (the probability that the segment contains no speech), and \texttt{compression\_ratio} (high values can indicate repetitive and/or hallucinated text). Converting \texttt{avg\_logprob} to a probability gives a rough confidence score for each segment. The system could display this score next to each transcript segment and highlight segments that fall below a threshold, so clinicians can review the least certain parts of a transcript first and decide where to spend their time.
 
-It should be noted however, these values are the model's own estimates, and the model can be wrong. Hence, the confidence scores should only be a guide to a clinician's review.
+It should be noted, however, that these values are the model's own estimates, and the model can be wrong. Hence, the confidence scores should only be a guide to a clinician's review.
 
 The model could be evaluated in the future by comparing the original auto-generated transcriptions against the clinician-edited versions and calculating the word error rate. 
 \subsection{Known Limitations} \label{sec:KnownLimitations}
@@ -1773,8 +1783,8 @@ The model could be evaluated in the future by comparing the original auto-genera
 The model’s website describes its performance as average, so the following failure modes are expected when it is used in TeLaC \citep{Laumann_Whisper_2022}.
 \begin{itemize}
   \item \textbf{Incorrect transcription or translation:} since the model’s overall performance is average, some transcribed or translated text can be wrong. If these errors go unnoticed, clinicians may draw incorrect conclusions about a child’s speech abilities.
-  \item \textbf{Incorrect transcription of difficult non-English words: }: the model is known to incorrectly transcribe difficult words in languages other than English. This is concerning for TeLaC considering the system is used to assess bilingual children.
-  \item \textbf{Uneven performance across different languages:} The model generally performs best on languages with a decent amount of training data, such as Spanish, German, Italian, and English. Transcript accuracy may vary by language, and languages with fewer resources may be transcribed less reliably.
+  \item \textbf{Incorrect transcription of difficult non-English words:} the model is known to incorrectly transcribe difficult words in languages other than English. This is concerning for TeLaC considering the system is used to assess bilingual children.
+  \item \textbf{Uneven performance across different languages:} the model generally performs best on languages with a decent amount of training data, such as Spanish, German, Italian, and English. Transcript accuracy may vary by language, and languages with fewer resources may be transcribed less reliably.
 \end{itemize}
 
 Because of these expected failures, TeLaC doesn’t treat the model’s output as final. 
@@ -1843,6 +1853,11 @@ Functional Req & Nonfunctional Req \\
 \rref{FR_SegmentSeek} & \nfrref{NFR-P2} \\
 \rref{FR_ResultVisualization} & \nfrref{NFR-U2} \\
 \rref{FR_LinguisticPatternDetection} & \nfrref{NFR-UN1} \\
+\rref{FR_TranscriptionEditing} & \nfrref{NFR-CV1} \\
+\rref{FR_AnnotationExport} & \nfrref{NFR-RE2}, \nfrref{NFR-PE3} \\
+\rref{FR_AssessmentWorkflowNavigation} & \nfrref{NFR-PE3} \\
+\rref{FR_AssessmentWorkflowNavigation} & \nfrref{NFR-UN1} \\
+\rref{FR_TranscriptionEditing} & \nfrref{NFR-UN1} \\
 
 \bottomrule
 \caption{Traceability Between Functional and Nonfunctional Requirements}
@@ -1852,7 +1867,8 @@ Functional Req & Nonfunctional Req \\
 
 % ============================================================== 
 
-\section{Rationale} \section{Rationale} \label{sec:Rationale}
+\section{Rationale} \label{sec:Rationale}
+The rationale behind every major functional and behavioral decision for TeLaC is outlined below in Table~\ref{tab:Rationale}.
 
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.30\textwidth} >{\raggedright\arraybackslash}p{0.38\textwidth} >{\raggedright\arraybackslash}p{0.24\textwidth}}
 \toprule
@@ -1905,6 +1921,7 @@ without redesigning the rest of the system.
 
 \section{Likely Changes}    
 
+When building a system such as TeLaC, it is important to acknowledge that a lot will change once development starts. We fully expect functionality around assessments and scoring to evolve as we receive feedback from stakeholders. These likely changes are identified and explained in this section.
 \noindent \begin{itemize}
 
 \item[\textbf{LC\refstepcounter{lcnum}\thelcnum}\label{LC_AssessmentFunctionality}:] Assessment functionality: The types of annotations and transcription editing capabilities may change as clinicians identify more important functionality.
@@ -1920,7 +1937,6 @@ without redesigning the rest of the system.
   \\ \textbf{Rationale:} Patient-facing reports are a stretch goal of the project. A report written for guardians would need plain language and must exclude clinical notes that are not meant for them, while a report for researchers may need de-identified data.
 
 \end{itemize}
-
 
 \section{Unlikely Changes}
 The following are not expected to change. The system is designed on the
@@ -1954,19 +1970,20 @@ Several requirements were drawn from research papers describing the system and a
 Although the papers have not yet been released, they describe the entire system and report usability tests with 10 speech clinicians. 
 The following highlights the preferences and feedback participants shared while testing the TeLaC system and the SAFA annotation tool.
 
-\begin{itemize}
-  \item Participant 2 expressed frustration with the amount of time it takes to transcribe assessments: “It would be perfect to have this feature, because doing the annotation part is very time consuming.”
-  \item Participant 3 disliked transcribing speech assessments and was enthusiastic about saving time: “when you say that it decreases transcription time, I got very excited about having less time in analyzing speech samples.”
-  \item Participant 3 also commented on how BeViz displays results: “I would definitely use the chart/graph/percentages.” This is in regard BeViz in terms of displaying results.
-  \item Participant 3 further said they preferred having analysis results summarized as scores, summaries, and patterns rather than as a spreadsheet: “quick and helpful, instead of everything in a spreadsheet.”
-  \item Participant 5 suggested what the report should contain: “The whole transcripts for all the [assessment] conversations would be useful to include in the report.”
-  \item Participant 5 also raised a concern about data privacy: “the challenge will be the HIPAA, and who has access to data, and how the data could be shared with the parents and the educator.”
-  \item Participant 7 appreciated the idea of auto-generated transcripts with human verification in the loop: “we can see a real-time transcription when we play the recording, so that we can do the analysis and give feedback.”
-  \item Several clinicians emphasized keeping a human in the loop during the assessment analysis portion of the workflow. For example, Participant 9 stated, “[the system should] allow the clinician to make the final judgment; this is a tool that does not replace our judgment.”
-  \item Several clinicians found the system straightforward. For example, participant 10 stated: “I think it’s straightforward. You can see the video recording, originals, [and] place to write notes.”
-  \item Clinicians appreciated that the system covered the different aspects of the speech assessment workflow, particularly the ability to move from overall results to an individual question and review its prompt and response. Participant 10 stated, “you have the ‘proof’ there to support your clinical decision and your assessment.”
-  \item Participants preferred to have results presented in both English and Mandarin side by side, and to have assessments organized meaningfully by semantics, grammar, and phonology. Participant 10 elaborated: “if you have a feature comparing two languages, side by side in the same graph that would probably be helpful to decide differences vs. disorder.”
-\end{itemize}
+{\renewcommand{\theenumi}{A\arabic{enumi}}\renewcommand{\labelenumi}{\textbf{\theenumi.}}
+\begin{enumerate}
+  \item \label{AppA_P2TimeConsuming} Participant 2 expressed frustration with the amount of time it takes to transcribe assessments: “It would be perfect to have this feature, because doing the annotation part is very time consuming.”
+  \item \label{AppA_P3TranscriptionTime} Participant 3 disliked transcribing speech assessments and was enthusiastic about saving time: “when you say that it decreases transcription time, I got very excited about having less time in analyzing speech samples.”
+  \item \label{AppA_P3Charts} Participant 3 also commented on how BeViz displays results: “I would definitely use the chart/graph/percentages.”
+  \item \label{AppA_P3Summaries} Participant 3 further said they preferred having analysis results summarized as scores, summaries, and patterns rather than as a spreadsheet: “quick and helpful, instead of everything in a spreadsheet.”
+  \item \label{AppA_P5ReportTranscripts} Participant 5 suggested what the report should contain: “The whole transcripts for all the [assessment] conversations would be useful to include in the report.”
+  \item \label{AppA_P5HIPAA} Participant 5 also raised a concern about data privacy: “the challenge will be the HIPAA, and who has access to data, and how the data could be shared with the parents and the educator.”
+  \item \label{AppA_P7RealTimeTranscript} Participant 7 appreciated the idea of auto-generated transcripts with human verification in the loop: “we can see a real-time transcription when we play the recording, so that we can do the analysis and give feedback.”
+  \item \label{AppA_P9FinalJudgment} Several clinicians emphasized keeping a human in the loop during the assessment analysis portion of the workflow. For example, Participant 9 stated, “[the system should] allow the clinician to make the final judgment; this is a tool that does not replace our judgment.”
+  \item \label{AppA_P10Straightforward} Several clinicians found the system straightforward. For example, Participant 10 stated: “I think it’s straightforward. You can see the video recording, originals, [and] place to write notes.”
+  \item \label{AppA_P10Proof} Clinicians appreciated that the system covered the different aspects of the speech assessment workflow, particularly the ability to move from overall results to an individual question and review its prompt and response. Participant 10 stated, “you have the ‘proof’ there to support your clinical decision and your assessment.”
+  \item \label{AppA_P10Languages} Participants preferred to have results presented in both English and Mandarin side by side, and to have assessments organized meaningfully by semantics, grammar, and phonology. Participant 10 elaborated: “if you have a feature comparing two languages, side by side in the same graph that would probably be helpful to decide differences vs. disorder.”
+\end{enumerate}}
 
 
 \subsection{Appendix B: Development Plan} \label{sec:AppendixB}
@@ -2163,7 +2180,7 @@ The following lists the uses of AI applied throughout the entire document. If a 
   \begin{itemize}
     \item \textit{Prompt: ``can you help me come up with a fit criterion for this: [insert non-functional requirement and rationale]''}
   \end{itemize}
-  \item Claude was used to find any overalpping non-functional requirements.
+  \item Claude was used to find any overlapping non-functional requirements.
   \begin{itemize}
     \item \textit{Prompt: ``are there any non-functional requirements that are overlapping: [insert list of non-functional requirements]''}
   \end{itemize}
@@ -2223,19 +2240,19 @@ graduate attribute of Lifelong Learning.
 \input{../SRS_Reflection.text}
 \subsection{All}
 \subsubsection*{Question 3}
-Nearly all of our requirements were inspired by our supervisor’s team meetings and research papers. Since TeLaC is an existing research project, several papers documented studies in which SLPs and patients tested previous iterations of the software and provided feedback on their experiences. These studies were particularly insightful in helping us identify requirements specific to different stakeholders and understand the limitations of the current software. However, due to the long history of the project, the amount of information and changes withing the projects lifetime was overwhelming to our group, which lead us to seek further guidance before continuing writing requirements.
+Nearly all of our requirements were inspired by our supervisor’s team meetings and research papers. Since TeLaC is an existing research project, several papers documented studies in which SLPs and patients tested previous iterations of the software and provided feedback on their experiences. These studies were particularly insightful in helping us identify requirements specific to different stakeholders and understand the limitations of the current software. However, due to the long history of the project, the amount of information and changes within the project's lifetime was overwhelming to our group, which led us to seek further guidance before continuing to write requirements.
 Our discussions with our supervisor and their team were another major influence. Early in the project, our supervisor outlined the main deliverables we were expected to fulfill and provided access to relevant research papers and drafts. Through these resources and team meetings, we identified the three key workflows that our system needed to support. Together, the supervisor’s guidance and existing research formed the foundation for most of our requirements. For any requirements that were not primarily informed by these sources, we conducted additional research into common telehealth practices. This was particularly important for identifying requirements related to security and privacy standards. Overall, our requirements were primarily grounded in research, stakeholder feedback, and our client’s guidance.
 
 
 \subsection{Nour}
 \subsubsection*{Question 1}
 Writing the functional requirements was more straightforward than we expected because we had enough resources to understand what our supervisors wanted from the project. 
-They provided us with a couple of unreleased research papers that described the system architecture, clinician workflows, including a study they conducted on 10 clinicians to test the TeLaC platform. 
-With this information we were able to create a mental model of the TeLaC, SAFA, and BeViz modules and what the purpose for each is. 
+They provided us with a couple of unreleased research papers that described the system architecture and clinician workflows, including a study they conducted on 10 clinicians to test the TeLaC platform. 
+With this information we were able to create a mental model of the TeLaC, SAFA, and BeViz modules and the purpose of each. 
 Moreover, our supervisors provided us with the GitHub repositories of the annotation tool SAFA and the TeLaC system (which is the overall TeleHealth system). 
 That let us write requirements that were realistic in how the system behaves and how it should behave once we integrate SAFA. 
-Additionally, it made it easier to write use cases that reflected the different clinician workflows detailed in the research papers which are, direct analysis, annotation first analysis, and on-demand refinement. 
-These three are the main important workflows and should be enabled by the system very seamlessly. 
+Additionally, it made it easier to write use cases that reflected the different clinician workflows detailed in the research papers: direct analysis, annotation-first analysis, and on-demand refinement. 
+These are the three most important workflows, and the system should support them seamlessly. 
 Moreover, after speaking with our supervisors, we also learned which areas they are prioritizing and what the main features of the updated system should be. 
 This helped us determine what requirements could change and what shouldn’t change in the system. 
 
@@ -2268,7 +2285,7 @@ This is important considering we are balancing the project along with our other 
 Furthermore, considering we are building on an existing system with already busy supervisors, we need to communicate regularly with them and record their feedback during meetings. 
 Without this, it would be easy for sections to become inconsistent with each other and for team members to be lost or have a different understanding of the project vision and next steps.
 
-Additionally, understanding of how SAFA uses AI to create transcriptions is also important. 
+Additionally, understanding how SAFA uses AI to create transcriptions is also important. 
 Integrating SAFA into the existing TeLaC system is the main focus of our project, so we need to understand how the audio is sent to the model, what the model returns, and where its transcriptions may be wrong, so we can design the system around this.
 
 \subsubsection*{Question 6}
@@ -2294,20 +2311,20 @@ One of the main pain points was getting the information we needed to write our r
 
 Since our project builds on the work of others, we also spent a significant amount of time learning what the existing systems already do and how our work needs to fit into them. For example, the previous TeleHealth team built the interface that records children’s assessments. We were not sure whether to include requirements for handling that data, since it was not our work, but it would still be part of the system we would deliver at the very end. We resolved this by deciding that any requirement the final system must meet belongs in our SRS, even if another team previously contributed to that part. This turned out to be very important, because we found out that the existing platform does not enforce authentication or data privacy, and our supervisor stressed that the integrated system must protect patient data and follow HIPAA. Once we had access to the repositories, we compared our requirements against the existing code and the previous team’s SRS, and updated the ones that did not match how the system actually works.
 
-\subsubsection*{Question 3}
-TO-DO
 
 \subsubsection*{Question 4}
 Security and data privacy are a major part of this capstone, and I am currently taking COMPSCI 4CR3: Introduction to Cryptography. Our system handles assessment recordings, transcripts, and reports. These are sensitive health information, as patients' faces and voices count as identifiers under HIPAA. Any sensitive information sent over a network has to be encrypted so that attackers cannot read or tamper with it in transit. It also needs protecting while it is in storage. We learned about modern ciphers such as AES, along with key management and secure communication protocols. This can help our team choose suitable standards for encrypting patient data and understand why they are secure, not just how to use them. However, we would first need to work out where in the system data needs to be encrypted, for example when it is uploaded, stored, or shared through download links. We would also need to plan how to decrypt it efficiently when clinicians retrieve it, so that video playback stays responsive. Not all data needs this level of protection, so we will also have to evaluate which parts of the system are worth guarding this way. 
 
 
 \subsubsection*{Question 5}
-Our capstone involves taking a proof of concept and turning it into a software that clinicians can rely on, so the team will need to learn a lot beyond what the existing systems use in order to implement the backend. Currently, TeleHealth is a Node/React web application that stores its data as JSON files, while SAFA is a Python desktop application whose transcription model runs as a separate script, and its output has to be uploaded into SAFA by hand. To build one integrated system, we will need to learn how to connect services written in different languages and run long tasks like transcribing a 30-minute recording in the background. We will also need to track each assessment's progress through the pipeline so clinicians stay in control of every stage. One member will focus on this service integration and pipeline design. Another member will learn how to deploy and evaluate Whisper efficiently, since children's speech and recordings in more than one language are known weak points for speech recognition.
+Our capstone involves taking a proof of concept and turning it into software that clinicians can rely on, so the team will need to learn a lot beyond what the existing systems use in order to implement the backend. Currently, TeleHealth is a Node/React web application that stores its data as JSON files, while SAFA is a Python desktop application whose transcription model runs as a separate script, and its output has to be uploaded into SAFA by hand. To build one integrated system, we will need to learn how to connect services written in different languages and run long tasks like transcribing a 30-minute recording in the background. We will also need to track each assessment's progress through the pipeline so clinicians stay in control of every stage. One member will focus on this service integration and pipeline design. Another member will learn how to deploy and evaluate Whisper efficiently, since children's speech and recordings in more than one language are known weak points for speech recognition.
 
 Since the current system has no database, I will focus on learning database design so we can properly link patients, assessments, transcript segments, annotations, and reports, and keep the original AI transcript alongside clinicians' edits. Because the existing platform also has no login sessions or access control, one other team member will focus on authentication, encryption, audit logging, and the HIPAA technical safeguards. As a team, we will also need to learn browser media handling to rebuild SAFA's synchronized video and transcript playback in React, as well as the PDF report generation. Finally, we all need enough domain knowledge of speech-language pathology to understand how clinicians conduct and interpret assessments, so that the workflows we design actually make sense for their daily work.
 
 \subsubsection*{Question 6}
-TO-DO
+In the previous question, I identified back-end related topics our team needs to learn. Since a major part of our project involves running a transcription model locally, I plan to learn this hands-on through online guides. Amazon offers a great in-depth tutorial on hosting local LLMs and services so they can be exposed via an API endpoint: Amazon SageMaker Tutorial. By working through this interactive SageMaker Studio experience in my spare time, I plan to get hands-on experience with deploying LLMs and exposing them via an API. This way, I can be fully prepared when the time comes to implement this into our software capstone.
+The other major area of knowledge I identified is HIPAA compliance, which all our backend data and services must comply with. Because the internet is flooded with an overwhelming amount of information about what it means for software to be HIPAA-compliant, it is extremely hard to identify what our specific system actually requires. After all, it is currently a project mainly built for research purposes where sensitive data is not in use. I am quickly learning that it is not a simple checklist, but rather something we must design our software around from the very beginning. To prepare, I plan to review AWS policies for protected health information, as that is the cloud provider we are most likely to use. I will also talk to our capstone supervisor, Dr. Spencer Smith, to clarify the expected level of security for our team and understand any related legal consequences.
+
 
 \subsection{Catherine}
 \subsubsection*{Question 1}
@@ -2316,7 +2333,7 @@ Statement and Development Plan, as well as from the many meetings we had with ou
 supervisors and TA, I didn't feel like I was starting from scratch anymore.
 Having already written about the proof of concept workflow and our main risks, I had a
 pretty good idea of who the users were and how they would move through the system, as well
-as how our system was gonna work and what exactly we needed to make it work.
+as how our system was going to work and what exactly we needed to make it work.
 Creating the system context diagram also helped more than I expected, since it forced 
 me to pin down exactly who interacts with the platform
 and what external systems we'd be depending on, before writing any requirements. Another
@@ -2329,7 +2346,7 @@ becoming our functional requirements.
 One of the biggest pain points for me was understanding and visualizing how use cases, functional
 requirements, and non-functional requirements all related to each other. 
 At first I wasn't sure if they were supposed to overlap or reference each other directly, and it was easy
-to blur the lines, e.g. writing a functional requirement that read more like a use case,
+to blur the lines, e.g., writing a functional requirement that read more like a use case,
 or a non-functional requirement that just restated a functional one. What helped was
 going back to the template and realizing that use cases describe what the user is trying
 to do, functional requirements break that down into single and verifiable ``shall''
@@ -2341,10 +2358,10 @@ which also helped me understand the concept a lot better.
 \subsubsection*{Question 4}
 One course that I remember taking was 2AA4, Intro to Software Development. It
 was a very technical course, but it also involved a lot of requirements and planning
-when trying to develop a solution slash program to solve a problem. In the deliverables
+when trying to develop a solution or program to solve a problem. In the deliverables
 we wrote in the class, I clearly remember having to iterate multiple times over our idea
 as we failed to consider certain edge cases or requirements to the problem we were facing,
-which was an island, explore-a-maze type game. Looking back, with more planning, a lot of those iterations could have been avoided, which is exactly what this
+which was an island maze-exploration game. Looking back, with more planning, a lot of those iterations could have been avoided, which is exactly what this
 deliverable is trying to do for our capstone. Thinking through edge cases in
 our use cases and discussing alternative flows can help us define early on what
 our system needs in terms of requirements. This will be especially important
@@ -2353,9 +2370,9 @@ TeLaC platform, since there are a lot of moving parts and missing a requirement 
 could mean having to go back and rework large parts of the system later.
 
 \subsubsection*{Question 5}
-Two areas that our team will need to learn more about will firstly be front-end development 
-and making sure that the user experience is as smooth and intuitive as possible, and secondly 
-more on security and how we can set up our system to be more secure. 
+Two areas that our team will need to learn more about are, firstly, front-end development 
+and making sure that the user experience is as smooth and intuitive as possible, and secondly, 
+security and how we can set up our system to be more secure. 
 On the front end, a big part of our project
 is bringing SAFA's interface into the TeLaC web platform and making it easier for
 clinicians to use, so the team will need to be comfortable building interfaces with
@@ -2368,8 +2385,8 @@ access to it so that clinicians can only see their own patients. These are the t
 areas I will be focusing on for the team.
 
 \subsubsection*{Question 6}
-For front-end development, one approach is to follow how different fullstack projects and tutorials
-work online, or using React's official documentation or AI as a direct tutor. Another is to learn by working directly 
+For front-end development, one approach is to follow full-stack projects and tutorials
+online, or to use React's official documentation or AI as a direct tutor. Another is to learn by working directly 
 in the existing SAFA and TeLaC code, as there's some frontend work already done. I believe as a team, we'll likely
 do a mix of everything, since there's not really a one-size-fits-all approach. I personally learn best by doing, so I'd likely focus on working directly in the existing
 code, and refer to tutorials or documentation whenever I get stuck.
@@ -2394,7 +2411,7 @@ The course also introduced diagrams to visualize software systems and emphasized
 Finally, the course emphasized iterative development through regular check-ins and feedback before submission. Since capstone follows a similar structure over two semesters, these experiences will help our team refine requirements, incorporate feedback, and adapt as we learn more about the project.
 
 \subsubsection*{Question 5}
-Two skills our team will need to continue developing are user interface design and presentation skills.First, user interface design is essential because a major component of our project involves improving the interface of SAFA,, to create a more intuitive experience for clinicians. We will need to understand how to apply user-centred design principles and incorporate stakeholder feedback to make informed design decisions. This includes considering accessibility, usability, and the specific needs of speech-language pathologists throughout the assessment and annotation process. Second, we will need to strengthen our presentation and communication skills. Communicating our progress, design decisions, and technical work will be important when meeting with our supervisor, TAs, and other stakeholders, as well as when presenting our project deliverables. We will need to explain our work clearly to audiences with different levels of technical knowledge and ensure that our presentations effectively communicate both our progress and the reasoning behind our decisions.
+Two skills our team will need to continue developing are user interface design and presentation skills. First, user interface design is essential because a major component of our project involves improving the interface of SAFA to create a more intuitive experience for clinicians. We will need to understand how to apply user-centred design principles and incorporate stakeholder feedback to make informed design decisions. This includes considering accessibility, usability, and the specific needs of speech-language pathologists throughout the assessment and annotation process. Second, we will need to strengthen our presentation and communication skills. Communicating our progress, design decisions, and technical work will be important when meeting with our supervisor, TAs, and other stakeholders, as well as when presenting our project deliverables. We will need to explain our work clearly to audiences with different levels of technical knowledge and ensure that our presentations effectively communicate both our progress and the reasoning behind our decisions.
 
 \subsubsection*{Question 6}
 For user interface design, one approach is to study established design principles, such as Don Norman’s principles, and apply them when evaluating and developing our interface. We can also conduct user research and gather feedback from our supervisor, clinicians, and other relevant stakeholders to ensure that our designs address actual user needs. A second approach is to experiment with different design concepts and wireframes, iteratively refining them based on feedback and usability considerations. Personally, I would therefore prioritize creating and comparing different wireframes and interface concepts, then seeking feedback from my peers and, where possible, stakeholders. This would allow me to identify usability issues early and improve my ability to translate user needs into effective design decisions. Since interface design is central to our project, all team members should contribute to developing and evaluating design iterations, while taking advantage of opportunities to obtain reliable stakeholder feedback.
