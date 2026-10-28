@@ -3,6 +3,7 @@
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{hyperref}
+\usepackage{xr}
 \hypersetup{
     colorlinks,
     citecolor=blue,
@@ -14,6 +15,8 @@
 
 \input{../Comments.text}
 \input{../Common.text}
+
+\externaldocument[SRS-]{../SRS/SRS}
 
 \begin{document}
 
@@ -69,7 +72,9 @@ in.}
   \toprule		
   \textbf{symbol} & \textbf{description}\\
   \midrule 
-  T & Test\\
+  SAFA & Stands for Speech Annotation For Application, Access, Accuracy\\
+  SLP & Speech Language Pathologist \\
+  TeLaC & Telehealth Language Assessment for Children \\
   \bottomrule
 \end{tabular}\\
 
@@ -86,11 +91,50 @@ This document ... \wss{provide an introductory blurb and roadmap of the
   Verification and Validation plan}
 
 \section{General Information}
+This section provides a brief overview of the software being produced and its objectives, how it will be tested and its relevant documentation.
 
 \subsection{Summary}
+The software being tested is TeLaC, a platform for remote speech and language assessment of Mandarin-English bilingual children. It addresses the usability and workflow challenges speech-language pathologists (SLPs) face when conducting remote assessments of bilingual pediatric patients. 
+It does this by integrating the SAFA annotation tool into one platform, auto-generating transcripts, providing a hub for patient records and assessment results, and generating assessment reports. The goal is to help clinicians conduct assessments more efficiently and consistently while supporting ongoing monitoring of a child’s speech development, all in one centralized system.
 
-\wss{Say what software is being tested.  Give its name and a brief overview of
-  its general functions.}
+The objective of this VnV plan is to build confidence that TeLaC is usable, accurate, and trustworthy enough to support clinical decisions. 
+TeLaC assists clinicians and does not replace their judgment (SRS Section 1.2, SR3). 
+The requirements being verified are defined in the SRS [cite], and the risks that determine test priority are identified in the Hazard Analysis [cite]. 
+The system has three main components described below.
+
+\subsubsection{User Interface}
+The user interface must be intuitive and easy to navigate for clinicians with limited technical fluency (SR8, NFR1, NFR2). 
+SLPs use it for the entire workflow, from selecting a patient to downloading a report (FR5, FR9). 
+A confusing interface slows them down and risks mistakes, so the plan verifies the following:
+\begin{itemize}
+  \item Clinicians can complete core tasks, such as assigning a speaker role, viewing results, and adding a patient, without training (NFR1)
+  \item Clinicians can move between workflow stages without losing saved work (FR5, NFR3)
+  \item Clinicians can always tell which content is automatically generated and which they have verified (NFR14).
+\end{itemize}
+
+\subsubsection{Audio Analysis Tool (SAFA)}
+SAFA auto-generates transcripts of the assessment recordings and identifies speakers (FR1, FR4). 
+Clinicians then verify and correct these outputs (FR2, FR6). 
+Transcript accuracy is critical considering errors in code-mixed Mandarin-English speech, can lead to wrong conclusions about a child’s abilities (SRS Section 9.4). 
+The system is therefore tested to ensure that:
+\begin{itemize}
+  \item Transcripts are generated reliably for supported videos (FR1, NFR17)
+  \item The transcript stays synchronized with the recording during playback (FR20, FR21, NFR13)
+  \item Clinician edits and annotations are saved and persist across sessions (FR2, FR19, NFR18)
+\end{itemize}
+
+\subsubsection{Report Generation}
+Report generation compiles a patient’s results, the clinician’s edits, and notes into a report that the SLP can review and edit before downloading (FR7, SR6). 
+Because the report becomes part of the clinical record and may be relied on by families, schools, and other professionals, its correctness is crucial. 
+The system is therefore tested to ensure that:
+\begin{itemize}
+  \item Every change a clinician makes must appear in the report, otherwise the automatically generated content remains as is (FR7)
+  \item Edits to results are reflected correctly and instantly (FR8, NFR4)
+  \item Exports and reports are only accessible to the assigned clinician (NFR5, SRS Section 7.5)
+\end{itemize}
+
+
+\subsection{}
 
 \subsection{Objectives}
 
