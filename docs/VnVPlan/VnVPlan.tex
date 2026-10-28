@@ -234,20 +234,28 @@ CAS741) for a partial usability survey.}
 
 \subsection{Automated Testing and Verification Tools}
 
-\wss{What tools are you using for automated testing.  Likely a unit testing
-  framework and maybe a profiling tool, like ValGrind.  Other possible tools
-  include a static analyzer, make, continuous integration tools, test coverage
-  tools, etc.  Explain your plans for summarizing code coverage metrics.
-  Linters are another important class of tools.  For the programming language
-  you select, you should look at the available linters.  There may also be tools
-  that verify that coding standards have been respected, like flake9 for
-  Python.}
+The following lists the automated testing and verification tools used throughout the software's lifecycle:
+\begin{itemize}
+  \item Unit Tests: pytest (Python), Jest (TypeScript/JavaScript)
+  \item Linters: Ruff (Python), ESLint (TypeScript/JavaScript)
+  \item Continuous Integration: GitHub Actions
+\end{itemize}
 
-\wss{If you have already done this in the development plan, you can point to
-that document.}
+The CI workflows and tooling are described further in the Development Plan [cite].
 
-\wss{The details of this section will likely evolve as you get closer to the
-  implementation.}
+For code coverage, Coverage.py is used for the Python code. For TypeScript/JavaScript, Istanbul is used. 
+This is considering it is built into Jest, which reduces the number of additional frameworks needed. 
+Both tools report which lines and functions are not covered by the tests, so the team can see where additional tests are needed. 
+The team’s target is approximately 80\% for line coverage, considering that is the current standard. 
+Furthermore, it keeps the testing effort balanced with the time available for developing the software.
+
+Ruff is used to ensure the Python coding standard (PEP 8) is respected. 
+It was chosen for its speed compared to alternative linters. 
+Additionally, since TypeScript/JavaScript makes up a large part of the codebase, ESLint is used to find and report problematic patterns and bugs in that code. 
+ESLint is the industry standard for static analysis of JavaScript, which is why it was chosen. 
+Moreover, GitHub Actions runs the unit tests and the linting checks on every pull request that is opened or updated and on every merge to main. 
+A pull request with failing checks must be fixed before it can be merged.
+
 
 \subsection{Software Validation}
 
