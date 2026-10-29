@@ -16,7 +16,9 @@
 \input{../Comments.text}
 \input{../Common.text}
 
-\externaldocument[SRS-]{../SRS/SRS}
+\newcommand{\SRSLink}{\href{https://github.com/Nour-Fawaz/MacaBoca/blob/main/pdfs/SRS/SRS.pdf}{SRS}}
+\newcommand{\HALink}{\href{https://github.com/Nour-Fawaz/MacaBoca/blob/main/pdfs/HazardAnalysis/HazardAnalysis.pdf}{Hazard Analysis}}
+\newcommand{\DevPlanLink}{\href{https://github.com/Nour-Fawaz/MacaBoca/blob/main/pdfs/DevelopmentPlan/DevelopmentPlan.pdf}{Development Plan}}
 
 \begin{document}
 
@@ -98,8 +100,8 @@ The software being tested is TeLaC, a platform for remote speech and language as
 It does this by integrating the SAFA annotation tool into one platform, auto-generating transcripts, providing a hub for patient records and assessment results, and generating assessment reports. The goal is to help clinicians conduct assessments more efficiently and consistently while supporting ongoing monitoring of a child’s speech development, all in one centralized system.
 
 The objective of this VnV plan is to build confidence that TeLaC is usable, accurate, and trustworthy enough to support clinical decisions. 
-TeLaC assists clinicians and does not replace their judgment (SRS Section 1.2, SR3). 
-The requirements being verified are defined in the SRS [cite], and the risks that determine test priority are identified in the Hazard Analysis [cite]. 
+TeLaC assists clinicians and does not replace their judgment (\SRSLink{} Section 1.2, SR3). 
+The requirements being verified are defined in the \SRSLink, and the risks that determine test priority are identified in the \HALink. 
 The system has three main components described below.
 
 \subsubsection{User Interface}
@@ -115,7 +117,7 @@ A confusing interface slows them down and risks mistakes, so the plan verifies t
 \subsubsection{Audio Analysis Tool (SAFA)}
 SAFA auto-generates transcripts of the assessment recordings and identifies speakers (FR1, FR4). 
 Clinicians then verify and correct these outputs (FR2, FR6). 
-Transcript accuracy is critical considering errors in code-mixed Mandarin-English speech, can lead to wrong conclusions about a child’s abilities (SRS Section 9.4). 
+Transcript accuracy is critical considering errors in code-mixed Mandarin-English speech, can lead to wrong conclusions about a child’s abilities (\SRSLink{} Section 9.4). 
 The system is therefore tested to ensure that:
 \begin{itemize}
   \item Transcripts are generated reliably for supported videos (FR1, NFR17)
@@ -130,11 +132,9 @@ The system is therefore tested to ensure that:
 \begin{itemize}
   \item Every change a clinician makes must appear in the report, otherwise the automatically generated content remains as is (FR7)
   \item Edits to results are reflected correctly and instantly (FR8, NFR4)
-  \item Exports and reports are only accessible to the assigned clinician (NFR5, SRS Section 7.5)
+  \item Exports and reports are only accessible to the assigned clinician (NFR5, \SRSLink{} Section 7.5)
 \end{itemize}
 
-
-\subsection{}
 
 \subsection{Objectives}
 
@@ -241,7 +241,7 @@ The following lists the automated testing and verification tools used throughout
   \item Continuous Integration: GitHub Actions
 \end{itemize}
 
-The CI workflows and tooling are described further in the Development Plan [cite].
+The CI workflows and tooling are described further in the described further in the \DevPlanLink.
 
 For code coverage, Coverage.py is used for the Python code. For TypeScript/JavaScript, Istanbul is used. 
 This is considering it is built into Jest, which reduces the number of additional frameworks needed. 
