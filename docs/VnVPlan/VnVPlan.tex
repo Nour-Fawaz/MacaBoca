@@ -344,7 +344,7 @@ How test will be performed:
 
 \end{enumerate}
 
-\subsection{Data Collection and Storage}
+\subsubsection{Data Collection and Storage}
 This section verifies that annotations are saved to the patient's assessment record, can be exported, and that recordings can be marked as reviewed.
 \begin{enumerate}
   \item FR-ST-DCS1: \textbf{Store Completed Annotations in the Assessment Record\\}
@@ -415,7 +415,7 @@ This section verifies that annotations are saved to the patient's assessment rec
   \end{mdframed}
 \end{enumerate}
 
-\subsection{Video and Audio Analysis}
+\subsubsection{Video and Audio Analysis}
 This section verifies that assessment videos are transcribed, speakers can be told apart, and interference and language errors are flagged.
 \begin{enumerate}
   \item FR-ST-VAA1: \textbf{Auto-Generate Transcript for Video Assessments\\}
@@ -542,7 +542,7 @@ How test will be performed:
 
 \end{enumerate}
 
-\subsection{Accuracy}
+\subsubsection{Accuracy}
 This section verifies that the system is accurate enough for clinicians to rely on when reviewing assessments.
 \begin{enumerate}
   \item NFR-ST-AC1: \textbf{Flag Accuracy\\}
@@ -560,14 +560,14 @@ This section verifies that the system is accurate enough for clinicians to rely 
       \textbf{How the test will be performed:}
       \begin{enumerate}
       \item[1.] For each video, open the Individual Assessment View.
-      \item[2.] Compare the flagged questions against the answer key of true interference moments. Count a moment as detected if its question is flagged and the flag is within FLAG\_TIME\_TOLERANCE seconds of the timestamp listed in the answer key, and as missed otherwise. Any flag that is not listed in the answer key counts as a false alarm.
+      \item[2.] Compare the flagged questions against the answer key of true interference moments. Count a moment as detected if its question is flagged and the flag is within \\ FLAG\_TIME\_TOLERANCE seconds of the timestamp listed in the answer key, and as missed otherwise. Any flag that is not listed in the answer key counts as a false alarm.
       \item[3.] Compute the detection rate and false alarm rate over all videos and compare them to FLAG\_DETECTION\_RATE\% and FLAG\_FALSE\_ALARM\_RATE\%.
 
       \end{enumerate}
   \end{mdframed}
 \end{enumerate}
 
-\subsection{Reliability}
+\subsubsection{Reliability}
 This section verifies that the system reliably generates transcripts for assessment videos and keeps clinicians' saved edits and annotations across sessions. 
 This allows clinicians to depend on the system and ensure that their work is not lost.
 \begin{enumerate}
@@ -606,7 +606,7 @@ This allows clinicians to depend on the system and ensure that their work is not
 \end{enumerate}
 
 
-\subsection{Recording Quality}
+\subsubsection{Recording Quality}
 The following test case verifies that all recording quality for speech video assessments are met 
 \begin{enumerate}
   \item NFR-ST-P1: \textbf{Only Accept Videos Meeting Minimum Quality\\}
@@ -630,7 +630,7 @@ The following test case verifies that all recording quality for speech video ass
   \end{mdframed}
 \end{enumerate}
 
-\subsection{Maintainability}
+\subsubsection{Maintainability}
 This section verifies that patient information and assessment recordings are backed up regularly and can be restored from a backup, so that clinicians' work is not lost.
 \begin{enumerate}
   \item \hypertarget{NFR-ST-M1}{NFR-ST-M1}: \textbf{Regular Backups\\}
@@ -667,7 +667,7 @@ This section verifies that patient information and assessment recordings are bac
 \end{enumerate}
 
 
-\subsection{Traceability Between Test Cases and Requirements}
+\subsubsection{Traceability Between Test Cases and Requirements}
 
 \wss{Provide a table that shows which test cases are supporting which
   requirements.}
@@ -859,15 +859,7 @@ This section documents all the uses of generative artificial intelligence used t
 
 \subsection{How and Where Used}
 
-\wss{Explain what the tool(s) were used for.  Examples include: brainstorming,
-explaining a technical concept, reviewing the document, generating or modifying
-text, generating or modifying diagrams, identifying errors or omissions or
-inconsistencies.}
 
-\wss{For each of the uses, identify which parts of the document were affected.}
-
-\wss{You do not need to report every interaction, but you should disclose the 
-uses that materially contributed to your work}
 
 \subsection{Verification of AI-Generated Content}
 
@@ -901,5 +893,47 @@ graduate attribute of Lifelong Learning.
   mastering the skill?  Of the identified approaches, which will each team
   member pursue, and why did they make this choice?
 \end{enumerate}
+
+\subsection*{Nour}
+\subsubsection*{Question 1}
+I wrote the Summary section of this deliverable. At this point, it’s very clear what the objectives and core components of the project are. 
+Hence, breaking it down and determining how it maps back to our SRS was not difficult and was rather automatic. 
+Additionally, considering our project builds on a previous year’s capstone, we are using several of the same tools that they used. 
+Hence, it was straightforward as to what frameworks will be needed for automated testing and verification. 
+Moreover, when creating the test cases for the nonfunctional requirements, it was simple to divide them into different “Areas of Testing”. 
+This is thanks to the template that we used for the SRS document. 
+It broke down the nonfunctional requirements into subsections making it clear which aspects regarding nonfunctional requirements needed testing.
+
+\subsubsection*{Question 2}
+A pain point that the team experienced was splitting the functional requirements into different sections. 
+As mentioned previously, the SRS template encouraged us to organize the nonfunctional requirements into subsections, however, it did not for the functional requirements. 
+At the time this didn’t seem like much of a problem, but it did make splitting the FRs into disjoint sections a bit difficult. 
+A lot of the functional requirements map back to one another, so ensuring that the sections did not overlap was difficult. 
+However, given that we are now more familiar with the system, especially after writing the SRS document and creating different components for risk mitigation in the Hazard Analysis document, it wasn’t too difficult, mainly just time consuming. 
+They were organized during a team meeting to ensure we all had a similar understanding of the system components and that we were on the same page about the main functions of the system.
+
+\subsubsection*{Question 3}
+There are several different aspects that each team member has to be knowledgeable about to ensure we are able to successfully complete the verification and validation aspect of the project. 
+I will personally tackle usability testing. 
+This is because I have prior experience in this domain of testing. 
+First, I had a couple of friends conduct usability tests on a game I created to detect any bugs and to determine what type of actions a user might take that may not come to mind when I am testing the game myself. 
+This actually helped me catch a bug in the game, which I was later able to fix and update in the latest release. 
+Second, I previously took the course SFWRENG 4HC3 which is the Human Computer Interfaces course at McMaster. 
+In that course, I ran card sorts, online usability interviews, and Figma prototype interviews where I observed users and asked several appropriate questions that avoided any biased wording. 
+However, what I still need to build is applying these methods to a clinical setting, writing realistic SLP tasks, and using a standard questionnaire such as the System Usability Scale to produce scores we can compare against our requirements.
+
+\subsubsection*{Question 4}
+The first approach I will use is reviewing and adapting my previous course material for this new application. 
+Although I am familiar with usability testing, it has been a while, and the domains in which I applied the skills are vastly different from this one. 
+Hence, I will review my 4HC3 notes and adapt the interview and observation methods I already used to this project.
+
+The second approach is running mock interview sessions with friends and peers to ensure my wording and intent are clear. 
+I will do this before involving any SLPs because, first there will not be many opportunities to ask the SLPs their opinions about certain features of TeLaC. 
+Second, I do not want to waste their time by asking them questions that are hard to understand and are unclear. 
+Ensuring that anyone can understand the point I am getting across will allow the clinician to quickly comprehend the question and prepare a well-thought-out answer.
+
+I will pursue both approaches. 
+This is because the first approach builds on methods I’ve already used, which is the fastest way to be effective. 
+As for the second approach, it allows me to practice my interview skills at low risk and, because I have not conducted any usability tests with actual clinicians, it’s a good way to develop my skills before being thrown into that setting.
 
 \end{document}
