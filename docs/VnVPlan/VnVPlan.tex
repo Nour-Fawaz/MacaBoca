@@ -2,6 +2,11 @@
 
 \usepackage{booktabs}
 \usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{mdframed}
+
+\newcommand{\checkbox}{\ding{113}} % 113 corresponds to an open square box
 \usepackage{hyperref}
 \usepackage{xr}
 \hypersetup{
@@ -19,6 +24,11 @@
 \newcommand{\SRSLink}{\href{https://github.com/Nour-Fawaz/MacaBoca/blob/main/pdfs/SRS/SRS.pdf}{SRS}}
 \newcommand{\HALink}{\href{https://github.com/Nour-Fawaz/MacaBoca/blob/main/pdfs/HazardAnalysis/HazardAnalysis.pdf}{Hazard Analysis}}
 \newcommand{\DevPlanLink}{\href{https://github.com/Nour-Fawaz/MacaBoca/blob/main/pdfs/DevelopmentPlan/DevelopmentPlan.pdf}{Development Plan}}
+\newcommand{\srsfr}[1]{\href{https://github.com/Nour-Fawaz/MacaBoca/blob/main/pdfs/SRS/SRS.pdf}{FR}}
+\newcommand{\srsnfr}[1]{\href{https://github.com/Nour-Fawaz/MacaBoca/blob/main/pdfs/SRS/SRS.pdf}{NFR}}
+\newcommand{\srssr}[1]{\href{https://github.com/Nour-Fawaz/MacaBoca/blob/main/pdfs/SRS/SRS.pdf}{SR}}
+\newcommand{\srsuc}[1]{\href{https://github.com/Nour-Fawaz/MacaBoca/blob/main/pdfs/SRS/SRS.pdf}{UC}}
+\newcommand{\srssec}[1]{\href{https://github.com/Nour-Fawaz/MacaBoca/blob/main/pdfs/SRS/SRS.pdf}{Section}}
 
 \begin{document}
 
@@ -333,6 +343,148 @@ Test Case Derivation: \wss{Justify the expected value given in the Output field}
 How test will be performed: 
 
 \end{enumerate}
+
+\subsection{Data Collection and Storage}
+This section verifies that annotations are saved to the patient's assessment record, can be exported, and that recordings can be marked as reviewed.
+\begin{enumerate}
+  \item FR-ST-DCS1: \textbf{Store Completed Annotations in the Assessment Record\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that the system stores a clinician's saved transcript annotations in the patient's assessment record.\par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A clinician account is logged in, a patient record exists, and the patient's assessment video is open in the annotation interface with its auto-generated transcript. \par
+      \textbf{Input:} 3 assessment videos. For each video, 3 edits will be made to the transcript and documented with their corresponding chunks for later reference. \par
+      \textbf{Output:} After saving, every edit appears in that patient's assessment record when opened, and still appears after logging out and back in. \par
+      \textbf{Test Case Derivation:} \srsfr*{19} requires that a saved annotation appear in the patient's assessment record from any clinician view without any file upload or download. This keeps patient information accurate and up to date and shortens the speech analysis workflow. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+        \item[1] In the annotation interface, make the listed edits to the transcript and save.
+        \item[2] Open the assessment from the patient record and check that each edit is shown.
+        \item[3] Log out, log back in, and check that the edits are still shown.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-DCS2: \textbf{Export Annotation Data\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that the system exports a video assessment's approved annotations in each supported file format, and that the exported file matches the stored annotations. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A clinician account is logged in, a patient record exists, and the patient's assessment video is open in the annotation interface with its auto-generated transcript. \par
+      \textbf{Input:} 3 assessment videos. For each video, 3 edits will be made to the transcript and documented with their corresponding chunks for later reference. \par
+      \textbf{Output:} AFor each supported file format, a file is exported that contains every approved annotation for that assessment, with the same content as the edits made in the annotation interface. \par
+      \textbf{Test Case Derivation:} \srsfr*{3} requires that clinicians can export annotation data from an assessment in a supported file format. Additionally, the file must contain all approved annotations for that assessment. This lets clinicians record, review, and share results without relying on other software.\par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+  \item[1] Make and approve the listed edits to the transcript in the annotation interface.
+  \item[2] Export the annotations in one supported file format.
+  \item[3] Open the exported file and check that every edit appears in it with the correct content.
+  \item[4] Repeat steps 2 - 3 for each remaining supported file format.
+\end{enumerate}
+\end{mdframed}
+
+  \item FR-ST-DCS3: \textbf{Return Annotated Results to the Patient Record\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that when a clinician finishes annotating a transcript, the system shows the number of verified and unverified segments, saves the annotated transcript to the patient's assessment record, and shows it with the assessment results.\par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A clinician account is logged in, a patient record exists, and the patient's assessment video is open in the annotation interface with its auto-generated transcript. \par
+      \textbf{Input:} 2 assessment videos where assessment 1 has all segments verified and assessment 2 has only 10 segments verified and the remaining segments are left unverified. \par
+      \textbf{Output:} Before confirming, the system shows how many segments are verified and how many are not. After the clinician confirms, the system returns to the assessment's results and correctly shows the annotated transcript with the results and notes. For assessment 1, the transcript is marked as verified. For assessment 2, the transcript is saved and the unverified segments are indicated. \par
+      \textbf{Test Case Derivation:} \srsuc*{10} requires that a finished annotation is saved to the patient's assessment record and shown with the assessment, and that unverified segments are indicated when annotation is completed without verifying everything. This lets clinicians keep track of which transcripts they have reviewed. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+        \item[1] For each video, verify the listed segments in the annotation interface and indicate that the annotation is finished.
+        \item[2] Check that the counts of verified and unverified segments shown match what was verified, then confirm that the annotation is complete.
+        \item[3] Check that the system returns to the assessment's results and shows the annotated transcript with the results and notes.
+        \item[4] Check that assessment 1's transcript is marked verified, and that assessment 2's unverified segments are indicated.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-DCS4: \textbf{Mark Patient Recording as Reviewed\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that a clinician can mark a recording as reviewed, the review status is updated and shown, and that it persists when the recording is reopened.\par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A clinician account is logged in, a patient record exists, the patient’s video assessment is open, and its recording has not been marked as reviewed. \par
+      \textbf{Input:} A patient assessment recording that has not been marked as reviewed, including 2 notes made on separate questions while reviewing. \par
+      \textbf{Output:} Once the recording is marked as reviewed, the system shows the updated review status. When the assessment is reopened later, it is still shown as reviewed and the notes are unchanged. \par
+      \textbf{Test Case Derivation:} \srsuc*{14} requires that the system updates and displays a recording's review status once the clinician marks it as reviewed. This helps clinicians tell which recordings they have finished reviewing and which are ready to be processed further. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1] Open the recording in the Individual Assessment View, watch it, and make 2 notes.
+          \item[2] Select the option to mark the recording as reviewed.
+          \item[3] Check that the recording is now shown as reviewed.
+          \item[4] Leave the Individual Assessment View, then reopen the same recording and check that it is still shown as reviewed and the notes have not changed.
+      \end{enumerate}
+  \end{mdframed}
+\end{enumerate}
+
+\subsection{Video and Audio Analysis}
+This section verifies that assessment videos are transcribed, speakers can be told apart, and interference and language errors are flagged.
+\begin{enumerate}
+  \item FR-ST-VAA1: \textbf{Auto-Generate Transcript for Video Assessments\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that the system automatically generates a transcript for assessment videos without clinician intervention.\par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A clinician account is logged in, a patient record exists, and all assessment videos are in the system. \par
+      \textbf{Input:} 10 assessment videos. \par
+      \textbf{Output:} For each video, a non-empty transcript is generated and available for the clinician to review. At least \\GENERATE\_SUCCESS\% of the videos must produce a transcript (\srsnfr*{17}). \par
+      \textbf{Test Case Derivation:} \srsnfr*{1} requires that a transcript is generated for every supported video without any action from the clinician, and (\srsnfr*{17}) sets the required success rate. Additionally, a working auto-generation transcript tool is critical to streamlining the SLP workflow.
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1] For each assessment video, open it in the annotation tool, and generate a transcription
+          \item[2] Record whether each video's transcript was generated and appears in the annotation interface
+          \item[3] Compute the success rate and compare it to \\ GENERATE\_SUCCESS\%.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-VAA2: \textbf{Distinguish Speakers in Transcripts\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that the system visually distinguishes between speakers in a transcript, so the clinician can tell which speaker said each utterance. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A clinician is logged in, a patient record exists, and a transcript has already been generated for each assessment video. \par
+      \textbf{Input:} 10 assessment videos each containing at least two speakers. For each video, an answer key will be created by the team prior to testing by watching the video assessment. The answer key will contain the true speakers at 5 different timestamps. \par
+      \textbf{Output:} In every auto-generated transcript, each identified speaker is shown with a distinct label, tag, or highlight. For each of the 5 timestamps in the answer key, the label displayed by the system on that utterance must correspond to that on the answer key. \par
+      \textbf{Test Case Derivation:} \srsfr*{4} requires that each speaker be distinguishable and that the clinician can tell which speaker corresponds to each utterance. Clinicians use this to annotate the right individual and account for outside interferences such as a parent prompting the child.
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1] For each assessment video, open it in the annotation tool, and generate a transcription
+          \item[2] Record whether each video's transcript was generated and appears in the annotation interface
+          \item[3] Compute the success rate and compare it to \\ GENERATE\_SUCCESS\%.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-VAA3: \textbf{Flag Potential Interference in Assessments\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that the system flags questions where potential interference may have occurred and marks them visibly in the Individual Assessment View. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A clinician account is logged in, a patient record exists, and the assessment video is already in the system. \par
+      \textbf{Input:} A video assessment containing 3 moments of interference (e.g., a guardian giving a hint during a question). A list of the question numbers where interference occurs is created by watching the video before testing.  \par
+      \textbf{Output:} In the Individual Assessment View, every question on the list is flagged by the system. \par
+      \textbf{Test Case Derivation:} \srsfr*{13} requires that each question with potential interference is flagged. Interference can make results invalid, so clinicians need to see which questions are affected. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+        \item[1] Open the Individual Assessment View for the assessment.
+        \item[2] For each question number on the list, check that the question is flagged by the system.
+        \item[3] If all listed questions are flagged, the test passes.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-VAA4: \textbf{Show Grammar and Phonology Errors as Suggestions\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that the system identifies potential grammatical and phonological errors in a transcript and presents them to the clinician as unverified suggestions. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A clinician account is logged in, a patient record exists, and a transcript has been generated for each assessment video. \par
+      \textbf{Input:} 5 assessment videos in English and/or Mandarin, and each containing known grammatical and phonological errors. For each video, an answer key lists the timestamp and type (grammar or phonology) of each known error, created by the team before testing by watching the video. \par
+      \textbf{Output:} Each known error in the answer key is shown to the clinician as a suggestion linked to its transcript segment and marked as unverified. An error appears in the assessment report only after the clinician accepts it, and not if it is rejected or left unreviewed. \par
+      \textbf{Test Case Derivation:} \srsfr*{26} requires that detected errors are linked to their transcript segment and shown as unverified until the clinician accepts or rejects them. Ambiguous speech can be clinically meaningful, so the system may only suggest errors and the clinician must make the final decision. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+      \item[1] Open each video's transcript in the annotation interface.
+      \item[2] For each error in the answer key, check that the system shows it as a suggestion on the matching transcript segment, marked as unverified.
+      \item[3] Accept some suggestions and reject others, then generate the assessment report and check that only the accepted errors appear in it.
+      \end{enumerate}
+  \end{mdframed}
+
+  
+\end{enumerate}
+
 
 \subsubsection{Area of Testing2}
 
