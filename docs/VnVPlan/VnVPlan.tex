@@ -102,7 +102,7 @@ in.}
 This document ... \wss{provide an introductory blurb and roadmap of the
   Verification and Validation plan}
 
-\section{General Information}
+\section{General Information} \label{sec:General_Information}
 This section provides a brief overview of the software being produced and its objectives, how it will be tested and its relevant documentation.
 
 \subsection{Summary}
@@ -287,7 +287,7 @@ as a Rev 0 demo for the supervisor.}
 
 \wss{This section might reference back to the SRS verification section.}
 
-\section{System Tests}
+\section{System Tests} \label{sec:System_Tests}
 
 \wss{There should be text between all headings, even if it is just a roadmap of
 the contents of the subsections.}
@@ -858,8 +858,26 @@ This section documents all the uses of generative artificial intelligence used t
 \end{itemize}
 
 \subsection{How and Where Used}
+The following lists the uses of AI applied throughout the entire document:
+\begin{itemize}
+  \item Fixing grammar and spelling
+  \item Debugging possible \LaTeX{} errors
+  \item Performing a final check over the document at the end, comparing each section against the original document comments and the rubric to ensure nothing was missed
+  \item Creating references for the bibliography
+  \item Removing template comments
+\end{itemize}
 
+Section \ref{sec:General_Information}:
+\begin{itemize}
+  \item To create commands to link the requirements to the SRS and Hazard Analysis document
+\end{itemize}
 
+Section~\ref{sec:System_Tests}:
+\begin{itemize}
+  \item Brainstorming test cases
+  \item Splitting the test cases among the group members
+  \item Creating the traceability matrix 
+\end{itemize}
 
 \subsection{Verification of AI-Generated Content}
 
@@ -871,8 +889,6 @@ Since the document contained no factual content, no additional fact-checking of 
 \newpage{}
 
 \section{Appendix --- Reflection}
-
-\wss{This section is not required for CAS 741}
 
 The information in this section will be used to evaluate the team members on the
 graduate attribute of Lifelong Learning.
