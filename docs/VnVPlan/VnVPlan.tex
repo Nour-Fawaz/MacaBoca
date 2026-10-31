@@ -357,9 +357,9 @@ This section verifies that annotations are saved to the patient's assessment rec
       \textbf{Test Case Derivation:} \srsfr*{19} requires that a saved annotation appear in the patient's assessment record from any clinician view without any file upload or download. This keeps patient information accurate and up to date and shortens the speech analysis workflow. \par
       \textbf{How the test will be performed:}
       \begin{enumerate}
-        \item[1] In the annotation interface, make the listed edits to the transcript and save.
-        \item[2] Open the assessment from the patient record and check that each edit is shown.
-        \item[3] Log out, log back in, and check that the edits are still shown.
+        \item[1.] In the annotation interface, make the listed edits to the transcript and save.
+        \item[2.] Open the assessment from the patient record and check that each edit is shown.
+        \item[3.] Log out, log back in, and check that the edits are still shown.
       \end{enumerate}
   \end{mdframed}
 
@@ -373,10 +373,10 @@ This section verifies that annotations are saved to the patient's assessment rec
       \textbf{Test Case Derivation:} \srsfr*{3} requires that clinicians can export annotation data from an assessment in a supported file format. Additionally, the file must contain all approved annotations for that assessment. This lets clinicians record, review, and share results without relying on other software.\par
       \textbf{How the test will be performed:}
       \begin{enumerate}
-  \item[1] Make and approve the listed edits to the transcript in the annotation interface.
-  \item[2] Export the annotations in one supported file format.
-  \item[3] Open the exported file and check that every edit appears in it with the correct content.
-  \item[4] Repeat steps 2 - 3 for each remaining supported file format.
+        \item[1.] Make and approve the listed edits to the transcript in the annotation interface.
+        \item[2.] Export the annotations in one supported file format.
+        \item[3.] Open the exported file and check that every edit appears in it with the correct content.
+        \item[4.] Repeat steps 2 - 3 for each remaining supported file format.
 \end{enumerate}
 \end{mdframed}
 
@@ -390,10 +390,10 @@ This section verifies that annotations are saved to the patient's assessment rec
       \textbf{Test Case Derivation:} \srsuc*{10} requires that a finished annotation is saved to the patient's assessment record and shown with the assessment, and that unverified segments are indicated when annotation is completed without verifying everything. This lets clinicians keep track of which transcripts they have reviewed. \par
       \textbf{How the test will be performed:}
       \begin{enumerate}
-        \item[1] For each video, verify the listed segments in the annotation interface and indicate that the annotation is finished.
-        \item[2] Check that the counts of verified and unverified segments shown match what was verified, then confirm that the annotation is complete.
-        \item[3] Check that the system returns to the assessment's results and shows the annotated transcript with the results and notes.
-        \item[4] Check that assessment 1's transcript is marked verified, and that assessment 2's unverified segments are indicated.
+        \item[1.] For each video, verify the listed segments in the annotation interface and indicate that the annotation is finished.
+        \item[2.] Check that the counts of verified and unverified segments shown match what was verified, then confirm that the annotation is complete.
+        \item[3.] Check that the system returns to the assessment's results and shows the annotated transcript with the results and notes.
+        \item[4.] Check that assessment 1's transcript is marked verified, and that assessment 2's unverified segments are indicated.
       \end{enumerate}
   \end{mdframed}
 
@@ -407,10 +407,10 @@ This section verifies that annotations are saved to the patient's assessment rec
       \textbf{Test Case Derivation:} \srsuc*{14} requires that the system updates and displays a recording's review status once the clinician marks it as reviewed. This helps clinicians tell which recordings they have finished reviewing and which are ready to be processed further. \par
       \textbf{How the test will be performed:}
       \begin{enumerate}
-          \item[1] Open the recording in the Individual Assessment View, watch it, and make 2 notes.
-          \item[2] Select the option to mark the recording as reviewed.
-          \item[3] Check that the recording is now shown as reviewed.
-          \item[4] Leave the Individual Assessment View, then reopen the same recording and check that it is still shown as reviewed and the notes have not changed.
+          \item[1.] Open the recording in the Individual Assessment View, watch it, and make 2 notes.
+          \item[2.] Select the option to mark the recording as reviewed.
+          \item[3.] Check that the recording is now shown as reviewed.
+          \item[4.] Leave the Individual Assessment View, then reopen the same recording and check that it is still shown as reviewed and the notes have not changed.
       \end{enumerate}
   \end{mdframed}
 \end{enumerate}
@@ -428,9 +428,9 @@ This section verifies that assessment videos are transcribed, speakers can be to
       \textbf{Test Case Derivation:} \srsnfr*{1} requires that a transcript is generated for every supported video without any action from the clinician, and (\srsnfr*{17}) sets the required success rate. Additionally, a working auto-generation transcript tool is critical to streamlining the SLP workflow.
       \textbf{How the test will be performed:}
       \begin{enumerate}
-          \item[1] For each assessment video, open it in the annotation tool, and generate a transcription
-          \item[2] Record whether each video's transcript was generated and appears in the annotation interface
-          \item[3] Compute the success rate and compare it to \\ GENERATE\_SUCCESS\%.
+          \item[1.] For each assessment video, open it in the annotation tool, and generate a transcription
+          \item[2.] Record whether each video's transcript was generated and appears in the annotation interface
+          \item[3.] Compute the success rate and compare it to \\ GENERATE\_SUCCESS\%.
       \end{enumerate}
   \end{mdframed}
 
@@ -444,9 +444,9 @@ This section verifies that assessment videos are transcribed, speakers can be to
       \textbf{Test Case Derivation:} \srsfr*{4} requires that each speaker be distinguishable and that the clinician can tell which speaker corresponds to each utterance. Clinicians use this to annotate the right individual and account for outside interferences such as a parent prompting the child.
       \textbf{How the test will be performed:}
       \begin{enumerate}
-          \item[1] For each assessment video, open it in the annotation tool, and generate a transcription
-          \item[2] Record whether each video's transcript was generated and appears in the annotation interface
-          \item[3] Compute the success rate and compare it to \\ GENERATE\_SUCCESS\%.
+          \item[1.] For each assessment video, open it in the annotation tool, and generate a transcription
+          \item[2.] Record whether each video's transcript was generated and appears in the annotation interface
+          \item[3.] Compute the success rate and compare it to \\ GENERATE\_SUCCESS\%.
       \end{enumerate}
   \end{mdframed}
 
@@ -460,9 +460,9 @@ This section verifies that assessment videos are transcribed, speakers can be to
       \textbf{Test Case Derivation:} \srsfr*{13} requires that each question with potential interference is flagged. Interference can make results invalid, so clinicians need to see which questions are affected. \par
       \textbf{How the test will be performed:}
       \begin{enumerate}
-        \item[1] Open the Individual Assessment View for the assessment.
-        \item[2] For each question number on the list, check that the question is flagged by the system.
-        \item[3] If all listed questions are flagged, the test passes.
+        \item[1.] Open the Individual Assessment View for the assessment.
+        \item[2.] For each question number on the list, check that the question is flagged by the system.
+        \item[3.] If all listed questions are flagged, the test passes.
       \end{enumerate}
   \end{mdframed}
 
@@ -476,19 +476,16 @@ This section verifies that assessment videos are transcribed, speakers can be to
       \textbf{Test Case Derivation:} \srsfr*{26} requires that detected errors are linked to their transcript segment and shown as unverified until the clinician accepts or rejects them. Ambiguous speech can be clinically meaningful, so the system may only suggest errors and the clinician must make the final decision. \par
       \textbf{How the test will be performed:}
       \begin{enumerate}
-      \item[1] Open each video's transcript in the annotation interface.
-      \item[2] For each error in the answer key, check that the system shows it as a suggestion on the matching transcript segment, marked as unverified.
-      \item[3] Accept some suggestions and reject others, then generate the assessment report and check that only the accepted errors appear in it.
+      \item[1.] Open each video's transcript in the annotation interface.
+      \item[2.] For each error in the answer key, check that the system shows it as a suggestion on the matching transcript segment, marked as unverified.
+      \item[3.] Accept some suggestions and reject others, then generate the assessment report and check that only the accepted errors appear in it.
       \end{enumerate}
   \end{mdframed}
-
   
 \end{enumerate}
 
 
-\subsubsection{Area of Testing2}
 
-...
 
 \subsection{Tests for Nonfunctional Requirements}
 
@@ -545,9 +542,130 @@ How test will be performed:
 
 \end{enumerate}
 
-\subsubsection{Area of Testing2}
+\subsection{Accuracy}
+This section verifies that the system is accurate enough for clinicians to rely on when reviewing assessments.
+\begin{enumerate}
+  \item NFR-ST-AC1: \textbf{Flag Accuracy\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that the system's interference flags are accurate enough for clinicians to rely on. \par
+      \textbf{Type:} Nonfunctional, Dynamic, Manual \par
+      \textbf{Initial State:} A clinician account is logged in, a patient record exists, and the assessment videos are already in the system. \par
+      \textbf{Input:} 3 assessment videos, 2 of which contain interference (e.g., a guardian giving a hint during a question) and the remaining contain none. For each video, an answer key lists the question number and timestamp of each interference, created by the team before testing by watching the assessment. \par
+      \textbf{Output:} In the Individual Assessment View, every question with detected interference is visibly marked. Additionally, the system must:
+      \begin{itemize}
+        \item Flag at least FLAG\_DETECTION\_RATE\% of the moments the answer key identifies as an interference 
+        \item Have no more than FLAG\_FALSE\_ALARM\_RATE\% of its flags as false alarms
+        \item Place each flag within FLAG\_TIME\_TOLERANCE seconds of when the interference occurs in the video.
+      \end{itemize}
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+      \item[1.] For each video, open the Individual Assessment View.
+      \item[2.] Compare the flagged questions against the answer key of true interference moments. Count a moment as detected if its question is flagged and the flag is within FLAG\_TIME\_TOLERANCE seconds of the timestamp listed in the answer key, and as missed otherwise. Any flag that is not listed in the answer key counts as a false alarm.
+      \item[3.] Compute the detection rate and false alarm rate over all videos and compare them to FLAG\_DETECTION\_RATE\% and FLAG\_FALSE\_ALARM\_RATE\%.
 
-...
+      \end{enumerate}
+  \end{mdframed}
+\end{enumerate}
+
+\subsection{Reliability}
+This section verifies that the system reliably generates transcripts for assessment videos and keeps clinicians' saved edits and annotations across sessions. 
+This allows clinicians to depend on the system and ensure that their work is not lost.
+\begin{enumerate}
+  \item NFR-ST-RE1: \textbf{Reliable Transcript Generation\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that the system generates transcripts for assessment videos without the clinician having to restart the process manually. \par
+      \textbf{Type:} Nonfunctional, Dynamic, Manual \par
+      \textbf{Initial State:} A clinician account is logged in, a patient record exists, and no transcript has been generated for the existing assessment videos. \par
+      \textbf{Input:} 20 valid assessment videos. \par
+      \textbf{Output:} For at least GENERATE\_SUCCESS\% of the 20 videos, a transcript is generated as specified in \srsfr*{1} without the clinician having to restart the process manually \srsnfr*{17}. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+      \item[1.] For each video assessment, open it up in the annotation interface and auto-generate a transcription.
+      \item[2.] When processing finishes, record whether a transcript was generated.
+      \item[3.] Repeat steps 1 - 2 for the remaining videos.
+      \item[4.] Compute the success rate (videos with a transcript / 20) and compare it to GENERATE\_SUCCESS\%.
+      \end{enumerate}
+  \end{mdframed}
+
+\item NFR-ST-RE2: \textbf{Preserve Saved Edits and Annotations Across Sessions\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that saved transcription edits and annotations remain available and unchanged after each clinician session. \par
+      \textbf{Type:} Nonfunctional, Dynamic, Manual \par
+      \textbf{Initial State:} A clinician account is logged in, a patient record exists, and the assessment video is open in the annotation interface with its auto-generated transcript. \par
+      \textbf{Input:} 3 assessment videos where for each, 5 transcription edits and 5 annotations are made and saved (30 items in total). Each item is documented with the transcript chunk it was made on and its exact content for reference. \par
+      \textbf{Output:} For at least SAVE\_SUCCESS\% of the 30 saved items, the item is still shown and unchanged after the clinician logs out, logs back in, and reopens the assessment \srsnfr*{18}. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+        \item[1.] For each video, make the listed edits and annotations and save them.
+        \item[2.] Log out of the clinician account, then log back in.
+        \item[3.] Reopen the assessment and check each listed item then record whether it is still shown and remains unchanged.
+        \item[4.] Compute the success rate (items shown unchanged / 30) and compare it to SAVE\_SUCCESS\%.
+
+      \end{enumerate}
+  \end{mdframed}
+\end{enumerate}
+
+
+\subsection{Recording Quality}
+The following test case verifies that all recording quality for speech video assessments are met 
+\begin{enumerate}
+  \item NFR-ST-P1: \textbf{Only Accept Videos Meeting Minimum Quality\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that the system does not allow an assessment to proceed when the video resolution or audio level is below \\ MIN\_VIDEO\_RESOLUTION or MIN\_AUDIO\_LEVEL, respectively.  \par
+      \textbf{Type:} Nonfunctional, Dynamic, Manual \par
+      \textbf{Initial State:} A clinician account is logged in a patient record exists. \par
+      \textbf{Input:} 3 attempts to start an assessment, each with the camera and microphone set up as follows:
+      \begin{itemize}
+        \item Attempt 1: video resolution below \\ MIN\_VIDEO\_RESOLUTION, audio at or above \\ MIN\_AUDIO\_LEVEL.
+        \item Attempt 2: audio level below MIN\_AUDIO\_LEVEL, video resolution at or above MIN\_VIDEO\_RESOLUTION.
+        \item Attempt 3: video resolution exactly \\ MIN\_VIDEO\_RESOLUTION and audio level exactly \\ MIN\_AUDIO\_LEVEL.
+      \end{itemize}
+      \textbf{Output:} In Attempts 1 and 2 the assessment cannot proceed, and the system shows the reason (resolution too low for attempt 1, audio level too low for attempt 2). In Attempt 3 the assessment proceeds \srsnfr*{10}. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+      \item[1.] Set the camera and microphone as described for Attempt 1, try to start the assessment, and record whether it proceeds and the reason shown if it does not.
+      \item[2.] Repeat step 1 for Attempts 2 and 3.
+      \item[3.] Check that Attempts 1 and 2 are blocked with the correct reason, and that Attempt 3 proceeds.
+      \end{enumerate}
+  \end{mdframed}
+\end{enumerate}
+
+\subsection{Maintainability}
+This section verifies that patient information and assessment recordings are backed up regularly and can be restored from a backup, so that clinicians' work is not lost.
+\begin{enumerate}
+  \item \hypertarget{NFR-ST-M1}{NFR-ST-M1}: \textbf{Regular Backups\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that the system backs up patient information and assessment recordings, including recent changes, within one BACKUP\_INTERVAL. \par
+      \textbf{Type:} Nonfunctional, Dynamic, Manual \par
+      \textbf{Initial State:} A clinician account is logged in, a patient record exists, and the system's backups are running. \par
+      \textbf{Input:} One mock video assessment conducted on the system, with one edit made to one of its annotations and saved. \par
+      \textbf{Output:} After one BACKUP\_INTERVAL, a backup for the mock assessment recording exists, including the edited annotation for the assessment transcript. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+      \item[1.] Conduct the mock video assessment on the system.
+      \item[2.] Edit one annotation, save it, and note the time.
+      \item[3.] Wait one BACKUP\_INTERVAL.
+      \item[4.] Open the backup storage and check that a backup exists and contains the recording and the edited annotation.
+      \end{enumerate}
+    \end{mdframed}
+
+  \item NFR-ST-M2: \textbf{Restore from Backup\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that patient information and assessment recordings can be restored from a backup and match the original data. \par
+      \textbf{Type:} Nonfunctional, Dynamic, Manual \par
+      \textbf{Initial State:} A clinician account is logged in, and a backup exists that contains the mock assessment from \hyperlink{NFR-ST-M1}{NFR-ST-M1}. \par
+      \textbf{Input:} The backup from \hyperlink{NFR-ST-M1}{NFR-ST-M1}, and the mock assessment deleted from the system before restoring. \par
+      \textbf{Output:} After restoring from the backup, the mock assessment's recording and edited annotation are the same as before the deletion \srsnfr*{9}. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+      \item[1.] Open the mock assessment and document the recording length and the exact text of the edited annotation.
+      \item[2.] Delete the mock assessment from the system.
+      \item[3.] Restore the system from the backup.
+      \item[4.] Open the restored assessment and check that the recording plays and has the same length, and that the annotation text is the same as what was documented in step 1.
+      \end{enumerate}
+  \end{mdframed}
+\end{enumerate}
+
 
 \subsection{Traceability Between Test Cases and Requirements}
 
