@@ -90,6 +90,8 @@ in.}
   \bottomrule
 \end{tabular}\\
 
+This document contains the teams 
+
 \wss{symbols, abbreviations, or acronyms --- you can simply reference the SRS
   \citep{SRS} tables, if appropriate}
 
@@ -99,8 +101,11 @@ in.}
 
 \pagenumbering{arabic}
 
-This document ... \wss{provide an introductory blurb and roadmap of the
-  Verification and Validation plan}
+
+This document outlines how the team will confirm that the TeLaC application satisfies the requirements in the \SRSLink{} and supports the needs of speech-language pathologists.
+Section~\ref{sec:General_Information} gives an overview of the system and the goals of this plan.
+Section~\ref{sec:Plan} explains how verification and validation will be carried out.
+Section~\ref{sec:System_Tests} defines the system tests for the functional and nonfunctional requirements, and Section~\ref{sec:Unit_Tests} describes the unit tests to be run once the detailed design is complete.
 
 \section{General Information} \label{sec:General_Information}
 This section provides a brief overview of the software being produced and its objectives, how it will be tested and its relevant documentation.
@@ -175,24 +180,42 @@ You can use a pull request to update your CDs (in TeamComposition.csv or
 Repos.csv) if your plan changes as a result of the VnV planning exercise.}
 
 \subsection{Relevant Documentation}
+% TODO: Once the Wireframe (Fall) and Usability Report (Winter) CDs are done,
+% update their entries in refs/References.bib to link to the PDFs instead of
+% the docs/CDs folders, and revise the descriptions below to match.
 
-\wss{Reference relevant documentation.  This will definitely include your SRS
-  and your other project documents (design documents, like MG, MIS, etc).  You
-  can include these even before they are written, since by the time the project
-  is done, they will be written.  You can create BibTeX entries for your
-  documents and within those entries include a hyperlink to the documents.}
+\begin{itemize}
+  \item Problem Statement and Goals: \citet{ProblemStatement}
+  \item Development Plan: \citet{DevelopmentPlan}
+  \item System Requirements Specification: \citet{SRS}
+  \item Hazard Analysis: \citet{HazardAnalysis}
+  \item Module Guide: \citet{MG}
+  \item Module Interface Specification: \citet{MIS}
+  \item Wireframe: \citet{Wireframe}
+  \item Usability Report: \citet{UsabilityReport}
+\end{itemize}
+The documents listed above are artifacts that will be used to verify and validate
+the implementation of the TeLaC system. The SRS defines the requirements that
+the system tests in Section~\ref{sec:System_Tests} verify, and the Hazard Analysis
+identifies safety and security requirements covered by those tests.
 
-\citet{SRS}
+The Problem Statement and Goals is used to validate that the system
+meets the needs of speech-language pathologists. The Development Plan details
+the team roles and tools that support the activities in Section~\ref{sec:Plan}.
 
-\wss{Don't just list the other documents.  You should explain why they are relevant and 
-how they relate to your VnV efforts.}
+Finally, the Module Guide and Module Interface Specification will be used to define
+the unit tests in Section~\ref{sec:Unit_Tests} once the detailed design is complete.
+The Wireframe will be used to validate the redesigned interface with
+clinicians, and a final Usability Report will record the results of the team's
+usability testing in order to verify the usability requirements.
 
-\section{Plan}
+\section{Plan} \label{sec:Plan}
+This section outlines how artifacts of the TeLaC project will be verified and validated
+throughout and after the development process. It introduces the verification and
+validation team, describes the approaches used to verify the project's documents
+and implementation, and ends with the validation of the software.
 
-\wss{Introduce this section.  You can provide a roadmap of the sections to
-  come.}
-
-\subsection{Verification and Validation Team}
+  \subsection{Verification and Validation Team}
 
 \wss{Your teammates.  Maybe your supervisor.
   You should do more than list names.  You should say what each person's role is
@@ -672,7 +695,7 @@ This section verifies that patient information and assessment recordings are bac
 \wss{Provide a table that shows which test cases are supporting which
   requirements.}
 
-\section{Unit Test Description}
+\section{Unit Test Description} \label{sec:Unit_Tests}
 
 \wss{This section should not be filled in until after the MIS (detailed design
   document) has been completed.}
