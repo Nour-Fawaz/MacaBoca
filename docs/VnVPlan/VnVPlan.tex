@@ -209,12 +209,39 @@ Some objectives are out of scope for this VnV plan due to time and resource limi
 
 \subsection{Custom Documents}
 
-\wss{Summarize the CDs (Custom Documents) that were tackled by this project.  CDs 
-can include usability testing, code walkthroughs, user documentation, formal
-proof, GenderMag personas, Design Thinking, etc.  CDs should have already
-been approved by the course instructor as included in your problem statement.
-You can use a pull request to update your CDs (in TeamComposition.csv or
-Repos.csv) if your plan changes as a result of the VnV planning exercise.}
+Two custom documents (CDs) were chosen in the Problem Statement, and both support this VnV plan.
+Improving SAFA's usability is one of the project's main goals, and many of the requirements in the \SRSLink{} are about how easily clinicians can use the system (\srssr*{8}, \srsnfr*{1}, \srsnfr*{2}, \srsnfr*{14}).
+These are hard to verify with automated tests alone, so the CDs provide the team a structured way to evaluate them with real users.
+The Wireframe is used first to validate the requirements and the interface design before finalizing the implementation, and the Usability Report is used later to verify that the system actually meets the usability requirements.
+
+\subsubsection{Wireframe (Fall)}
+The Wireframe is a mock-up of SAFA's redesigned interface (although it can also include mockups for the TeLaC application pages), covering the integrated SAFA annotation tool and the main workflow screens (selecting a patient and assessment, choosing a workflow, reviewing and correcting the transcript, and generating a report).
+It will be made using a design tool like Figma and presented to the supervisor, the research team, and clinicians.
+Its role in this plan is validation rather than verification, as it checks that the requirements describe what clinicians actually need before any code is written.
+During the review, the team will:
+\begin{itemize}
+  \item Present each workflow by walking reviewers through the mock-up and ask whether the steps match how they would normally analyze an assessment (\srssr*{5})
+  \item Ask reviewers to point out which content is automatically generated and which they have verified, which can be an early check of \srsnfr*{14}
+  \item Get feedback on the overall look and layout of the transcripts, both in the TeLaC view and the SAFA view
+  \item Make note of any labels, icons, or steps that reviewers find unclear (\srsnfr*{2})
+  \item Record missing features or changes reviewers request
+\end{itemize}
+The document will describe the mock-ups and discuss the insights gained due to this review.
+Any feedback that changes a requirement will be added to the \SRSLink{} and tracked as its own GitHub issue.
+
+\subsubsection{Usability Report (Winter)}
+The Usability Report verifies the usability requirements against the final system.
+It will contain the testing plan, the results, and a discussion of the findings and user feedback. This includes any suggested improvements to how the system looks and functions.
+The testing will be systematic and quantified so that the results can be compared directly against the fit criteria for each functional and non-functional requirement that is defined in the SRS.
+The test plan will include the following (this is subject to change over the course of the project):
+\begin{itemize}
+  \item \textbf{Participants:} clinicians that will be provided by the research team's contacts who have not been trained on the system
+  \item \textbf{Tasks:} core tasks such as adding a patient, assigning a speaker role, correcting a transcript chunk, adding an annotation, and generating a report
+  \item \textbf{Measures:} task completion rate, time to complete each task, number of times the participant needed help, and whether each function was found on the first attempt
+  \item \textbf{Survey:} a post-test questionnaire on ease of use and satisfaction
+\end{itemize}
+The results will also be compared with the standalone SAFA tool, since the Problem Statement measures the usability goal as an improvement over the current SAFA interface.
+The usability tests in Section~\ref{sec:System_Tests} will be run as part of these sessions, and the results will be reported in the VnV Report.
 
 \subsection{Relevant Documentation}
 % TODO: Once the Wireframe (Fall) and Usability Report (Winter) CDs are done,
