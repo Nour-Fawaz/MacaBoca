@@ -299,12 +299,28 @@ issue tracker?}
 
 \subsection{Verification and Validation Plan Verification}
 
-\wss{The verification and validation plan is an artifact that should also be
-verified.  Techniques for this include review and mutation testing.}
+The verification and validation plan must be verified to make sure it is complete, feasible, and consistent with the overall project. The team will verify it using the following techniques:
+\begin{itemize}
+  \item \textbf{Team member review:} Every section is reviewed by a team member who did not write it before its pull request is merged. Before each submission, team members do a final full-document review according to their verification roles (Section 3.1), using the checklist below.
+  \item \textbf{Peer review by classmates:} The assigned peer review team reviews the plan and reports issues on GitHub. Each issue is resolved or answered with a justification before the next revision.
+  \item \textbf{Supervisor review:} In meetings with the supervising team, each supervisor reviews the sections related to their expertise. Dr. Yao Du reviews the speech-language therapy aspects of the plan, such as the transcription and report generation tests. Dr. Yang Yue reviews the security and code testing.
+  \item \textbf{TA review:} The team's TA, Tanya Djavaherpour, answers questions about the VnV plan during development and gives feedback after submission.
+  \item \textbf{Pilot testing:} Since TeLaC builds on a previous capstone project, the team will run a sample of system tests on the existing system before implementation is complete. The pilot will include tests for features that already exist, each run by a team member who did not write the test. Tests that cannot be followed or whose expected outputs prove unrealistic are revised, and the findings are logged as GitHub issues.
+\end{itemize}
 
-\wss{The review will include reviews by your classmates}
+The following checklist will be used by the team:
 
-\wss{Create a checklists?}
+\begin{itemize}[label=\ding{113}]
+  \item Does every functional requirement in the SRS have at least one system test?
+  \item Does every nonfunctional requirement in the SRS have at least one system test?
+  \item Is every requirement traced to its tests in the traceability table?
+  \item Have all peer review and supervisor issues been addressed and closed on GitHub?
+  \item Has every team member reviewed and approved at least one section they did not write?
+  \item Can a team member who did not write a test follow its steps as written?
+  \item Are all symbolic parameters used in the tests defined in the appendix?
+  \item Have the findings from pilot testing been logged and the affected tests revised?
+  \item Does each verification activity have a documentation standard and a deadline?
+\end{itemize}
 
 \subsection{Implementation Verification}
 
