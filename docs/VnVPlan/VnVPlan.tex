@@ -149,22 +149,44 @@ The system is therefore tested to ensure that:
 
 \subsection{Objectives}
 
-\wss{State what is intended to be accomplished.  The objective will be around
-  the qualities that are most important for your project.  You might have
-  something like: ``build confidence in the software correctness,''
-  ``demonstrate adequate usability.'' etc.  You won't list all of the qualities,
-  just those that are most important.}
+This VnV plan aims to evaluate whether TeLaC meets its key goals for transcript and report correctness, patient data security, and usability of the integrated workflow. Priorities come from the risks identified in the \HALink{}. The following subsections define each objective in the context of this project.
 
-\wss{You should also list the objectives that are out of scope.  You don't have 
-the resources to do everything, so what will you be leaving out.  For instance, 
-if you are not going to verify the quality of usability, state this.  It is also 
-worthwhile to justify why the objectives are left out.}
+\subsubsection{Ensure Accuracy of Transcripts and Report Generation}
+It is important to make sure clinicians can trust the information TeLaC provides to them. Since the report relies on the generated transcripts, the correctness of both aspects is an objective of the project. The system should:
+\begin{itemize}
+  \item \textbf{Generate transcripts reliably:} The supported assessment videos should produce a transcript at a rate of at least GENERATE\_SUCCESS (\srsfr*{1}, \srsnfr*{17}).
+  \item \textbf{Distinguish speakers:} Each utterance in a transcript should be labelled with the correct speaker (\srsfr*{4}).
+  \item \textbf{Reflect clinician changes in reports:} Every edit and annotation a clinician saves should also appear in the patient record and the generated report (\srsfr*{7}, \srsfr*{19}).
+  \item \textbf{Preserve clinician work:} Saved edits should persist across sessions, and data should be backed up regularly and restorable without loss (\srsnfr*{9}, \srsnfr*{18}).
+\end{itemize}
 
-\wss{The objectives are important because they highlight that you are aware of 
-limitations in your resources for verification and validation.  You can't do everything, 
-so what are you going to prioritize?  As an example, if your system depends on an 
-external library, you can explicitly state that you will assume that external library 
-has already been verified by its implementation team.}
+\subsubsection{Ensure Security and Privacy of Patient Data}
+TeLaC stores recordings, transcripts, and health information about children. A breach would harm patients and violate HIPAA, so protecting this data is a key objective of the project. The system should:
+\begin{itemize}
+  \item \textbf{Restrict access:} Clinicians should only be able to access the patients assigned to them, including through URLs and the API (\srsnfr*{5}).
+  \item \textbf{Protect idle sessions:} Sessions should end after IDLE\_TIMEOUT minutes of inactivity, and credentials should be required before any patient data is shown again (\srsnfr*{6}).
+  \item \textbf{Encrypt patient data:} Recordings and transcripts should be encrypted in transit and in storage, including when sent to third-party transcription services (\srsnfr*{7}).
+  \item \textbf{Log access:} Every view, change, download, and export of patient data should be recorded in an audit log that clinicians cannot edit (\srsnfr*{8}).
+  \item \textbf{Meet compliance requirements:} The HIPAA technical safeguards should be satisfied, and third-party services handling patient data should be covered by a Business Associate Agreement (\srsnfr*{15}).
+\end{itemize}
+
+\subsubsection{Demonstrate Usability of the Integrated Workflow}
+TeLaC's main value is combining SAFA and the clinician dashboard into one workflow. If the workflow is confusing, clinicians lose time and risk making mistakes, so usability is the final objective of the project. The system should:
+\begin{itemize}
+  \item \textbf{Be learnable:} Clinicians with limited technical experience should be able to complete core tasks without training, such as adding a patient, assigning speaker roles, and viewing results (\srsnfr*{1}, \srsnfr*{2}).
+  \item \textbf{Support a seamless workflow:} Clinicians should be able to move from selecting a patient to downloading a report without losing work between stages (\srsfr*{5}, \srsnfr*{3}).
+  \item \textbf{Make generated content clear:} Clinicians should always be able to tell which content was automatically generated and which they have verified (\srsfr*{14}, \srsnfr*{14}).
+  \item \textbf{Be measured through user testing:} Success is measured through usability testing with clinicians, using task completion rate, time on task, and a post-task survey (Appendix).
+\end{itemize}
+
+\subsubsection{Out of Scope}
+Some objectives are out of scope for this VnV plan due to resource limitations:
+\begin{itemize}
+  \item \textbf{Advanced detection of clinical cues:} Detecting subtle behavioural or linguistic signals beyond interference flags and grammar and phonology suggestions is a stretch goal. It will only be verified if implemented, since validating it would require clinical expertise and labelled data the team does not have.
+  \item \textbf{Accuracy of third-party speech services:} The speech recognition and keyword detection services (Whisper and Deepgram) are assumed to have been verified by their developers. The plan verifies that TeLaC handles their output correctly and that clinicians can review and correct it, not the services' accuracy on code-mixed speech.
+  \item \textbf{Administrative and physical HIPAA safeguards:} Staff training and breach notification procedures are the responsibility of the institutions that use TeLaC, as stated in SRS Section 7.5. Only the technical safeguards are verified.
+  \item \textbf{Full UI standards compliance:} The focus is on practical usability for clinicians rather than exhaustive WCAG compliance or visual polish.
+\end{itemize}
 
 \subsection{Custom Documents}
 
@@ -1211,6 +1233,14 @@ Their values are defined in this section for easy maintenance.
       FLAG\_TIME\_TOLERANCE & 2 seconds \\
       \hline
       BACKUP\_INTERVAL & 24 hours \\
+      \hline
+      IDLE\_TIMEOUT & 15 minutes \\
+      \hline
+      TRANSIT\_ENCRYPTION\_STANDARD & TLS 1.2 or higher \\
+      \hline
+      STORAGE\_ENCRYPTION\_STANDARD & AES-256 \\
+      \hline
+      MIN\_PASSWORD\_LENGTH & 8 characters \\
       \hline
   \end{tabular}
   \caption{Variable Names and Values}
