@@ -2116,4 +2116,38 @@ The first approach is learning static analysis tools for security, such as Bandi
 The second approach is practising static review on the existing software. Since TeLaC builds on the previous capstone’s TeleHealth platform and the SAFA tool, I can review their code and configuration before our integration is complete. This includes checking whether their API endpoints verify that the requested patient belongs to the logged-in clinician, how recordings are stored, whether storage encryption is enabled, and what activity is logged. Any issues I find would be recorded as GitHub issues. This gives me hands-on practice on the actual system we are integrating.
 
 I will pursue both approaches. Static analysis tools catch common problems automatically with little effort once set up, which matters given our limited time. Reviewing the existing software builds the judgment tools lack, such as whether the system follows our access-control requirements, and it lets me find security gaps before they carry into TeLaC.
+
+\subsection*{Javayria}
+\subsubsection*{Question 1}
+During this deliverable, I found that the template itself was very helpful and provided much needed guidance. 
+Its hints made it clear what a structured review should include, such as who reviews the document, what questions are asked, and how feedback is tracked. 
+While writing the SRS Verification section, I realized that our team was already following most of what a checklist would cover when reviewing each other's pull requests, such as checking that requirements trace back to stakeholder needs and that fit criteria can actually be measured. 
+All we had to do was write it out as a formal checklist, so that nothing is forgotten in future reviews and every reviewer checks the same things. 
+Our team was also very good at communicating, which made it easy to coordinate the different sections of work. 
+We split the sections and test areas between members early and worked on them independently, but we also discussed topics that affected more than one person as a group, such as which tests were needed for transcript playback, so that our test cases did not overlap or contradict each other.
+
+\subsubsection*{Question 2}
+Something we found difficult with this deliverable was determining realistic tests that would actually verify and validate our requirements, rather than tests that only looked good on paper. 
+Since our tests are built directly from the fit criteria in the SRS, we wanted our supervisors to check the requirements before we started writing the VnV plan in detail. 
+However, we did not receive feedback on our SRS until very late into working on this deliverable. 
+To resolve this, two of our team members asked our supervisors to go over the document together during our scheduled biweekly Zoom meeting, which proved to be much more difficult and time-consuming than we initially thought. 
+We also had to figure out what type of data we would have access to, since real patient recordings cannot be used during development. 
+The research team already had test recordings of family members and friends, so it was important for us to identify what these recordings contained and whether we could use them in our test cases. 
+Knowing this ended up making our tests more specific, since each test could describe exactly which recording it uses and what results to expect from it.
+
+\subsubsection*{Question 3}
+Since my test cases focus on transcript playback and performance, the main skill I will need is automated end-to-end testing in the browser. 
+Several of my tests, such as checking that the transcript stays synchronized with the video and that playback starts quickly after a segment is selected, measure delays of only a few hundred milliseconds, which cannot be timed reliably by hand. 
+These tests need a script that controls the browser, reads the video's playback position, checks which transcript segment is highlighted, and limits the network speed to simulate a slower connection. 
+This is quite different from the unit tests the team will write for individual modules, since it involves the whole system running together, including video streamed from cloud storage. 
+I will also need a better understanding of our continuous integration pipeline. 
+While working on this deliverable, our document build on GitHub started failing because of a setup step that the workflow was missing, which showed me that automated checks are only useful if the team understands how they work and can fix them when they break.
+
+\subsubsection*{Question 4}
+The first approach I will use is working through the official documentation and tutorials for a browser testing framework such as Playwright, focusing on the features my tests rely on, such as reading the state of a video element, waiting for an element to change, and limiting network speed. 
+The second approach is writing small practice tests against the existing TeleHealth review page, which already plays assessment videos, before the SAFA integration is built. 
+This would let me find out early whether measurements like playback position can be read accurately in an automated test, rather than finding out once the system is nearly complete. 
+I will pursue both approaches. 
+The documentation gives me a reliable starting point and shows the intended way to use the tool, while the practice tests let me apply it to our actual system and catch problems early. 
+Since the timing thresholds in my tests are strict, making sure the measurement method itself works is just as important as the system meeting them.
 \end{document}
