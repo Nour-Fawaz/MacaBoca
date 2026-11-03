@@ -1115,7 +1115,7 @@ How test will be performed:
 
 \section{Appendix}
 
-This is where you can place additional information.
+This appendix provides supporting information for the previous sections.
 
 \subsection{Symbolic Parameters}
 
@@ -1277,5 +1277,54 @@ Ensuring that anyone can understand the point I am getting across will allow the
 I will pursue both approaches. 
 This is because the first approach builds on methods I’ve already used, which is the fastest way to be effective. 
 As for the second approach, it allows me to practice my interview skills at low risk and, because I have not conducted any usability tests with actual clinicians, it’s a good way to develop my skills before being thrown into that setting.
+
+\subsection*{Catherine}
+\subsubsection*{Question 1}
+I wrote the Relevant Documentation, Design Verification, and Software Validation sections, as well as
+some of the functional and non-functional test cases.
+As we previously had brainstormed together a table with all our requirements, grouped them into specific
+themes/sections, and came up with corresponding test cases together, it was incredibly easy to split
+the work into equal sections between everyone. So everybody more or less was able to have the same
+amount of work to do. As members started writing their section, we were able to easily review each others' work
+and also easily copy their structure and formatting, helping us keep the document consistent and cohesive! 
+The SRS also made the work easier, since each requirement already had a fit criterion and most of the thresholds 
+were defined as symbolic constants. This meant that the expected output of each test could come directly from the 
+SRS instead of being decided from scratch.
+
+\subsubsection*{Question 2}
+One pain point that we had during this deliverable was that the planned test cases 
+didn't always line up with the requirements.
+When I compared the tests assigned to me against the SRS, I found that FR22 technically wasn't covered by any test and
+one of the planned tests didn't actually trace back to any functional requirement.
+I had to resolve this by replacing that test with one for FR22, so that every requirement in my sections is covered.
+As we also had to write the test cases before we had any design documents complete, it was 
+a little difficult to describe some of the test cases in a sure way,
+but writing the test cases in a more general way with additional notes and references that we would update later
+helped with this process for me personally.
+
+\subsubsection*{Question 3}
+Although a variety of testing skills is important for everyone on the team to have, I think
+given that our project will entail a lot of different modules working together, whilst also being
+implemented within a web application and cloud environment, it is important for me to learn how 
+to do integration testing. For example, a transcript edit made by a clinician has to be saved, 
+passed to the SAFA analysis, and then reflected in the assessment results and the final report.
+Each of these steps could pass its own unit test while the overall flow still fails.
+Personally, I'll ensure that I'm able to learn how to test the interactions between modules, 
+such as between the frontend, the backend, the database, and external services like the speech 
+recognition API, and how to set up data that represents a realistic assessment.
+
+\subsubsection*{Question 4}
+I think the first approach to learning how to design comprehensive integration tests,
+is through documentation and tutorials with the tools we already use, such as how to use pytest 
+for the backend or Jest for the frontend. This also includes learning how to test API endpoints 
+together with the database, and how to replace external services with mock versions so that 
+tests can be repeatable against different modules, saving the team time and effort as we'll
+potentially have a ton of different tests to create.
+
+The second approach is to learn by doing, so by writing integration tests for one complete 
+flow in our system, whether its for a mock system or a small isolated scennario. For example,
+uploading a recording, editing its transcript, and generating a report.
+Starting with one flow and asking teammates to review the tests will show me where my 
+tests miss problems before I write tests for the rest of the system.
 
 \end{document}
