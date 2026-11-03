@@ -5,6 +5,9 @@
 \usepackage{enumitem}
 \usepackage{pifont}
 \usepackage{mdframed}
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{graphicx}
 \usepackage{array}
 
 \newcommand{\checkbox}{\ding{113}} % 113 corresponds to an open square box
@@ -51,40 +54,26 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+31-10-2026 & 1.0 & Nour: Added sections 2.1, 3.6, parts of 4, 7, 8\\
+02-11-2026 & 1.1 & Everyone: Added the remaining sections and final fixes\\
 \bottomrule
 \end{tabularx}
 
 ~\\
-\wss{The intention of the VnV plan is to increase confidence in the software.
-However, this does not mean listing every verification and validation technique
-that has ever been devised.  The VnV plan should also be a \textbf{feasible}
-plan. Execution of the plan should be possible with the time and team available.
-If the full plan cannot be completed during the time available, it can either be
-modified to ``fake it'', or a better solution is to add a section describing
-what work has been completed and what work is still planned for the future.}
-
-\wss{The VnV plan is typically started after the requirements stage, but before
-the design stage.  This means that the sections related to unit testing cannot
-initially be completed.  The sections will be filled in after the design stage
-is complete.  the final version of the VnV plan should have all sections filled
-in.}
 
 \newpage
 
 \tableofcontents
 
 \listoftables
-\wss{Remove this section if it isn't needed}
-
-\listoffigures
-\wss{Remove this section if it isn't needed}
 
 \newpage
 
 \section{Symbols, Abbreviations, and Acronyms}
 
+\begin{table}[H]
+\centering
+\caption{Symbols, Abbreviations, and Acronyms}
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular}{l l} 
   \toprule		
@@ -102,19 +91,12 @@ in.}
   VnV & Verification and Validation \\
   WCAG & Web Content Accessibility Guidelines \\
   \bottomrule
-\end{tabular}\\
-
-This document contains the teams 
-
-\wss{symbols, abbreviations, or acronyms --- you can simply reference the SRS
-  \citep{SRS} tables, if appropriate}
-
-\wss{Remove this section if it isn't needed}
+\end{tabular}
+\end{table}
 
 \newpage
 
 \pagenumbering{arabic}
-
 
 This document outlines how the team will confirm that the TeLaC application satisfies the requirements in the \SRSLink{} and supports the needs of speech-language pathologists.
 Section~\ref{sec:General_Information} gives an overview of the system and the goals of this plan.
@@ -279,12 +261,17 @@ and implementation, and ends with the validation of the software.
 
 \hspace{2em}The following table displays the roles and responsibilities of each team member.
 
-\begin{center}
-\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{ | p{4.5cm} | p{9cm} | }
+{\renewcommand{\arraystretch}{1.2}
+\begin{longtable}{ | p{4.5cm} | p{8.2cm} | }
+  \caption{Verification and Validation Team Roles and Responsibilities} \\
   \hline
   \textbf{Name} & \textbf{Roles and Responsibilities} \\
   \hline
+  \endfirsthead
+  \hline
+  \textbf{Name} & \textbf{Roles and Responsibilities} \\
+  \hline
+  \endhead
   Javayria Mudassar &
   \begin{itemize}[leftmargin=*, nosep, before=\vspace{1mm}, after=\vspace{1mm}]
     \item Stakeholder Communication Lead
@@ -337,8 +324,7 @@ and implementation, and ends with the validation of the software.
     \item Milestone and documentation feedback
   \end{itemize} \\
   \hline
-\end{tabular}
-\end{center}
+\end{longtable}}
 
 \vspace{1em}
 
@@ -373,9 +359,9 @@ The reviewer leaves a comment on any item that fails, and the pull request is no
 \begin{itemize}[label=\checkbox]
   \item Every functional requirement traces to at least one stakeholder requirement.
   \item Every stakeholder requirement is supported by evidence from the research team's study (\SRSLink{} Appendix A) or by a supervisor decision.
-  \item Every functional and non-functional requirement has a fit criterion that a tester could check without asking the author what it means.
+  \item Every functional and nonfunctional requirement has a fit criterion that a tester could check without asking the author what it means.
   \item Every threshold in a fit criterion is written as a symbolic constant rather than a fixed number.
-  \item Every functional and non-functional requirement is covered by at least one system test in Section~\ref{sec:System_Tests}.
+  \item Every functional and nonfunctional requirement is covered by at least one system test in Section~\ref{sec:System_Tests}.
   \item Each requirement states what the system must do, not how it will be built.
   \item The use cases, functional requirements, and workflow state diagrams use the same names for the same states and actions.
   \item Each of the three clinician workflows (Direct Analysis, Annotation-First, and On-Demand Refinement) can be traced from start to finish through the use cases without a missing step.
@@ -494,7 +480,7 @@ The following lists the automated testing and verification tools used throughout
   \item Continuous Integration: GitHub Actions
 \end{itemize}
 
-The CI workflows and tooling are described further in the described further in the \DevPlanLink.
+The CI workflows and tooling are described further in the \DevPlanLink.
 
 For code coverage, Coverage.py is used for the Python code. For TypeScript/JavaScript, Istanbul is used. 
 This is considering it is built into Jest, which reduces the number of additional frameworks needed. 
@@ -516,7 +502,7 @@ to carry out the goals of speech-language pathologists, the team will validate
 the software through the following activities:
 
 \begin{itemize}
-  \item \textbf{Requirements review sessions:} During one of the teams bi-weekly meetings, 
+  \item \textbf{Requirements review sessions:} During one of the team's bi-weekly meetings, 
   the team will meet with the research team
   to walk through each use case in the \SRSLink, and note any discrepancies or missing
   requirements between what the clinician needs or expects in a step. 
@@ -560,18 +546,8 @@ matrix, ensuring that all expectations are met.
 
 \subsection{Tests for Functional Requirements}
 
-\wss{Subsets of the tests may be in related, so this section is divided into
-  different areas.  If there are no identifiable subsets for the tests, this
-  level of document structure can be removed.}
-
-\wss{Include a blurb here to explain why the subsections below
-  cover the requirements.  References to the SRS would be good here.}
-
-\subsubsection{Authentication and Accounts}
-\wss{Placeholder: FR-ST-A1 to A6 (Person 1).}
-
-\subsubsection{Patient Management}
-\wss{Placeholder: FR-ST-PM1 to PM4 (Person 1).}
+This section contains the tests for the functional requirements in the \SRSLink{},
+grouped into areas based on the part of the clinician's workflow they cover.
 
 \subsubsection{Data Collection and Storage}
 This section verifies that annotations are saved to the patient's assessment record, can be exported, and that recordings can be marked as reviewed.
@@ -598,7 +574,7 @@ This section verifies that annotations are saved to the patient's assessment rec
       \textbf{Type:} Manual, Dynamic \par
       \textbf{Initial State:} A clinician account is logged in, a patient record exists, and the patient's assessment video is open in the annotation interface with its auto-generated transcript. \par
       \textbf{Input:} 3 assessment videos. For each video, 3 edits will be made to the transcript and documented with their corresponding chunks for later reference. \par
-      \textbf{Output:} AFor each supported file format, a file is exported that contains every approved annotation for that assessment, with the same content as the edits made in the annotation interface. \par
+      \textbf{Output:} For each supported file format, a file is exported that contains every approved annotation for that assessment, with the same content as the edits made in the annotation interface. \par
       \textbf{Test Case Derivation:} \srsfr*{3} requires that clinicians can export annotation data from an assessment in a supported file format. Additionally, the file must contain all approved annotations for that assessment. This lets clinicians record, review, and share results without relying on other software.\par
       \textbf{How the test will be performed:}
       \begin{enumerate}
@@ -654,7 +630,7 @@ This section verifies that assessment videos are transcribed, speakers can be to
       \textbf{Initial State:} A clinician account is logged in, a patient record exists, and all assessment videos are in the system. \par
       \textbf{Input:} 10 assessment videos. \par
       \textbf{Output:} For each video, a non-empty transcript is generated and available for the clinician to review. At least \\GENERATE\_SUCCESS\% of the videos must produce a transcript (\srsnfr*{17}). \par
-      \textbf{Test Case Derivation:} \srsnfr*{1} requires that a transcript is generated for every supported video without any action from the clinician, and (\srsnfr*{17}) sets the required success rate. Additionally, a working auto-generation transcript tool is critical to streamlining the SLP workflow.
+      \textbf{Test Case Derivation:} \srsfr*{1} requires that a transcript is generated for every supported video without any action from the clinician, and (\srsnfr*{17}) sets the required success rate. Additionally, a working auto-generation transcript tool is critical to streamlining the SLP workflow.
       \textbf{How the test will be performed:}
       \begin{enumerate}
           \item[1.] For each assessment video, open it in the annotation tool, and generate a transcription
@@ -1217,209 +1193,10 @@ This section verifies the child-facing side of the assessment, where breaks keep
   \end{mdframed}
 \end{enumerate}
 
-\subsubsection{Transcript Review and Editing}
-\wss{Placeholder: FR-ST-TR1 to TR4 (Person 3).}
-
-\subsubsection{Playback and Navigation}
-\wss{Placeholder: FR-ST-PN1 to PN4 (Person 3).}
-
-\subsubsection{Assessment Evaluation and Notes}
-This section verifies that clinicians can manually grade assessment questions,
-create notes on individual questions and assessments as a whole, and update 
-results at any time.
-\begin{enumerate}
-  \item FR-ST-AE1: \textbf{Manually Grade a Question During Playback\\}
-  \begin{mdframed}[linewidth=0.5mm]
-      \textbf{Purpose:} Verifies that clinicians can manually evaluate questions that cannot be graded automatically while playing back the part of the recording where the question was answered. \par
-      \textbf{Type:} Manual, Dynamic \par
-      \textbf{Initial State:} Clinician is logged into their account, a patient record exists, and a completed assessment containing questions that aren't automatically graded is open in the Individual Assessment View. \par
-      \textbf{Input:} 1 assessment video containing 3 repetition questions that are not automatically graded. The clinician marks 2 of them as correct and 1 as incorrect. \par
-      \textbf{Output:} For each of the 3 questions, the recording segment for that question plays while the clinician records an evaluation. After saving, each evaluation is shown with its question, and the assessment's score updates to include the 3 evaluations. \par
-      \textbf{Test Case Derivation:} \srsfr*{16} requires that the clinician can play the recording segment for every question that is not automatically graded and record an evaluation, which must then be shown with the question and included in the assessment's score. Some questions may have no single correct answer, so the clinician must be able to judge them from the recording. \par
-      \textbf{How the test will be performed:}
-      \begin{enumerate}
-        \item[1.] Record the assessment's score before grading.
-        \item[2.] For each of the 3 questions, select one of them and check that the matching segment of the recording plays, and then record the evaluation.
-        \item[3.] Save, then check that each evaluation is shown with its question and that the score has changed to include the 3 evaluations.
-      \end{enumerate}
-  \end{mdframed}
-
-  \item FR-ST-AE2: \textbf{Add, Edit, and Delete a Question Note\\}
-  \begin{mdframed}[linewidth=0.5mm]
-      \textbf{Purpose:} Verifies that clinicians can add, edit, and delete a note on an individual assessment question, and that any notes saved stay attached to that question. \par
-      \textbf{Type:} Manual, Dynamic \par
-      \textbf{Initial State:} Clinician is logged into their account, a patient record exists, and a completed assessment is open in the Individual Assessment View. \par
-      \textbf{Input:} A note with the text ``Substituted /s/ with /th/'' is added to question 3 of the assessment, then edited to ``Substituted /s/ with /th/ twice'', then the note is deleted. \par
-      \textbf{Output:} After the note is added, it is shown with question 3 and with no other question, including after the assessment is closed and reopened. After it is edited, only the edited text is shown. After it is deleted, no note is shown on question 3 when the assessment is reopened. \par
-      \textbf{Test Case Derivation:} \srsfr*{17} requires that a note saved on a question is shown with that question each time, unless the clinician edits or deletes it, as clinicians use these notes to record observations that support their final evaluation. \par
-      \textbf{How the test will be performed:}
-      \begin{enumerate}
-        \item[1.] Add a note to question 3, save. Close and reopen the assessment, and check that the note is shown on question 3 only.
-        \item[2.] Edit the note, save. Close and reopen the assessment, and check that only the edited text is shown.
-        \item[3.] Delete the note. Close and reopen the assessment, and check that question 3 has no note.
-      \end{enumerate}
-  \end{mdframed}
-
-  \item FR-ST-AE3: \textbf{Add, Edit, and Delete an Assessment Note\\}
-  \begin{mdframed}[linewidth=0.5mm]
-      \textbf{Purpose:} Verifies that clinicians can add, edit, and delete notes for an entire video assessment. \par
-      \textbf{Type:} Manual, Dynamic \par
-      \textbf{Initial State:} Clinician is logged into their account, a patient record exists, and a completed assessment is open in the Individual Assessment View. \par
-      \textbf{Input:} A note on the whole assessment with the text ``Child was distracted by background noise in the second half'', then edited to ``Child was distracted by background noise after question 10'', then deleted. \par
-      \textbf{Output:} After the note is added, it is shown on the assessment's view, including after the assessment is closed and reopened. After it is edited, only the edited text is shown. After it is deleted, no assessment note is shown when the assessment is reopened. \par
-      \textbf{Test Case Derivation:} \srsfr*{18} requires that a note saved on an assessment is shown on the assessment's view every time it is reopened, unless the clinician edits or deletes it. For example, some observations, such as the child's attention or the recording conditions, can apply to the whole session rather than just a single question. \par
-      \textbf{How the test will be performed:}
-      \begin{enumerate}
-        \item[1.] Add the note to the assessment, save. Close and reopen the assessment, and check that the note is shown.
-        \item[2.] Edit the note, save. Close and reopen the assessment, and check that only the edited text is shown.
-        \item[3.] Delete the note. Close and reopen the assessment, and check that no assessment note is shown.
-      \end{enumerate}
-  \end{mdframed}
-
-  \item FR-ST-AE4: \textbf{Edit a Previously Saved Result\\}
-  \begin{mdframed}[linewidth=0.5mm]
-      \textbf{Purpose:} Verifies that clinicians can change an assessment result after it has been saved, and that the updated result is displayed. \par
-      \textbf{Type:} Manual, Dynamic \par
-      \textbf{Initial State:} Clinician is logged into their account, a patient record exists, and a completed assessment has a saved result where question 1 is marked as correct. \par
-      \textbf{Input:} The clinician changes the result of question 1 from correct to incorrect. \par
-      \textbf{Output:} Once the change is submitted, question 1 is shown as incorrect and the assessment's overall score decreases by one question. The previous value is no longer shown. \par
-      \textbf{Test Case Derivation:} \srsfr*{8} requires that the system displays the updated result once the clinician submits a change. Clinicians may notice an error or change their judgment after reviewing more of the recording, so they need to update results at any stage. \par
-      \textbf{How the test will be performed:}
-      \begin{enumerate}
-        \item[1.] Record the result of question 1 and the overall score.
-        \item[2.] Change question 1 from correct to incorrect and submit.
-        \item[3.] Check that question 1 is shown as incorrect and that the overall score has decreased by one question.
-      \end{enumerate}
-  \end{mdframed}
-
-  \item FR-ST-AE5: \textbf{Save Results After Leaving the Assessment\\}
-  \begin{mdframed}[linewidth=0.5mm]
-      \textbf{Purpose:} Verifies that grades and result changes are saved when the clinician leaves an assessment and returns to it later. \par
-      \textbf{Type:} Manual, Dynamic \par
-      \textbf{Initial State:} Clinician is logged into their account, a patient record exists, and a completed assessment is open in the Individual Assessment View. \par
-      \textbf{Input:} The clinician grades 2 questions that are not automatically graded and changes the result of 1 automatically graded question, then leaves the assessment in 2 ways: by opening another patient's assessment, and by logging out. \par
-      \textbf{Output:} Each time the clinician returns to the assessment, all 3 results are shown exactly as they were saved, and the overall score is the same as before leaving. \par
-      \textbf{Test Case Derivation:} \srsfr*{8} requires that clinicians can edit and update results at any time, which is only possible if earlier changes are kept between visits. Clinicians do not always analyze assessments in one sitting, so their work must still be there when they come back. \par
-      \textbf{How the test will be performed:}
-      \begin{enumerate}
-        \item[1.] Make the 3 result changes, save, and record the overall score.
-        \item[2.] Open another patient's assessment, then return to the original one, and check that the 3 results and the score are unchanged.
-        \item[3.] Log out, log back in, open the assessment, and check again.
-      \end{enumerate}
-  \end{mdframed}
-\end{enumerate}
-
-\subsubsection{Results Display and Reporting}
-This section verifies that assessment results are shown in a designated view, organized by clinical domain and language, displayed in a format suited to the assessment's purpose, and included in reports with the clinician's edits.
-\begin{enumerate}
-  \item FR-ST-RD1: \textbf{Display the Assessment Results Overview\\}
-  \begin{mdframed}[linewidth=0.5mm]
-      \textbf{Purpose:} Verifies that the system shows an overview of an assessment's results, including flagged items and overall results, without requiring a transcript. \par
-      \textbf{Type:} Manual, Dynamic \par
-      \textbf{Initial State:} Clinician is logged into their account, a patient record exists, and the patient has completed assessments that have not been opened in the SAFA tool and have no transcript reviewed. \par
-      \textbf{Input:} 2 completed assessments, one with 2 questions flagged for interference and one with no flagged questions. \par
-      \textbf{Output:} For each assessment, the overview shows the patient's overall results and each question's result (e.g., right or wrong). In the first assessment, the 2 flagged questions are marked as flagged; in the second, none are marked. The overview loads without the clinician opening the SAFA tool or a transcript. \par
-      \textbf{Test Case Derivation:} \srsfr*{12} requires that the overview for each completed assessment shows the overall results, each question's result, and whether it was flagged, and that it can be viewed before the assessment is reviewed in the SAFA tool. Clinicians reviewing many assessments need a quick summary without in-depth annotation. \par
-      \textbf{How the test will be performed:}
-      \begin{enumerate}
-        \item[1.] From the patient's list of completed assessments, open the overview of each assessment.
-        \item[2.] Check that the overall results and each question's result are shown.
-        \item[3.] Check that exactly the 2 expected questions are flagged in the first assessment and none in the second.
-      \end{enumerate}
-  \end{mdframed}
-
-  \item FR-ST-RD2: \textbf{Organize Results by Clinical Domain\\}
-  \begin{mdframed}[linewidth=0.5mm]
-      \textbf{Purpose:} Verifies that every question is assigned to a clinical domain and that results can be viewed grouped and summarized by domain. \par
-      \textbf{Type:} Manual, Dynamic \par
-      \textbf{Initial State:} Clinician is logged into their account, a patient record exists, and a completed assessment is open. \par
-      \textbf{Input:} 1 completed assessment with questions covering semantics, grammar, and phonology, along with a list prepared by the team of each question's expected domain. \par
-      \textbf{Output:} Every question is assigned to the domain given in the list, and the results view groups the questions under semantics, grammar, and phonology, with a summary score for each domain. \par
-      \textbf{Test Case Derivation:} \srsfr*{23} requires that every question in an assessment is assigned to a domain and that the clinician can view results grouped and summarized by domain. Clinicians interpret a child's language abilities by domain, which supports diagnosis and reporting. \par
-      \textbf{How the test will be performed:}
-      \begin{enumerate}
-        \item[1.] Open the assessment's results grouped by domain.
-        \item[2.] Check that every question appears under the domain given in the list, and that no question is missing a domain.
-        \item[3.] Check that each domain's summary score matches the results of the questions listed under it.
-      \end{enumerate}
-  \end{mdframed}
-
-  \item FR-ST-RD3: \textbf{Visualize Results by Domain and Language\\}
-  \begin{mdframed}[linewidth=0.5mm]
-      \textbf{Purpose:} Verifies that results for an assessment completed in more than one language are displayed by clinical domain in a single consolidated view. This test only applies if the result visualization feature is implemented, since \srsfr*{25} is linked to a stretch goal in the Problem Statement. \par
-      \textbf{Type:} Manual, Dynamic \par
-      \textbf{Initial State:} Clinician is logged into their account and a bilingual patient record exists. \par
-      \textbf{Input:} 1 assessment completed by the patient in both English and Mandarin, with results in semantics, grammar, and phonology for each language. \par
-      \textbf{Output:} A single view shows each domain's results for both languages side by side, so the clinician does not need to switch between views to compare the languages. \par
-      \textbf{Test Case Derivation:} \srsfr*{25} requires that for an assessment completed in more than one language, the results for each clinical domain are displayed in a single consolidated view. Seeing both languages together helps clinicians tell a language difference from a disorder. \par
-      \textbf{How the test will be performed:}
-      \begin{enumerate}
-        \item[1.] Open the results visualization for the bilingual assessment.
-        \item[2.] Check that each of the 3 domains shows results for both English and Mandarin in the same view.
-        \item[3.] Check that the values shown match the results stored for each language.
-      \end{enumerate}
-  \end{mdframed}
-
-  \item FR-ST-RD4: \textbf{Generate a Report Containing Clinician Edits\\}
-  \begin{mdframed}[linewidth=0.5mm]
-      \textbf{Purpose:} Verifies that a generated assessment report includes every change the clinician made, and the automatically generated content wherever no change was made. \par
-      \textbf{Type:} Manual, Dynamic \par
-      \textbf{Initial State:} Clinician is logged into their account, a patient record exists, and a completed assessment has an automatically generated transcript. \par
-      \textbf{Input:} 1 assessment where the clinician makes 3 transcript edits, changes the result of 1 flagged question, and adds a note to 1 question. A list of these changes is recorded by the team before generating the report. \par
-      \textbf{Output:} The generated report contains all 5 changes from the list. Every part of the transcript and results that was not changed appears in the report as it was automatically generated. \par
-      \textbf{Test Case Derivation:} \srsfr*{7} requires that the report includes every change the clinician made during analysis, and the automatically generated content where no change was made. The report must reflect the clinician's judgment, not only the automated output. \par
-      \textbf{How the test will be performed:}
-      \begin{enumerate}
-        \item[1.] Make the listed changes to the assessment and save.
-        \item[2.] Generate the assessment report.
-        \item[3.] Check that each of the 5 changes appears in the report.
-        \item[4.] Compare a sample of unchanged transcript segments and results in the report against the automatically generated content and check that they match.
-      \end{enumerate}
-  \end{mdframed}
-
-  \item FR-ST-RD5: \textbf{Display Results by Assessment Purpose\\}
-  \begin{mdframed}[linewidth=0.5mm]
-      \textbf{Purpose:} Verifies that the system displays assessment results in a format suited to the assessment's purpose. \par
-      \textbf{Type:} Manual, Dynamic \par
-      \textbf{Initial State:} Clinician is logged into their account and a patient record exists with completed assessments. \par
-      \textbf{Input:} 1 diagnostic assessment completed once, and 1 progress monitoring assessment completed 3 times on different dates with scores of 50\%, 70\%, and 85\%. \par
-      \textbf{Output:} The diagnostic assessment's results are shown as a single session summary. The progress monitoring assessment's results are shown as change over time, with all 3 sessions listed in date order with their scores. \par
-      \textbf{Test Case Derivation:} \srsfr*{22} requires that progress monitoring results are shown as change over time and diagnostic or screening results as a single session summary, since each purpose needs a different view to be interpreted correctly. \par
-      \textbf{How the test will be performed:}
-      \begin{enumerate}
-        \item[1.] Open the diagnostic assessment's results and check that only that session's summary is shown.
-        \item[2.] Open the progress monitoring assessment's results and check that all 3 sessions are shown in date order with scores of 50\%, 70\%, and 85\%.
-      \end{enumerate}
-  \end{mdframed}
-\end{enumerate}
-
-
-\subsubsection{Assessment Interface}
-\wss{Placeholder: FR-ST-AI1 (Person 3).}
-
 \subsection{Tests for Nonfunctional Requirements}
 
-\wss{The nonfunctional requirements for accuracy will likely just reference the
-  appropriate functional tests from above.  The test cases should mention
-  reporting the relative error for these tests.  Not all projects will
-  necessarily have nonfunctional requirements related to accuracy.}
-
-\wss{For some nonfunctional tests, you won't be setting a target threshold for
-passing the test, but rather describing the experiment you will do to measure
-the quality for different inputs.  For instance, you could measure speed versus
-the problem size.  The output of the test isn't pass/fail, but rather a summary
-table or graph.}
-
-\wss{Tests related to usability could include conducting a usability test and
-  survey.  The survey will be in the Appendix.}
-
-\wss{Static tests, review, inspections, and walkthroughs, will not follow the
-format for the tests given below.}
-
-\wss{If you introduce static tests in your plan, you need to provide details.
-How will they be done?  In cases like code (or document) walkthroughs, who will
-be involved? Be specific.}
-
+This section contains the tests for the nonfunctional requirements in the \SRSLink{},
+grouped by the same categories used in the SRS.
 \subsubsection{Usability}
 This section verifies that clinicians can use the system without training, find each function from its label, move between workflow stages easily, and see the result of each change right away.
 \begin{enumerate}
@@ -1607,12 +1384,6 @@ These tests use test assessment A described in Section~\ref{sec:TranscriptTests}
   \end{mdframed}
 \end{enumerate}
 
-\subsubsection{Security}
-\wss{Placeholder: NFR-ST-S1 to S5 (Person 1).}
-
-\subsubsection{Compliance}
-\wss{Placeholder: NFR-ST-CO1 to CO2 (Person 1).}
-
 \subsubsection{Accuracy}
 This section verifies that the system is accurate enough for clinicians to rely on when reviewing assessments.
 \begin{enumerate}
@@ -1622,7 +1393,7 @@ This section verifies that the system is accurate enough for clinicians to rely 
       \textbf{Type:} Nonfunctional, Dynamic, Manual \par
       \textbf{Initial State:} The system is running with a test clinician account for each participant, and each account has 1 test patient with 1 completed assessment. The participants have not used the system before and receive no training. \par
       \textbf{Input:} 3 assessment videos, 2 of which contain interference (e.g., a guardian giving a hint during a question) and the remaining contain none. For each video, an answer key lists the question number and timestamp of each interference, created by the team before testing by watching the assessment. \par
-      \textbf{Output:} In the Individual Assessment View, every question with detected interference is visibly marked. Additionally, the system must:
+      \textbf{Output:} In the Individual Assessment View, every question with detected interference is visibly marked \srsnfr*{11}. Additionally, the system must:
       \begin{itemize}
         \item Flag at least FLAG\_DETECTION\_RATE\% of the moments the answer key identifies as an interference 
         \item Have no more than FLAG\_FALSE\_ALARM\_RATE\% of its flags as false alarms
@@ -1680,7 +1451,7 @@ This allows clinicians to depend on the system and ensure that their work is not
 \subsubsection{Recording Quality}
 The following test case verifies that all recording quality for speech video assessments are met 
 \begin{enumerate}
-  \item NFR-ST-P1: \textbf{Only Accept Videos Meeting Minimum Quality\\}
+  \item NFR-ST-RQ1: \textbf{Only Accept Videos Meeting Minimum Quality\\}
   \begin{mdframed}[linewidth=0.5mm]
       \textbf{Purpose:} Verifies that the system does not allow an assessment to proceed when the video resolution or audio level is below \\ MIN\_VIDEO\_RESOLUTION or MIN\_AUDIO\_LEVEL, respectively.  \par
       \textbf{Type:} Nonfunctional, Dynamic, Manual \par
@@ -1710,7 +1481,7 @@ This section verifies that patient information and assessment recordings are bac
       \textbf{Type:} Nonfunctional, Dynamic, Manual \par
       \textbf{Initial State:} The system is running with a test clinician account for each participant, and each account has 1 test patient with 1 completed assessment. The participants have not used the system before and receive no training. \par
       \textbf{Input:} One mock video assessment conducted on the system, with one edit made to one of its annotations and saved. \par
-      \textbf{Output:} After one BACKUP\_INTERVAL, a backup for the mock assessment recording exists, including the edited annotation for the assessment transcript. \par
+      \textbf{Output:} After one BACKUP\_INTERVAL, a backup for the mock assessment recording exists, including the edited annotation for the assessment transcript \srsnfr*{9}. \par
       \textbf{How the test will be performed:}
       \begin{enumerate}
       \item[1.] Conduct the mock video assessment on the system.
@@ -1880,30 +1651,192 @@ This section verifies that the system can store a full clinical caseload for eve
   \end{mdframed}
 \end{enumerate}
 
-\subsubsection{Capacity}
-This section verifies that the system can store a full clinical caseload for every clinician without seeing any deterioration in system performance.
-\begin{enumerate}
-  \item NFR-ST-CA1: \textbf{Store a Full Caseload\\}
-  \begin{mdframed}[linewidth=0.5mm]
-      \textbf{Purpose:} Verifies that the system stores the patients, assessments, recordings, and annotations of a full caseload for every clinician and still meets its usability and performance requirements. \par
-      \textbf{Type:} Nonfunctional, Dynamic, Automatic \par
-      \textbf{Initial State:} The system is running in a test environment with no existing data. \par
-      \textbf{Input:} A script generates NUM\_CLINICIANS clinician accounts, each with CASELOAD patients, and each patient with ASMTS\_PER\_PT completed assessments. Each assessment has a recording of up to MAX\_REC\_LEN minutes, a transcript, and annotations. \par
-      \textbf{Output:} Every generated patient, assessment, recording, transcript, and annotation is stored and can be opened, and NFR-ST-U4 and NFR-ST-PF2 still pass with this data loaded \srsnfr*{16}. \par
-      \textbf{How the test will be performed:}
-      \begin{enumerate}
-        \item[1.] Run the script to load the data.
-        \item[2.] Check that the number of stored records of each type matches the number generated.
-        \item[3.] Open a random sample of 20 assessments and check that each recording plays and its transcript and annotations are shown.
-        \item[4.] Run NFR-ST-U4 and NFR-ST-PF2 with the data loaded and check that both pass.
-      \end{enumerate}
-  \end{mdframed}
-\end{enumerate}
+\subsection{Traceability Between Test Cases and Requirements} \label{sec:Traceability}
 
-\subsubsection{Traceability Between Test Cases and Requirements}
+The following tables show which requirements in the \SRSLink{} each system test verifies. Every functional and nonfunctional requirement is covered by at least one test. 
+Some functional tests trace to a use case rather than a functional requirement, 
+since the SRS describes some behaviour, such as logging in, creating an account, 
+or marking a recording as reviewed, only through use cases; these tests are shown 
+in Table~\ref{tab:trace-uc}.
 
-\wss{Provide a table that shows which test cases are supporting which
-  requirements.}
+\begin{table}[H]
+  \centering
+  \small
+  \renewcommand{\arraystretch}{1.08}
+  \setlength{\tabcolsep}{2pt}
+  \caption{Traceability Between Functional System Tests and Functional Requirements}
+  \label{tab:trace-fr}
+  \makebox[\textwidth][c]{%
+  \begin{tabular}{|l|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|>{\centering\arraybackslash}p{0.42cm}|}
+    \hline
+    \textbf{Test Case} & \rotatebox{90}{\,FR1\,} & \rotatebox{90}{\,FR2\,} & \rotatebox{90}{\,FR3\,} & \rotatebox{90}{\,FR4\,} & \rotatebox{90}{\,FR5\,} & \rotatebox{90}{\,FR6\,} & \rotatebox{90}{\,FR7\,} & \rotatebox{90}{\,FR8\,} & \rotatebox{90}{\,FR9\,} & \rotatebox{90}{\,FR10\,} & \rotatebox{90}{\,FR11\,} & \rotatebox{90}{\,FR12\,} & \rotatebox{90}{\,FR13\,} & \rotatebox{90}{\,FR14\,} & \rotatebox{90}{\,FR15\,} & \rotatebox{90}{\,FR16\,} & \rotatebox{90}{\,FR17\,} & \rotatebox{90}{\,FR18\,} & \rotatebox{90}{\,FR19\,} & \rotatebox{90}{\,FR20\,} & \rotatebox{90}{\,FR21\,} & \rotatebox{90}{\,FR22\,} & \rotatebox{90}{\,FR23\,} & \rotatebox{90}{\,FR24\,} & \rotatebox{90}{\,FR25\,} & \rotatebox{90}{\,FR26\,} \\
+    \hline
+    FR-ST-DCS1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-DCS2 &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-VAA1 & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-VAA2 &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-VAA3 &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-VAA4 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X \\
+    \hline
+    FR-ST-PM1 &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-PM2 &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-PM3 &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-PM4 &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-TR1 &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-TR2 &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-TR3 &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-TR4 &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-PN1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  \\
+    \hline
+    FR-ST-PN2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  \\
+    \hline
+    FR-ST-PN3 &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-PN4 &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-AE1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-AE2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-AE3 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-AE4 &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-AE5 &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-RD1 &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-RD2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  \\
+    \hline
+    FR-ST-RD3 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  \\
+    \hline
+    FR-ST-RD4 &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-RD5 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  \\
+    \hline
+    FR-ST-AI1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  \\
+    \hline
+  \end{tabular}}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \small
+  \renewcommand{\arraystretch}{1.08}
+  \setlength{\tabcolsep}{2pt}
+  \caption{Traceability Between Functional System Tests and Use Cases}
+  \label{tab:trace-uc}
+  \makebox[\textwidth][c]{%
+  \begin{tabular}{|l|>{\centering\arraybackslash}p{0.6cm}|>{\centering\arraybackslash}p{0.6cm}|>{\centering\arraybackslash}p{0.6cm}|>{\centering\arraybackslash}p{0.6cm}|>{\centering\arraybackslash}p{0.6cm}|>{\centering\arraybackslash}p{0.6cm}|>{\centering\arraybackslash}p{0.6cm}|>{\centering\arraybackslash}p{0.6cm}|>{\centering\arraybackslash}p{0.6cm}|>{\centering\arraybackslash}p{0.6cm}|}
+    \hline
+    \textbf{Test Case} & \rotatebox{90}{\,UC1\,} & \rotatebox{90}{\,UC2\,} & \rotatebox{90}{\,UC3\,} & \rotatebox{90}{\,UC5\,} & \rotatebox{90}{\,UC8\,} & \rotatebox{90}{\,UC9\,} & \rotatebox{90}{\,UC10\,} & \rotatebox{90}{\,UC12\,} & \rotatebox{90}{\,UC13\,} & \rotatebox{90}{\,UC14\,} \\
+    \hline
+    FR-ST-DCS3 &  &  &  &  &  &  & X &  &  &  \\
+    \hline
+    FR-ST-DCS4 &  &  &  &  &  &  &  &  &  & X \\
+    \hline
+    FR-ST-A1 &  &  &  &  &  &  &  & X &  &  \\
+    \hline
+    FR-ST-A2 &  &  &  &  &  &  &  & X &  &  \\
+    \hline
+    FR-ST-A3 &  &  &  &  &  &  &  & X &  &  \\
+    \hline
+    FR-ST-A4 & X &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-A5 & X &  &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-A6 &  & X &  &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-PM3 &  &  & X &  &  &  &  &  &  &  \\
+    \hline
+    FR-ST-PM4 &  &  &  &  &  &  &  &  & X &  \\
+    \hline
+    FR-ST-TR1 &  &  &  &  &  & X &  &  &  &  \\
+    \hline
+    FR-ST-TR2 &  &  &  & X &  &  &  &  &  &  \\
+    \hline
+    FR-ST-PN1 &  &  &  &  & X &  &  &  &  &  \\
+    \hline
+  \end{tabular}}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \small
+  \renewcommand{\arraystretch}{1.08}
+  \setlength{\tabcolsep}{2pt}
+  \caption{Traceability Between Nonfunctional System Tests and Nonfunctional Requirements}
+  \label{tab:trace-nfr}
+  \makebox[\textwidth][c]{%
+  \begin{tabular}{|l|>{\centering\arraybackslash}p{0.5cm}|>{\centering\arraybackslash}p{0.5cm}|>{\centering\arraybackslash}p{0.5cm}|>{\centering\arraybackslash}p{0.5cm}|>{\centering\arraybackslash}p{0.5cm}|>{\centering\arraybackslash}p{0.5cm}|>{\centering\arraybackslash}p{0.5cm}|>{\centering\arraybackslash}p{0.5cm}|>{\centering\arraybackslash}p{0.5cm}|>{\centering\arraybackslash}p{0.5cm}|>{\centering\arraybackslash}p{0.5cm}|>{\centering\arraybackslash}p{0.5cm}|>{\centering\arraybackslash}p{0.5cm}|>{\centering\arraybackslash}p{0.5cm}|>{\centering\arraybackslash}p{0.5cm}|>{\centering\arraybackslash}p{0.5cm}|>{\centering\arraybackslash}p{0.5cm}|>{\centering\arraybackslash}p{0.5cm}|>{\centering\arraybackslash}p{0.5cm}|>{\centering\arraybackslash}p{0.5cm}|>{\centering\arraybackslash}p{0.5cm}|}
+    \hline
+    \textbf{Test Case} & \rotatebox{90}{\,NFR1\,} & \rotatebox{90}{\,NFR2\,} & \rotatebox{90}{\,NFR3\,} & \rotatebox{90}{\,NFR4\,} & \rotatebox{90}{\,NFR5\,} & \rotatebox{90}{\,NFR6\,} & \rotatebox{90}{\,NFR7\,} & \rotatebox{90}{\,NFR8\,} & \rotatebox{90}{\,NFR9\,} & \rotatebox{90}{\,NFR10\,} & \rotatebox{90}{\,NFR11\,} & \rotatebox{90}{\,NFR12\,} & \rotatebox{90}{\,NFR13\,} & \rotatebox{90}{\,NFR14\,} & \rotatebox{90}{\,NFR15\,} & \rotatebox{90}{\,NFR16\,} & \rotatebox{90}{\,NFR17\,} & \rotatebox{90}{\,NFR18\,} & \rotatebox{90}{\,NFR19\,} & \rotatebox{90}{\,NFR20\,} & \rotatebox{90}{\,NFR21\,} \\
+    \hline
+    NFR-ST-U1 & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    NFR-ST-U2 &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    NFR-ST-U3 &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    NFR-ST-U4 &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    NFR-ST-UN1 &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  \\
+    \hline
+    NFR-ST-PF1 &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  \\
+    \hline
+    NFR-ST-PF2 &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  \\
+    \hline
+    NFR-ST-PF3 &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  \\
+    \hline
+    NFR-ST-CV1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  \\
+    \hline
+    NFR-ST-CV2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  \\
+    \hline
+    NFR-ST-CV3 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X \\
+    \hline
+    NFR-ST-AC1 &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    NFR-ST-RE1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  \\
+    \hline
+    NFR-ST-RE2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  \\
+    \hline
+    NFR-ST-RQ1 &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    NFR-ST-M1 &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    NFR-ST-M2 &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    NFR-ST-S1 &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    NFR-ST-S2 &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    NFR-ST-S3 &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    NFR-ST-S4 &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    NFR-ST-S5 &  &  &  &  &  &  &  & X &  &  &  &  &  &  &  &  &  &  &  &  &  \\
+    \hline
+    NFR-ST-CO1 &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  \\
+    \hline
+    NFR-ST-CO2 &  &  &  &  &  &  &  &  &  &  &  &  &  &  & X &  &  &  &  &  &  \\
+    \hline
+    NFR-ST-CA1 &  &  &  & X &  &  &  &  &  &  &  &  & X &  &  & X &  &  &  &  &  \\
+    \hline
+  \end{tabular}}
+\end{table}
 
 \section{Unit Test Description} \label{sec:Unit_Tests} \label{sec:UnitTests}
 
@@ -2040,7 +1973,7 @@ How test will be performed:
 
 This appendix provides supporting information for the previous sections.
 
-\subsection{Symbolic Parameters}
+\subsection{Symbolic Parameters} \label{sec:SymbolicParameters}
 
 The definition of the test cases will call for SYMBOLIC\_CONSTANTS.
 Their values are defined in this section for easy maintenance.
@@ -2313,7 +2246,7 @@ As for the second approach, it allows me to practice my interview skills at low 
 \subsection*{Catherine}
 \subsubsection*{Question 1}
 I wrote the Relevant Documentation, Design Verification, and Software Validation sections, as well as
-some of the functional and non-functional test cases.
+some of the functional and nonfunctional test cases.
 As we previously had brainstormed together a table with all our requirements, grouped them into specific
 themes/sections, and came up with corresponding test cases together, it was incredibly easy to split
 the work into equal sections between everyone. So everybody more or less was able to have the same
