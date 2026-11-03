@@ -576,8 +576,171 @@ This section verifies that assessment videos are transcribed, speakers can be to
   \end{mdframed}
   
 \end{enumerate}
+\subsubsection{Authentication and Accounts}
+This section verifies that clinicians can create an account, log in, and log out, and that invalid attempts are rejected.
+\begin{enumerate}
+  \item FR-ST-A1: \textbf{Create Account with a New Email\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that a clinician can create an account with an email that is not already registered to a verified clinician account. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} The system is running, no user is logged in, and the email address is not registered and stored in the account database. \par
+      \textbf{Input:} A name, an email address the tester can access, and a password of at least MIN\_PASSWORD\_LENGTH characters. \par      \textbf{Output:} The account is created and the system tells the clinician to verify their email. \par
+      \textbf{Test Case Derivation:} \srsuc*{12} requires that a clinician can create an account so they can access the system. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1.] Open the account creation page.
+          \item[2.] Enter all the input details and submit.
+          \item[3.] Check that the account is created and the email verification message is shown.
+      \end{enumerate}
+  \end{mdframed}
 
+  \item FR-ST-A2: \textbf{Create Account with an Existing Email\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that the system rejects account creation with an email that is already registered to a clinician account. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} The system is running, no user is logged in, and a clinician account already exists for the email address. \par
+      \textbf{Input:} A name, the already registered email address, and a valid password. \par
+      \textbf{Output:} No new account is created. The system shows a message stating that the email is already registered and prompts the clinician to log in instead. \par
+      \textbf{Test Case Derivation:} \srsuc*{12} requires that duplicate accounts are rejected, which keeps each patient record tied to one clinician account. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1.] Open the account creation page.
+          \item[2.] Enter all the input details and submit.
+          \item[3.] Check that the account is rejected with the correct message stating that the email is already in use, and that only one account exists for the email address.
+      \end{enumerate}
+  \end{mdframed}
 
+  \item FR-ST-A3: \textbf{Require Email Verification Before Use\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that a new account cannot be used until its email address has been verified. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A clinician account has been created, but its email address has not been verified. \par
+      \textbf{Input:} The account's email address and password, entered once before and once after following the verification link sent to the account's inbox. \par
+      \textbf{Output:} Before verification, login is blocked and the system shows a message stating that the email address must be verified first. After verification, login succeeds. \par
+      \textbf{Test Case Derivation:} \srsuc*{12} requires email verification so that only real clinician email addresses can access patient data. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1.] Try to log in with the unverified account and check that access is blocked with the correct message.
+          \item[2.] Open the verification email and follow the link.
+          \item[3.] Log in again and check that it succeeds.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-A4: \textbf{Log In with Valid Credentials\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that a clinician with a verified account can log in. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A verified clinician account exists, and no user is logged in. \par
+      \textbf{Input:} The account's correct email address and password. \par
+      \textbf{Output:} The clinician is logged in and taken to their patient dashboard. \par
+      \textbf{Test Case Derivation:} \srsuc*{1} requires that clinicians with valid credentials can access the system. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1.] Open the login page.
+          \item[2.] Enter the correct credentials and submit.
+          \item[3.] Check that the clinician's patient dashboard is shown.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-A5: \textbf{Log In with Invalid Credentials\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that login is denied when the credentials are incorrect. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A verified clinician account exists, and no user is logged in. \par
+      \textbf{Input:} Two login attempts documented by the team prior to testing: the registered email address with an incorrect password, and an email address not registered to any account. \par       password, and an unregistered email address with any password. \par
+      \textbf{Output:} Both attempts are denied with the same error message and no
+       patient data is shown. The message does not reveal whether the email address is registered. \par
+      \textbf{Test Case Derivation:} \srsuc*{1} requires that invalid login attempts are rejected, which protects patient data from unauthorized access. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1.] Enter the first set of credentials, submit, and check that login is denied with an error message.
+          \item[2.] Repeat step 1 for the second set of credentials.
+          \item[3.] Check that both error messages are the same.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-A6: \textbf{Log Out\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that a clinician can log out and that patient data cannot be accessed afterwards. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A clinician is logged in and viewing their patient dashboard. \par
+      \textbf{Input:} Selecting the log out option. \par
+      \textbf{Output:} The clinician is returned to the login page, and pressing the browser's back button does not show any patient data. \par
+      \textbf{Test Case Derivation:} \srsuc*{2} requires that clinicians can end their session so that others using the same device cannot access patient data. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1.] Select the log out option and check that the login page is shown.
+          \item[2.] Press the browser's back button and check that no patient data is shown.
+      \end{enumerate}
+  \end{mdframed}
+\end{enumerate}
+\subsubsection{Patient Management}
+This section verifies that clinicians see only their own patients, can add patients, and can browse each patient's assessments.
+\begin{enumerate}
+  \item FR-ST-PM1: \textbf{Show Only Assigned Patients\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that the patient list shows exactly the patients assigned to the logged-in clinician. \par
+      \textbf{Type:} Automatic, Dynamic \par
+      \textbf{Initial State:} The test database contains Clinician A with 3 assigned patients and Clinician B with 2 different patients. \par
+      \textbf{Input:} A request for the patient list as Clinician A. \par
+      \textbf{Output:} The list contains exactly Clinician A's 3 patients and none of Clinician B's. \par
+      \textbf{Test Case Derivation:} \srsfr*{9} requires that clinicians can view their assigned patients. Showing other clinicians' patients would expose protected health information. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1.] The automated test (pytest) loads seed data created by the team prior to testing, containing Clinician A with 3 assigned patients and Clinician B with 2 different patients.
+          \item[2.] The test logs in as Clinician A and requests the patient list.
+          \item[3.] The test checks that the returned list matches Clinician A's patients exactly.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-PM2: \textbf{Show an Empty List with No Assigned Patients\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that a clinician with no assigned patients sees an empty list rather than an error or other clinicians' patients. \par
+      \textbf{Type:} Automatic, Dynamic \par
+      \textbf{Initial State:} The test database contains Clinician C with no assigned patients and Clinician A with 3 patients. \par
+      \textbf{Input:} A request for the patient list as Clinician C. \par
+      \textbf{Output:} An empty list is returned without errors. \par
+      \textbf{Test Case Derivation:} \srsfr*{9} requires that the patient list reflects the clinician's assignments, including when there are none. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1.] The automated test (pytest) loads seed data created by the team prior to testing, containing Clinician C with no assigned patients and Clinician A with 3 patients.
+          \item[2.] The test logs in as Clinician C and requests the patient list.
+          \item[3.] The test checks that the list is empty and no error is returned.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-PM3: \textbf{Add a New Patient\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that a clinician can add a new patient, who then appears in their patient list. \par
+      \textbf{Type:} Automatic, Dynamic \par
+      \textbf{Initial State:} Clinician A is logged in with 3 assigned patients. \par
+      \textbf{Input:} A new patient record with a name, a date of birth, and Mandarin and English as the languages spoken. \par
+      \textbf{Output:} The patient list contains 4 patients, including the new patient with the entered details. \par
+      \textbf{Test Case Derivation:} \srsfr*{10} and \srsuc*{3} require that clinicians can add patients so their assessments can be recorded. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1.] The automated test (pytest) loads seed data created by the team prior to testing, containing Clinician A with 3 assigned patients, then submits the new patient record as Clinician A.
+          \item[2.] The test requests the patient list.
+          \item[3.] The test checks that the new patient appears with the correct details and that the list has 4 patients.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-PM4: \textbf{Show Assessments Newest to Oldest\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that a patient's completed assessments are listed from newest to oldest. \par
+      \textbf{Type:} Automatic, Dynamic \par
+      \textbf{Initial State:} A patient assigned to Clinician A has 3 completed assessments with 3 different dates, documented by the team prior to testing for later reference. \par
+      \textbf{Input:} A request for that patient's assessments as Clinician A. \par
+      \textbf{Output:} All 3 assessments are returned, ordered from newest to oldest. \par
+      \textbf{Test Case Derivation:} \srsfr*{11} and \srsuc*{13} require that clinicians can browse a patient's assessments. Newest-first ordering lets clinicians quickly find the most recent results. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1.] The automated test (pytest) loads seed data created by the team prior to testing, containing the patient's 3 assessments with their documented dates.
+          \item[2.] The test requests the patient's assessment list.
+          \item[3.] The test checks that all 3 are returned in descending date order.
+      \end{enumerate}
+  \end{mdframed}
+\end{enumerate}
 
 
 \subsection{Tests for Nonfunctional Requirements}
