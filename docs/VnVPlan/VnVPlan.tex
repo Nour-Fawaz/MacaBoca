@@ -325,29 +325,52 @@ A pull request with failing checks must be fixed before it can be merged.
 
 
 \subsection{Software Validation}
+To confirm that TeLaC meets the needs of its users and is the correct system
+to carry out the goals of speech-language pathologists, the team will validate
+the software through the following activities:
 
-\wss{If there is any external data that can be used for validation, you should
-  point to it here.  If there are no plans for validation, you should state that
-  here.}
-
-\wss{You might want to use review sessions with the stakeholder to check that
-the requirements document captures the right requirements.  Maybe task based
-inspection?}
-
-\wss{For those capstone teams with an external supervisor, the Rev 0 demo should 
-be used as an opportunity to validate the requirements.  You should plan on 
-demonstrating your project to your supervisor shortly after the scheduled Rev 0 demo.  
-The feedback from your supervisor will be very useful for improving your project.}
-
-\wss{For teams without an external supervisor, user testing can serve the same purpose 
-as a Rev 0 demo for the supervisor.}
-
-\wss{This section might reference back to the SRS verification section.}
+\begin{itemize}
+  \item \textbf{Requirements review sessions:} During one of the teams bi-weekly meetings, 
+  the team will meet with the research team
+  to walk through each use case in the \SRSLink, and note any discrepancies or missing
+  requirements between what the clinician needs or expects in a step. 
+  All changes will be logged as GitHub issues and applied to the SRS, as described 
+  in the SRS Verification section.
+  \item \textbf{Rev 0 demo with the supervisor:} Shortly after the scheduled
+  Rev 0 demo, the team will demonstrate the system to the supervisor. The demo
+  will follow the main workflow, from uploading an assessment recording to
+  reviewing and editing the transcript, running the SAFA analysis, and
+  viewing the generated report. All feedback will be logged as
+  GitHub issues and used to revise the requirements and the implementation.
+  \item \textbf{Task-based user testing:} Clinicians will be asked to complete
+  realistic tasks, such as reviewing and annotating an assessment, without
+  help from the team. The team will record task completion, time taken, and
+  any points of confusion. Since one of the goals of the project is to reduce
+  annotation time compared to manual transcription, the time taken will be
+  compared against the current manual process. Participants will also
+  complete a short questionnaire, and the results will be documented in the
+  Usability Report.
+  \item \textbf{Interviews with clinicians/researchers:} After user
+  testing, the team will hold short one-on-one interviews with participating
+  clinicians in connection with the research team. Questions will focus on
+  how well the system fits into their current assessment workflow, whether
+  they're able to trust the generated transcripts, SAFA, and clinical report results, 
+  and what features may be missing or unnecessary.
+  \item \textbf{Sample assessment data:} The team will utilize
+  sample assessment recordings from the research team to use for testing and demo
+  purposes. Real recordings will show whether the transcription
+  and SAFA analysis can actually produce results that clinicians find useful, 
+  as test data alone can't confirm.
+\end{itemize}
 
 \section{System Tests} \label{sec:System_Tests}
 
-\wss{There should be text between all headings, even if it is just a roadmap of
-the contents of the subsections.}
+This section describes the system tests that will be used to check TeLaC
+against the requirements in the \SRSLink{}. Tests are grouped by functional and
+nonfunctional requirements, further separated into specific theme sections. Each
+test states the requirement it covers so that results can be accurately traced
+back to the SRS, and is further mapped within a traceability
+matrix, ensuring that all expectations are met.
 
 \subsection{Tests for Functional Requirements}
 
