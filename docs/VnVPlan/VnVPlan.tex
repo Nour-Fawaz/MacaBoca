@@ -189,8 +189,6 @@ Repos.csv) if your plan changes as a result of the VnV planning exercise.}
   \item Development Plan: \citet{DevelopmentPlan}
   \item System Requirements Specification: \citet{SRS}
   \item Hazard Analysis: \citet{HazardAnalysis}
-  \item Module Guide: \citet{MG}
-  \item Module Interface Specification: \citet{MIS}
   \item Wireframe: \citet{Wireframe}
   \item Usability Report: \citet{UsabilityReport}
 \end{itemize}
@@ -203,9 +201,7 @@ The Problem Statement and Goals is used to validate that the system
 meets the needs of speech-language pathologists. The Development Plan details
 the team roles and tools that support the activities in Section~\ref{sec:Plan}.
 
-Finally, the Module Guide and Module Interface Specification will be used to define
-the unit tests in Section~\ref{sec:Unit_Tests} once the detailed design is complete.
-The Wireframe will be used to validate the redesigned interface with
+Finally, the Wireframe will be used to validate the redesigned interface with
 clinicians, and a final Usability Report will record the results of the team's
 usability testing in order to verify the usability requirements.
 
@@ -237,11 +233,49 @@ issue tracker?}
 
 \subsection{Design Verification}
 
-\wss{Plans for design verification}
+The design of TeLaC will be documented once the design stage begins. 
+Afterwards, design documents will be verified through a combination
+of internal team reviews, peer and TA reviews, supervisor
+reviews, and designated design review sessions with the research
+team and clinicians.
 
-\wss{The review will include reviews by your classmates}
+\begin{itemize}
+  \item \textbf{Internal team review:} Each design document will be reviewed
+  by at least one team member who did not write it. The reviewer will also check
+  the document against the design checklists provided in the course
+  repository, and any problems found will be logged as GitHub issues.
+  On completion of an interface, a member of the team will also review it to
+  ensure that it follows the Wireframe.
+  \item \textbf{Peer and TA review:} The assigned peer review team and the
+  course TA will review the design documents. Their feedback will be logged
+  as GitHub issues, assigned to a team member, and closed with a reference to
+  the commit that resolves it.
+  \item \textbf{Supervisor review:} The design will be presented to the
+  supervisor during a scheduled meeting. The team will walk through the
+  module decomposition and the main data flow, from uploading a recording to
+  transcription, SAFA analysis, and report generation, and ask whether the
+  design fits the needs of the research team. If changes are needed, they will
+  be noted and the design documents will be updated before implementation.
+  \item \textbf{Stakeholder review:} When presenting the Wireframe of the redesigned
+  interface to our stakeholders (clinicians and researchers), a short questionnaire on 
+  layout, navigation, and workflow will be provided for them to fill out. 
+  Their responses will be used to revise the interface before implementation. 
+  The questionnaire will be included in the appendix of this document and 
+  expanded on in the Usability Report.
+\end{itemize}
 
-\wss{Create a checklists?}
+During these reviews, the team will also confirm that:
+
+\begin{itemize}
+  \item Every functional requirement in the \SRSLink{} is assigned to at least
+  one module in the design.
+  \item Each module hides a single design decision that is likely to change,
+  such as the speech recognition model or the database.
+  \item Module interfaces are consistent with each other,
+  and each one has clearly defined inputs, outputs, and exceptions.
+  \item Any mitigation identified in the \HALink{}, such as access control
+  and protection of patient data, is handled by a specific module.
+\end{itemize}
 
 \subsection{Verification and Validation Plan Verification}
 
