@@ -85,9 +85,17 @@ in.}
   \toprule		
   \textbf{symbol} & \textbf{description}\\
   \midrule 
+  AES & Advanced Encryption Standard \\
+  API & Application Programming Interface \\
+  BAA & Business Associate Agreement \\
+  HIPAA & Health Insurance Portability and Accountability Act \\
   SAFA & Stands for Speech Annotation For Application, Access, Accuracy\\
   SLP & Speech Language Pathologist \\
+  SRS & Software Requirements Specification \\
   TeLaC & Telehealth Language Assessment for Children \\
+  TLS & Transport Layer Security \\
+  VnV & Verification and Validation \\
+  WCAG & Web Content Accessibility Guidelines \\
   \bottomrule
 \end{tabular}\\
 
@@ -173,6 +181,7 @@ TeLaC stores recordings, transcripts, and health information about children. A b
 \subsubsection{Demonstrate Usability of the Integrated Workflow}
 TeLaC's main value is combining SAFA and the clinician dashboard into one workflow. If the workflow is confusing, clinicians lose time and risk making mistakes, so usability is the final objective of the project. The system should:
 \begin{itemize}
+  \item \textbf{Provide a user-friendly interface:} The interface should be clear and consistent, with readable text, labelled controls, and a layout that clinicians with limited technical fluency can navigate easily (\srssr*{8}).
   \item \textbf{Be learnable:} Clinicians with limited technical experience should be able to complete core tasks without training, such as adding a patient, assigning speaker roles, and viewing results (\srsnfr*{1}, \srsnfr*{2}).
   \item \textbf{Support a seamless workflow:} Clinicians should be able to move from selecting a patient to downloading a report without losing work between stages (\srsfr*{5}, \srsnfr*{3}).
   \item \textbf{Make generated content clear:} Clinicians should always be able to tell which content was automatically generated and which they have verified (\srsfr*{14}, \srsnfr*{14}).
@@ -180,7 +189,7 @@ TeLaC's main value is combining SAFA and the clinician dashboard into one workfl
 \end{itemize}
 
 \subsubsection{Out of Scope}
-Some objectives are out of scope for this VnV plan due to resource limitations:
+Some objectives are out of scope for this VnV plan due to time and resource limitations:
 \begin{itemize}
   \item \textbf{Advanced detection of clinical cues:} Detecting subtle behavioural or linguistic signals beyond interference flags and grammar and phonology suggestions is a stretch goal. It will only be verified if implemented, since validating it would require clinical expertise and labelled data the team does not have.
   \item \textbf{Accuracy of third-party speech services:} The speech recognition and keyword detection services (Whisper and Deepgram) are assumed to have been verified by their developers. The plan verifies that TeLaC handles their output correctly and that clinicians can review and correct it, not the services' accuracy on code-mixed speech.
