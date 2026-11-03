@@ -5,6 +5,7 @@
 \usepackage{enumitem}
 \usepackage{pifont}
 \usepackage{mdframed}
+\usepackage{array}
 
 \newcommand{\checkbox}{\ding{113}} % 113 corresponds to an open square box
 \usepackage{hyperref}
@@ -89,9 +90,17 @@ in.}
   \toprule		
   \textbf{symbol} & \textbf{description}\\
   \midrule 
+  AES & Advanced Encryption Standard \\
+  API & Application Programming Interface \\
+  BAA & Business Associate Agreement \\
+  HIPAA & Health Insurance Portability and Accountability Act \\
   SAFA & Stands for Speech Annotation For Application, Access, Accuracy\\
   SLP & Speech Language Pathologist \\
+  SRS & Software Requirements Specification \\
   TeLaC & Telehealth Language Assessment for Children \\
+  TLS & Transport Layer Security \\
+  VnV & Verification and Validation \\
+  WCAG & Web Content Accessibility Guidelines \\
   \bottomrule
 \end{tabular}\\
 
@@ -158,22 +167,45 @@ The system is therefore tested to ensure that:
 
 \subsection{Objectives}
 
-\wss{State what is intended to be accomplished.  The objective will be around
-  the qualities that are most important for your project.  You might have
-  something like: ``build confidence in the software correctness,''
-  ``demonstrate adequate usability.'' etc.  You won't list all of the qualities,
-  just those that are most important.}
+This VnV plan aims to evaluate whether TeLaC meets its key goals for transcript and report correctness, patient data security, and usability of the integrated workflow. Priorities come from the risks identified in the \HALink{}. The following subsections define each objective in the context of this project.
 
-\wss{You should also list the objectives that are out of scope.  You don't have 
-the resources to do everything, so what will you be leaving out.  For instance, 
-if you are not going to verify the quality of usability, state this.  It is also 
-worthwhile to justify why the objectives are left out.}
+\subsubsection{Ensure Accuracy of Transcripts and Report Generation}
+It is important to make sure clinicians can trust the information TeLaC provides to them. Since the report relies on the generated transcripts, the correctness of both aspects is an objective of the project. The system should:
+\begin{itemize}
+  \item \textbf{Generate transcripts reliably:} The supported assessment videos should produce a transcript at a rate of at least GENERATE\_SUCCESS (\srsfr*{1}, \srsnfr*{17}).
+  \item \textbf{Distinguish speakers:} Each utterance in a transcript should be labelled with the correct speaker (\srsfr*{4}).
+  \item \textbf{Reflect clinician changes in reports:} Every edit and annotation a clinician saves should also appear in the patient record and the generated report (\srsfr*{7}, \srsfr*{19}).
+  \item \textbf{Preserve clinician work:} Saved edits should persist across sessions, and data should be backed up regularly and restorable without loss (\srsnfr*{9}, \srsnfr*{18}).
+\end{itemize}
 
-\wss{The objectives are important because they highlight that you are aware of 
-limitations in your resources for verification and validation.  You can't do everything, 
-so what are you going to prioritize?  As an example, if your system depends on an 
-external library, you can explicitly state that you will assume that external library 
-has already been verified by its implementation team.}
+\subsubsection{Ensure Security and Privacy of Patient Data}
+TeLaC stores recordings, transcripts, and health information about children. A breach would harm patients and violate HIPAA, so protecting this data is a key objective of the project. The system should:
+\begin{itemize}
+  \item \textbf{Restrict access:} Clinicians should only be able to access the patients assigned to them, including through URLs and the API (\srsnfr*{5}).
+  \item \textbf{Protect idle sessions:} Sessions should end after IDLE\_TIMEOUT minutes of inactivity, and credentials should be required before any patient data is shown again (\srsnfr*{6}).
+  \item \textbf{Encrypt patient data:} Recordings and transcripts should be encrypted in transit and in storage, including when sent to third-party transcription services (\srsnfr*{7}).
+  \item \textbf{Log access:} Every view, change, download, and export of patient data should be recorded in an audit log that clinicians cannot edit (\srsnfr*{8}).
+  \item \textbf{Meet compliance requirements:} The HIPAA technical safeguards should be satisfied, and third-party services handling patient data should be covered by a Business Associate Agreement (\srsnfr*{15}).
+\end{itemize}
+
+\subsubsection{Demonstrate Usability of the Integrated Workflow}
+TeLaC's main value is combining SAFA and the clinician dashboard into one workflow. If the workflow is confusing, clinicians lose time and risk making mistakes, so usability is the final objective of the project. The system should:
+\begin{itemize}
+  \item \textbf{Provide a user-friendly interface:} The interface should be clear and consistent, with readable text, labelled controls, and a layout that clinicians with limited technical fluency can navigate easily (\srssr*{8}).
+  \item \textbf{Be learnable:} Clinicians with limited technical experience should be able to complete core tasks without training, such as adding a patient, assigning speaker roles, and viewing results (\srsnfr*{1}, \srsnfr*{2}).
+  \item \textbf{Support a seamless workflow:} Clinicians should be able to move from selecting a patient to downloading a report without losing work between stages (\srsfr*{5}, \srsnfr*{3}).
+  \item \textbf{Make generated content clear:} Clinicians should always be able to tell which content was automatically generated and which they have verified (\srsfr*{14}, \srsnfr*{14}).
+  \item \textbf{Be measured through user testing:} Success is measured through usability testing with clinicians, using task completion rate, time on task, and a post-task survey (Appendix).
+\end{itemize}
+
+\subsubsection{Out of Scope}
+Some objectives are out of scope for this VnV plan due to time and resource limitations:
+\begin{itemize}
+  \item \textbf{Advanced detection of clinical cues:} Detecting subtle behavioural or linguistic signals beyond interference flags and grammar and phonology suggestions is a stretch goal. It will only be verified if implemented, since validating it would require clinical expertise and labelled data the team does not have.
+  \item \textbf{Accuracy of third-party speech services:} The speech recognition and keyword detection services (Whisper and Deepgram) are assumed to have been verified by their developers. The plan verifies that TeLaC handles their output correctly and that clinicians can review and correct it, not the services' accuracy on code-mixed speech.
+  \item \textbf{Administrative and physical HIPAA safeguards:} Staff training and breach notification procedures are the responsibility of the institutions that use TeLaC, as stated in SRS Section 7.5. Only the technical safeguards are verified.
+  \item \textbf{Full UI standards compliance:} The focus is on practical usability for clinicians rather than exhaustive WCAG compliance or visual polish.
+\end{itemize}
 
 \subsection{Custom Documents}
 
@@ -218,9 +250,86 @@ and implementation, and ends with the validation of the software.
 
   \subsection{Verification and Validation Team}
 
-\wss{Your teammates.  Maybe your supervisor.
-  You should do more than list names.  You should say what each person's role is
-  for the project's verification.  A table is a good way to summarize this information.}
+\hspace{2em}The following table displays the roles and responsibilities of each team member.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{ | p{4.5cm} | p{9cm} | }
+  \hline
+  \textbf{Name} & \textbf{Roles and Responsibilities} \\
+  \hline
+  Javayria Mudassar &
+  \begin{itemize}[leftmargin=*, nosep, before=\vspace{1mm}, after=\vspace{1mm}]
+    \item Stakeholder Communication Lead
+    \item Security Verification
+    \item Transcription Verification
+    \item SRS Verification
+  \end{itemize} \\
+  \hline
+  Yilin Jiang &
+  \begin{itemize}[leftmargin=*, nosep, before=\vspace{1mm}, after=\vspace{1mm}]
+    \item UI Design Verification
+    \item Frontend Verification
+    \item Integration Lead
+    \item SRS Verification
+  \end{itemize} \\
+  \hline
+  Nour Fawaz &
+  \begin{itemize}[leftmargin=*, nosep, before=\vspace{1mm}, after=\vspace{1mm}]
+    \item Documentation Reviewer
+    \item Frontend Verification
+    \item Usability Testing Lead
+    \item VnV Verification
+  \end{itemize} \\
+  \hline
+  Catherine Yang &
+  \begin{itemize}[leftmargin=*, nosep, before=\vspace{1mm}, after=\vspace{1mm}]
+    \item Code Review Lead
+    \item Security Verification
+    \item Report Verification
+    \item VnV Verification
+  \end{itemize} \\
+  \hline
+  Dr. Irene Yuan &
+  \begin{itemize}[leftmargin=*, nosep, before=\vspace{1mm}, after=\vspace{1mm}]
+    \item Providing feedback during project development and connecting the team to speech language therapy researchers
+  \end{itemize} \\
+  \hline
+  Dr. Yao Du &
+  \begin{itemize}[leftmargin=*, nosep, before=\vspace{1mm}, after=\vspace{1mm}]
+    \item Providing feedback on report generation; connecting the team with SLP users for user experience and usability testing
+  \end{itemize} \\
+  \hline
+  Dr. Yang Yue &
+  \begin{itemize}[leftmargin=*, nosep, before=\vspace{1mm}, after=\vspace{1mm}]
+    \item Providing feedback on security during project development
+  \end{itemize} \\
+  \hline
+  Tanya Djavaherpour &
+  \begin{itemize}[leftmargin=*, nosep, before=\vspace{1mm}, after=\vspace{1mm}]
+    \item Milestone and documentation feedback
+  \end{itemize} \\
+  \hline
+\end{tabular}
+\end{center}
+
+\vspace{1em}
+
+\noindent\textbf{Role Descriptions:}
+\begin{itemize}
+  \item \textbf{Stakeholder Communication Lead:} Runs validation sessions with supervisors and SLPs, and records their feedback on requirements and system outputs.
+  \item \textbf{Code Review Lead:} Reviews pull requests against the requirements and ensures CI checks pass before merging.
+  \item \textbf{Documentation Reviewer:} Checks deliverables for consistency with the SRS and VnV Plan, and verifies AI use is disclosed and checked.
+  \item \textbf{Security Verification:} Tests access control, session timeouts, encryption, audit logging, backups, and HIPAA compliance.
+  \item \textbf{Frontend Verification:} Tests that UI components behave correctly and clinicians can move between workflow stages without losing work.
+  \item \textbf{UI Design Verification:} Reviews diagrams and mockups against the requirements before implementation.
+  \item \textbf{Transcription Verification:} Tests transcript generation, speaker labelling, and interference and error flags against the team's answer keys.
+  \item \textbf{Report Verification:} Tests that reports and exports include all clinician edits and verified results, and match stored data.
+  \item \textbf{Usability Testing Lead:} Runs usability tests with clinicians and measures task completion and survey scores against the usability requirements.
+  \item \textbf{Integration Lead:} Tests the end-to-end workflow across SAFA and the dashboard to confirm they work as one system.
+  \item \textbf{SRS Verification:} Confirms requirements are clear, testable, and traced to at least one test.
+  \item \textbf{VnV Verification:} Reviews test cases for completeness, specificity, and traceability.
+\end{itemize}
 
 \subsection{SRS Verification}
 
@@ -284,12 +393,28 @@ During these reviews, the team will also confirm that:
 
 \subsection{Verification and Validation Plan Verification}
 
-\wss{The verification and validation plan is an artifact that should also be
-verified.  Techniques for this include review and mutation testing.}
+The verification and validation plan must be verified to make sure it is complete, feasible, and consistent with the overall project. The team will verify it using the following techniques:
+\begin{itemize}
+  \item \textbf{Team member review:} Every section is reviewed by a team member who did not write it before its pull request is merged. Before each submission, team members do a final full-document review according to their verification roles (Section 3.1), using the checklist below.
+  \item \textbf{Peer review by classmates:} The assigned peer review team reviews the plan and reports issues on GitHub. Each issue is resolved or answered with a justification before the next revision.
+  \item \textbf{Supervisor review:} In meetings with the supervising team, each supervisor reviews the sections related to their expertise. Dr. Yao Du reviews the speech-language therapy aspects of the plan, such as the transcription and report generation tests. Dr. Yang Yue reviews the security and code testing.
+  \item \textbf{TA review:} The team's TA, Tanya Djavaherpour, answers questions about the VnV plan during development and gives feedback after submission.
+  \item \textbf{Pilot testing:} Since TeLaC builds on a previous capstone project, the team will run a sample of system tests on the existing system before implementation is complete. The pilot will include tests for features that already exist, each run by a team member who did not write the test. Tests that cannot be followed or whose expected outputs prove unrealistic are revised, and the findings are logged as GitHub issues.
+\end{itemize}
 
-\wss{The review will include reviews by your classmates}
+The following checklist will be used by the team:
 
-\wss{Create a checklists?}
+\begin{itemize}[label=\ding{113}]
+  \item Does every functional requirement in the SRS have at least one system test?
+  \item Does every nonfunctional requirement in the SRS have at least one system test?
+  \item Is every requirement traced to its tests in the traceability table?
+  \item Have all peer review and supervisor issues been addressed and closed on GitHub?
+  \item Has every team member reviewed and approved at least one section they did not write?
+  \item Can a team member who did not write a test follow its steps as written?
+  \item Are all symbolic parameters used in the tests defined in the appendix?
+  \item Have the findings from pilot testing been logged and the affected tests revised?
+  \item Does each verification activity have a documentation standard and a deadline?
+\end{itemize}
 
 \subsection{Implementation Verification}
 
@@ -531,8 +656,171 @@ This section verifies that assessment videos are transcribed, speakers can be to
   \end{mdframed}
   
 \end{enumerate}
+\subsubsection{Authentication and Accounts}
+This section verifies that clinicians can create an account, log in, and log out, and that invalid attempts are rejected.
+\begin{enumerate}
+  \item FR-ST-A1: \textbf{Create Account with a New Email\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that a clinician can create an account with an email that is not already registered to a verified clinician account. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} The system is running, no user is logged in, and the email address is not registered and stored in the account database. \par
+      \textbf{Input:} A name, an email address the tester can access, and a password of at least MIN\_PASSWORD\_LENGTH characters. \par      \textbf{Output:} The account is created and the system tells the clinician to verify their email. \par
+      \textbf{Test Case Derivation:} \srsuc*{12} requires that a clinician can create an account so they can access the system. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1.] Open the account creation page.
+          \item[2.] Enter all the input details and submit.
+          \item[3.] Check that the account is created and the email verification message is shown.
+      \end{enumerate}
+  \end{mdframed}
 
+  \item FR-ST-A2: \textbf{Create Account with an Existing Email\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that the system rejects account creation with an email that is already registered to a clinician account. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} The system is running, no user is logged in, and a clinician account already exists for the email address. \par
+      \textbf{Input:} A name, the already registered email address, and a valid password. \par
+      \textbf{Output:} No new account is created. The system shows a message stating that the email is already registered and prompts the clinician to log in instead. \par
+      \textbf{Test Case Derivation:} \srsuc*{12} requires that duplicate accounts are rejected, which keeps each patient record tied to one clinician account. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1.] Open the account creation page.
+          \item[2.] Enter all the input details and submit.
+          \item[3.] Check that the account is rejected with the correct message stating that the email is already in use, and that only one account exists for the email address.
+      \end{enumerate}
+  \end{mdframed}
 
+  \item FR-ST-A3: \textbf{Require Email Verification Before Use\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that a new account cannot be used until its email address has been verified. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A clinician account has been created, but its email address has not been verified. \par
+      \textbf{Input:} The account's email address and password, entered once before and once after following the verification link sent to the account's inbox. \par
+      \textbf{Output:} Before verification, login is blocked and the system shows a message stating that the email address must be verified first. After verification, login succeeds. \par
+      \textbf{Test Case Derivation:} \srsuc*{12} requires email verification so that only real clinician email addresses can access patient data. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1.] Try to log in with the unverified account and check that access is blocked with the correct message.
+          \item[2.] Open the verification email and follow the link.
+          \item[3.] Log in again and check that it succeeds.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-A4: \textbf{Log In with Valid Credentials\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that a clinician with a verified account can log in. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A verified clinician account exists, and no user is logged in. \par
+      \textbf{Input:} The account's correct email address and password. \par
+      \textbf{Output:} The clinician is logged in and taken to their patient dashboard. \par
+      \textbf{Test Case Derivation:} \srsuc*{1} requires that clinicians with valid credentials can access the system. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1.] Open the login page.
+          \item[2.] Enter the correct credentials and submit.
+          \item[3.] Check that the clinician's patient dashboard is shown.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-A5: \textbf{Log In with Invalid Credentials\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that login is denied when the credentials are incorrect. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A verified clinician account exists, and no user is logged in. \par
+      \textbf{Input:} Two login attempts documented by the team prior to testing: the registered email address with an incorrect password, and an email address not registered to any account. \par       password, and an unregistered email address with any password. \par
+      \textbf{Output:} Both attempts are denied with the same error message and no
+       patient data is shown. The message does not reveal whether the email address is registered. \par
+      \textbf{Test Case Derivation:} \srsuc*{1} requires that invalid login attempts are rejected, which protects patient data from unauthorized access. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1.] Enter the first set of credentials, submit, and check that login is denied with an error message.
+          \item[2.] Repeat step 1 for the second set of credentials.
+          \item[3.] Check that both error messages are the same.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-A6: \textbf{Log Out\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that a clinician can log out and that patient data cannot be accessed afterwards. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A clinician is logged in and viewing their patient dashboard. \par
+      \textbf{Input:} Selecting the log out option. \par
+      \textbf{Output:} The clinician is returned to the login page, and pressing the browser's back button does not show any patient data. \par
+      \textbf{Test Case Derivation:} \srsuc*{2} requires that clinicians can end their session so that others using the same device cannot access patient data. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1.] Select the log out option and check that the login page is shown.
+          \item[2.] Press the browser's back button and check that no patient data is shown.
+      \end{enumerate}
+  \end{mdframed}
+\end{enumerate}
+\subsubsection{Patient Management}
+This section verifies that clinicians see only their own patients, can add patients, and can browse each patient's assessments.
+\begin{enumerate}
+  \item FR-ST-PM1: \textbf{Show Only Assigned Patients\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that the patient list shows exactly the patients assigned to the logged-in clinician. \par
+      \textbf{Type:} Automatic, Dynamic \par
+      \textbf{Initial State:} The test database contains Clinician A with 3 assigned patients and Clinician B with 2 different patients. \par
+      \textbf{Input:} A request for the patient list as Clinician A. \par
+      \textbf{Output:} The list contains exactly Clinician A's 3 patients and none of Clinician B's. \par
+      \textbf{Test Case Derivation:} \srsfr*{9} requires that clinicians can view their assigned patients. Showing other clinicians' patients would expose protected health information. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1.] The automated test (pytest) loads seed data created by the team prior to testing, containing Clinician A with 3 assigned patients and Clinician B with 2 different patients.
+          \item[2.] The test logs in as Clinician A and requests the patient list.
+          \item[3.] The test checks that the returned list matches Clinician A's patients exactly.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-PM2: \textbf{Show an Empty List with No Assigned Patients\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that a clinician with no assigned patients sees an empty list rather than an error or other clinicians' patients. \par
+      \textbf{Type:} Automatic, Dynamic \par
+      \textbf{Initial State:} The test database contains Clinician C with no assigned patients and Clinician A with 3 patients. \par
+      \textbf{Input:} A request for the patient list as Clinician C. \par
+      \textbf{Output:} An empty list is returned without errors. \par
+      \textbf{Test Case Derivation:} \srsfr*{9} requires that the patient list reflects the clinician's assignments, including when there are none. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1.] The automated test (pytest) loads seed data created by the team prior to testing, containing Clinician C with no assigned patients and Clinician A with 3 patients.
+          \item[2.] The test logs in as Clinician C and requests the patient list.
+          \item[3.] The test checks that the list is empty and no error is returned.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-PM3: \textbf{Add a New Patient\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that a clinician can add a new patient, who then appears in their patient list. \par
+      \textbf{Type:} Automatic, Dynamic \par
+      \textbf{Initial State:} Clinician A is logged in with 3 assigned patients. \par
+      \textbf{Input:} A new patient record with a name, a date of birth, and Mandarin and English as the languages spoken. \par
+      \textbf{Output:} The patient list contains 4 patients, including the new patient with the entered details. \par
+      \textbf{Test Case Derivation:} \srsfr*{10} and \srsuc*{3} require that clinicians can add patients so their assessments can be recorded. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1.] The automated test (pytest) loads seed data created by the team prior to testing, containing Clinician A with 3 assigned patients, then submits the new patient record as Clinician A.
+          \item[2.] The test requests the patient list.
+          \item[3.] The test checks that the new patient appears with the correct details and that the list has 4 patients.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-PM4: \textbf{Show Assessments Newest to Oldest\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that a patient's completed assessments are listed from newest to oldest. \par
+      \textbf{Type:} Automatic, Dynamic \par
+      \textbf{Initial State:} A patient assigned to Clinician A has 3 completed assessments with 3 different dates, documented by the team prior to testing for later reference. \par
+      \textbf{Input:} A request for that patient's assessments as Clinician A. \par
+      \textbf{Output:} All 3 assessments are returned, ordered from newest to oldest. \par
+      \textbf{Test Case Derivation:} \srsfr*{11} and \srsuc*{13} require that clinicians can browse a patient's assessments. Newest-first ordering lets clinicians quickly find the most recent results. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+          \item[1.] The automated test (pytest) loads seed data created by the team prior to testing, containing the patient's 3 assessments with their documented dates.
+          \item[2.] The test requests the patient's assessment list.
+          \item[3.] The test checks that all 3 are returned in descending date order.
+      \end{enumerate}
+  \end{mdframed}
+\end{enumerate}
 
 
 \subsubsection{Transcript Review and Editing}
@@ -956,6 +1244,128 @@ This section verifies that patient information and assessment recordings are bac
   \end{mdframed}
 \end{enumerate}
 
+\subsubsection{Security}
+This section verifies that patient data is protected. Clinicians can only access their own patients, idle sessions time out, data is encrypted in transit and in storage, and all access to patient data is logged.
+\begin{enumerate}
+  \item NFR-ST-S1: \textbf{Restrict Access to Assigned Patients\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that a clinician cannot access another clinician's patients through the interface, by URL, or through the API. \par
+      \textbf{Type:} Nonfunctional, Dynamic, Automatic \par
+      \textbf{Initial State:} The test database contains two clinicians, each with 2 assigned patients that have at least one assessment. The patient and assessment IDs are documented prior to testing for later reference. \par
+      \textbf{Input:} While logged in as the first clinician, 3 requests for each of the second clinician's patients: opening the patient's page by URL, requesting the patient record through the API, and requesting one of the patient's recordings through the API. \par
+      \textbf{Output:} All requests are denied with an access error, and no patient data, transcripts, or recordings belonging to the second clinician are returned (\srsnfr*{5}). \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+      \item[1.] Using an automated test, load the data from the test database and log in as the first clinician.
+      \item[2.] Send each request in the input list using the second clinician's documented IDs.
+      \item[3.] Check that every request returns an access error and that no response contains the second clinician's patient data.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item NFR-ST-S2: \textbf{Session Timeout After Inactivity\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that an idle session expires, the clinician's work is saved, and the clinician must log in again before any patient data is shown. \par
+      \textbf{Type:} Nonfunctional, Dynamic, Manual \par
+      \textbf{Initial State:} A clinician account is logged in, and an assessment is open with one unsaved transcript edit. \par
+      \textbf{Input:} No activity in the browser for IDLE\_TIMEOUT minutes, then an attempt to open another patient record. \par
+      \textbf{Output:} After IDLE\_TIMEOUT minutes, the system saves the clinician's work, returns them to the login page with a message explaining the session ended due to inactivity, and shows no patient data until they log in again (\srsnfr*{6}). \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+      \item[1.] Make one transcript edit without saving, and note the time.
+      \item[2.] Leave the browser idle for IDLE\_TIMEOUT minutes, then check that the login page is shown with the inactivity message.
+      \item[3.] Try to open another patient record and press the browser's back button, and check that no patient data is shown in either case.
+      \item[4.] Log back in, reopen the assessment, and check that the transcript edit was saved.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item NFR-ST-S3: \textbf{Encrypt Data in Transit\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that recordings, transcripts, and patient data are encrypted using TRANSIT\_ENCRYPTION\_STANDARD when sent between the browser and the server, and from the server to third-party transcription services. \par
+      \textbf{Type:} Nonfunctional, Dynamic, Manual \par
+      \textbf{Initial State:} A clinician account is logged in, and a network capture tool is running on the test device. \par
+      \textbf{Input:} 5 actions performed while traffic is captured: logging in, opening a patient record, playing a recording, downloading a report, and submitting a recording for transcription. \par
+      \textbf{Output:} All captured traffic uses and requests to the transcription service use TRANSIT\_ENCRYPTION\_STANDARD, and no patient data, credentials, or recordings appear in plain text (\srsnfr*{7}). \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+      \item[1.] Start the capture and perform each action in the input list.
+      \item[2.] Stop the capture and check the protocol and version used by each connection.
+      \item[3.] Search the capture for the patient's name and the clinician's email, and check that neither appears in plain text.
+      \item[4.] Try to open the site over unencrypted HTTP and check that the connection is redirected to an encrypted one or refused.
+      \item[5.] Check the server logs for the transcription request and confirm it was sent using TRANSIT\_ENCRYPTION\_STANDARD.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item NFR-ST-S4: \textbf{Encrypt Stored Data\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that stored recordings and transcripts are encrypted using STORAGE\_ENCRYPTION\_STANDARD. \par
+      \textbf{Type:} Nonfunctional, Static and Dynamic, Manual \par
+      \textbf{Initial State:} One mock assessment with a recording and transcript has been saved to the system. \par
+      \textbf{Input:} The database and file storage configuration, and the raw stored files for the mock assessment. \par
+      \textbf{Output:} The storage configuration shows 
+      \\STORAGE\_ENCRYPTION\_STANDARD is enabled for the 
+      \\database and file storage, and the raw stored recording and transcript cannot be read outside the system (\srsnfr*{7}). \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+      \item[1.] Review the storage configuration and record the encryption setting for each storage location.
+      \item[2.] Access the raw stored files for the mock assessment directly, outside the system.
+      \item[3.] Check that the recording cannot be played and the transcript text cannot be read.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item NFR-ST-S5: \textbf{Log Access to Patient Data\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that every access to patient data is recorded in an audit log that clinicians cannot edit. \par
+      \textbf{Type:} Nonfunctional, Static and Dynamic, Automatic and Manual \par
+      \textbf{Initial State:} A clinician account is logged in, and a patient record with one assessment exists. \par
+      \textbf{Input:} 4 actions on the patient's assessment: viewing it, editing one transcript segment, downloading the
+       recording, and exporting the report. The time of each action is documented for later reference. \par
+      \textbf{Output:} The audit log contains one entry for each action, with the user, the action, the item affected, and the date and time. 
+      Attempts by the clinician to edit or delete entries are denied (\srsnfr*{8}). \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+      \item[1.] Using an automated test, perform each action in the input list as the clinician.
+      \item[2.] Check that the audit log has a matching entry for each action, with the correct user, action, item, and time.
+      \item[3.] While logged in as the clinician, try to edit and delete a log entry through the interface and the API, and check that both are denied.
+      \end{enumerate}
+  \end{mdframed}
+\end{enumerate}
+
+\subsubsection{Compliance}
+This section verifies that TeLaC meets the HIPAA Security Rule technical safeguards. Both tests are static and done through document review.
+\begin{enumerate}
+  \item NFR-ST-CO1: \textbf{HIPAA Technical Safeguards Review\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that each HIPAA Security Rule technical safeguard is covered by a mechanism in TeLaC. \par
+      \textbf{Type:} Nonfunctional, Static, Manual \par
+      \textbf{Initial State:} The system design and the tests in the Security section are complete. \par
+      \textbf{Input:} A table mapping each technical safeguard (access control, audit controls, integrity, person or entity authentication, and transmission security) to the TeLaC mechanism and test that covers it. \par
+      \textbf{Output:} Every safeguard is mapped to at least one implemented mechanism and one passing test, with no gaps (\srsnfr*{15}). \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+      \item[1.] Fill in the mapping table for each technical safeguard.
+      \item[2.] Review each row and record any safeguard without a mechanism or passing test as a GitHub issue.
+      \item[3.] Share the completed table with the security supervisor for review, and record their feedback as GitHub issues.
+      \item[4.] Check that all issues are closed and every safeguard is covered.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item NFR-ST-CO2: \textbf{Business Associate Agreements for Third-Party Services\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that every third-party service that handles patient health information has a Business Associate Agreement (BAA). \par
+      \textbf{Type:} Nonfunctional, Static, Manual \par
+      \textbf{Initial State:} The list of third-party services used by TeLaC is finalized. \par
+      \textbf{Input:} The list of third-party services, including Whisper and Deepgram, and each provider's BAA documentation. \par
+      \textbf{Output:} Every service that stores, processes, or transmits patient health information has a BAA in place, and any service without one is not used with real patient data (\srsnfr*{15}). \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+      \item[1.] List every third-party service and record whether it handles patient health information.
+      \item[2.] For each service that does, check whether a BAA is in place and record the result.
+      \item[3.] Record any service without a BAA as a GitHub issue.
+      \end{enumerate}
+  \end{mdframed}
+\end{enumerate}
+
+
 
 \subsubsection{Capacity}
 This section verifies that the system can store a full clinical caseload for every clinician without seeing any deterioration in system performance.
@@ -1144,6 +1554,13 @@ Their values are defined in this section for easy maintenance.
       \hline
       BACKUP\_INTERVAL & 24 hours \\
       \hline
+      IDLE\_TIMEOUT & 15 minutes \\
+      \hline
+      TRANSIT\_ENCRYPTION\_STANDARD & TLS 1.2 or higher \\
+      \hline
+      STORAGE\_ENCRYPTION\_STANDARD & AES-256 \\
+      \hline
+      MIN\_PASSWORD\_LENGTH & 8 characters \\
       TASK\_SUCCESS\_RATE & 80\% \\
       \hline
       TASK\_TIME & 5 minutes \\
@@ -1278,4 +1695,16 @@ I will pursue both approaches.
 This is because the first approach builds on methods I’ve already used, which is the fastest way to be effective. 
 As for the second approach, it allows me to practice my interview skills at low risk and, because I have not conducted any usability tests with actual clinicians, it’s a good way to develop my skills before being thrown into that setting.
 
+\subsection*{Yilin}
+\subsubsection*{Question 1}
+This deliverable was a lot smoother to complete because of the work we put into the SRS document. Since it was so detailed, we were able to test directly against the functional and nonfunctional requirements. For instance, NFR8’s fit criterion already described the expected outputs and the constants it had to meet. Even though I did not personally write every requirement I tested in this deliverable, the clear categories and descriptions in the SRS were very useful.
+\subsubsection*{Question 2}
+At this point in the project, we have many documents, acronyms, and constants to keep track of, which makes writing new content more time-consuming since I want to reference past documents. The traceability tables helped a lot with this, almost like a first hint at where in the previous documents to start looking. Also, keeping a list of any new symbolic parameters and references as I wrote meant I wasn’t scrambling to edit the table, and I could focus on my sections first.
+\subsubsection*{Question 3}
+A skill I will personally need to develop is static testing for system integration and security. Several of our security tests are partly or fully static, such as reviewing the storage encryption settings, the log retention configuration, and the HIPAA safeguard mapping. Integrating SAFA with the clinician dashboard also creates new connection points, such as API endpoints and the patient data passed between the two systems, where access-control or data-handling bugs can easily slip in. Many of these are easier to catch by reviewing the code and configuration than by running tests. To do this well, I need to learn how to inspect code and configuration for security problems, use static analysis tools, and review the integration points against our SRS.
+\subsubsection*{Question 4}
+The first approach is learning static analysis tools for security, such as Bandit for Python, which scan code for issues like hardcoded secrets, missing access checks, and unsafe data handling. I would learn them through their documentation and tutorials. These tools can also be added to our GitHub Actions workflow, so the checks run automatically on every pull request.
+The second approach is practising static review on the existing software. Since TeLaC builds on the previous capstone’s TeleHealth platform and the SAFA tool, I can review their code and configuration before our integration is complete. This includes checking whether their API endpoints verify that the requested patient belongs to the logged-in clinician, how recordings are stored, whether storage encryption is enabled, and what activity is logged. Any issues I find would be recorded as GitHub issues. This gives me hands-on practice on the actual system we are integrating.
+
+I will pursue both approaches. Static analysis tools catch common problems automatically with little effort once set up, which matters given our limited time. Reviewing the existing software builds the judgment tools lack, such as whether the system follows our access-control requirements, and it lets me find security gaps before they carry into TeLaC.
 \end{document}
