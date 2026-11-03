@@ -207,7 +207,7 @@ Some objectives are out of scope for this VnV plan due to time and resource limi
   \item \textbf{Full UI standards compliance:} The focus is on practical usability for clinicians rather than exhaustive WCAG compliance or visual polish.
 \end{itemize}
 
-\subsection{Custom Documents}
+\subsection{Custom Documents} \label{sec:CustomDocs}
 
 Two custom documents (CDs) were chosen in the Problem Statement, and both support this VnV plan.
 Improving SAFA's usability is one of the project's main goals, and many of the requirements in the \SRSLink{} are about how easily clinicians can use the system (\srssr*{8}, \srsnfr*{1}, \srsnfr*{2}, \srsnfr*{14}).
@@ -217,7 +217,7 @@ The Wireframe is used first to validate the requirements and the interface desig
 \subsubsection{Wireframe (Fall)}
 The Wireframe is a mock-up of SAFA's redesigned interface (although it can also include mockups for the TeLaC application pages), covering the integrated SAFA annotation tool and the main workflow screens (selecting a patient and assessment, choosing a workflow, reviewing and correcting the transcript, and generating a report).
 It will be made using a design tool like Figma and presented to the supervisor, the research team, and clinicians.
-Its role in this plan is validation rather than verification, as it checks that the requirements describe what clinicians actually need before any code is written.
+Its role in this plan is validation rather than verification, as it checks that the requirements describe what clinicians actually need before the interface is implemented.
 During the review, the team will:
 \begin{itemize}
   \item Present each workflow by walking reviewers through the mock-up and ask whether the steps match how they would normally analyze an assessment (\srssr*{5})
@@ -232,16 +232,16 @@ Any feedback that changes a requirement will be added to the \SRSLink{} and trac
 \subsubsection{Usability Report (Winter)}
 The Usability Report verifies the usability requirements against the final system.
 It will contain the testing plan, the results, and a discussion of the findings and user feedback. This includes any suggested improvements to how the system looks and functions.
-The testing will be systematic and quantified so that the results can be compared directly against the fit criteria for each functional and non-functional requirement that is defined in the SRS.
+The testing will be systematic and quantified so that the results can be compared directly against the fit criteria of the usability requirements defined in the \SRSLink{}.
 The test plan will include the following (this is subject to change over the course of the project):
 \begin{itemize}
   \item \textbf{Participants:} clinicians that will be provided by the research team's contacts who have not been trained on the system
-  \item \textbf{Tasks:} core tasks such as adding a patient, assigning a speaker role, correcting a transcript chunk, adding an annotation, and generating a report
+  \item \textbf{Tasks:} core tasks such as adding a patient, assigning a speaker role, correcting a transcript chunk, adding an annotation, and generating a report. These are the same features tested for correctness in Section~\ref{sec:System_Tests} (e.g., FR-ST-TR1 and FR-ST-TR2), so the usability sessions only measure how easily clinicians can use them
   \item \textbf{Measures:} task completion rate, time to complete each task, number of times the participant needed help, and whether each function was found on the first attempt
-  \item \textbf{Survey:} a post-test questionnaire on ease of use and satisfaction
+  \item \textbf{Survey:} a post-test questionnaire on ease of use and satisfaction (Appendix~\ref{sec:UsabilitySurvey})
 \end{itemize}
 The results will also be compared with the standalone SAFA tool, since the Problem Statement measures the usability goal as an improvement over the current SAFA interface.
-The usability tests in Section~\ref{sec:System_Tests} will be run as part of these sessions, and the results will be reported in the VnV Report.
+The Usability and Understandability tests in Section~\ref{sec:System_Tests} will be run as part of these sessions, and the results will be reported in the VnV Report.
 
 \subsection{Relevant Documentation}
 % TODO: Once the Wireframe (Fall) and Usability Report (Winter) CDs are done,
@@ -358,19 +358,48 @@ and implementation, and ends with the validation of the software.
   \item \textbf{VnV Verification:} Reviews test cases for completeness, specificity, and traceability.
 \end{itemize}
 
-\subsection{SRS Verification}
+\subsection{SRS Verification} \label{sec:SRSVerification}
 
-\wss{List any approaches you intend to use for SRS verification.  This may
-  include ad hoc feedback from reviewers, like your classmates (like your
-  primary reviewer), or you may plan for something more rigorous/systematic.}
+The \SRSLink{} is verified through four reviews, each suited to catching a different kind of problem. 
+The team first checks its own work for completeness and consistency, the peer review team and TA then check that the document is clear to an outside reader, and finally the supervisor and research team check that it describes what clinicians actually need. 
+Feedback from all four reviews is tracked the same way, which is to create a dedicated GitHub issue for each piece of actionable feedback.
 
-\wss{If you have a supervisor for the project, you shouldn't just say they will
-read over the SRS.  You should explain your structured approach to the review.
-Will you have a meeting?  What will you present?  What questions will you ask?
-Will you give them instructions for a task-based inspection?  Will you use your
-issue tracker?}
+\paragraph{Internal Checklist Review:}
+Before each SRS revision is submitted, every team member reviews the sections written by another member. This way, each section is looked over by someone other than the original author. 
+The reviewer works through the SRS checklist, which covers the template and writing quality, along with the project-specific checklist below. The checklist the team decided on covers problems that are specific to this project. 
+These checks are done in the pull request for each section, which already needs approval from at least one other team member before it can be merged (\DevPlanLink). 
+The reviewer leaves a comment on any item that fails, and the pull request is not approved until it is fixed or the author explains why no change is needed.
 
-\wss{Maybe create an SRS checklist?}
+\begin{itemize}[label=\checkbox]
+  \item Every functional requirement traces to at least one stakeholder requirement.
+  \item Every stakeholder requirement is supported by evidence from the research team's study (\SRSLink{} Appendix A) or by a supervisor decision.
+  \item Every functional and non-functional requirement has a fit criterion that a tester could check without asking the author what it means.
+  \item Every threshold in a fit criterion is written as a symbolic constant rather than a fixed number.
+  \item Every functional and non-functional requirement is covered by at least one system test in Section~\ref{sec:System_Tests}.
+  \item Each requirement states what the system must do, not how it will be built.
+  \item The use cases, functional requirements, and workflow state diagrams use the same names for the same states and actions.
+  \item Each of the three clinician workflows (Direct Analysis, Annotation-First, and On-Demand Refinement) can be traced from start to finish through the use cases without a missing step.
+  \item Automatically generated content (transcripts, scores, and flags) is always treated as a suggestion the clinician can review and correct (\srssr*{3}).
+  \item Every requirement that involves patient data states who is allowed to access it (\srssr*{7}).
+  \item Requirements refer to the supported assessment languages in general, rather than naming a specific language pair.
+  \item Domain terms (e.g., code-switching, speaker role, chunk) are defined in the Definitions and Acronyms section before they are used.
+\end{itemize}
+
+\paragraph{Peer and TA Review:}
+The assigned peer review team and the TA read the SRS without any prior knowledge of the application or speech language domain. 
+Since they have no background in speech-language pathology, they are best suited to find sections that are unclear or that assume domain knowledge, which also matters for future developers who will need to maintain the system. 
+Peer reviewers report each problem as a GitHub issue using the team's Peer Review issue template, which records the artifact, the reviewing team, and a description of the problem. TA feedback from grading documents is turned into issues in the same way.
+
+\paragraph{Supervisor and Research Team Review:}
+The supervisor and research team are the only reviewers who can confirm that the requirements match real clinical practice.
+Their review is guided by a requirements feedback form, given in full in Appendix~\ref{sec:ReqFeedbackForm}, which links to the functional requirements. The form only covers what the team will build and leaves out the recording features already built by the previous capstone team. It asks whether the requirements reflect how they would ideally review a remote assessment, what is missing, what should be changed or removed, which requirements are essential in a clinical setting, and which 10--15 requirements should be prioritized for the first demo. It also asks them to make decisions the team cannot make on its own: how the generated transcript should be displayed in the assessment interface (\srssr*{2}), what information a clinical report should be generated from (\srssr*{6}, \srsfr*{7}), who may view or download recordings (\srssr*{7}), and which pattern detection features are in scope.
+
+Since the supervisors are busy and more likely to give feedback during scheduled meetings than on their own time, the form is used as the question guide for breakout sessions during the virtual supervisor meetings, organized using the team's Supervisor Meeting issue template. The form is also shared ahead of time, so supervisors can respond in writing if they prefer. During each session, a team member records the answers in the form, so the team keeps a written record of each supervisor's feedback. When an answer is unclear or supervisors disagree, the team walks through the related workflow step by step using its use cases and state diagram, so that they can point out exactly where it differs from their practice. The sessions also cover what the form cannot, such as whether the values proposed for the symbolic constants are realistic (e.g., the task success rate and task time in \srsnfr*{1} and \srsnfr*{2}). The agreed priority list then decides which requirements are implemented first for the Proof of Concept and Revision 0 demos. Validation with clinicians continues through the Wireframe CD (Section~\ref{sec:CustomDocs}), where clinicians can provide feedback after seeing visual mockups. This might help them point out any changes that need to be made in a way that is easier than reading written requirements.
+
+\paragraph{Feedback Tracking:}
+Every requested change, whether from the checklist review, peer review, TA, form, or meeting, becomes a GitHub issue assigned to the owner of the affected section. 
+Each issue is closed by a pull request that links to it, or closed with a written reason if the team decides not to make the change. All changes must be recorded in the SRS document's revision history table.
+An SRS revision is considered verified once all four reviews are complete and every resulting issue has been closed.
 
 \subsection{Design Verification}
 
@@ -445,18 +474,18 @@ The following checklist will be used by the team:
 
 \subsection{Implementation Verification}
 
-\wss{You should at least point to the tests listed in this document and the unit
-  testing plan.}
+The implementation will be verified through the system tests in Section~\ref{sec:System_Tests} and the unit tests in Section~\ref{sec:UnitTests}, and statically through the automated tools in Section~\ref{sec:AutoTools}. 
+This section covers the manual checks that those tools cannot perform and that the team must do.
 
-\wss{In this section you would also give any details of any plans for static
-  verification of the implementation.  Potential techniques include code
-  walkthroughs, code inspection, static analyzers, etc.}
+Every pull request is inspected by at least one other team member before it is merged (\DevPlanLink). 
+In addition to the general items in the pull request template, the reviewer checks that each endpoint verifies the clinician is allowed to access the requested patient (\srssr*{7}), that no patient data is written to logs, and that failures from external services such as the transcription model or storage are handled without losing the clinician's work. The system tests (e.g., NFR-ST-RE2 and NFR-ST-CV3) check that work is kept under normal conditions, but not when an external service fails.
 
-\wss{The final class presentation in CAS 741 could be used as a code
-walkthrough.  There is also a possibility of using the final presentation (in
-CAS741) for a partial usability survey.}
+Finally, after the Revision 0 demo, the team will lead a code walkthrough with Dr.\ Yue, one of the project's supervisors and a software engineering professor at California State University San Marcos.
+The walkthrough will focus on the modules from the \HALink{} that handle patient data and transcripts, which are the account system, the database, and the transcription pipeline. During the walkthrough, the team will also look for race conditions, data handling problems, and security issues. Race conditions in particular are not covered by the system tests: for example, NFR-ST-CV2 only checks edits made on one device at a time, not two sessions saving edits to the same transcript chunk at once. 
+The team will send him the relevant code by sharing a link to the GitHub repository, as well as a short list of questions beforehand. Each finding from the code walkthrough is to be recorded as a GitHub issue. 
+Where possible, each issue is closed together with a new test that reproduces the problem, so that the fixes are documented and visible in case it ever happens again.
 
-\subsection{Automated Testing and Verification Tools}
+\subsection{Automated Testing and Verification Tools} \label{sec:AutoTools}
 
 The following lists the automated testing and verification tools used throughout the software's lifecycle:
 \begin{itemize}
@@ -849,6 +878,173 @@ This section verifies that clinicians see only their own patients, can add patie
   \end{mdframed}
 \end{enumerate}
 
+\subsubsection{Transcript Review and Editing} \label{sec:TranscriptTests}
+This section verifies that clinicians can correct the automatically generated transcript, assign a role to each speaker, filter the transcript by role, and choose which parts of an assessment to open in the SAFA tool.
+All tests in this section and in the Playback and Navigation, Performance, and Convenience sections use test recordings, since real patient data is not to be used during development.
+Test assessment A is an approximately 5-minute recording involving two speakers (child and parent), speech in more than one supported language (English and Mandarin), 10 questions, and about 15 transcript segments.
+Test assessment B is a recording of the maximum length allowed by the system (MAX\_REC\_LEN minutes) that will be used for timing tests.
+For each assessment, the stored transcript (each segment's start and end time, speaker, and the time each question was asked) is recorded before testing and serves as the answer key.
+\begin{enumerate}
+  \item FR-ST-TR1: \textbf{Edit and Save Transcript Text\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that a clinician can add, delete, and modify transcript text. Also verifies that saved changes persist, and that unsaved changes can be discarded.\par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A clinician account is logged in, and test assessment A is open in the SAFA tool with its auto-generated transcript, with no segments edited. \par
+      \textbf{Input:} 5 segments of test assessment A, documented before testing with their original text. In segment 1 a word is added, in segment 2 a word is deleted, and in segment 3 a word is replaced and its language tag is changed. Segment 4 is edited and then discarded, and segment 5 is edited and left unsaved. \par
+      \textbf{Output:} Segments 1--3 show the edited text after saving, their original auto-generated text is kept and the differences are shown, and each is marked as verified with who made the change and when. Segment 4 returns to its original text. Trying to leave the transcript with segment 5 unsaved prompts the clinician to save or discard. After closing and reopening the assessment, segments 1--3 still show the edited text. \par
+      \textbf{Test Case Derivation:} \srsfr*{2} requires that clinicians can add, delete, and modify transcript text and that saved changes persist when the recording is reopened. \srsuc*{9} adds that the original version is kept, the segment is marked as verified, and unsaved changes can be discarded or prompt the user before leaving. Clinicians rely on these corrections being kept, since all later annotations and analysis are based on the corrected text. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+        \item[1.] Make the listed edits to segments 1--3 and save each one.
+        \item[2.] Check that each edited segment shows the new text, the original text, the differences, and its verified status with the editor and time.
+        \item[3.] Edit segment 4, discard the change, and check that it shows its original text.
+        \item[4.] Edit segment 5 without saving, try to leave the transcript, and check that the system asks whether to save or discard. Discard the change.
+        \item[5.] Close the assessment, reopen it, and check that segments 1--3 still show the edited text.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-TR2: \textbf{Assign a Role to Each Detected Speaker\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that once a clinician assigns a role to a speaker the system detected, every segment from that speaker is labeled with the role. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A clinician account is logged in, and test assessment A is open in the SAFA tool with its auto-generated transcript and two detected speakers, neither of which have a role. \par
+      \textbf{Input:} The roles Child and Parent are each assigned once to the matching detected speaker. One of the segments contains both speakers. \par
+      \textbf{Output:} Every segment from each speaker shows that speaker's role, and the number of segments labeled with each role matches the answer key. In the segment with both speakers, each speaker's part is labeled with their own role. The roles are still shown after the assessment is closed and reopened. \par
+      \textbf{Test Case Derivation:} \srsfr*{6} requires that every segment from a detected speaker is labeled with the role the clinician assigns, and \srsuc*{5} requires that each speaker in a segment with more than one speaker is labeled separately. Clinicians need the child's speech separated from the adults' to analyze the child's language and to find parent interference. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+        \item[1.] Select a segment from the first speaker and assign the role Child.
+        \item[2.] Repeat step 1 for the role Parent.
+        \item[3.] Count the segments labeled with each role and compare the counts to the answer key.
+        \item[4.] Check that each speaker in the segment with both speakers is labeled with their own role.
+        \item[5.] Close and reopen the assessment, and check that all roles are still shown.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-TR3: \textbf{Filter the Transcript by Speaker Role\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that filtering the transcript by a speaker role shows exactly that speaker's segments. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A clinician account is logged in, and test assessment A is open in the SAFA tool with the roles from FR-ST-TR2 assigned. \par
+      \textbf{Input:} The filters Child, then Parent, then no filter. \par
+      \textbf{Output:} For Child and Parent, exactly the segments the answer key lists for that role are shown, and no others. The segment containing both speakers is shown under both filters. With no filter, all segments are shown again in their original order. \par
+      \textbf{Test Case Derivation:} \srsfr*{6} requires that clinicians can filter the transcript by speaker role. Clinicians use this to review only the child's answers, or only the parent's speech when checking for interference, so a filter that hides or adds segments would lead to an incomplete analysis. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+        \item[1.] Filter by Child and compare the segments shown to the answer key's Child segments.
+        \item[2.] Repeat step 1 for Parent.
+        \item[3.] Remove the filter and check that all segments are shown in their original order.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-TR4: \textbf{Open Selected Questions in the SAFA Tool\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that a clinician can choose which questions, or the full assessment, to open in the SAFA tool, and that only those portions are opened. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A clinician account is logged in, and the assessment overview of test assessment A is open. \par
+      \textbf{Input:} Questions 3 and 7 are selected and opened in the SAFA tool. Then the full assessment is selected and opened. \par
+      \textbf{Output:} When questions 3 and 7 are opened, the SAFA tool shows only the segments and the portions of the recording for those 2 questions, and playback does not continue into other questions. When the full assessment is opened, all segments and the full recording are shown. \par
+      \textbf{Test Case Derivation:} \srsfr*{15} requires that the clinician can select one or more questions, or the full assessment, and that only those portions are opened in the SAFA tool. This supports the On-Demand Refinement workflow, where clinicians only annotate flagged or unclear questions to save time. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+        \item[1.] From the overview, select questions 3 and 7 and open them in the SAFA tool.
+        \item[2.] Compare the segments shown with the answer key's segments for questions 3 and 7.
+        \item[3.] Play the recording to the end of question 3 and check that playback does not continue into question 4.
+        \item[4.] Return to the overview, select the full assessment, open it, and check that all segments are shown.
+      \end{enumerate}
+  \end{mdframed}
+\end{enumerate}
+
+\subsubsection{Playback and Navigation}
+This section verifies that the transcript and recording stay linked, so that clinicians can follow along during playback and jump to any segment or question, and that clinicians can move between workflow stages without losing saved work.
+The timing tolerances for these features are tested separately in the Performance section.
+\begin{enumerate}
+  \item FR-ST-PN1: \textbf{Highlight the Current Segment During Playback\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that during playback the system highlights the segment being spoken and scrolls the transcript so that it is visible. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A clinician account is logged in, and test assessment A is open in the SAFA tool with playback at the start of the recording. \par
+      \textbf{Input:} 10 playback times chosen from the answer key, spread across the recording. One is in a segment that is off-screen when playback starts, and one is reached by dragging the playback bar instead of playing. \par
+      \textbf{Output:} At each of the 10 times, the highlighted segment is the one whose start and end times contain the playback position, and it is visible in the transcript without the clinician scrolling. \par
+      \textbf{Test Case Derivation:} \srsfr*{20} requires that the highlighted segment is the one whose start and end times contain the playback position, and that the transcript scrolls to keep it visible. \srsuc*{8} describes clinicians following the transcript while watching the recording, which only works if the highlight is on the right segment. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+        \item[1.] Play the recording and pause at the first listed time.
+        \item[2.] Check that the highlighted segment's start and end times, from the answer key, contain the playback position, and that the segment is visible.
+        \item[3.] Repeat steps 1--2 for the remaining times. For the time listed as reached by dragging, drag the playback bar to it instead of playing.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-PN2: \textbf{Jump to a Selected Segment\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that selecting a transcript segment moves playback to the start of that segment and highlights it. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A clinician account is logged in, and test assessment A is open in the SAFA tool. \par
+      \textbf{Input:} 5 segments: the first, the last, one in the middle, one that is off-screen, and one shorter than 1 second. Each is selected once while playback is paused and once while it is playing (10 selections in total). \par
+      \textbf{Output:} After each selection, the playback position is at the segment's start time from the answer key, and that segment is highlighted. \par
+      \textbf{Test Case Derivation:} \srsfr*{21} requires that selecting a segment sets the playback position to its start time and highlights it. Clinicians use this to re-watch a child's answer or a flagged moment, and the first, last, and very short segments are the ones most likely to be handled wrongly. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+        \item[1.] With playback paused, select the first listed segment.
+        \item[2.] Check that the playback position matches the segment's start time and the segment is highlighted.
+        \item[3.] Repeat steps 1--2 for the remaining segments.
+        \item[4.] Repeat steps 1--3 while the recording is playing.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-PN3: \textbf{Jump to a Selected Question or Moment\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that selecting a question or a flagged moment starts playback at the point in the recording where it occurred. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A clinician account is logged in, and test assessment A is open in the Individual Assessment View with at least one flagged moment. \par
+      \textbf{Input:} 5 questions selected from the question list, including the first and last question, and 1 flagged moment. \par
+      \textbf{Output:} After each selection, playback starts at the time the answer key lists for when that question was asked or that moment occurred. \par
+      \textbf{Test Case Derivation:} \srsfr*{14} requires that selecting a question or a specific moment starts playback at that point in the assessment. This saves clinicians from searching through the whole recording to find a question. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+        \item[1.] Select the first listed question.
+        \item[2.] Check that playback starts at the time listed in the answer key for that question.
+        \item[3.] Repeat steps 1--2 for the remaining questions and the flagged moment.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item FR-ST-PN4: \textbf{Move Between Workflow Stages Without Losing Saved Work\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that clinicians can move forward and back between all workflow stages without losing saved work, and that the system shows the current and completed stages. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A clinician account is logged in, and test assessment A is open in the assessment overview, with no saved work. \par
+      \textbf{Input:} The clinician moves from the overview to the SAFA tool and saves 2 transcript edits, then to the evaluation stage and saves a grade for 1 question, then to the report stage. The clinician then goes back to each earlier stage in reverse order. \par
+      \textbf{Output:} At every stage, both edits and the grade are still shown. The progress indicator always shows the current stage and marks each stage already visited as completed. \par
+      \textbf{Test Case Derivation:} \srsfr*{5} requires that clinicians can move between all workflow stages without losing saved work, and that the system shows the current and completed stages. Clinicians do not analyze an assessment in a straight line, and often go back to correct earlier work. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+        \item[1.] Move through the stages in order, saving the listed edits and grade, and check the progress indicator at each stage.
+        \item[2.] Go back to each earlier stage in reverse order.
+        \item[3.] At each stage, check that both edits and the grade are shown and the progress indicator is correct.
+      \end{enumerate}
+  \end{mdframed}
+\end{enumerate}
+
+\subsubsection{Assessment Interface}
+This section verifies the child-facing side of the assessment, where breaks keep children engaged during long assessments.
+\begin{enumerate}
+  \item FR-ST-AI1: \textbf{Breaks During a Child Assessment\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that the system shows a break activity after the configured questions and then resumes the assessment where it left off. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A test patient account is logged in on the patient-facing site, and 2 assessments are assigned to it. \par
+      \textbf{Input:} A 15-question assessment configured with breaks after questions 5 and 10, and a second assessment with no breaks configured. Each is completed from start to finish. \par
+      \textbf{Output:} In the first assessment, a break activity is shown after questions 5 and 10 only, and the assessment then continues from questions 6 and 11, with all earlier answers kept. In the second assessment, no break activity is shown. \par
+      \textbf{Test Case Derivation:} \srsfr*{24} requires that a break activity is shown after the number of questions set for each assessment, and that the assessment then resumes where it left off. Children with limited attention may disengage during long assessments, but a break must not cause answers to be lost or questions to be skipped. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+        \item[1.] Start the first assessment and answer each question.
+        \item[2.] Record after which questions a break activity is shown, and which question is shown after each break ends.
+        \item[3.] After finishing, check from the clinician side that all 15 answers were saved.
+        \item[4.] Complete the second assessment and check that no break activity is shown.
+      \end{enumerate}
+  \end{mdframed}
+\end{enumerate}
 
 \subsubsection{Transcript Review and Editing}
 \wss{Placeholder: FR-ST-TR1 to TR4 (Person 3).}
@@ -1136,10 +1332,109 @@ This section verifies that clinicians are able to distinguish between content th
 \end{enumerate}
 
 \subsubsection{Performance}
-\wss{Placeholder: NFR-ST-PF1 to PF3 (Person 3).}
+This section verifies that clinicians can review assessments without noticeable waiting, and that the transcript stays synchronized with the recording for recordings of the maximum length.
+The tests use test assessments A and B described in Section~\ref{sec:TranscriptTests}, and are run by a script that controls the browser and records times, since the delays being measured are too short to time reliably by hand.
+\begin{enumerate}
+  \item NFR-ST-PF1: \textbf{Assessment Overview Load Time\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that the assessment overview loads quickly enough on a typical connection. \par
+      \textbf{Type:} Nonfunctional, Dynamic, Automatic \par
+      \textbf{Initial State:} A clinician account is logged in, 3 assessments with results and flags exist for a test patient, and the browser's network speed is limited to MIN\_BANDWIDTH. \par
+      \textbf{Input:} The overview of each of the 3 assessments, loaded 5 times each with the browser cache cleared before each load (15 loads in total). \par
+      \textbf{Output:} Every load shows the overview's results and flags within OVERVIEW\_LOAD\_TIME seconds \srsnfr*{12}. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+        \item[1.] Clear the browser cache and open the overview of the first assessment.
+        \item[2.] Record the time from opening the overview until its results and flags are fully shown.
+        \item[3.] Repeat steps 1--2 for the remaining loads.
+        \item[4.] Report the longest and average load times, and compare the longest to OVERVIEW\_LOAD\_TIME.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item NFR-ST-PF2: \textbf{Transcript Synchronization for a Full-Length Recording\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that the highlighted segment stays synchronized with the recording from start to finish, for a recording of the longest supported length. \par
+      \textbf{Type:} Nonfunctional, Dynamic, Automatic \par
+      \textbf{Initial State:} A clinician account is logged in, and test assessment B is open in the SAFA tool with playback at the start of the recording. \par
+      \textbf{Input:} Test assessment B, played from start to finish without pausing. \par
+      \textbf{Output:} For every segment, the difference between the playback position when the segment becomes highlighted and the segment's stored start time does not exceed SYNC\_TOL milliseconds \srsnfr*{13}. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+        \item[1.] Start playback, and have the script record the playback position each time the highlighted segment changes.
+        \item[2.] When playback ends, compare each recorded position with the stored start time of the segment that was highlighted.
+        \item[3.] Report the largest difference and compare it to SYNC\_TOL.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item NFR-ST-PF3: \textbf{Playback Start After Selecting a Segment\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that playback starts quickly and at the right position after a clinician selects a segment, including segments in parts of the recording that have not been loaded yet. \par
+      \textbf{Type:} Nonfunctional, Dynamic, Automatic \par
+      \textbf{Initial State:} A clinician account is logged in, test assessment B is open in the SAFA tool, and the browser's network speed is limited to MIN\_BANDWIDTH. Since \srsnfr*{13} does not specify a connection speed, the same minimum connection as NFR-ST-PF1 is used, as the recording is streamed from cloud storage. \par
+      \textbf{Input:} 20 segments spread across test assessment B, selected in an order that jumps between the start and end of the recording, so that many selected segments have not been loaded yet. \par
+      \textbf{Output:} For each selection, playback begins within SEEK\_TIME seconds, at a position within SYNC\_TOL milliseconds of the segment's stored start time \srsnfr*{13}. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+        \item[1.] Select the first listed segment, and record the time from the selection until playback begins and the position where it begins.
+        \item[2.] Repeat step 1 for the remaining segments.
+        \item[3.] Report the longest and average times until playback begins, and compare the longest to SEEK\_TIME.
+        \item[4.] Compare each starting position to the segment's stored start time, and check that every difference is within SYNC\_TOL.
+      \end{enumerate}
+  \end{mdframed}
+\end{enumerate}
 
 \subsubsection{Convenience}
-\wss{Placeholder: NFR-ST-CV1 to CV3 (Person 3).}
+This section verifies that common editing actions respond quickly, that clinicians can continue their work on another device, and that clinicians do not need to repeat actions or re-enter information the system already has. 
+These tests use test assessment A described in Section~\ref{sec:TranscriptTests}.
+\begin{enumerate}
+  \item NFR-ST-CV1: \textbf{Response Time for Common Editing and Export Actions\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that common transcript editing and annotation export actions complete within an acceptable time. \par
+      \textbf{Type:} Nonfunctional, Dynamic, Automatic \par
+      \textbf{Initial State:} A clinician account is logged in, and test assessment A is open in the SAFA tool. \par
+      \textbf{Input:} 50 actions performed by a script, 10 of each: saving a text edit, marking a segment as verified, assigning a speaker role, changing a language tag, and exporting the annotations. Generating the transcript is not included, since it is a processing-intensive task. \par
+      \textbf{Output:} At least AVG\_INTERACTIONS\% of the 50 actions complete within INTERACTION\_TIME seconds \srsnfr*{19}. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+        \item[1.] Run the script, recording the time from each action until the system shows its result.
+        \item[2.] Count the actions that completed within INTERACTION\_TIME.
+        \item[3.] Compute the percentage (actions within INTERACTION\_TIME / 50) and compare it to AVG\_INTERACTIONS\%, and report the slowest type of action.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item NFR-ST-CV2: \textbf{Continue Work on a Second Device\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that a clinician can continue the same annotation work on a different device through a web browser, without transferring any files. \par
+      \textbf{Type:} Nonfunctional, Dynamic, Manual \par
+      \textbf{Initial State:} The same clinician account is logged in on MIN\_SUPPORTED\_DEVICES different computers, each using a supported web browser, and test assessment A has no edits. \par
+      \textbf{Input:} 3 transcript edits made and saved on the first computer, then 2 more made and saved on the second computer. Each edit is documented with its segment and content. \par
+      \textbf{Output:} All 5 edits are shown on both computers after the assessment is reopened, and no file is transferred between them \srsnfr*{20}. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+        \item[1.] On the first computer, make and save the 3 listed edits.
+        \item[2.] On the second computer, open test assessment A and check that the 3 edits are shown.
+        \item[3.] On the second computer, make and save the 2 remaining edits.
+        \item[4.] On the first computer, reopen the assessment and check that all 5 edits are shown.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item NFR-ST-CV3: \textbf{Unsaved Changes Handled Between Stages and Known Fields Pre-Filled\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that unsaved changes are not lost when the clinician switches workflow stages, since the system asks whether to save or discard them, and that the system fills in information it already has. \par
+      \textbf{Type:} Nonfunctional, Dynamic, Manual \par
+      \textbf{Initial State:} A clinician account is logged in, and test assessment A is open in the SAFA tool with no edits. \par
+      \textbf{Input:} 3 transcript edits and 1 annotation, made without selecting save, followed by a switch to the evaluation stage. When the system asks whether to save or discard the changes, save is chosen, and the clinician then returns to the SAFA tool. Then each screen that shows the patient's name or the assessment date is opened. \par
+      \textbf{Output:} The system asks whether to save or discard the changes before switching stages. After choosing save and returning to the SAFA tool, all 3 edits and the annotation are shown without the clinician having to make them again. On every screen that uses the patient's name or the assessment date, they are already filled in and match the patient record \srsnfr*{21}. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+        \item[1.] Make the listed edits and annotation without selecting save.
+        \item[2.] Switch to the evaluation stage, and check that the system asks whether to save or discard the changes.
+        \item[3.] Choose save, then return to the SAFA tool.
+        \item[4.] Check that each edit and the annotation are shown.
+        \item[5.] Open each screen that uses the patient's name or the assessment date, and check that they are filled in and match the patient record.
+      \end{enumerate}
+  \end{mdframed}
+\end{enumerate}
 
 \subsubsection{Security}
 \wss{Placeholder: NFR-ST-S1 to S5 (Person 1).}
@@ -1419,7 +1714,7 @@ This section verifies that the system can store a full clinical caseload for eve
 \wss{Provide a table that shows which test cases are supporting which
   requirements.}
 
-\section{Unit Test Description} \label{sec:Unit_Tests}
+\section{Unit Test Description} \label{sec:Unit_Tests} \label{sec:UnitTests}
 
 \wss{This section should not be filled in until after the MIS (detailed design
   document) has been completed.}
@@ -1610,9 +1905,96 @@ Their values are defined in this section for easy maintenance.
 \end{table}
 
 
-\subsection{Usability Survey Questions?}
+\subsection{Requirements Feedback Form} \label{sec:ReqFeedbackForm}
 
-\wss{This is a section that would be appropriate for some projects.}
+The following form guides the supervisor and research team review that is part of the SRS verification (Section~\ref{sec:SRSVerification}).
+The form description links to the functional requirements and states that features of the existing recording platform, built by the previous capstone team, are not included.
+
+\begin{enumerate}
+  \item Do the requirements accurately reflect how you would ideally review a remote speech-language assessment? If not, please explain why.
+  \item Are there any features or capabilities missing from the current requirements that you believe the system should support?
+  \item Are there any requirements that you believe should be changed, clarified, or removed?
+  \item Which requirements are the most important, or the ones we should prioritize for the initial demo (top 10--15)?
+  \item Are there any requirements that you consider essential for the system to be usable in a clinical setting?
+  \item How should the automatically generated transcript (that SAFA outputs) be shown in the clinical assessment interface? (Choose one)
+  \begin{itemize}
+    \item Display the transcript beside the video in the main clinical assessment view by default
+    \item Display it beside the video, but only when the clinician chooses to open it (it can be hidden)
+    \item Display the transcript only when the clinician opens the SAFA tool
+    \item Other
+  \end{itemize}
+  \item What information should the system use to generate a clinical report for an assessment? (Select all that apply)
+  \begin{itemize}
+    \item Reviewed transcript
+    \item Questions
+    \item Question responses
+    \item Clinician notes per question
+    \item Clinician notes for the whole assessment
+    \item All flagged potential interference
+    \item Final diagnosis/results
+    \item Other
+  \end{itemize}
+  \item Who should be allowed to download or view recordings? (Select all that apply)
+  \begin{itemize}
+    \item Clinicians registered in the system
+    \item Parents registered in the system (only their child's recordings)
+    \item Researchers who have access to the system
+    \item Other
+  \end{itemize}
+  \item Which pattern detection features should be in the scope of this project? (Select all that apply)
+  \begin{itemize}
+    \item Grammatical errors
+    \item Code-switching in answers
+    \item Phonetic errors (target sound accuracy)
+    \item Other
+  \end{itemize}
+\end{enumerate}
+
+\subsection{Usability Survey Questions} \label{sec:UsabilitySurvey}
+
+The following survey will be given to each participant right after their usability testing session in the Usability Report CD (Section~\ref{sec:CustomDocs}).
+Since the system has not been built yet, this section is a work in progress and will be finalized after the Wireframe review to account for any changes the team might make in response to clinician feedback.
+Participants will be asked to complete the same survey after doing the same tasks in the original standalone SAFA tool, so the two scores can be compared.
+
+\paragraph{Part A: System Usability Scale}
+Part A uses the System Usability Scale (SUS) \citep{Brooke_SUS_1996}, a standard ten-item questionnaire that produces a single usability score from 0 to 100.
+This scale was chosen because it is short, widely used, and gives a score that can be compared between the integrated system and the standalone SAFA tool.
+Each statement is rated from 1 (strongly disagree) to 5 (strongly agree).
+
+\begin{enumerate}
+  \item I think that I would like to use this system frequently.
+  \item I found the system unnecessarily complex.
+  \item I thought the system was easy to use.
+  \item I think that I would need the support of a technical person to be able to use this system.
+  \item I found the various functions in this system were well integrated.
+  \item I thought there was too much inconsistency in this system.
+  \item I would imagine that most people would learn to use this system very quickly.
+  \item I found the system very cumbersome to use.
+  \item I felt very confident using the system.
+  \item I needed to learn a lot of things before I could get going with this system.
+\end{enumerate}
+
+\paragraph{Part B: Project-Specific Questions}
+The SUS measures overall ease of use, but does not cover the specific usability requirements that the team defined in the \SRSLink{}.
+This part adds statements that target those requirements, rated on the same 1 to 5 scale.
+These ratings show how participants felt about each requirement, while the task results recorded by the team during the session (completion rate, time, and help needed) are used to check whether the fit criteria are met.
+
+\begin{enumerate}[resume]
+  \item I could find each function I needed on my first attempt by reading the labels on the screen (\srsnfr*{2}).
+  \item I could always tell which transcript content and results were automatically generated and which I had verified (\srsnfr*{14}).
+  \item I could easily return to an earlier stage without losing my work (\srsnfr*{3}).
+  \item After I made a change, it was clear that the system had saved it (\srsnfr*{4}).
+  \item Following the transcript alongside the video playback was easy (\srsfr*{20}).
+  \item Reviewing, annotating, and reporting on an assessment in one place would save me time compared to my current process (\srssr*{1}, \srssr*{2}).
+\end{enumerate}
+
+\paragraph{Part C: Open-Ended Questions}
+\begin{enumerate}[resume]
+  \item Which task was the most difficult to complete, and why?
+  \item Was anything on the web pages confusing or unclear?
+  \item What would you change or add to make the system fit better into your daily workflow or help streamline your tasks?
+  \item Is there anything else you would like to tell us about your experience?
+\end{enumerate}
 
 \newpage{}
 
