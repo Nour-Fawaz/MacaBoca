@@ -5,6 +5,7 @@
 \usepackage{enumitem}
 \usepackage{pifont}
 \usepackage{mdframed}
+\usepackage{array}
 
 \newcommand{\checkbox}{\ding{113}} % 113 corresponds to an open square box
 \usepackage{hyperref}
@@ -194,9 +195,86 @@ how they relate to your VnV efforts.}
 
 \subsection{Verification and Validation Team}
 
-\wss{Your teammates.  Maybe your supervisor.
-  You should do more than list names.  You should say what each person's role is
-  for the project's verification.  A table is a good way to summarize this information.}
+\hspace{2em}The following table displays the roles and responsibilities of each team member.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{ | p{4.5cm} | p{9cm} | }
+  \hline
+  \textbf{Name} & \textbf{Roles and Responsibilities} \\
+  \hline
+  Javayria Mudassar &
+  \begin{itemize}[leftmargin=*, nosep, before=\vspace{1mm}, after=\vspace{1mm}]
+    \item Stakeholder Communication Lead
+    \item Security Verification
+    \item Transcription Verification
+    \item SRS Verification
+  \end{itemize} \\
+  \hline
+  Yilin Jiang &
+  \begin{itemize}[leftmargin=*, nosep, before=\vspace{1mm}, after=\vspace{1mm}]
+    \item UI Design Verification
+    \item Frontend Verification
+    \item Integration Lead
+    \item SRS Verification
+  \end{itemize} \\
+  \hline
+  Nour Fawaz &
+  \begin{itemize}[leftmargin=*, nosep, before=\vspace{1mm}, after=\vspace{1mm}]
+    \item Documentation Reviewer
+    \item Frontend Verification
+    \item Usability Testing Lead
+    \item VnV Verification
+  \end{itemize} \\
+  \hline
+  Catherine Yang &
+  \begin{itemize}[leftmargin=*, nosep, before=\vspace{1mm}, after=\vspace{1mm}]
+    \item Code Review Lead
+    \item Security Verification
+    \item Report Verification
+    \item VnV Verification
+  \end{itemize} \\
+  \hline
+  Dr. Irene Yuan &
+  \begin{itemize}[leftmargin=*, nosep, before=\vspace{1mm}, after=\vspace{1mm}]
+    \item Providing feedback during project development and connecting the team to speech language therapy researchers
+  \end{itemize} \\
+  \hline
+  Dr. Yao Du &
+  \begin{itemize}[leftmargin=*, nosep, before=\vspace{1mm}, after=\vspace{1mm}]
+    \item Providing feedback on report generation; connecting the team with SLP users for user experience and usability testing
+  \end{itemize} \\
+  \hline
+  Dr. Yang Yue &
+  \begin{itemize}[leftmargin=*, nosep, before=\vspace{1mm}, after=\vspace{1mm}]
+    \item Providing feedback on security during project development
+  \end{itemize} \\
+  \hline
+  Tanya Djavaherpour &
+  \begin{itemize}[leftmargin=*, nosep, before=\vspace{1mm}, after=\vspace{1mm}]
+    \item Milestone and documentation feedback
+  \end{itemize} \\
+  \hline
+\end{tabular}
+\end{center}
+
+\vspace{1em}
+
+\noindent\textbf{Role Descriptions:}
+\begin{itemize}
+  \item \textbf{Stakeholder Communication Lead:} Runs validation sessions with supervisors and SLPs, and records their feedback on requirements and system outputs.
+  \item \textbf{Code Review Lead:} Reviews pull requests against the requirements and ensures CI checks pass before merging.
+  \item \textbf{Documentation Reviewer:} Checks deliverables for consistency with the SRS and VnV Plan, and verifies AI use is disclosed and checked.
+  \item \textbf{Security Verification:} Tests access control, session timeouts, encryption, audit logging, backups, and HIPAA compliance.
+  \item \textbf{Frontend Verification:} Tests that UI components behave correctly and clinicians can move between workflow stages without losing work.
+  \item \textbf{UI Design Verification:} Reviews diagrams and mockups against the requirements before implementation.
+  \item \textbf{Transcription Verification:} Tests transcript generation, speaker labelling, and interference and error flags against the team's answer keys.
+  \item \textbf{Report Verification:} Tests that reports and exports include all clinician edits and verified results, and match stored data.
+  \item \textbf{Usability Testing Lead:} Runs usability tests with clinicians and measures task completion and survey scores against the usability requirements.
+  \item \textbf{Integration Lead:} Tests the end-to-end workflow across SAFA and the dashboard to confirm they work as one system.
+  \item \textbf{SRS Verification:} Confirms requirements are clear, testable, and traced to at least one test.
+  \item \textbf{VnV Verification:} Reviews test cases for completeness, specificity, and traceability.
+\end{itemize}
 
 \subsection{SRS Verification}
 
