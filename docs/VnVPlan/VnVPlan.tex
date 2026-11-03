@@ -922,6 +922,128 @@ This section verifies that patient information and assessment recordings are bac
   \end{mdframed}
 \end{enumerate}
 
+\subsubsection{Security}
+This section verifies that patient data is protected. Clinicians can only access their own patients, idle sessions time out, data is encrypted in transit and in storage, and all access to patient data is logged.
+\begin{enumerate}
+  \item NFR-ST-S1: \textbf{Restrict Access to Assigned Patients\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that a clinician cannot access another clinician's patients through the interface, by URL, or through the API. \par
+      \textbf{Type:} Nonfunctional, Dynamic, Automatic \par
+      \textbf{Initial State:} The test database contains two clinicians, each with 2 assigned patients that have at least one assessment. The patient and assessment IDs are documented prior to testing for later reference. \par
+      \textbf{Input:} While logged in as the first clinician, 3 requests for each of the second clinician's patients: opening the patient's page by URL, requesting the patient record through the API, and requesting one of the patient's recordings through the API. \par
+      \textbf{Output:} All requests are denied with an access error, and no patient data, transcripts, or recordings belonging to the second clinician are returned (\srsnfr*{5}). \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+      \item[1.] Using an automated test, load the data from the test database and log in as the first clinician.
+      \item[2.] Send each request in the input list using the second clinician's documented IDs.
+      \item[3.] Check that every request returns an access error and that no response contains the second clinician's patient data.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item NFR-ST-S2: \textbf{Session Timeout After Inactivity\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that an idle session expires, the clinician's work is saved, and the clinician must log in again before any patient data is shown. \par
+      \textbf{Type:} Nonfunctional, Dynamic, Manual \par
+      \textbf{Initial State:} A clinician account is logged in, and an assessment is open with one unsaved transcript edit. \par
+      \textbf{Input:} No activity in the browser for IDLE\_TIMEOUT minutes, then an attempt to open another patient record. \par
+      \textbf{Output:} After IDLE\_TIMEOUT minutes, the system saves the clinician's work, returns them to the login page with a message explaining the session ended due to inactivity, and shows no patient data until they log in again (\srsnfr*{6}). \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+      \item[1.] Make one transcript edit without saving, and note the time.
+      \item[2.] Leave the browser idle for IDLE\_TIMEOUT minutes, then check that the login page is shown with the inactivity message.
+      \item[3.] Try to open another patient record and press the browser's back button, and check that no patient data is shown in either case.
+      \item[4.] Log back in, reopen the assessment, and check that the transcript edit was saved.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item NFR-ST-S3: \textbf{Encrypt Data in Transit\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that recordings, transcripts, and patient data are encrypted using TRANSIT\_ENCRYPTION\_STANDARD when sent between the browser and the server, and from the server to third-party transcription services. \par
+      \textbf{Type:} Nonfunctional, Dynamic, Manual \par
+      \textbf{Initial State:} A clinician account is logged in, and a network capture tool is running on the test device. \par
+      \textbf{Input:} 5 actions performed while traffic is captured: logging in, opening a patient record, playing a recording, downloading a report, and submitting a recording for transcription. \par
+      \textbf{Output:} All captured traffic uses and requests to the transcription service use TRANSIT\_ENCRYPTION\_STANDARD, and no patient data, credentials, or recordings appear in plain text (\srsnfr*{7}). \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+      \item[1.] Start the capture and perform each action in the input list.
+      \item[2.] Stop the capture and check the protocol and version used by each connection.
+      \item[3.] Search the capture for the patient's name and the clinician's email, and check that neither appears in plain text.
+      \item[4.] Try to open the site over unencrypted HTTP and check that the connection is redirected to an encrypted one or refused.
+      \item[5.] Check the server logs for the transcription request and confirm it was sent using TRANSIT\_ENCRYPTION\_STANDARD.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item NFR-ST-S4: \textbf{Encrypt Stored Data\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that stored recordings and transcripts are encrypted using STORAGE\_ENCRYPTION\_STANDARD. \par
+      \textbf{Type:} Nonfunctional, Static and Dynamic, Manual \par
+      \textbf{Initial State:} One mock assessment with a recording and transcript has been saved to the system. \par
+      \textbf{Input:} The database and file storage configuration, and the raw stored files for the mock assessment. \par
+      \textbf{Output:} The storage configuration shows 
+      \\STORAGE\_ENCRYPTION\_STANDARD is enabled for the 
+      \\database and file storage, and the raw stored recording and transcript cannot be read outside the system (\srsnfr*{7}). \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+      \item[1.] Review the storage configuration and record the encryption setting for each storage location.
+      \item[2.] Access the raw stored files for the mock assessment directly, outside the system.
+      \item[3.] Check that the recording cannot be played and the transcript text cannot be read.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item NFR-ST-S5: \textbf{Log Access to Patient Data\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that every access to patient data is recorded in an audit log that clinicians cannot edit. \par
+      \textbf{Type:} Nonfunctional, Static and Dynamic, Automatic and Manual \par
+      \textbf{Initial State:} A clinician account is logged in, and a patient record with one assessment exists. \par
+      \textbf{Input:} 4 actions on the patient's assessment: viewing it, editing one transcript segment, downloading the
+       recording, and exporting the report. The time of each action is documented for later reference. \par
+      \textbf{Output:} The audit log contains one entry for each action, with the user, the action, the item affected, and the date and time. 
+      Attempts by the clinician to edit or delete entries are denied (\srsnfr*{8}). \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+      \item[1.] Using an automated test, perform each action in the input list as the clinician.
+      \item[2.] Check that the audit log has a matching entry for each action, with the correct user, action, item, and time.
+      \item[3.] While logged in as the clinician, try to edit and delete a log entry through the interface and the API, and check that both are denied.
+      \end{enumerate}
+  \end{mdframed}
+\end{enumerate}
+
+\subsubsection{Compliance}
+This section verifies that TeLaC meets the HIPAA Security Rule technical safeguards. Both tests are static and done through document review.
+\begin{enumerate}
+  \item NFR-ST-CO1: \textbf{HIPAA Technical Safeguards Review\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that each HIPAA Security Rule technical safeguard is covered by a mechanism in TeLaC. \par
+      \textbf{Type:} Nonfunctional, Static, Manual \par
+      \textbf{Initial State:} The system design and the tests in the Security section are complete. \par
+      \textbf{Input:} A table mapping each technical safeguard (access control, audit controls, integrity, person or entity authentication, and transmission security) to the TeLaC mechanism and test that covers it. \par
+      \textbf{Output:} Every safeguard is mapped to at least one implemented mechanism and one passing test, with no gaps (\srsnfr*{15}). \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+      \item[1.] Fill in the mapping table for each technical safeguard.
+      \item[2.] Review each row and record any safeguard without a mechanism or passing test as a GitHub issue.
+      \item[3.] Share the completed table with the security supervisor for review, and record their feedback as GitHub issues.
+      \item[4.] Check that all issues are closed and every safeguard is covered.
+      \end{enumerate}
+  \end{mdframed}
+
+  \item NFR-ST-CO2: \textbf{Business Associate Agreements for Third-Party Services\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that every third-party service that handles patient health information has a Business Associate Agreement (BAA). \par
+      \textbf{Type:} Nonfunctional, Static, Manual \par
+      \textbf{Initial State:} The list of third-party services used by TeLaC is finalized. \par
+      \textbf{Input:} The list of third-party services, including Whisper and Deepgram, and each provider's BAA documentation. \par
+      \textbf{Output:} Every service that stores, processes, or transmits patient health information has a BAA in place, and any service without one is not used with real patient data (\srsnfr*{15}). \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+      \item[1.] List every third-party service and record whether it handles patient health information.
+      \item[2.] For each service that does, check whether a BAA is in place and record the result.
+      \item[3.] Record any service without a BAA as a GitHub issue.
+      \end{enumerate}
+  \end{mdframed}
+\end{enumerate}
+
+
 
 \subsubsection{Traceability Between Test Cases and Requirements}
 
