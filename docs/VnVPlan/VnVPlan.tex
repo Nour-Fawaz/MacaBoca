@@ -1025,33 +1025,6 @@ The timing tolerances for these features are tested separately in the Performanc
   \end{mdframed}
 \end{enumerate}
 
-\subsubsection{Assessment Interface}
-This section verifies the child-facing side of the assessment, where breaks keep children engaged during long assessments.
-\begin{enumerate}
-  \item FR-ST-AI1: \textbf{Breaks During a Child Assessment\\}
-  \begin{mdframed}[linewidth=0.5mm]
-      \textbf{Purpose:} Verifies that the system shows a break activity after the configured questions and then resumes the assessment where it left off. \par
-      \textbf{Type:} Manual, Dynamic \par
-      \textbf{Initial State:} A test patient account is logged in on the patient-facing site, and 2 assessments are assigned to it. \par
-      \textbf{Input:} A 15-question assessment configured with breaks after questions 5 and 10, and a second assessment with no breaks configured. Each is completed from start to finish. \par
-      \textbf{Output:} In the first assessment, a break activity is shown after questions 5 and 10 only, and the assessment then continues from questions 6 and 11, with all earlier answers kept. In the second assessment, no break activity is shown. \par
-      \textbf{Test Case Derivation:} \srsfr*{24} requires that a break activity is shown after the number of questions set for each assessment, and that the assessment then resumes where it left off. Children with limited attention may disengage during long assessments, but a break must not cause answers to be lost or questions to be skipped. \par
-      \textbf{How the test will be performed:}
-      \begin{enumerate}
-        \item[1.] Start the first assessment and answer each question.
-        \item[2.] Record after which questions a break activity is shown, and which question is shown after each break ends.
-        \item[3.] After finishing, check from the clinician side that all 15 answers were saved.
-        \item[4.] Complete the second assessment and check that no break activity is shown.
-      \end{enumerate}
-  \end{mdframed}
-\end{enumerate}
-
-\subsubsection{Transcript Review and Editing}
-\wss{Placeholder: FR-ST-TR1 to TR4 (Person 3).}
-
-\subsubsection{Playback and Navigation}
-\wss{Placeholder: FR-ST-PN1 to PN4 (Person 3).}
-
 \subsubsection{Assessment Evaluation and Notes}
 This section verifies that clinicians can manually grade assessment questions,
 create notes on individual questions and assessments as a whole, and update 
@@ -1224,7 +1197,25 @@ This section verifies that assessment results are shown in a designated view, or
 
 
 \subsubsection{Assessment Interface}
-\wss{Placeholder: FR-ST-AI1 (Person 3).}
+This section verifies the child-facing side of the assessment, where breaks keep children engaged during long assessments.
+\begin{enumerate}
+  \item FR-ST-AI1: \textbf{Breaks During a Child Assessment\\}
+  \begin{mdframed}[linewidth=0.5mm]
+      \textbf{Purpose:} Verifies that the system shows a break activity after the configured questions and then resumes the assessment where it left off. \par
+      \textbf{Type:} Manual, Dynamic \par
+      \textbf{Initial State:} A test patient account is logged in on the patient-facing site, and 2 assessments are assigned to it. \par
+      \textbf{Input:} A 15-question assessment configured with breaks after questions 5 and 10, and a second assessment with no breaks configured. Each is completed from start to finish. \par
+      \textbf{Output:} In the first assessment, a break activity is shown after questions 5 and 10 only, and the assessment then continues from questions 6 and 11, with all earlier answers kept. In the second assessment, no break activity is shown. \par
+      \textbf{Test Case Derivation:} \srsfr*{24} requires that a break activity is shown after the number of questions set for each assessment, and that the assessment then resumes where it left off. Children with limited attention may disengage during long assessments, but a break must not cause answers to be lost or questions to be skipped. \par
+      \textbf{How the test will be performed:}
+      \begin{enumerate}
+        \item[1.] Start the first assessment and answer each question.
+        \item[2.] Record after which questions a break activity is shown, and which question is shown after each break ends.
+        \item[3.] After finishing, check from the clinician side that all 15 answers were saved.
+        \item[4.] Complete the second assessment and check that no break activity is shown.
+      \end{enumerate}
+  \end{mdframed}
+\end{enumerate}
 
 \subsection{Tests for Nonfunctional Requirements}
 
