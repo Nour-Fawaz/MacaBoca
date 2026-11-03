@@ -553,7 +553,7 @@ results at any time.
       \textbf{Initial State:} Clinician is logged into their account, a patient record exists, and a completed assessment containing questions that aren't automatically graded is open in the Individual Assessment View. \par
       \textbf{Input:} 1 assessment video containing 3 repetition questions that are not automatically graded. The clinician marks 2 of them as correct and 1 as incorrect. \par
       \textbf{Output:} For each of the 3 questions, the recording segment for that question plays while the clinician records an evaluation. After saving, each evaluation is shown with its question, and the assessment's score updates to include the 3 evaluations. \par
-      \textbf{Test Case Derivation:} \srsfr*{16} requires that the clinician can play the recording segment for every question and record an evaluation, which must then be shown with the question and included in the assessment's score. Some questions may have no single correct answer, so the clinician must be able to judge them from the recording. \par
+      \textbf{Test Case Derivation:} \srsfr*{16} requires that the clinician can play the recording segment for every question that is not automatically graded and record an evaluation, which must then be shown with the question and included in the assessment's score. Some questions may have no single correct answer, so the clinician must be able to judge them from the recording. \par
       \textbf{How the test will be performed:}
       \begin{enumerate}
         \item[1.] Record the assessment's score before grading.
@@ -567,7 +567,7 @@ results at any time.
       \textbf{Purpose:} Verifies that clinicians can add, edit, and delete a note on an individual assessment question, and that any notes saved stay attached to that question. \par
       \textbf{Type:} Manual, Dynamic \par
       \textbf{Initial State:} Clinician is logged into their account, a patient record exists, and a completed assessment is open in the Individual Assessment View. \par
-      \textbf{Input:} A note is added to question 3 of the assessment, then a word in the note is edited, then the note is deleted. \par
+      \textbf{Input:} A note with the text ``Substituted /s/ with /th/'' is added to question 3 of the assessment, then edited to ``Substituted /s/ with /th/ twice'', then the note is deleted. \par
       \textbf{Output:} After the note is added, it is shown with question 3 and with no other question, including after the assessment is closed and reopened. After it is edited, only the edited text is shown. After it is deleted, no note is shown on question 3 when the assessment is reopened. \par
       \textbf{Test Case Derivation:} \srsfr*{17} requires that a note saved on a question is shown with that question each time, unless the clinician edits or deletes it, as clinicians use these notes to record observations that support their final evaluation. \par
       \textbf{How the test will be performed:}
@@ -628,7 +628,7 @@ results at any time.
 \end{enumerate}
 
 \subsubsection{Results Display and Reporting}
-This section verifies that assessment results are shown in a designated view, organized by clinical domain and language, and included at the end of every completed session and within all reports.
+This section verifies that assessment results are shown in a designated view, organized by clinical domain and language, displayed in a format suited to the assessment's purpose, and included in reports with the clinician's edits.
 \begin{enumerate}
   \item FR-ST-RD1: \textbf{Display the Assessment Results Overview\\}
   \begin{mdframed}[linewidth=0.5mm]
