@@ -233,7 +233,7 @@ The following table is taken directly from the Module Guide document for this pr
 
 
 \section{MIS of ML Transcription Model} \label{MLTransModel}
-The ML Transcription Model module converts an assessment audio file into timed text segments using a locally run Whisper model, flagging uncertain segments for clinician review (\srsref{SR}{SR_ClinicianFinalJudgment}, \srsref{NFR}{NFR-S3}, \srsref{NFR}{NFR-A1}).
+The ML Transcription Model module converts an assessment audio file into timed text segments using a locally run Whisper model, flagging uncertain segments for clinician review (\srsref{SR}{SR_ClinicianFinalJudgment}, \srsref{NFR}{NFR-A1}).
 \subsection{Module}
 MLTransModel
 
@@ -254,8 +254,8 @@ Length (in seconds) of each increment of audio fed to the model. Each increment 
 Segments with confidence below this value are flagged for review.
 \item SUPPORTED\_AUDIO\_FORMATS: set of String\\
 Audio file formats the module accepts.
+\item This module also uses the auxiliary constants MIN\_AUDIO\_LEVEL ($-30$ dBFS average) and MAX\_REC\_LEN (30 minutes), defined in the SRS.
 \end{itemize}
-This module also uses the auxiliary constants MIN AUDIO LEVEL ($-30$ dBFS average) and MAX REC LEN (30 minutes), defined in the SRS.
 
 \subsubsection{Exported Access Programs}
 \begin{center}
@@ -277,7 +277,7 @@ transcribe & audioPath: String & transcript: sequence of Segment & InvalidAudioE
   \item confidence is a score in $[0,1]$.
   \item flagged is true iff the segment needs clinician review.
   \end{itemize}
-\item The transcript is a sequence of Segment, ordered by start time.
+\item The transcript is a sequence of Segment(s), ordered by start time.
 \end{itemize}
 
 \subsection{Semantics}
@@ -308,9 +308,9 @@ None. The module retains no audio or transcript between calls.
 \item transition: None
 \item output: A sequence of Segments.
   \begin{itemize}
-  \item Divide the audio at audioPath into consecutive chunks of CHUNK\_DURATION (the last may be shorter).
+  \item Divide the audio at audioPath into consecutive chunks of CHUNK\_DURATION.
   \item For each chunk in order, obtain its text and confidence from whisperModel and form a Segment with the chunk's time range. Set flagged to the value of \texttt{shouldFlag} for that segment and chunk.
-  \item The output is these Segment(s) in time order.
+  \item The output are these Segment(s) in time order.
   \end{itemize}
 \item exception:
   \begin{itemize}
@@ -324,7 +324,7 @@ None. The module retains no audio or transcript between calls.
 \noindent shouldFlag(s: Segment, chunkAudio):
 \begin{itemize}
 \item transition: None
-\item output: true iff $s.confidence <$ CONFIDENCE\_THRESHOLD, or the average audio level of chunkAudio is below MIN\_AUDIO\_LEVEL (the model cannot reliably recognize speech at that level, so text may be invented or speech missed).
+\item output: true if $s.confidence <$ CONFIDENCE\_THRESHOLD, or the average audio level of chunkAudio is below MIN\_AUDIO\_LEVEL (the model cannot reliably recognize speech at that level, so text may be invented or speech missed).
 \item exception: None
 \end{itemize}
 
@@ -353,8 +353,8 @@ Minimum average video brightness for the lighting to be considered adequate.
 Minimum video frame rate (frames per second) accepted.
 \item MAX\_UPLOAD\_ATTEMPTS: $\mathbb{N}$\\
 Number of times saving is attempted automatically before the failure is reported.
+\item This module also uses the auxiliary constants MIN\_AUDIO\_LEVEL ($-30$ dBFS average), MIN\_VIDEO\_RESOLUTION ($640 \times 480$ pixels) and MAX\_REC\_LEN (30 minutes), defined in the SRS.
 \end{itemize}
-This module also uses the auxiliary constants MIN\_AUDIO\_LEVEL ($-30$ dBFS average), MIN\_VIDEO\_RESOLUTION ($640 \times 480$ pixels) and MAX\_REC\_LEN (30 minutes), defined in the SRS.
 
 \subsubsection{Exported Access Programs}
 \begin{center}
@@ -409,7 +409,7 @@ The temporary copy of the current recording held on the patient's device until t
 \noindent checkQuality():
 \begin{itemize}
 \item transition: None
-\item output: A QualityReport based on a short sample of the camera and microphone input. passed is true iff the sample's audio level is at least MIN\_AUDIO\_LEVEL, its brightness is at least MIN\_BRIGHTNESS, and its resolution and frame rate are at least MIN\_RESOLUTION and MIN\_FRAME\_RATE. Each failed condition adds an entry to issues. The sample is discarded.
+\item output: A QualityReport based on a short sample of the camera and microphone input. passed is true if the sample's audio level is at least MIN\_AUDIO\_LEVEL, its brightness is at least MIN\_BRIGHTNESS, and its resolution and frame rate are at least MIN\_RESOLUTION and MIN\_FRAME\_RATE. Each failed condition adds an entry to issues. The sample is discarded.
 \item exception: PermissionDeniedError if access to the camera or microphone is not granted; DeviceUnavailableError if either device is missing or in use elsewhere.
 \end{itemize}
 
@@ -452,7 +452,7 @@ The temporary copy of the current recording held on the patient's device until t
 \noindent isIntact(stored: Recording, original: Recording):
 \begin{itemize}
 \item transition: None
-\item output: true iff stored can be decoded and played from start to end, and its duration and content match original.
+\item output: true if stored can be decoded and played from start to end, and its duration and content match original.
 \item exception: None
 \end{itemize}
 
@@ -479,8 +479,8 @@ This module is used by the Web Platform module, which displays the transcript an
 The roles a clinician can assign to a speaker.
 \item GENERATION\_ATTEMPTS: $\mathbb{N}$\\
 Number of times transcription is attempted automatically before a failure is reported, so the clinician does not have to restart it manually.
+\item This module also relies on the auxiliary constants MAX\_REC\_LEN (30 minutes) and SYNC\_TOL (500 ms), defined in the SRS.
 \end{itemize}
-This module also relies on the auxiliary constants MAX\_REC\_LEN (30 minutes) and SYNC\_TOL (500 ms), defined in the SRS.
 
 \subsubsection{Exported Access Programs}
 \begin{center}
@@ -503,7 +503,7 @@ completeTranscript & assessmentID: String, userID: String & unverified: sequence
 \item Transcript: a pair (status, segments).
   \begin{itemize}
   \item status is one of \{BEING\_GENERATED, DRAFT, VERIFIED\}.
-  \item segments is a sequence of Segment, ordered by start time.
+  \item segments is a sequence of Segment(s), ordered by start time.
   \end{itemize}
 \item Segment: a tuple (segmentID: String, start: $\mathbb{R}$, end: $\mathbb{R}$, text: String, originalText: String, speaker: String or none, language: String, confidence: $\mathbb{R}$, flagged: $\mathbb{B}$, verified: $\mathbb{B}$).
   \begin{itemize}
@@ -524,7 +524,7 @@ None.
 \item The caller has confirmed that userID belongs to the clinician assigned to the patient of the assessment (\srsref{NFR}{NFR-S1}).
 \item Each assessment has one recording, up to MAX\_REC\_LEN long, retrievable from Video Storage.
 \item The Database module records an audit entry for every view or change of a transcript made through this module (\srsref{NFR}{NFR-S4}).
-\item Clinicians review flagged segments against the video playback before relying on the transcript (\hazref{HAMLTM1}).
+\item Clinicians review flagged segments against the video playback before relying on the transcript (\hazref{HA-MLTM1}).
 \item Encryption of recordings and transcripts in transit and in storage is provided by the Encryption, Video Storage and Database modules (\srsref{NFR}{NFR-S3}).
 \end{itemize}
 
@@ -537,7 +537,7 @@ None.
   \item Set the transcript status to BEING\_GENERATED.
   \item Obtain the assessment's recording from Video Storage and extract the audio of the whole recording, or of portion if given, into a temporary audio file (\texttt{extractAudio}).
   \item Call MLTransModel.transcribe on the audio file, retrying up to GENERATION\_ATTEMPTS times if the model is unavailable.
-  \item Store each returned segment with text and originalText equal to the generated text, speaker none, verified false, and its times shifted by the start of portion (no shift for the whole recording).
+  \item Store each returned segment with text and originalText equal to the generated text, speaker none, verified false, and its times shifted by the start of portion.
   \item Set the transcript status to DRAFT.
   \item Delete the temporary audio file, whether or not generation succeeded.
   \item If generation fails, remove any segments added by this call and restore the previous status.
@@ -549,7 +549,7 @@ None.
 \noindent getTranscript(assessmentID, userID):
 \begin{itemize}
 \item transition: None
-\item output: The stored transcript, including its status (so the caller can tell the clinician that it is still being generated).
+\item output: The stored transcript, including its status.
 \item exception: AssessmentNotFoundError if assessmentID does not exist; NoTranscriptError if no transcript has been generated for it.
 \end{itemize}
 
@@ -564,14 +564,14 @@ None.
 \begin{itemize}
 \item transition: Set speaker of the segment to role. The change is saved immediately.
 \item output: None
-\item exception: InvalidRoleError if role is not in SPEAKER\_ROLES; otherwise as for editSegmentText.
+\item exception: InvalidRoleError if role is not in SPEAKER\_ROLES, otherwise same as editSegmentText.
 \end{itemize}
 
 \noindent verifySegment(assessmentID, segmentID, userID):
 \begin{itemize}
 \item transition: Set verified of the segment to true. The change is saved immediately.
 \item output: None
-\item exception: As for editSegmentText.
+\item exception: Same as editSegmentText.
 \end{itemize}
 
 \noindent completeTranscript(assessmentID, userID):
