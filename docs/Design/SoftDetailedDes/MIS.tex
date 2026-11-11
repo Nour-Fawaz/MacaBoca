@@ -627,7 +627,7 @@ The following lists the uses of AI applied throughout the entire document:
 \noindent\textbf{All Modules}
 \begin{itemize}
     \item Brainstorm modules in addition to the already existing ones
-    \item Identify possible state and environment variables for each module
+    \item Flesh out ideas for each module
 \end{itemize}
 
 \subsection{Verification of AI-Generated Content}
@@ -675,6 +675,55 @@ graduate attribute of Problem Analysis and Design.
   Your reflection should be about concepts learned in your SE education, such as modular decomposition, cohesion, coupling, information hiding, etc.  You should critique the quality and utility of the specification you received.
 
   You should create a PR for your implemented module.  A link to the PR should be part of your reflection.
+
+\subsection*{Nour}
+\subsubsection*{Question 1}
+Writing the MIS went smoothly because we already had a clear understanding of what each module is meant to do and how it contributes to the system. Our requirements and hazard analysis gave us a solid starting point, so we could focus on defining each module’s interface instead of deciding what the module was for. 
+Knowing each module’s intended behaviour made it easier to decide what to expose through its access programs and what to keep hidden.
+\subsubsection*{Question 2}
+The most difficult part was figuring out how the different modules would interact considering several of them depend on each other. 
+For example, the Transcription Service Interface relies on Video Storage, the ML Transcription Model and the Database. 
+It was hard to decide which module should own each responsibility and where one module’s interface should end and the next begin. 
+We resolved this by discussing the data that passes between modules and keeping each interface to the minimum its callers need. 
+This kept coupling low and let us write each module without knowing how the others work internally.
+\subsubsection*{Question 3}
+The ML Transcription Model decision came from our supervisors. 
+They already use Whisper in their existing workflow, but they access it through an API. However, they required us to implement the system such that the model is run locally. 
+This changes the module’s interface and means recordings do not have to leave the device for transcription.
+
+The decomposition of the remaining modules were our own decisions. 
+We split them so that each module has a single responsibility, without breaking the system down so far that the modules became trivial. 
+I worked on the Video Recording and Transcription Service Interface modules. 
+We made each its own module because they handle different concerns. 
+Video Recording deals with capturing and verifying recordings, and the Transcription Service Interface manages generating and reviewing transcripts.
+\subsubsection*{Question 4}
+None of our other documents really needed to be changed. 
+In fact, we referenced our requirements and hazard analysis while deciding on the different modules of the system, hence they were useful as is. 
+Our supervisors also checked over our requirements and were satisfied with them. 
+That told us we were on the right track, so we went ahead and started designing our system.
+\subsubsection*{Question 5}
+The biggest limitation is scope. 
+Some features in our requirements document, such as result visualization and patient-facing reports, are listed under likely changes. 
+They are low priority, so we don’t expect to build them within this project and have documented them as future work. 
+
+The other limitation is the transcription model itself. We use Whisper, and its performance is average, particularly for difficult Mandarin words. 
+We reduced the risk by flagging low-confidence segments and having the clinician review and correct the transcript. 
+It still means the transcripts won’t always be accurate on the first pass. 
+
+With unlimited time and resources, we would first add an interference detection system using a machine learning model. 
+We would also evaluate how accurate the transcription is on Mandarin-English speech, for example by comparing the generated transcripts with the clinicians’ corrected versions.
+
+\subsubsection*{Question 6}  
+The first alternative design we thought of was combining recording, transcription and storage into one large module. 
+The benefit would be fewer interfaces to manage, and there would be no need to decide how modules communicate. 
+However, the trade-off is that the module would have low cohesion, so a change in one area (for example, transcript editing, which we expect to change) could affect the others. 
+We didn’t choose it because separate modules let each one hide its own design decisions and be tested on its own.
+
+The second alternative design was having the transcription module keep the transcript in memory. 
+This would be simpler to write; however, edits could be lost between sessions, and clinicians might not be able to continue their work from another device. 
+We didn’t choose it because our transcription module stores nothing itself and saves all transcript data through the Database module, so the saved work is preserved. 
+
+Overall, we chose our design because it separates responsibilities cleanly, so each module can be changed and tested on its own. This also allows each module to be small enough to build in the time we have.
 
 \end{enumerate}
 
