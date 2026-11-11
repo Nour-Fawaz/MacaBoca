@@ -233,7 +233,7 @@ The following table is taken directly from the Module Guide document for this pr
 
 
 \section{MIS of ML Transcription Model} \label{MLTransModel}
-The ML Transcription Model module converts an assessment audio file into timed text segments using a locally run Whisper model, flagging uncertain segments for clinician review (\srsref{FR}{FR_Label13}, \srsref{NFR}{NFR-S3}).
+The ML Transcription Model module converts an assessment audio file into timed text segments using a locally run Whisper model, flagging uncertain segments for clinician review (\srsref{SR}{SR_ClinicianFinalJudgment}, \srsref{NFR}{NFR-S3}, \srsref{NFR}{NFR-A1}).
 \subsection{Module}
 MLTransModel
 
@@ -268,7 +268,17 @@ transcribe & audioPath: String & transcript: sequence of Segment & InvalidAudioE
 \end{tabular}
 \end{center}
 
-\noindent A Segment is a tuple (text: String, start: $\mathbb{R}$, end: $\mathbb{R}$, confidence: $\mathbb{R}$, flagged: $\mathbb{B}$): one displayable chunk of transcribed speech, its time range in the recording, a confidence score in $[0,1]$, and whether it needs clinician review. The transcript is ordered by start time.
+\noindent The access programs use the following type:
+\begin{itemize}
+\item Segment: a tuple (text: String, start: $\mathbb{R}$, end: $\mathbb{R}$, confidence: $\mathbb{R}$, flagged: $\mathbb{B}$), representing one displayable chunk of transcribed speech.
+  \begin{itemize}
+  \item text is the transcribed speech.
+  \item start and end give the time range of the chunk in the recording.
+  \item confidence is a score in $[0,1]$.
+  \item flagged is true iff the segment needs clinician review.
+  \end{itemize}
+\item The transcript is a sequence of Segment, ordered by start time.
+\end{itemize}
 
 \subsection{Semantics}
 
@@ -296,11 +306,11 @@ None. The module retains no audio or transcript between calls.
 \noindent transcribe(audioPath):
 \begin{itemize}
 \item transition: None
-\item output: A sequence of Segment produced as follows (\srsref{FR}{FR_Label13}).
+\item output: A sequence of Segments.
   \begin{itemize}
   \item Divide the audio at audioPath into consecutive chunks of CHUNK\_DURATION (the last may be shorter).
   \item For each chunk in order, obtain its text and confidence from whisperModel and form a Segment with the chunk's time range. Set flagged to the value of \texttt{shouldFlag} for that segment and chunk.
-  \item The output is these Segments in time order.
+  \item The output is these Segment(s) in time order.
   \end{itemize}
 \item exception:
   \begin{itemize}
@@ -361,8 +371,14 @@ getStatus & - & status: \{IDLE, RECORDING, PENDING\_SAVE, SAVED\} & - \\
 \end{tabular}
 \end{center}
 
-\noindent A QualityReport is a tuple (passed: $\mathbb{B}$, issues: sequence of String): whether the audio and video meet the minimum levels above, and a description of each problem found (e.g., audio too quiet, lighting too dark, resolution too low) so the patient can correct their setup.
-
+\noindent The access programs use the following type:
+\begin{itemize}
+\item QualityReport: a tuple (passed: $\mathbb{B}$, issues: sequence of String).
+  \begin{itemize}
+  \item passed is true iff the audio and video meet the minimum levels above.
+  \item issues describes each problem found (e.g., audio too quiet, lighting too dark, resolution too low) so the patient can correct their setup.
+  \end{itemize}
+\end{itemize}
 \subsection{Semantics}
 
 \subsubsection{State Variables}
@@ -438,6 +454,140 @@ The temporary copy of the current recording held on the patient's device until t
 \item transition: None
 \item output: true iff stored can be decoded and played from start to end, and its duration and content match original.
 \item exception: None
+\end{itemize}
+
+\newpage
+\section{MIS of Transcription Service Interface Module} \label{TranscriptionServiceInterface}
+The Transcription Service Interface module generates a draft transcript for an assessment recording and manages the clinician's review of it: edits, speaker roles and verification (\srsref{FR}{FR_AutomaticTranscription}, \srsref{FR}{FR_TranscriptionEditing}, \srsref{FR}{FR_Label6}, \srsref{NFR}{NFR-RE1}).
+
+\subsection{Module}
+TranscriptionServiceInterface
+
+\subsection{Uses}
+\begin{itemize}
+\item MLTransModel module (generates timed text segments from audio)
+\item Video Storage module (provides the recording of an assessment)
+\item Database module (stores transcripts and records changes to them in the audit log)
+\end{itemize}
+This module is used by the Web Platform module, which displays the transcript and passes the clinician's actions to it.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+\begin{itemize}
+\item SPEAKER\_ROLES: set of String = \{System, Child, Parent, Experimenter, Multiple Speakers, Others\}\\
+The roles a clinician can assign to a speaker.
+\item GENERATION\_ATTEMPTS: $\mathbb{N}$\\
+Number of times transcription is attempted automatically before a failure is reported, so the clinician does not have to restart it manually.
+\end{itemize}
+This module also relies on the auxiliary constants MAX\_REC\_LEN (30 minutes) and SYNC\_TOL (500 ms), defined in the SRS.
+
+\subsubsection{Exported Access Programs}
+\begin{center}
+\begin{tabular}{p{3.2cm} p{4.3cm} p{3cm} p{4.5cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+generateTranscript & assessmentID: String, userID: String, portion: Interval or none & - & AssessmentNotFoundError, RecordingUnavailableError, TranscriptionInProgressError, PortionAlreadyTranscribedError, GenerationFailedError \\
+getTranscript & assessmentID: String, userID: String & transcript: Transcript & AssessmentNotFoundError, NoTranscriptError \\
+editSegmentText & assessmentID: String, segmentID: String, newText: String, userID: String & - & NoTranscriptError, SegmentNotFoundError, TranscriptionInProgressError, SaveFailedError \\
+assignSpeaker & assessmentID: String, segmentID: String, role: String, userID: String & - & NoTranscriptError, SegmentNotFoundError, InvalidRoleError, TranscriptionInProgressError, SaveFailedError \\
+verifySegment & assessmentID: String, segmentID: String, userID: String & - & NoTranscriptError, SegmentNotFoundError, TranscriptionInProgressError, SaveFailedError \\
+completeTranscript & assessmentID: String, userID: String & unverified: sequence of String & NoTranscriptError, TranscriptionInProgressError, SaveFailedError \\
+\hline
+\end{tabular}
+\end{center}
+\noindent The access programs use the following types:
+\begin{itemize}
+\item Interval: a pair of times (from, to) in seconds on the recording's timeline.
+\item Transcript: a pair (status, segments).
+  \begin{itemize}
+  \item status is one of \{BEING\_GENERATED, DRAFT, VERIFIED\}.
+  \item segments is a sequence of Segment, ordered by start time.
+  \end{itemize}
+\item Segment: a tuple (segmentID: String, start: $\mathbb{R}$, end: $\mathbb{R}$, text: String, originalText: String, speaker: String or none, language: String, confidence: $\mathbb{R}$, flagged: $\mathbb{B}$, verified: $\mathbb{B}$).
+  \begin{itemize}
+  \item Times are stored to the nearest tenth of a second or better so playback can be synchronized within SYNC\_TOL (\srsref{NFR}{NFR-P2}).
+  \item A segment counts as edited when text differs from originalText, so automatic and clinician-modified content can be told apart (\srsref{NFR}{NFR-UN1}).
+  \end{itemize}
+\end{itemize}
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+None. All transcript data is held by the Database module, so work saved in one session is available in the next (\srsref{NFR}{NFR-RE2}).
+
+\subsubsection{Environment Variables}
+None.
+
+\subsubsection{Assumptions}
+\begin{itemize}
+\item The caller has confirmed that userID belongs to the clinician assigned to the patient of the assessment (\srsref{NFR}{NFR-S1}).
+\item Each assessment has one recording, up to MAX\_REC\_LEN long, retrievable from Video Storage.
+\item The Database module records an audit entry for every view or change of a transcript made through this module (\srsref{NFR}{NFR-S4}).
+\item Clinicians review flagged segments against the video playback before relying on the transcript (\hazref{HAMLTM1}).
+\item Encryption of recordings and transcripts in transit and in storage is provided by the Encryption, Video Storage and Database modules (\srsref{NFR}{NFR-S3}).
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent generateTranscript(assessmentID, userID, portion):
+\begin{itemize}
+\item transition:
+  \begin{itemize}
+  \item Set the transcript status to BEING\_GENERATED.
+  \item Obtain the assessment's recording from Video Storage and extract the audio of the whole recording, or of portion if given, into a temporary audio file (\texttt{extractAudio}).
+  \item Call MLTransModel.transcribe on the audio file, retrying up to GENERATION\_ATTEMPTS times if the model is unavailable.
+  \item Store each returned segment with text and originalText equal to the generated text, speaker none, verified false, and its times shifted by the start of portion (no shift for the whole recording).
+  \item Set the transcript status to DRAFT.
+  \item Delete the temporary audio file, whether or not generation succeeded.
+  \item If generation fails, remove any segments added by this call and restore the previous status.
+  \end{itemize}
+\item output: None
+\item exception: AssessmentNotFoundError if assessmentID does not exist; RecordingUnavailableError if the recording cannot be obtained; TranscriptionInProgressError if the status is already BEING\_GENERATED; PortionAlreadyTranscribedError if existing segments overlap portion (or any segments exist, when portion is none); GenerationFailedError if all attempts fail.
+\end{itemize}
+
+\noindent getTranscript(assessmentID, userID):
+\begin{itemize}
+\item transition: None
+\item output: The stored transcript, including its status (so the caller can tell the clinician that it is still being generated).
+\item exception: AssessmentNotFoundError if assessmentID does not exist; NoTranscriptError if no transcript has been generated for it.
+\end{itemize}
+
+\noindent editSegmentText(assessmentID, segmentID, newText, userID):
+\begin{itemize}
+\item transition: Set text of the segment to newText. originalText is unchanged. The change is saved immediately.
+\item output: None
+\item exception: NoTranscriptError, SegmentNotFoundError, TranscriptionInProgressError if the status is BEING\_GENERATED; SaveFailedError if the change could not be saved, in which case nothing is changed and the caller keeps the clinician's input to retry.
+\end{itemize}
+
+\noindent assignSpeaker(assessmentID, segmentID, role, userID):
+\begin{itemize}
+\item transition: Set speaker of the segment to role. The change is saved immediately.
+\item output: None
+\item exception: InvalidRoleError if role is not in SPEAKER\_ROLES; otherwise as for editSegmentText.
+\end{itemize}
+
+\noindent verifySegment(assessmentID, segmentID, userID):
+\begin{itemize}
+\item transition: Set verified of the segment to true. The change is saved immediately.
+\item output: None
+\item exception: As for editSegmentText.
+\end{itemize}
+
+\noindent completeTranscript(assessmentID, userID):
+\begin{itemize}
+\item transition: Set the transcript status to VERIFIED. Segments that are not verified keep verified false.
+\item output: The segmentIDs of the segments that are still unverified, so the caller can offer to return to them.
+\item exception: NoTranscriptError, TranscriptionInProgressError, SaveFailedError.
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\noindent extractAudio(recording, portion):
+\begin{itemize}
+\item transition: Writes a temporary audio file.
+\item output: A file in a format supported by MLTransModel containing the audio of recording (restricted to portion, if given).
+\item exception: RecordingUnavailableError if the recording has no readable audio.
 \end{itemize}
 
 \newpage
