@@ -193,6 +193,9 @@ actually be implemented.
 \begin{description}
 \item [\refstepcounter{mnum} \mthemnum \label{mHH}:] Hardware-Hiding Module
 \item ...
+\item [\refstepcounter{mnum} \mthemnum \label{mTSI}:] Transcription Service Interface Module
+\item [\refstepcounter{mnum} \mthemnum \label{mVR}:] Video Recording Module
+\item [\refstepcounter{mnum} \mthemnum \label{mML}:] ML Transcription Module
 \end{description}
 
 
@@ -278,9 +281,13 @@ to be implemented.
 \item[Implemented By:] --
 \end{description}
 
+
+
+
+
 \subsubsection{Input Format Module (\mref{mInput})}
 
-\begin{description}
+\begin{description} %REMOVE WHEN WE SUBMIT
 \item[Secrets:]The format and structure of the input data.
 \item[Services:]Converts the input data into the data structure used by the
   input parameters module.
@@ -289,7 +296,21 @@ to be implemented.
   [Information to include for leaf modules in the decomposition by secrets tree.]
 \end{description}
 
-\subsubsection{Etc.}
+\subsubsection{Video Recording Module (\mref{mVR})}
+\begin{description}
+\item[Secrets:]How recording quality is judged, how a recording moves from capture to being saved, and how failed uploads are retried and verified.
+\item[Services:]Checks that the audio and video are good enough before an assessment, records the session, and saves the recording intact so it can be played back and backed up. It does not know how the camera and microphone are accessed, or how and where recordings are stored.
+\item[Implemented By:] \progname{}
+\item[Type of Module:] Abstract Object
+\end{description}
+
+\subsubsection{Transcription Service Interface Module (\mref{mTSI})}
+\begin{description}
+\item[Secrets:]The format of a transcript, the rules for editing, labelling and verifying its segments, and the format of exported annotations.
+\item[Services:]Generates a draft transcript for an assessment recording, and lets the clinician correct the text, assign speaker roles, verify segments, mark the transcript complete and export the annotations. It does not know how speech is converted to text, or how transcripts are stored.
+\item[Implemented By:] \progname{}
+\item[Type of Module:] Library
+\end{description}
 
 
 \subsection{Software Decision Module}
@@ -305,7 +326,15 @@ to be implemented.
 \item[Implemented By:] --
 \end{description}
 
-\subsubsection{Etc.}
+\subsubsection{ML Transcription Model Module (\mref{mML})}
+\begin{description}
+\item[Secrets:]The speech recognition model used, how audio is split into chunks, and how the model's confidence and the audio level are turned into flags for clinician review.
+\item[Services:]Converts an audio file into timed text segments, each with a confidence score, a detected language and a flag showing whether it needs review. Callers do not need to know which model produces the text.
+\item[Implemented By:] \progname{} (using the Whisper speech-to-text model)
+\item[Type of Module:] Library
+\end{description}
+
+
 
 \section{Traceability Matrix} \label{SecTM}
 
@@ -320,17 +349,25 @@ requirements and between the modules and the anticipated changes.
 \toprule
 \textbf{Req.} & \textbf{Modules}\\
 \midrule
-R1 & \mref{mHH}, \mref{mInput}, \mref{mParams}, \mref{mControl}\\
-R2 & \mref{mInput}, \mref{mParams}\\
-R3 & \mref{mVerify}\\
-R4 & \mref{mOutput}, \mref{mControl}\\
-R5 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}, \mref{mSeqDS}, \mref{mSolver}, \mref{mPlot}\\
-R6 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}, \mref{mSeqDS}, \mref{mSolver}, \mref{mPlot}\\
-R7 & \mref{mOutput}, \mref{mEnergy}, \mref{mControl}, \mref{mSeqDS}, \mref{mPlot}\\
-R8 & \mref{mOutput}, \mref{mEnergy}, \mref{mControl}, \mref{mSeqDS}, \mref{mPlot}\\
-R9 & \mref{mVerifyOut}\\
-R10 & \mref{mOutput}, \mref{mODEs}, \mref{mControl}\\
-R11 & \mref{mOutput}, \mref{mODEs}, \mref{mEnergy}, \mref{mControl}\\
+FR1 & \mref{mTSI}, \mref{mML}\\
+FR2 & \mref{mTSI}\\
+FR3 & \mref{mTSI}\\
+FR6 & \mref{mTSI}\\
+FR15 & \mref{mTSI}\\
+FR19 & \mref{mTSI}\\
+NFR7 & \mref{mVR}, \mref{mTSI}, \mref{mML}\\
+NFR8 & \mref{mTSI}\\
+NFR9 & \mref{mVR}\\
+NFR10 & \mref{mVR}, \mref{mML}\\
+NFR13 & \mref{mTSI}\\
+NFR14 & \mref{mTSI}\\
+NFR17 & \mref{mTSI}, \mref{mML}\\
+NFR18 & \mref{mTSI}\\
+NFR21 & \mref{mTSI}\\
+HA-VR1 & \mref{mVR}\\
+HA-VR2 & \mref{mVR}\\
+HAMLTM1 & \mref{mML}\\
+HAMLTM2 & \mref{mML}\\
 \bottomrule
 \end{tabular}
 \caption{Trace Between Requirements and Modules}
