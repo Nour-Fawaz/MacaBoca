@@ -239,23 +239,22 @@ MLTransModel
 
 \subsection{Uses}
 \begin{itemize}
-\item Local file system (to read the audio file)
 \item Locally installed Whisper speech-to-text model
+\item Local file system (to read the audio file)
 \end{itemize}
-This module is used by the SAFA module, which supplies the audio file and displays the returned transcript. Storage and transmission of audio and transcripts are handled by other modules (Database, Encryption).
-
+This module is used by the Transcription Service Interface module, which supplies the audio file and receives the segments. Storage and transmission of audio and transcripts are handled by other modules (Database, Encryption, API Gateway).
 \subsection{Syntax}
 
 \subsubsection{Exported Constants}
 \begin{itemize}
-\item CHUNK\_DURATION: $\mathbb{R}$\\
-Length (in seconds) of each increment of audio fed to the model. Each increment yields one segment.
-\item CONFIDENCE\_THRESHOLD: $\mathbb{R}$\\
+\item CHUNK\_DURATION = 30 seconds\\
+Length of each increment of audio fed to the model (Whisper's own processing window). Each increment yields one segment.
+\item CONFIDENCE\_THRESHOLD = 0.5\\
 Segments with confidence below this value are flagged for review.
-\item SUPPORTED\_AUDIO\_FORMATS: set of String\\
+\item SUPPORTED\_AUDIO\_FORMATS = \{WAV\}\\
 Audio file formats the module accepts.
-\item This module also uses the auxiliary constants MIN\_AUDIO\_LEVEL ($-30$ dBFS average) and MAX\_REC\_LEN (30 minutes), defined in the SRS.
 \end{itemize}
+This module also uses the auxiliary constants MIN AUDIO LEVEL ($-30$ dBFS average) and MAX REC LEN (30 minutes), defined in the SRS.
 
 \subsubsection{Exported Access Programs}
 \begin{center}
@@ -263,21 +262,22 @@ Audio file formats the module accepts.
 \hline
 \textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
 \hline
-transcribe & audioPath: String & transcript: sequence of Segment & InvalidAudioError, ModelUnavailableError \\
+transcribe & audioPath: String & transcript: sequence of RawSegment & InvalidAudioError, ModelUnavailableError \\
 \hline
 \end{tabular}
 \end{center}
 
 \noindent The access programs use the following type:
 \begin{itemize}
-\item Segment: a tuple (text: String, start: $\mathbb{R}$, end: $\mathbb{R}$, confidence: $\mathbb{R}$, flagged: $\mathbb{B}$), representing one displayable chunk of transcribed speech.
+\item RawSegment: a tuple (text: String, start: $\mathbb{R}$, end: $\mathbb{R}$, confidence: $\mathbb{R}$, flagged: $\mathbb{B}$, language: String), representing one displayable chunk of transcribed speech.
   \begin{itemize}
   \item text is the transcribed speech.
   \item start and end give the time range of the chunk in the recording.
   \item confidence is a score in $[0,1]$.
   \item flagged is true iff the segment needs clinician review.
+  \item language is the language the model detected in the chunk.
   \end{itemize}
-\item The transcript is a sequence of Segment(s), ordered by start time.
+\item The transcript is a sequence of RawSegment(s), ordered by start time.
 \end{itemize}
 
 \subsection{Semantics}
@@ -294,9 +294,10 @@ None. The module retains no audio or transcript between calls.
 \subsubsection{Assumptions}
 \begin{itemize}
 \item The model is installed locally and available before transcribe is called.
-\item audioPath refers to an audio file of one complete assessment session, supplied by the SAFA module.
+\item audioPath refers to an audio file of one complete assessment session, supplied by the Transcription Service Interface module.
 \item The model reports a confidence score for each chunk it transcribes.
-\item The SAFA module presents flagged segments to the clinician, who reviews them against the video playback before the transcript is used in an assessment (\hazref{HA-MLTM1}).
+\item The model reports the language it detects for each chunk, one of the supported assessment languages (Mandarin or English).
+\item The Transcription Service Interface returns the flags, and the Frontend presents flagged segments to the clinician, who reviews them against the video playback (\hazref{HA-MLTM1}).
 \item This module does not transmit audio or transcripts; transcription runs entirely on the local device, and storage and transmission are handled by the Database and Encryption modules (\hazref{HA-MLTM2}, NFR\ref{NFR-S3}).
 \item The audio file is no longer than MAX\_REC\_LEN.
 \end{itemize}
@@ -306,11 +307,11 @@ None. The module retains no audio or transcript between calls.
 \noindent transcribe(audioPath):
 \begin{itemize}
 \item transition: None
-\item output: A sequence of Segments.
+\item output: A sequence of RawSegment(s).
   \begin{itemize}
   \item Divide the audio at audioPath into consecutive chunks of CHUNK\_DURATION.
-  \item For each chunk in order, obtain its text and confidence from whisperModel and form a Segment with the chunk's time range. Set flagged to the value of \texttt{shouldFlag} for that segment and chunk.
-  \item The output are these Segment(s) in time order.
+  \item For each chunk in order, obtain its text, confidence, and language from whisperModel and form a RawSegment with the chunk's time range. Set flagged to the value of \texttt{shouldFlag} for that segment and chunk.
+  \item The output are these RawSegment(s) in time order.
   \end{itemize}
 \item exception:
   \begin{itemize}
@@ -321,166 +322,40 @@ None. The module retains no audio or transcript between calls.
 
 \subsubsection{Local Functions}
 
-\noindent shouldFlag(s: Segment, chunkAudio):
+\noindent shouldFlag(s: RawSegment, chunkAudio):
 \begin{itemize}
 \item transition: None
 \item output: true if $s.confidence <$ CONFIDENCE\_THRESHOLD, or the average audio level of chunkAudio is below MIN\_AUDIO\_LEVEL (the model cannot reliably recognize speech at that level, so text may be invented or speech missed).
 \item exception: None
 \end{itemize}
 
-\newpage
-
-\section{MIS of Video Recording Module} \label{VideoRecording}
-The Video Recording module captures an assessment session from the patient's camera and microphone, checks recording quality beforehand, and ensures the recording is saved intact and playable (\srsref{NFR}{NFR-M1}, \srsref{NFR}{NFR-P1}).
-
-\subsection{Module}
-VideoRecording
-
-\subsection{Uses}
-\begin{itemize}
-\item Web Platform module (camera and microphone access, and temporary storage on the patient's device)
-\item Video Storage module (permanent storage, retrieval and backup of recordings)
-\end{itemize}
-This module is used by the Web Platform module during an assessment. Encryption of stored recordings is handled by the Encryption module.
-
-\subsection{Syntax}
-
-\subsubsection{Exported Constants}
-\begin{itemize}
-\item MIN\_BRIGHTNESS: $\mathbb{R}$\\
-Minimum average video brightness for the lighting to be considered adequate.
-\item MIN\_FRAME\_RATE: $\mathbb{R}$\\
-Minimum video frame rate (frames per second) accepted.
-\item MAX\_UPLOAD\_ATTEMPTS: $\mathbb{N}$\\
-Number of times saving is attempted automatically before the failure is reported.
-\item This module also uses the auxiliary constants MIN\_AUDIO\_LEVEL ($-30$ dBFS average), MIN\_VIDEO\_RESOLUTION ($640 \times 480$ pixels) and MAX\_REC\_LEN (30 minutes), defined in the SRS.
-\end{itemize}
-
-\subsubsection{Exported Access Programs}
-\begin{center}
-\begin{tabular}{p{3cm} p{3.5cm} p{4cm} p{4.5cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-checkQuality & - & report: QualityReport & PermissionDeniedError, DeviceUnavailableError \\
-startRecording & - & - & PermissionDeniedError, DeviceUnavailableError, RecordingInProgressError \\
-stopRecording & - & - & NotRecordingError \\
-saveRecording & assessmentID: String & - & NoRecordingError, UploadFailedError, VerificationFailedError \\
-getStatus & - & status: \{IDLE, RECORDING, PENDING\_SAVE, SAVED\} & - \\
-\hline
-\end{tabular}
-\end{center}
-
-\noindent The access programs use the following type:
-\begin{itemize}
-\item QualityReport: a tuple (passed: $\mathbb{B}$, issues: sequence of String).
-  \begin{itemize}
-  \item passed is true iff the audio and video meet the minimum levels above.
-  \item issues describes each problem found (e.g., audio too quiet, lighting too dark, resolution too low) so the patient can correct their setup.
-  \end{itemize}
-\end{itemize}
-\subsection{Semantics}
-
-\subsubsection{State Variables}
-\begin{itemize}
-\item status: \{IDLE, RECORDING, PENDING\_SAVE, SAVED\}\\
-Where the current recording is in its lifecycle.
-\item localCopy: Recording or none\\
-The temporary copy of the current recording held on the patient's device until the system confirms it was saved successfully.
-\end{itemize}
-
-\subsubsection{Environment Variables}
-\begin{itemize}
-\item camera: the patient's video input device.
-\item microphone: the patient's audio input device.
-\item deviceStorage: temporary storage on the patient's device, in which localCopy is held.
-\end{itemize}
-
-\subsubsection{Assumptions}
-\begin{itemize}
-\item The caller runs checkQuality, and the patient has corrected any reported issues, before startRecording is called (\hazref{HA-VR1}).
-\item The Video Storage module reports success or failure of a store request, can return a stored recording for verification, and can create a backup copy of a stored recording.
-\item The patient's device has enough temporary storage to hold the full recording.
-\item assessmentID is supplied by the caller and identifies the assessment the recording belongs to.
-\end{itemize}
-
-\subsubsection{Access Routine Semantics}
-
-\noindent checkQuality():
-\begin{itemize}
-\item transition: None
-\item output: A QualityReport based on a short sample of the camera and microphone input. passed is true if the sample's audio level is at least MIN\_AUDIO\_LEVEL, its brightness is at least MIN\_BRIGHTNESS, and its resolution and frame rate are at least MIN\_RESOLUTION and MIN\_FRAME\_RATE. Each failed condition adds an entry to issues. The sample is discarded.
-\item exception: PermissionDeniedError if access to the camera or microphone is not granted; DeviceUnavailableError if either device is missing or in use elsewhere.
-\end{itemize}
-
-\noindent startRecording():
-\begin{itemize}
-\item transition: status := RECORDING; begin capturing audio and video from camera and microphone.
-\item output: None
-\item exception: PermissionDeniedError if access to the camera or microphone is not granted; DeviceUnavailableError if either device is missing or in use elsewhere; RecordingInProgressError if status = RECORDING.
-\end{itemize}
-
-\noindent stopRecording():
-\begin{itemize}
-\item transition: Stop capturing. localCopy := the complete recording, saved in deviceStorage. status := PENDING\_SAVE.
-\item output: None
-\item exception: NotRecordingError if status $\neq$ RECORDING.
-\end{itemize}
-
-\noindent saveRecording(assessmentID):
-\begin{itemize}
-\item transition:
-  \begin{itemize}
-  \item Request that Video Storage store localCopy under assessmentID, trying up to MAX\_UPLOAD\_ATTEMPTS times.
-  \item Retrieve the stored recording and check it with \texttt{isIntact}.
-  \item If the check passes, request that Video Storage create a backup of the stored recording, then localCopy := none and status := SAVED.
-  \item If any step fails, localCopy and status are unchanged, so saveRecording can be called again.
-  \end{itemize}
-\item output: None
-\item exception: NoRecordingError if status $\neq$ PENDING\_SAVE; UploadFailedError if storing the recording did not succeed after MAX\_UPLOAD\_ATTEMPTS attempts; VerificationFailedError if the stored recording is incomplete or cannot be played back.
-\end{itemize}
-
-\noindent getStatus():
-\begin{itemize}
-\item transition: None
-\item output: status
-\item exception: None
-\end{itemize}
-
-\subsubsection{Local Functions}
-
-\noindent isIntact(stored: Recording, original: Recording):
-\begin{itemize}
-\item transition: None
-\item output: true if stored can be decoded and played from start to end, and its duration and content match original.
-\item exception: None
-\end{itemize}
 
 \newpage
 \section{MIS of Transcription Service Interface Module} \label{TranscriptionServiceInterface}
-The Transcription Service Interface module generates a draft transcript for an assessment recording and manages the clinician's review of it: edits, speaker roles and verification (\srsref{FR}{FR_AutomaticTranscription}, \srsref{FR}{FR_TranscriptionEditing}, \srsref{FR}{FR_Label6}, \srsref{NFR}{NFR-RE1}).
+The Transcription Service Interface module generates a draft transcript for an assessment recording and manages the clinician's review of it: edits, speaker roles, verification and export (\srsref{FR}{FR_AutomaticTranscription}, \srsref{FR}{FR_TranscriptionEditing}, \srsref{FR}{FR_Label6}, \srsref{NFR}{NFR-RE1}).
 
 \subsection{Module}
 TranscriptionServiceInterface
 
 \subsection{Uses}
 \begin{itemize}
-\item MLTransModel module (generates timed text segments from audio)
-\item Video Storage module (provides the recording of an assessment)
-\item Database module (stores transcripts and records changes to them in the audit log)
+\item ML Transcription Model module: transcribe
+\item Database module: getRecording, saveSegments, getTranscript, updateSegment, setTranscriptStatus, logAccess
 \end{itemize}
-This module is used by the Web Platform module, which displays the transcript and passes the clinician's actions to it.
+This module is used by the API Gateway module, which passes on the clinician's actions after authorizing them, and by the Report Generation module, which reads transcripts.
 
 \subsection{Syntax}
 
 \subsubsection{Exported Constants}
 \begin{itemize}
-\item SPEAKER\_ROLES: set of String = \{System, Child, Parent, Experimenter, Multiple Speakers, Others\}\\
+\item SPEAKER\_ROLES = \{System, Child, Parent, Experimenter, Multiple Speakers, Others\}\\
 The roles a clinician can assign to a speaker.
-\item GENERATION\_ATTEMPTS: $\mathbb{N}$\\
+\item GENERATION\_ATTEMPTS = 3\\
 Number of times transcription is attempted automatically before a failure is reported, so the clinician does not have to restart it manually.
-\item This module also relies on the auxiliary constants MAX\_REC\_LEN (30 minutes) and SYNC\_TOL (500 ms), defined in the SRS.
+\item EXPORT\_FORMATS = \{CSV\}\\
+File formats in which annotations can be exported.
 \end{itemize}
+This module also relies on the auxiliary constants MAX\_REC\_LEN (30 minutes) and SYNC TOL (500 ms), defined in the SRS.
 
 \subsubsection{Exported Access Programs}
 \begin{center}
@@ -493,10 +368,12 @@ getTranscript & assessmentID: String, userID: String & transcript: Transcript & 
 editSegmentText & assessmentID: String, segmentID: String, newText: String, userID: String & - & NoTranscriptError, SegmentNotFoundError, TranscriptionInProgressError, SaveFailedError \\
 assignSpeaker & assessmentID: String, segmentID: String, role: String, userID: String & - & NoTranscriptError, SegmentNotFoundError, InvalidRoleError, TranscriptionInProgressError, SaveFailedError \\
 verifySegment & assessmentID: String, segmentID: String, userID: String & - & NoTranscriptError, SegmentNotFoundError, TranscriptionInProgressError, SaveFailedError \\
-completeTranscript & assessmentID: String, userID: String & unverified: sequence of String & NoTranscriptError, TranscriptionInProgressError, SaveFailedError \\
+completeTranscript & assessmentID: String, userID: String & - & NoTranscriptError, TranscriptionInProgressError, SaveFailedError \\
+exportAnnotations & assessmentID: String, userID: String, format: String & file: Bytes & NoTranscriptError, UnsupportedFormatError \\
 \hline
 \end{tabular}
 \end{center}
+
 \noindent The access programs use the following types:
 \begin{itemize}
 \item Interval: a pair of times (from, to) in seconds on the recording's timeline.
@@ -511,6 +388,8 @@ completeTranscript & assessmentID: String, userID: String & unverified: sequence
   \item A segment counts as edited when text differs from originalText, so automatic and clinician-modified content can be told apart (\srsref{NFR}{NFR-UN1}).
   \end{itemize}
 \end{itemize}
+The type Recording is defined by the Video Recording module (VideoRecording.Recording) and RawSegment by the ML Transcription Model module.
+
 \subsection{Semantics}
 
 \subsubsection{State Variables}
@@ -521,11 +400,11 @@ None.
 
 \subsubsection{Assumptions}
 \begin{itemize}
-\item The caller has confirmed that userID belongs to the clinician assigned to the patient of the assessment (\srsref{NFR}{NFR-S1}).
-\item Each assessment has one recording, up to MAX\_REC\_LEN long, retrievable from Video Storage.
-\item The Database module records an audit entry for every view or change of a transcript made through this module (\srsref{NFR}{NFR-S4}).
+\item The API Gateway has called the Account System's authorize routine, and userID is the resulting identity of a clinician assigned to the patient of the assessment (\srsref{NFR}{NFR-S1}).
+\item Each assessment has one recording, up to MAX\_REC\_LEN long, retrievable with Database.getRecording.
+\item The temporary audio file created by generateTranscript is kept in a protected folder on the server that only this module can read, and is deleted when generation ends.
 \item Clinicians review flagged segments against the video playback before relying on the transcript (\hazref{HA-MLTM1}).
-\item Encryption of recordings and transcripts in transit and in storage is provided by the Encryption, Video Storage and Database modules (\srsref{NFR}{NFR-S3}).
+\item Encryption of recordings and transcripts in storage is provided by the Database and Encryption modules, and in transit by the API Gateway (\srsref{NFR}{NFR-S3}).
 \end{itemize}
 
 \subsubsection{Access Routine Semantics}
@@ -534,51 +413,59 @@ None.
 \begin{itemize}
 \item transition:
   \begin{itemize}
-  \item Set the transcript status to BEING\_GENERATED.
-  \item Obtain the assessment's recording from Video Storage and extract the audio of the whole recording, or of portion if given, into a temporary audio file (\texttt{extractAudio}).
-  \item Call MLTransModel.transcribe on the audio file, retrying up to GENERATION\_ATTEMPTS times if the model is unavailable.
-  \item Store each returned segment with text and originalText equal to the generated text, speaker none, verified false, and its times shifted by the start of portion.
-  \item Set the transcript status to DRAFT.
+  \item Database.setTranscriptStatus(assessmentID, BEING\_GENERATED).
+  \item Obtain the recording with Database.getRecording(assessmentID) and extract the audio of the whole recording, or of portion if given, into a temporary audio file (\texttt{extractAudio}).
+  \item Call ML Transcription Model.transcribe on the audio file, retrying up to GENERATION\_ATTEMPTS times if the model is unavailable.
+  \item Convert each returned RawSegment into a Segment: text and originalText are the generated text; confidence, flagged and language are copied; speaker is none; verified is false; and the times are shifted by the start of portion.
+  \item Database.saveSegments(assessmentID, the segments), then \\Database.setTranscriptStatus(assessmentID, DRAFT).
+  \item Database.logAccess(userID, GENERATE, assessmentID).
   \item Delete the temporary audio file, whether or not generation succeeded.
-  \item If generation fails, remove any segments added by this call and restore the previous status.
+  \item If generation fails, no segments have been saved, and the status is set back to what it was before the call.
   \end{itemize}
 \item output: None
-\item exception: AssessmentNotFoundError if assessmentID does not exist; RecordingUnavailableError if the recording cannot be obtained; TranscriptionInProgressError if the status is already BEING\_GENERATED; PortionAlreadyTranscribedError if existing segments overlap portion (or any segments exist, when portion is none); GenerationFailedError if all attempts fail.
+\item exception: AssessmentNotFoundError if assessmentID does not exist; RecordingUnavailableError if the recording cannot be obtained; TranscriptionInProgressError if the status is already BEING\_GENERATED; PortionAlreadyTranscribedError if existing segments overlap a portion (or any segments exist, when portion is none); GenerationFailedError if all attempts fail.
 \end{itemize}
 
 \noindent getTranscript(assessmentID, userID):
 \begin{itemize}
-\item transition: None
-\item output: The stored transcript, including its status.
+\item transition: Database.logAccess(userID, VIEW, assessmentID).
+\item output: The transcript returned by Database.getTranscript(assessmentID), including its status (so the caller can tell the clinician that it is still being generated).
 \item exception: AssessmentNotFoundError if assessmentID does not exist; NoTranscriptError if no transcript has been generated for it.
 \end{itemize}
 
 \noindent editSegmentText(assessmentID, segmentID, newText, userID):
 \begin{itemize}
-\item transition: Set text of the segment to newText. originalText is unchanged. The change is saved immediately.
+\item transition: Database.updateSegment(assessmentID, segmentID, text := newText), then Database.logAccess(userID, EDIT, assessmentID). originalText is unchanged.
 \item output: None
 \item exception: NoTranscriptError, SegmentNotFoundError, TranscriptionInProgressError if the status is BEING\_GENERATED; SaveFailedError if the change could not be saved, in which case nothing is changed and the caller keeps the clinician's input to retry.
 \end{itemize}
 
 \noindent assignSpeaker(assessmentID, segmentID, role, userID):
 \begin{itemize}
-\item transition: Set speaker of the segment to role. The change is saved immediately.
+\item transition: Database.updateSegment(assessmentID, segmentID, speaker := role), then Database.logAccess(userID, EDIT, assessmentID).
 \item output: None
-\item exception: InvalidRoleError if role is not in SPEAKER\_ROLES, otherwise same as editSegmentText.
+\item exception: InvalidRoleError if role is not in SPEAKER\_ROLES; otherwise as for editSegmentText.
 \end{itemize}
 
 \noindent verifySegment(assessmentID, segmentID, userID):
 \begin{itemize}
-\item transition: Set verified of the segment to true. The change is saved immediately.
+\item transition: Database.updateSegment(assessmentID, segmentID, verified := true), then Database.logAccess(userID, EDIT, assessmentID).
 \item output: None
 \item exception: Same as editSegmentText.
 \end{itemize}
 
 \noindent completeTranscript(assessmentID, userID):
 \begin{itemize}
-\item transition: Set the transcript status to VERIFIED. Segments that are not verified keep verified false.
-\item output: The segmentIDs of the segments that are still unverified, so the caller can offer to return to them.
+\item transition: Database.setTranscriptStatus(assessmentID, VERIFIED), \\ then Database.logAccess(userID, EDIT, assessmentID). Segments that are not verified keep verified false; the caller finds them through getTranscript.
+\item output: None
 \item exception: NoTranscriptError, TranscriptionInProgressError, SaveFailedError.
+\end{itemize}
+
+\noindent exportAnnotations(assessmentID, userID, format):
+\begin{itemize}
+\item transition: Database.logAccess(userID, EXPORT, assessmentID).
+\item output: A file in the given format containing, for every segment of the transcript returned by Database.getTranscript(assessmentID), its start and end times, text, speaker, language and verified value (\srsref{FR}{FR_AnnotationExport}).
+\item exception: NoTranscriptError if no transcript exists; UnsupportedFormatError if format is not in EXPORT\_FORMATS.
 \end{itemize}
 
 \subsubsection{Local Functions}
@@ -586,8 +473,144 @@ None.
 \noindent extractAudio(recording, portion):
 \begin{itemize}
 \item transition: Writes a temporary audio file.
-\item output: A file in a format supported by MLTransModel containing the audio of recording (restricted to portion, if given).
+\item output: A file in a format supported by the ML Transcription Model containing the audio of recording (restricted to portion, if given).
 \item exception: RecordingUnavailableError if the recording has no readable audio.
+\end{itemize}
+
+\newpage
+\section{MIS of Video Recording Module} \label{VideoRecording}
+The Video Recording module checks recording quality, records an assessment session through the patient's camera and microphone, and ensures the recording is saved intact and backed up (\srsref{NFR}{NFR-M1}, \srsref{NFR}{NFR-P1}).
+
+\subsection{Module}
+VideoRecording
+
+\subsection{Uses}
+\begin{itemize}
+\item Device I/O module: sample, startCapture, stopCapture, saveLocal, clearLocal
+\item API Gateway module: uploadRecording, requestBackup
+\end{itemize}
+This module is used by the Frontend module during an assessment. Storage, encryption and backup of the uploaded recording are handled by the Database module behind the API Gateway.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+\begin{itemize}
+\item SAMPLE\_DURATION = 5 seconds\\
+Length of the sample taken from the camera and microphone for the quality check.
+\item MIN\_BRIGHTNESS = 0.2\\
+Minimum average video brightness, on a scale from 0 (black) to 1 (white), for the lighting to be considered adequate.
+\item MIN\_FRAME\_RATE = 15 frames per second\\
+Minimum video frame rate accepted.
+\item MAX\_UPLOAD\_ATTEMPTS = 3\\
+Number of times uploading is attempted automatically before the failure is reported.
+\end{itemize}
+This module also uses the auxiliary constants MIN\_AUDIO\_LEVEL ($-30$ dBFS average), MIN\_VIDEO\_RESOLUTION ($640 \times 480$ pixels) and MAX\_REC\_LEN (30 minutes), defined in the SRS.
+
+\subsubsection{Exported Access Programs}
+\begin{center}
+\begin{tabular}{p{3cm} p{4cm} p{3.5cm} p{4.5cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+init & - & - & - \\
+checkQuality & - & report: QualityReport & PermissionDeniedError, DeviceUnavailableError \\
+startRecording & - & - & PermissionDeniedError, DeviceUnavailableError, RecordingInProgressError \\
+stopRecording & - & - & NotRecordingError, StorageFullError \\
+saveRecording & assessmentID: String, sessionToken: String & - & NoRecordingError, UnauthorizedError, UploadFailedError, VerificationFailedError, BackupFailedError \\
+getStatus & - & status: \{IDLE, RECORDING, PENDING\_SAVE, SAVED\} & - \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent The access programs use the following types:
+\begin{itemize}
+\item QualityReport: a tuple (passed: $\mathbb{B}$, issues: sequence of String).
+  \begin{itemize}
+  \item passed is true iff the audio and video meet the minimum levels above.
+  \item issues describes each problem found (e.g., audio too quiet, lighting too dark, resolution too low) so the patient can correct their setup.
+  \end{itemize}
+\item Recording: a tuple (file: Bytes, format: String, duration: $\mathbb{R}$ seconds, resolution: $\mathbb{N} \times \mathbb{N}$, recordedAt: Time). This type is passed to the API Gateway and read back by the Transcription Service Interface through the Database.
+\end{itemize}
+The type MediaSample is defined by the Device I/O module.
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+\begin{itemize}
+\item status: \{IDLE, RECORDING, PENDING\_SAVE, SAVED\}\\
+Where the current recording is in its lifecycle.
+\item localCopy: Recording or none\\
+The temporary copy of the current recording kept on the patient's device (through Device I/O) until the system confirms it was saved successfully.
+\end{itemize}
+
+\subsubsection{Environment Variables}
+None. The camera, microphone and local storage are reached only through the Device I/O module.
+
+\subsubsection{Assumptions}
+\begin{itemize}
+\item init is called before any other access program.
+\item The caller runs checkQuality, and the patient has corrected any reported issues, before startRecording is called (\hazref{HA-VR1}).
+\item sessionToken identifies a logged-in user who is allowed to upload a recording for assessmentID; this is checked by the API Gateway.
+\item The patient's device has enough local storage to hold the full recording.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: status := IDLE; localCopy := none.
+\item output: None
+\item exception: None
+\end{itemize}
+
+\noindent checkQuality():
+\begin{itemize}
+\item transition: None
+\item output: A QualityReport based on Device I/O.sample(SAMPLE\_DURATION). passed is true iff the sample's audio level is at least MIN\_AUDIO\_LEVEL, its brightness is at least MIN\_BRIGHTNESS, its frame rate is at least MIN\_FRAME\_RATE, and its resolution is at least MIN\_VIDEO\_RESOLUTION. Each failed condition adds an entry to issues. The sample is discarded.
+\item exception: PermissionDeniedError if access to the camera or microphone is not granted; DeviceUnavailableError if either device is missing or in use elsewhere.
+\end{itemize}
+
+\noindent startRecording():
+\begin{itemize}
+\item transition: Device I/O.startCapture(); status := RECORDING. Recording stops automatically when its length reaches MAX\_REC\_LEN.
+\item output: None
+\item exception: PermissionDeniedError, DeviceUnavailableError (from Device I/O); RecordingInProgressError if status = RECORDING.
+\end{itemize}
+
+\noindent stopRecording():
+\begin{itemize}
+\item transition: recording := Device I/O.stopCapture(); Device I/O.saveLocal(recording); localCopy := recording; status := PENDING\_SAVE.
+\item output: None
+\item exception: NotRecordingError if status $\neq$ RECORDING; StorageFullError if the recording cannot be kept on the device.
+\end{itemize}
+
+\noindent saveRecording(assessmentID, sessionToken):
+\begin{itemize}
+\item transition:
+  \begin{itemize}
+  \item Call API Gateway.uploadRecording(sessionToken, assessmentID, localCopy), up to MAX\_UPLOAD\_ATTEMPTS times, to obtain the checksum of the stored recording.
+  \item Check the result with \texttt{isIntact}.
+  \item If it passes, call API Gateway.requestBackup(sessionToken, assessmentID), then Device I/O.clearLocal(); localCopy := none; status := SAVED.
+  \item If any step fails, localCopy and status are unchanged, so saveRecording can be called again.
+  \end{itemize}
+\item output: None
+\item exception: NoRecordingError if status $\neq$ PENDING\_SAVE; UnauthorizedError if the session is not valid for this assessment; UploadFailedError if uploading did not succeed after MAX\_UPLOAD\_ATTEMPTS attempts; VerificationFailedError if the stored recording does not match localCopy; BackupFailedError if the backup request fails.
+\end{itemize}
+
+\noindent getStatus():
+\begin{itemize}
+\item transition: None
+\item output: status
+\item exception: None
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\noindent isIntact(checksum: String, recording: Recording):
+\begin{itemize}
+\item transition: None
+\item output: true iff checksum equals the checksum computed from recording, and recording can be decoded and played from start to end.
+\item exception: None
 \end{itemize}
 
 \newpage
