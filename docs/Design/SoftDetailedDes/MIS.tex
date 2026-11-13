@@ -19,6 +19,7 @@
 \usepackage[section]{placeins}
 \usepackage{caption}
 \usepackage{fullpage}
+\usepackage{array}
 
 \hypersetup{
 bookmarks=true,     % show bookmarks bar?
@@ -126,7 +127,6 @@ described by giving their type signature followed by their specification.
 \section{Module Decomposition} \label{Module_Decomp}
 
 The following table is taken directly from the Module Guide document for this project.
-
 \begin{table}[h!]
 \centering
 \begin{tabular}{p{0.3\textwidth} p{0.6\textwidth}}
@@ -134,21 +134,22 @@ The following table is taken directly from the Module Guide document for this pr
 \textbf{Level 1} & \textbf{Level 2}\\
 \midrule
 
-{Hardware-Hiding} & ~ \\
+{Hardware-Hiding} & Device I/O Module \\
 \midrule
 
-\multirow{7}{0.3\textwidth}{Behaviour-Hiding} & Input Parameters\\
-& Output Format\\
-& Output Verification\\
-& Temperature ODEs\\
-& Energy Equations\\ 
-& Control Module\\
-& Specification Parameters Module\\
+\multirow{7}{0.3\textwidth}{Behaviour-Hiding} & Frontend Module\\
+& Account System Module\\
+& Video Recording Module\\
+& Transcription Service Interface Module\\
+& Report Generation Module\\
+& Assessment Review Module\\
+& MERLS Module\\
 \midrule
 
-\multirow{3}{0.3\textwidth}{Software Decision} & {Sequence Data Structure}\\
-& ODE Solver\\
-& Plotting\\
+\multirow{4}{0.3\textwidth}{Software Decision} & API Gateway Module\\
+& Database Module\\
+& Encryption Module\\
+& ML Transcription Model Module\\
 \bottomrule
 
 \end{tabular}
