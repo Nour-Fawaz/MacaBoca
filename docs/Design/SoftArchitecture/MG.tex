@@ -189,14 +189,18 @@ This section provides an overview of the module design. Modules are summarized
 in a hierarchy decomposed by secrets in Table \ref{TblMH}. The modules listed
 below, which are leaves in the hierarchy tree, are the modules that will
 actually be implemented.
-
+\\ \\ \indent
+\textbf{User Interface Modules}
+\begin{description}
+\item [\refstepcounter{mnum} \mthemnum \label{mTSI}:] Transcription Service Interface Module
+\item \item [\refstepcounter{mnum} \mthemnum \label{mFE}:] Frontend Module
+\end{description}
+\indent \indent \textbf{Backend Modules}
 \begin{description}
 \item [\refstepcounter{mnum} \mthemnum \label{mDIO}:] Device I/O Module
-\item [\refstepcounter{mnum} \mthemnum \label{mFE}:] Frontend Module
 \item [\refstepcounter{mnum} \mthemnum \label{mAPI}:] API Gateway Module
 \item [\refstepcounter{mnum} \mthemnum \label{mAS}:] Account System Module
 \item [\refstepcounter{mnum} \mthemnum \label{mVR}:] Video Recording Module
-\item [\refstepcounter{mnum} \mthemnum \label{mTSI}:] Transcription Service Interface Module
 \item [\refstepcounter{mnum} \mthemnum \label{mRG}:] Report Generation Module
 \item [\refstepcounter{mnum} \mthemnum \label{mAR}:] Assessment Review Module
 \item [\refstepcounter{mnum} \mthemnum \label{mDB}:] Database Module
@@ -205,7 +209,6 @@ actually be implemented.
 \item [\refstepcounter{mnum} \mthemnum \label{mMERLS}:] MERLS Module
 \end{description}
 
-
 \begin{table}[h!]
 \centering
 \begin{tabular}{p{0.3\textwidth} p{0.6\textwidth}}
@@ -213,22 +216,22 @@ actually be implemented.
 \textbf{Level 1} & \textbf{Level 2}\\
 \midrule
 
-{Hardware-Hiding Module} & ~ \\
+{Hardware-Hiding} & Device I/O Module \\
 \midrule
 
-\multirow{7}{0.3\textwidth}{Behaviour-Hiding Module} & ?\\
-& ?\\
-& ?\\
-& ?\\
-& ?\\
-& ?\\
-& ?\\ 
-& ?\\
+\multirow{7}{0.3\textwidth}{Behaviour-Hiding} & Frontend Module\\
+& Account System Module\\
+& Video Recording Module\\
+& Transcription Service Interface Module\\
+& Report Generation Module\\
+& Assessment Review Module\\
+& MERLS Module\\
 \midrule
 
-\multirow{3}{0.3\textwidth}{Software Decision Module} & {?}\\
-& ?\\
-& ?\\
+\multirow{4}{0.3\textwidth}{Software Decision} & API Gateway Module\\
+& Database Module\\
+& Encryption Module\\
+& ML Transcription Model Module\\
 \bottomrule
 
 \end{tabular}
