@@ -191,11 +191,18 @@ below, which are leaves in the hierarchy tree, are the modules that will
 actually be implemented.
 
 \begin{description}
-\item [\refstepcounter{mnum} \mthemnum \label{mHH}:] Hardware-Hiding Module
-\item ...
-\item [\refstepcounter{mnum} \mthemnum \label{mTSI}:] Transcription Service Interface Module
+\item [\refstepcounter{mnum} \mthemnum \label{mDIO}:] Device I/O Module
+\item [\refstepcounter{mnum} \mthemnum \label{mFE}:] Frontend Module
+\item [\refstepcounter{mnum} \mthemnum \label{mAPI}:] API Gateway Module
+\item [\refstepcounter{mnum} \mthemnum \label{mAS}:] Account System Module
 \item [\refstepcounter{mnum} \mthemnum \label{mVR}:] Video Recording Module
+\item [\refstepcounter{mnum} \mthemnum \label{mTSI}:] Transcription Service Interface Module
+\item [\refstepcounter{mnum} \mthemnum \label{mRG}:] Report Generation Module
+\item [\refstepcounter{mnum} \mthemnum \label{mAR}:] Assessment Review Module
+\item [\refstepcounter{mnum} \mthemnum \label{mDB}:] Database Module
+\item [\refstepcounter{mnum} \mthemnum \label{mEnc}:] Encryption Module
 \item [\refstepcounter{mnum} \mthemnum \label{mML}:] ML Transcription Module
+\item [\refstepcounter{mnum} \mthemnum \label{mMERLS}:] MERLS Module
 \end{description}
 
 
@@ -447,9 +454,90 @@ it is not appropriate for a given project.}
 
 \section{Timeline}
 
-\wss{Schedule of tasks and who is responsible}
+\subsection{Module Implementation Timeline (Starting Jan 4)}
+This section outlines the implementation schedule for each module from January 4 to January 31, ahead of the Rev 0 presentation on February 1. The time is divided into nine equal increments, and each module is assigned to the increment(s) in which it will be implemented, along with the team member responsible.
 
-\wss{You can point to GitHub if this information is included there}
+\subsubsection{User Interface (UI) Modules}
+\begin{itemize}
+    \item \textbf{Jan 7 -- Jan 9: Transcription Service Interface Module (\ref{mTSI})}
+    \begin{itemize}
+        \item Implement the UI for SAFA in the existing MERLS platform.
+        \item Add functionality to interact with the SAFA interface and transcribe.
+        \item \textbf{Responsibility:} Nour.
+    \end{itemize}
+
+    \item \textbf{Jan 25 -- Jan 27: Frontend Module (\ref{mFE})}
+    \begin{itemize}
+        \item Implement the clinician frontend.
+        \item \textbf{Responsibility:} Catherine.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Backend Modules}
+\begin{itemize}
+    \item \textbf{Jan 4 -- Jan 21: Device I/O Module (\ref{mDIO})}
+    \begin{itemize}
+        \item Add functionality to handle hardware input.
+        \item \textbf{Responsibility:} Yilin.
+    \end{itemize}
+
+    \item \textbf{Jan 4 -- Jan 6: Database Module (\ref{mDB})}
+    \begin{itemize}
+        \item Implement the database that stores all assessment and patient information.
+        \item \textbf{Responsibility:} Javayria.
+    \end{itemize}
+
+    \item \textbf{Jan 4 -- Jan 6: ML Transcription Module (\ref{mML})}
+    \begin{itemize}
+        \item Integrate the existing SAFA tool (SyncScript V3) into MERLS.
+        \item Possibly incorporate multiple views for different types of users.
+        \item \textbf{Responsibility:} Nour.
+    \end{itemize}
+
+    \item \textbf{Jan 7 -- Jan 9: Encryption Module (\ref{mEnc})}
+    \begin{itemize}
+        \item Implement encryption of patient information.
+        \item \textbf{Responsibility:} Javayria.
+    \end{itemize}
+
+    \item \textbf{Jan 10 -- Jan 12: Report Generation Module (\ref{mRG})}
+    \begin{itemize}
+        \item Add functionality to create reports.
+        \item \textbf{Responsibility:} Yilin.
+    \end{itemize}
+
+    \item \textbf{Jan 13 -- Jan 15: Assessment Review Module (\ref{mAR})}
+    \begin{itemize}
+        \item Add functionality to flag, save, delete, and mark assessment questions, including creating and deleting notes for questions.
+        \item Add functionality to record clinician evaluations and retrieve reviews for patient assessments.
+        \item \textbf{Responsibility:} Yilin.
+    \end{itemize}
+
+    \item \textbf{Jan 16 -- Jan 18: Account System Module (\ref{mAS})}
+    \begin{itemize}
+        \item Implement user accounts.
+        \item Add functionality for logging in/out and authorizing clinician accounts.
+        \item \textbf{Responsibility:} Catherine.
+    \end{itemize}
+
+    \item \textbf{Jan 19 -- Jan 21: API Gateway Module (\ref{mAPI})}
+    \begin{itemize}
+        \item Develop an access point for modules to make their corresponding API calls.
+        \item \textbf{Responsibility:} Catherine.
+    \end{itemize}
+
+    \item \textbf{Jan 22 -- Jan 24: Video Recording Module (\ref{mVR})}
+    \begin{itemize}
+        \item Implement a module to handle user recording input (audio and video) for use by the system.
+        \item \textbf{Responsibility:} Nour.
+    \end{itemize}
+
+    \item \textbf{Jan 28 -- Jan 31: MERLS Module (\ref{mMERLS})}
+    \begin{itemize}
+        \item Connect the clinician platform to the existing MERLS patient interface.
+        \item \textbf{Responsibility:} Javayria.
+    \end{itemize}
+\end{itemize}
 
 \section{Generative AI Use Disclosure}
 This section records all uses of generative artificial intelligence throughout the document.
