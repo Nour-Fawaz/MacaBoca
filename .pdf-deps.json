@@ -4,6 +4,16 @@
     "docs/CDs/MLReport/custom.bib",
     "docs/CDs/MLReport/main.tex"
   ],
+  "docs/CDs/Wireframe/wireframe-fall.tex": [
+    "docs/CDs/Wireframe/Images/individual_assessment_page_1.png",
+    "docs/CDs/Wireframe/Images/individual_question_view_1-alpha.png",
+    "docs/CDs/Wireframe/Images/individual_question_view_1.png",
+    "docs/CDs/Wireframe/Images/individual_question_view_2.png",
+    "docs/CDs/Wireframe/Images/individual_question_view_3-interference_flagged.png",
+    "docs/CDs/Wireframe/wireframe-fall.tex",
+    "docs/Comments.text",
+    "docs/Common.text"
+  ],
   "docs/Checklists/Code-Checklist.tex": [
     "docs/Checklists/Code-Checklist.tex",
     "docs/Comments.text"
