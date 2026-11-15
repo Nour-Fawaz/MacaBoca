@@ -637,14 +637,14 @@ None. The camera, microphone and local storage are reached only through the Devi
 
 \newpage
 \section{MIS of Frontend Module} \label{Frontend}
-The Frontend module is the clinician's interface; it turns each clinician action into a request to the API Gateway and displays the result, handling (\srsref{FR}{FR_Label9}, \srsref{FR}{FR_Label11}, \srsref{FR}{FR_Label12}, \srsref{FR}{FR_Label14}, \srsref{FR}{FR_Label15}, \srsref{FR}{FR_TranscriptHighlight}, \srsref{FR}{FR_SegmentSeek}, \srsref{FR}{FR_AssessmentWorkflowNavigation}).
+The Frontend module is the clinician's interface; it turns each clinician action into a request to the API Gateway and displays the result (\srsref{FR}{FR_Label9}, \srsref{FR}{FR_Label11}, \srsref{FR}{FR_Label12}, \srsref{FR}{FR_Label14}, \srsref{FR}{FR_Label15}, \srsref{FR}{FR_TranscriptHighlight}, \srsref{FR}{FR_SegmentSeek}, \srsref{FR}{FR_AssessmentWorkflowNavigation}).
 
 \subsection{Module}
 Frontend
 
 \subsection{Uses}
 \begin{itemize}
-\item API Gateway
+\item API Gateway module: handleRequest
 \end{itemize}
 The frontend is not used by any other module. The patient's interface for taking and recording an assessment is provided by the MERLS module.
 
@@ -688,7 +688,7 @@ onPlaybackTime & time: $\mathbb{R}$ & - & - \\[4pt]
 \end{longtable}
 }
 
-\noindent Additionally, the access programs then use the types:
+\noindent The access programs use these types:
 \begin{itemize}
 \item PatientInfo: the form for adding a patient, a tuple with these fields:
   \begin{itemize}
@@ -765,7 +765,7 @@ The clinician's last input that failed to save, kept so it can be retried withou
 
 \noindent login(email, password):
 \begin{itemize}
-\item transition: session := the Session from the login request; stage := PATIENT\_LIST.
+\item transition: session := the Session from the login request; stage := PATIENT\_LIST; show \texttt{patientList}().
 \item output: None
 \item exception: InvalidCredentialsError if the email or password is wrong.
 \end{itemize}
@@ -786,7 +786,7 @@ The clinician's last input that failed to save, kept so it can be retried withou
 
 \noindent addPatient(info):
 \begin{itemize}
-\item transition: Send the addPatient request, then refresh the patient list (\srsref{FR}{FR_Label10}).
+\item transition: Send the addPatient request, then show the updated \texttt{patientList}() (\srsref{FR}{FR_Label10}).
 \item output: None
 \item exception: NotLoggedInError; InvalidPatientInfoError if a field is empty; SaveFailedError.
 \end{itemize}
@@ -876,8 +876,8 @@ The clinician's last input that failed to save, kept so it can be retried withou
 \newpage
 \section{MIS of Report Generation Module} \label{ReportGeneration}
 The Report Generation module compiles an assessment's results, the clinician's review 
-as well as the transcript into a formal clinical report. It ensures reports  
-contains verified content, stamps stamps each report with when it was made, 
+as well as the transcript into a formal clinical report. It ensures reports
+contain verified content, stamps each report with when it was made, 
 and marks it out of date when the assessment changes (\srsref{FR}{FR_Label7}, 
 \srsref{SR}{SR_CompiledReports}, \srsref{FR}{FR_Label23}, \hazref{HA-RG1}, \hazref{HA-RG2}, \hazref{HA-RG3}).
 
@@ -1012,7 +1012,7 @@ that override or complete the automatic assessment result
 \srsref{FR}{FR_ManualEvaluation}, \srsref{FR}{FR_QuestionNotes}, 
 \srsref{FR}{FR_AssessmentNotes}, \srsref{FR}{FR_Label8}). 
 
-Specifically for questions, whereas the TSI Module works on transcript segments.
+It works on questions, whereas the TSI Module works on transcript segments.
 
 \subsection{Module}
 AssessmentReview
@@ -1093,7 +1093,7 @@ N/A
 Question changes are saved with Database.saveQuestionReview, 
 and assessment notes with Database.saveAssessmentNote. 
 Every routine that changes data also calls Database.logAccess(userID, EDIT, assessmentID), 
-and the read routines call it with VIEW (\srsref{NFR}{NFR-S4}). 
+and the read routines call it with VIEW (\srsref{NFR}{NFR-S4}). If saving fails, nothing changes and SaveFailedError is raised.
 \\
 
 \noindent getOverview(assessmentID, userID):
@@ -1285,7 +1285,7 @@ Overall, we chose our design because it separates responsibilities cleanly, so e
 I think the fact that we as a team had already agreed on our modules and had a clear
 outline of what we wanted to implement helped a lot. We were able to separate the 
 work a lot more easily as well since we had a clear division of work between the
-modules that we could divy up. 
+modules that we could divvy up. 
 What also helped a lot was agreeing on the function calls between modules before writing any section. 
 Once we had a list of which module calls which function and what data it passes, 
 my Uses sections and access program tables mostly followed from it.
@@ -1313,7 +1313,7 @@ which became FR\_ManualEvaluation, FR\_QuestionNotes and FR\_AssessmentNotes.
 Going over the MIS and MG as a team, we decided to restructure, rename and change some of
 our decided modules, such as adding the Assessment Review and Report Generation modules.
 We also changed `Web Platform' to be called `Frontend' to better reflect its purpose, so we have
-to update every documentation that makes that connection accordingly.
+to update all documentation that makes that connection accordingly.
 The MG listed the Transcription Service Interface under user interface modules, even 
 though it has no screens, so we removed that grouping. We also dropped the Video Storage module 
 and moved recordings into the Database, which meant updating the other modules that referred to it. 
