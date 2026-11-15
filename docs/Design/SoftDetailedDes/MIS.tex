@@ -1320,11 +1320,13 @@ and moved recordings into the Database, which meant updating the other modules t
 
 \subsubsection*{Question 5}
 The first limitation, which our team identified with the supervisors, is how transcripts are split. 
-Ideally each transcript would be divided into sections that match the assessment's questions, but right now we can't reliably tell when a question starts or ends in the recording. 
-Instead, the transcript is split into chunks of time, so a chunk may cover part of one question and part of the next, and the clinician has to match them up. 
-With more time and resources, we could run a large language model over the transcript to detect where each question begins and ends, and split it by question instead. 
-Reports are also blocked until every transcript segment is verified, which is safe but could slow clinicians down when they only care about part of the transcript. 
-With unlimited resources, I would add customizable report templates, add result visualization by domain and language, and run usability tests of the Frontend with clinicians.
+Ideally, the research team wanted each transcript to be divided into sections that 
+match the assessment's questions, but as of right now we can't actually reliably tell
+when a question starts or ends in the recording. 
+So instead, the transcript is split into chunks of time, so a chunk may cover part of 
+one question and part of the next, and the clinician has to match them up. 
+With the time and resources, I believe we could run an LLM over the transcript 
+to detect where each question begins and ends, and actually split it by question instead. 
 
 \subsubsection*{Question 6}
 As mentioned, the main alternative our team considered was splitting transcripts by question 
@@ -1338,7 +1340,8 @@ Another alternative was just putting all question notes, flags and manual grades
 Transcription Service Interface, since both involve reviewing the assessment, but this was scrapped
 as the two work on different data (transcript segments versus questions) and change for different reasons. 
 Lastly, Report Generation could read question results straight from the Database, but we decided
-to have it receive an overview through the Assessment Review module instead, so that it can be changed without affecting Report Generation.
+to have it receive an overview through the Assessment Review module instead, so that it 
+can be changed without affecting Report Generation.
 
 \end{enumerate}
 
