@@ -241,12 +241,73 @@ When the clinician selects Complete annotation, a dialog shows how many segments
 
 \section{Report Generation Interface}
 
+The report generation interface lets clinicians review the results of an assessment as a clinical report, add their own findings, and download it. It is opened when the clinician selects Generate Report on the individual assessment page, and consists of two views: the Assessment Report Overview and the Assessment Report Edit view.
+
+\subsection{Assessment Report Overview}
+As shown in Figure~\ref{report_overview}, the overview page displays the generated report for a single patient's assessment so the clinician can review it. The header shows the report's status and when it was last saved, along with buttons to edit or download the report. The full report document is shown in Figure~\ref{report_document}, and contains the following sections in order: Patient Background Info, Assessment Findings, Questions and Responses, Flagged Items, Fluency (Stuttering), and Recommendations/Plan.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/report_overview.png}
+    \caption{Assessment Report Overview}
+    \label{report_overview}
+\end{figure}
+
+Patient Background Info gives a short overview of the patient and the assessment, including the child's age, languages spoken at home, assessment type and date. This data comes directly from the database, so it is not edited by the clinician. Assessment Findings is the core of the report. The overall score is shown above a table that breaks the results down by clinical domain, so clinicians can quickly see which areas the patient performed well in without working it out themselves. Questions and Responses lists each question the patient completed, with the child's response, the result and any clinician notes on the same row. Flagged Items lists the questions where potential interference was detected, along with the reason for each flag. The last two sections, Fluency (Stuttering) and Recommendations/Plan, are free-text sections where the clinician writes their own findings, similar to editing a PDF or Word document.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Images/report_document.png}
+    \caption{Assessment Report Document}
+    \label{report_document}
+\end{figure}
+
+\subsection{Assessment Report Edit}
+To edit the report, the clinician selects Edit, which opens the edit view (Figure~\ref{report_edit}). This view shows the same sections, with each editable section outlined so the clinician can see what they can change. The header shows that there are unsaved changes, and the clinician can save or cancel their edits, or download the report. Sections that do not fit on the page can be reached by scrolling.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/report_edit.png}
+    \caption{Assessment Report Edit View}
+    \label{report_edit}
+\end{figure}
+
+\subsection{Question Note Drawer}
+Selecting a question's note in the Questions and Responses section opens the question note drawer (Figure~\ref{report_question_note_drawer}). The drawer shows the question's timestamp, result and flag status, along with the target sentence and the child's response, so the clinician has the context they need without leaving the report. The clinician can write or edit the note for that question, and choose whether it is included in the report. Notes that are not included stay in the assessment record but do not appear in the downloaded report.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{Images/report_question_note_drawer.png}
+    \caption{Assessment Report: Question Note Drawer}
+    \label{report_question_note_drawer}
+\end{figure}
+
+\subsection{Changes After Supervisor Review}
+\noindent After consulting with the supervisors, it was determined that the sections of the report were well chosen, and that the results summary was clear enough for clinicians to quickly see a patient's score. They also approved of clinicians being able to write their own notes near the end of the report. The following changes were suggested.
+\begin{enumerate}
+    \item \textbf{Suggested Change:} Colour-code each section of the report and present it in tables, similar to Q-global reports \citep{QGlobalCELF5Sample}.
+
+    \textbf{Reason and Result:} Clinicians are already familiar with the layout of Q-global reports, and colour-coded tables make it easier to tell sections apart at a glance. Each section of the report (Figure~\ref{report_document}) will be shown in its own colour-coded table.
+
+    \item \textbf{Suggested Change:} Group the questions into subcategories, such as Receptive Vocabulary.
+
+    \textbf{Reason and Result:} This lets clinicians review all questions in one area together, instead of searching through the full list. The Questions and Responses section will group questions under a heading for each subcategory.
+
+    \item \textbf{Suggested Change:} Show each response directly underneath its question, outlined to distinguish it from the question.
+
+    \textbf{Reason and Result:} Clinicians need an easy way to see every question in the assessment along with the response linked to it. The Questions and Responses section will show each question followed by its outlined response, instead of placing them side by side in a table row.
+
+    \item \textbf{Suggested Change:} Allow the clinician to edit every section of the report.
+
+    \textbf{Reason and Result:} The clinician is responsible for the final report, so they must be able to correct any part of it, including the generated results. In the edit view (Figure~\ref{report_edit}), every section except Patient Background Info will be outlined and editable. Patient Background Info remains read-only, since it comes directly from the database.
+\end{enumerate}
+
 \section{Patient Summary Interface}
 
 
 \newpage{}
 \bibliographystyle {plainnat}
-\bibliography {../../refs/References}
+\bibliography {../../../refs/References}
 \newpage{}
 
 \end{document}
