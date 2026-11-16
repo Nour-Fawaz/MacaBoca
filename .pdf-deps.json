@@ -10,6 +10,10 @@
     "docs/CDs/Wireframe/Images/individual_question_view_1.png",
     "docs/CDs/Wireframe/Images/individual_question_view_2.png",
     "docs/CDs/Wireframe/Images/individual_question_view_3-interference_flagged.png",
+    "docs/CDs/Wireframe/Images/report_document.png",
+    "docs/CDs/Wireframe/Images/report_edit.png",
+    "docs/CDs/Wireframe/Images/report_overview.png",
+    "docs/CDs/Wireframe/Images/report_question_note_drawer.png",
     "docs/CDs/Wireframe/Images/safa_complete_dialog.png",
     "docs/CDs/Wireframe/Images/safa_review.png",
     "docs/CDs/Wireframe/Images/safa_review_edit.png",
@@ -19,7 +23,8 @@
     "docs/CDs/Wireframe/Images/safa_transcribe.png",
     "docs/CDs/Wireframe/wireframe-fall.tex",
     "docs/Comments.text",
-    "docs/Common.text"
+    "docs/Common.text",
+    "refs/References.bib"
   ],
   "docs/Checklists/Code-Checklist.tex": [
     "docs/Checklists/Code-Checklist.tex",
