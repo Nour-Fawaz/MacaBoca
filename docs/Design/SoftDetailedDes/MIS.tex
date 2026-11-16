@@ -70,6 +70,26 @@ See SRS Documentation at \url{https://github.com/Nour-Fawaz/MacaBoca/blob/main/p
 
 \wss{Also add any additional symbols, abbreviations or acronyms}
 
+\noindent Additional acronyms used in this document:
+
+\begin{tabular}{l l}
+\toprule
+\textbf{Acronym} & \textbf{Meaning}\\
+\midrule
+API & Application Programming Interface\\
+CSV & Comma-Separated Values (a file format)\\
+dBFS & Decibels relative to full scale (an audio level)\\
+HA & Hazard Analysis (requirement labels such as HA-RG1)\\
+MG & Module Guide\\
+MIS & Module Interface Specification\\
+ML & Machine Learning\\
+PDF & Portable Document Format\\
+SRS & Software Requirements Specification\\
+TSI & Transcription Service Interface\\
+WAV & Waveform Audio File Format\\
+\bottomrule
+\end{tabular}
+
 \newpage
 
 \tableofcontents
@@ -112,6 +132,7 @@ character & char & a single symbol or digit\\
 integer & $\mathbb{Z}$ & a number without a fractional component in (-$\infty$, $\infty$) \\
 natural number & $\mathbb{N}$ & a number without a fractional component in [1, $\infty$) \\
 real & $\mathbb{R}$ & any number in (-$\infty$, $\infty$)\\
+boolean & $\mathbb{B}$ & a value in \{true, false\}\\
 \bottomrule
 \end{tabular} 
 \end{center}
@@ -490,7 +511,7 @@ VideoRecording
 \item Device I/O module: sample, startCapture, stopCapture, saveLocal, clearLocal
 \item API Gateway module: uploadRecording, requestBackup
 \end{itemize}
-This module is used by the Frontend module during an assessment. Storage, encryption and backup of the uploaded recording are handled by the Database module behind the API Gateway.
+This module is used by the MERLS module (the patient's interface) during an assessment. Storage, encryption and backup of the uploaded recording are handled by the Database module behind the API Gateway.
 
 \subsection{Syntax}
 
@@ -612,6 +633,516 @@ None. The camera, microphone and local storage are reached only through the Devi
 \item transition: None
 \item output: true iff checksum equals the checksum computed from recording, and recording can be decoded and played from start to end.
 \item exception: None
+\end{itemize}
+
+\newpage
+\section{MIS of Frontend Module} \label{Frontend}
+The Frontend module is the clinician's interface; it turns each clinician action into a request to the API Gateway and displays the result (\srsref{FR}{FR_Label9}, \srsref{FR}{FR_Label11}, \srsref{FR}{FR_Label12}, \srsref{FR}{FR_Label14}, \srsref{FR}{FR_Label15}, \srsref{FR}{FR_TranscriptHighlight}, \srsref{FR}{FR_SegmentSeek}, \srsref{FR}{FR_AssessmentWorkflowNavigation}).
+
+\subsection{Module}
+Frontend
+
+\subsection{Uses}
+\begin{itemize}
+\item API Gateway module: handleRequest
+\end{itemize}
+The frontend is not used by any other module. The patient's interface for taking and recording an assessment is provided by the MERLS module.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+\begin{itemize}
+\item STAGES = \{LOGIN, PATIENT\_LIST, ASSESSMENT\_LIST, OVERVIEW, SAFA, REPORT\}\\
+The different stages of the clinician's workflow.
+\item PLAYBACK\_UPDATE\_INTERVAL = 250 ms\\
+How often the highlighted transcript segment is updated during playback. Set to below SYNC\_TOL so the highlight always stays in sync with the video.
+\end{itemize}
+The auxiliary constants IDLE\_TIMEOUT (15 minutes), SYSTEM\_FEEDBACK\_TIME (2 seconds), 
+SYNC\_TOL (500 ms), SEEK\_TIME (2 seconds), OVERVIEW\_LOAD\_TIME (3 seconds) and 
+MAX\_NAV\_STEPS (3 steps) in the SRS are also used here.
+
+\subsubsection{Exported Access Programs}
+Each access program is triggered by a clinician action, except onPlaybackTime, which is triggered by the browser.
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.4cm} >{\raggedright\arraybackslash}p{4.3cm} >{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}p{4.3cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+\endhead
+init & - & - & - \\[4pt]
+login & email: String \newline password: String & - & InvalidCredentialsError \\[4pt]
+logout & - & - & - \\[4pt]
+navigateTo & stage: STAGES & - & NotLoggedInError \newline NoSelectionError \\[4pt]
+addPatient & info: PatientInfo & - & NotLoggedInError \newline InvalidPatientInfoError \newline SaveFailedError \\[4pt]
+openPatient & patientID: String & - & NotLoggedInError \newline NotFoundError \\[4pt]
+openAssessment & assessmentID: String & - & NotLoggedInError \newline NotFoundError \\[4pt]
+seek & time: $\mathbb{R}$ & - & NoAssessmentOpenError \\[4pt]
+openInSAFA & portions: sequence of Interval or none & - & NoAssessmentOpenError \newline TranscriptionUnavailableError \\[4pt]
+editSegment & segmentID: String \newline change: SegmentChange & - & NoTranscriptOpenError \newline SaveFailedError \\[4pt]
+reviewQuestion & questionID: String \newline change: QuestionChange & - & NoAssessmentOpenError \newline SaveFailedError \\[4pt]
+editAssessmentNote & text: String or none & - & NoAssessmentOpenError \newline SaveFailedError \\[4pt]
+createReport & - & - & NoAssessmentOpenError \newline UnverifiedContentError \\[4pt]
+download & kind: \{REPORT, ANNOTATIONS\} \newline format: String & - & NoAssessmentOpenError \newline UnsupportedFormatError \\[4pt]
+onPlaybackTime & time: $\mathbb{R}$ & - & - \\[4pt]
+\hline
+\end{longtable}
+}
+
+\noindent The access programs use these types:
+\begin{itemize}
+\item PatientInfo: the form for adding a patient, a tuple with these fields:
+  \begin{itemize}
+  \item name: String, the patient's name.
+  \item dateOfBirth: Date.
+  \item languages: set of String, the languages the patient speaks.
+  \item guardianEmail: String, the parent or guardian's email.
+  \end{itemize}
+\item SegmentChange: a change to one transcript segment. One of:
+  \begin{itemize}
+  \item (TEXT, newText: String): fix the text.
+  \item (SPEAKER, role: String): set who is speaking.
+  \item VERIFY: mark the segment as checked.
+  \end{itemize}
+\item QuestionChange: a change to one question. One of:
+  \begin{itemize}
+  \item (FLAG, flagged: $\mathbb{B}$): flag or unflag it.
+  \item (NOTE, text: String or none): save the note, or delete it if none.
+  \item (EVALUATION, result: String): grade it.
+  \end{itemize}
+\end{itemize}
+Types from other modules:
+\begin{itemize}
+\item Transcription Service Interface: Interval, Transcript, Segment.
+\item Account System: Session.
+\item Assessment Review: QuestionSummary, Review.
+\item Report Generation: Report.
+\end{itemize}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+\begin{itemize}
+\item session: Session or none\\
+The session for logged in clinicians.
+\item stage: STAGES\\
+The current stage the clinician is in.
+\item patientID: String or none
+\item assessmentID: String or none\\
+The patient and assessment currently selected.
+\item overview: sequence of QuestionSummary or none
+\item review: Review or none
+\item transcript: Transcript or none\\
+The data shown for the open assessment.
+\item playbackTime: $\mathbb{R}$\\
+The current position of the video player, in seconds.
+\item pendingInput: SegmentChange, QuestionChange, String or none\\
+The clinician's last input that failed to save, kept so it can be retried without retyping.
+\end{itemize}
+
+\subsubsection{Environment Variables}
+\begin{itemize}
+\item screen: the browser window the clinician sees.
+\item videoPlayer: the browser's media player for the assessment recording, which reports its playback position.
+\item downloads: the clinician's download folder.
+\end{itemize}
+
+\subsubsection{Assumptions}
+\begin{itemize}
+\item init is called once, when the page loads.
+\item The browser calls onPlaybackTime at least every PLAYBACK\_UPDATE\_INTERVAL while the video plays, and logout after IDLE\_TIMEOUT minutes with no clinician input (\srsref{NFR}{NFR-S2}).
+\item All requests are sent with session's token, and the API Gateway checks it on every request (\hazref{HA-SER3}).
+\item Every exception is shown to the clinician as a message with a clear label, and the current screen stays usable (\srsref{NFR}{NFR-U2}).
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: Clear all state variables to none, playbackTime := 0, stage := LOGIN.
+\item output: None
+\item exception: None
+\end{itemize}
+
+\noindent login(email, password):
+\begin{itemize}
+\item transition: session := the Session from the login request; stage := PATIENT\_LIST; show \texttt{patientList}().
+\item output: None
+\item exception: InvalidCredentialsError if the email or password is wrong.
+\end{itemize}
+
+\noindent logout():
+\begin{itemize}
+\item transition: Send the logout request, then init() (\srsref{NFR}{NFR-S2}).
+\item output: None
+\item exception: None
+\end{itemize}
+
+\noindent navigateTo(stage):
+\begin{itemize}
+\item transition: Show the given stage (\srsref{NFR}{NFR-U3}).
+\item output: None
+\item exception: NotLoggedInError; NoSelectionError if no patient or assessment is selected yet.
+\end{itemize}
+
+\noindent addPatient(info):
+\begin{itemize}
+\item transition: Send the addPatient request, then show the updated \texttt{patientList}() (\srsref{FR}{FR_Label10}).
+\item output: None
+\item exception: NotLoggedInError; InvalidPatientInfoError if a field is empty; SaveFailedError.
+\end{itemize}
+
+\noindent openPatient(patientID):
+\begin{itemize}
+\item transition: Select the patient and show their assessments, newest first (\srsref{FR}{FR_Label11}).
+\item output: None
+\item exception: NotLoggedInError; NotFoundError.
+\end{itemize}
+
+\noindent openAssessment(assessmentID):
+\begin{itemize}
+\item transition: Select the assessment, load its overview, review and transcript (if any), and show the overview (\srsref{FR}{FR_Label12}, \srsref{FR}{FR_Label13}).
+\item output: None
+\item exception: NotLoggedInError; NotFoundError.
+\end{itemize}
+
+\noindent seek(time):
+\begin{itemize}
+\item transition: Play the video from time (\srsref{FR}{FR_Label14}, \srsref{FR}{FR_SegmentSeek}).
+\item output: None
+\item exception: NoAssessmentOpenError.
+\end{itemize}
+
+\noindent openInSAFA(portions):
+\begin{itemize}
+\item transition: Generate transcript for any portions that haven't been transcribed yet, then show the transcript next to the video (\srsref{FR}{FR_Label15}).
+\item output: None
+\item exception: NoAssessmentOpenError; TranscriptionUnavailableError. Question review still works (\hazref{HA-SAR1}).
+\end{itemize}
+
+\noindent editSegment(segmentID, change):
+\begin{itemize}
+\item transition: Send the matching TSI request (edit text, set speaker or verify), then show the updated transcript (\srsref{NFR}{NFR-U4}).
+\item output: None
+\item exception: NoTranscriptOpenError; SaveFailedError, which keeps the input in pendingInput.
+\end{itemize}
+
+\noindent reviewQuestion(questionID, change):
+\begin{itemize}
+\item transition: Send the matching Assessment Review request (flag, note or evaluation), then show the update.
+\item output: None
+\item exception: NoAssessmentOpenError; SaveFailedError, which keeps the input in pendingInput.
+\end{itemize}
+
+\noindent editAssessmentNote(text):
+\begin{itemize}
+\item transition: Save the note, or delete it if text = none (\srsref{FR}{FR_AssessmentNotes}).
+\item output: None
+\item exception: NoAssessmentOpenError; SaveFailedError, which keeps the input in pendingInput.
+\end{itemize}
+
+\noindent createReport():
+\begin{itemize}
+\item transition: Show a report preview. If the clinician confirms, generate the report (\hazref{HA-RG1}).
+\item output: None
+\item exception: NoAssessmentOpenError; UnverifiedContentError, which lists the unverified segments (\hazref{HA-SAR2}).
+\end{itemize}
+
+\noindent download(kind, format):
+\begin{itemize}
+\item transition: Download the report or the annotations file.
+\item output: None
+\item exception: NoAssessmentOpenError; UnsupportedFormatError.
+\end{itemize}
+
+\noindent onPlaybackTime(time):
+\begin{itemize}
+\item transition: playbackTime := time. In SAFA, highlight \texttt{segmentAt}(transcript, time) (\srsref{FR}{FR_TranscriptHighlight}).
+\item output: None
+\item exception: None
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\noindent segmentAt(t: Transcript, time: $\mathbb{R}$):
+\begin{itemize}
+\item output: The segment playing at time, or none.
+\end{itemize}
+
+\noindent patientList():
+\begin{itemize}
+\item output: The clinician's patients, from the getPatients request (\srsref{FR}{FR_Label9}).
+\end{itemize}
+
+\newpage
+\section{MIS of Report Generation Module} \label{ReportGeneration}
+The Report Generation module compiles an assessment's results, the clinician's review 
+as well as the transcript into a formal clinical report. It ensures reports
+contain verified content, stamps each report with when it was made, 
+and marks it out of date when the assessment changes (\srsref{FR}{FR_Label7}, 
+\srsref{SR}{SR_CompiledReports}, \srsref{FR}{FR_Label23}, \hazref{HA-RG1}, \hazref{HA-RG2}, \hazref{HA-RG3}).
+
+\subsection{Module}
+ReportGeneration
+
+\subsection{Uses}
+\begin{itemize}
+\item Transcription Service Interface module: getTranscript
+\item Assessment Review module: getOverview, getReview
+\item Database module: saveReport, getReport, getLastModified, logAccess
+\end{itemize}
+The module itself is used by the API Gateway module.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+\begin{itemize}
+\item REPORT\_FORMATS = \{PDF\}\\
+File formats a report can be downloaded in.
+\item CONFIDENTIAL\_NOTICE = ``Confidential: contains patient health information.''\\
+Printed on every page of a downloaded report (\hazref{HA-RG3}).
+\item UNVERIFIED\_LABEL = ``Unverified: automatically generated''\\
+Shown beside each unverified segment in a report preview (\hazref{HA-RG2}).
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.4cm} >{\raggedright\arraybackslash}p{4.3cm} >{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}p{4.3cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+\endhead
+previewReport & assessmentID: String \newline userID: String & report: Report & AssessmentNotFoundError \\[4pt]
+generateReport & assessmentID: String \newline userID: String & reportID: String & AssessmentNotFoundError \newline UnverifiedContentError \newline SaveFailedError \\[4pt]
+getReport & reportID: String \newline userID: String & report: Report & ReportNotFoundError \\[4pt]
+downloadReport & reportID: String \newline userID: String \newline format: String & file: Bytes & ReportNotFoundError \newline UnsupportedFormatError \\[4pt]
+\hline
+\end{longtable}
+}
+
+\noindent The access programs use the following types:
+\begin{itemize}
+\item Report: one clinical report, a tuple with these fields:
+  \begin{itemize}
+  \item reportID: String or none. none = a preview that hasn't been saved.
+  \item assessmentID: String, the assessment it covers.
+  \item generatedBy: String, the clinician who made it.
+  \item generatedAt: Time, when it was made.
+  \item domains: sequence of DomainResult, the results grouped by domain.
+  \item transcript: Transcript or none. none = no transcript was made.
+  \item review: Review, the clinician's flags, notes and grades.
+  \item outdated: $\mathbb{B}$, true if the assessment changed after generatedAt (\hazref{HA-RG1}).
+  \end{itemize}
+\item DomainResult: the results for one clinical domain, such as grammar or phonology (\srsref{FR}{FR_Label23}), a tuple with these fields:
+  \begin{itemize}
+  \item domain: String, the domain name.
+  \item questions: sequence of QuestionSummary, the questions in it.
+  \item correct: $\mathbb{N}$, how many are correct.
+  \item graded: $\mathbb{N}$, how many have been graded.
+  \end{itemize}
+\end{itemize}
+Types from other modules:
+\begin{itemize}
+\item Transcription Service Interface: Transcript.
+\item Assessment Review: QuestionSummary, Review.
+\end{itemize}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+N/A, saved reports are held by the Database module.
+
+\subsubsection{Environment Variables}
+N/A
+
+\subsubsection{Assumptions}
+\begin{itemize}
+\item The API Gateway has called the Account System's authorize routine, and userID is the identity of a clinician assigned to the patient of the assessment (\srsref{NFR}{NFR-S1}, \hazref{HA-RG3}).
+\item All of the clinician's edits have been saved before a report is requested. The Frontend saves each change as it is made (\hazref{HA-RG1}).
+\item Database.getLastModified(assessmentID) returns the latest time any result, review entry or transcript segment of the assessment was changed.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent previewReport(assessmentID, userID):
+\begin{itemize}
+\item transition: None
+\item output: \texttt{buildReport}(assessmentID, userID), not saved. Unverified segments = UNVERIFIED\_LABEL.
+\item exception: AssessmentNotFoundError.
+\end{itemize}
+
+\noindent generateReport(assessmentID, userID):
+\begin{itemize}
+\item transition: Save \texttt{buildReport}(assessmentID, userID) with Database.saveReport, then Database.logAccess(userID, GENERATE, assessmentID).
+\item output: The new reportID.
+\item exception: AssessmentNotFoundError; UnverifiedContentError if any transcript segment is unverified, and nothing is saved (\hazref{HA-SAR2}); SaveFailedError.
+\end{itemize}
+
+\noindent getReport(reportID, userID):
+\begin{itemize}
+\item transition: Database.logAccess(userID, VIEW, reportID).
+\item output: The saved report, with outdated = true if the assessment changed since it was generated (\hazref{HA-RG1}).
+\item exception: ReportNotFoundError.
+\end{itemize}
+
+\noindent downloadReport(reportID, userID, format):
+\begin{itemize}
+\item transition: Database.logAccess(userID, EXPORT, reportID) (\hazref{HA-RG3}).
+\item output: The report as a file, with CONFIDENTIAL\_NOTICE and the generation time on each page.
+\item exception: ReportNotFoundError; UnsupportedFormatError if format is not in REPORT\_FORMATS.
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\noindent buildReport(assessmentID: String, userID: String):
+\begin{itemize}
+\item output: A Report made from AssessmentReview.getOverview (grouped with \texttt{groupByDomain}), AssessmentReview.getReview and TSI.getTranscript (none if there is no transcript), stamped with userID and the current time.
+\end{itemize}
+
+\noindent groupByDomain(qs: sequence of QuestionSummary):
+\begin{itemize}
+\item output: One DomainResult per domain in qs, with its questions and how many are correct and graded.
+\end{itemize}
+
+\newpage
+\section{MIS of Assessment Review Module} \label{AssessmentReview}
+The Assessment Review module manages the clinician's review of an assessment's questions: 
+flagging questions, notes on each question and on the whole assessment, and manual evaluations 
+that override or complete the automatic assessment result
+(\srsref{FR}{FR_Label12}, \srsref{FR}{FR_Label13}, 
+\srsref{FR}{FR_ManualEvaluation}, \srsref{FR}{FR_QuestionNotes}, 
+\srsref{FR}{FR_AssessmentNotes}, \srsref{FR}{FR_Label8}). 
+
+It works on questions, whereas the TSI Module works on transcript segments.
+
+\subsection{Module}
+AssessmentReview
+
+\subsection{Uses}
+\begin{itemize}
+\item Database module: getQuestionResults, saveQuestionReview, saveAssessmentNote, getReview, logAccess
+\end{itemize}
+This module is used by the API Gateway module and the Report Generation module.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+\begin{itemize}
+\item EVALUATIONS = \{CORRECT, INCORRECT\}\\
+The results a clinician can record for a question.
+\item MAX\_NOTE\_LENGTH = 2000 characters\\
+Maximum length of a single note.
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.4cm} >{\raggedright\arraybackslash}p{4.3cm} >{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}p{4.3cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+\endhead
+getOverview & assessmentID: String \newline userID: String & overview: sequence of QuestionSummary & AssessmentNotFoundError \\[4pt]
+getReview & assessmentID: String \newline userID: String & review: Review & AssessmentNotFoundError \\[4pt]
+setQuestionFlag & assessmentID: String \newline questionID: String \newline flagged: $\mathbb{B}$ \newline userID: String & - & AssessmentNotFoundError \newline QuestionNotFoundError \newline SaveFailedError \\[4pt]
+saveQuestionNote & assessmentID: String \newline questionID: String \newline text: String or none \newline userID: String & - & AssessmentNotFoundError \newline QuestionNotFoundError \newline NoteTooLongError \newline SaveFailedError \\[4pt]
+recordEvaluation & assessmentID: String \newline questionID: String \newline result: String \newline userID: String & - & AssessmentNotFoundError \newline QuestionNotFoundError \newline InvalidEvaluationError \newline SaveFailedError \\[4pt]
+saveAssessmentNote & assessmentID: String \newline text: String or none \newline userID: String & - & AssessmentNotFoundError \newline NoteTooLongError \newline SaveFailedError \\[4pt]
+\hline
+\end{longtable}
+}
+
+\noindent The access programs use the following types:
+\begin{itemize}
+\item QuestionSummary: one row of the assessment overview, a tuple with these fields:
+  \begin{itemize}
+  \item questionID: String, the question.
+  \item domain: String, its clinical domain (e.g.\ grammar).
+  \item result: EVALUATIONS or none, the grade that counts (see \texttt{effectiveResult}). none = not graded yet.
+  \item manual: $\mathbb{B}$, true if a clinician gave the grade.
+  \item autoFlag: $\mathbb{B}$, true if the system flagged possible interference.
+  \item clinicianFlag: $\mathbb{B}$, true if the clinician flagged it.
+  \item hasNote: $\mathbb{B}$, true if the question has a note.
+  \item start, end: $\mathbb{R}$, when the question starts and ends in the recording.
+  \end{itemize}
+\item Review: everything the clinician has entered for one assessment, a tuple with these fields:
+  \begin{itemize}
+  \item questionFlags: questionID $\rightarrow \mathbb{B}$, which questions the clinician flagged.
+  \item questionNotes: questionID $\rightarrow$ String, the note on each question.
+  \item evaluations: questionID $\rightarrow$ EVALUATIONS, the clinician's grade for each question.
+  \item assessmentNote: String or none, the note on the whole assessment.
+  \end{itemize}
+\end{itemize}
+The type QuestionResult is defined by the Database module.
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+N/A, flags, notes and evaluations are held by the Database module.
+
+\subsubsection{Environment Variables}
+N/A
+
+\subsubsection{Assumptions}
+\begin{itemize}
+\item The API Gateway has called the Account System's authorize, and the userID is the clinician assigned to the patient of the assessment (\srsref{NFR}{NFR-S1}).
+\item Each QuestionResult's autoResult is either in EVALUATIONS or none for a question that cannot be graded automatically. autoFlag is set by the existing interference detection feature (\srsref{FR}{FR_Label13}).
+\item Notes are encrypted when stored by the Database and Encryption modules (\srsref{NFR}{NFR-S3}).
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+Question changes are saved with Database.saveQuestionReview, 
+and assessment notes with Database.saveAssessmentNote. 
+Every routine that changes data also calls Database.logAccess(userID, EDIT, assessmentID), 
+and the read routines call it with VIEW (\srsref{NFR}{NFR-S4}). If saving fails, nothing changes and SaveFailedError is raised.
+\\
+
+\noindent getOverview(assessmentID, userID):
+\begin{itemize}
+\item transition: None
+\item output: One QuestionSummary per question from Database.getQuestionResults, with result = \texttt{effectiveResult}(q).
+\item exception: AssessmentNotFoundError.
+\end{itemize}
+
+\noindent getReview(assessmentID, userID):
+\begin{itemize}
+\item transition: None
+\item output: Database.getReview(assessmentID).
+\item exception: AssessmentNotFoundError.
+\end{itemize}
+
+\noindent setQuestionFlag(assessmentID, questionID, flagged, userID):
+\begin{itemize}
+\item transition: clinicianFlag := flagged. The automatic flag is unchanged.
+\item output: None
+\item exception: AssessmentNotFoundError; QuestionNotFoundError.
+\end{itemize}
+
+\noindent saveQuestionNote(assessmentID, questionID, text, userID):
+\begin{itemize}
+\item transition: note := text. Adds, replaces, or deletes the note if text = none (\srsref{FR}{FR_QuestionNotes}).
+\item output: None
+\item exception: AssessmentNotFoundError; QuestionNotFoundError; NoteTooLongError if text is over MAX\_NOTE\_LENGTH.
+\end{itemize}
+
+\noindent recordEvaluation(assessmentID, questionID, result, userID):
+\begin{itemize}
+\item transition: manualResult := result. Allowed for any question at any time (\srsref{FR}{FR_ManualEvaluation}, \srsref{FR}{FR_Label8}).
+\item output: None
+\item exception: AssessmentNotFoundError; QuestionNotFoundError; InvalidEvaluationError if result is not in EVALUATIONS.
+\end{itemize}
+
+\noindent saveAssessmentNote(assessmentID, text, userID):
+\begin{itemize}
+\item transition: Assessment note := text. Deletes the note if text = none (\srsref{FR}{FR_AssessmentNotes}).
+\item output: None
+\item exception: AssessmentNotFoundError; NoteTooLongError.
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\noindent effectiveResult(q: QuestionResult):
+\begin{itemize}
+\item output: The clinician's grade if there is one, otherwise the automatic one.
 \end{itemize}
 
 \newpage
@@ -748,6 +1279,69 @@ This would be simpler to write; however, edits could be lost between sessions, a
 We didn’t choose it because our transcription module stores nothing itself and saves all transcript data through the Database module, so the saved work is preserved. 
 
 Overall, we chose our design because it separates responsibilities cleanly, so each module can be changed and tested on its own. This also allows each module to be small enough to build in the time we have.
+
+\subsection*{Catherine}
+\subsubsection*{Question 1}
+I think the fact that we as a team had already agreed on our modules and had a clear
+outline of what we wanted to implement helped a lot. We were able to separate the 
+work a lot more easily as well since we had a clear division of work between the
+modules that we could divvy up. 
+What also helped a lot was agreeing on the function calls between modules before writing any section. 
+Once we had a list of which module calls which function and what data it passes, 
+my Uses sections and access program tables mostly followed from it.
+
+\subsubsection*{Question 2}
+For me, I believe the hardest part was deciding what the Frontend covers.
+As our project builds off the previous TeleHealth team's platform which handles
+patient screens, we had many discussions before agreeing that we would only
+handle the clinician side of the interface in the module.
+I also had trouble deciding how to write the semantics for each module, as I
+tended to write overly dense and convolutedly worded sentences as I found trouble
+isolating/narrowing my understanding, so some sentences took multiple rewrites and
+reviews.
+
+\subsubsection*{Question 3}
+Writing the Assessment Review module, all the information came from our clinicians' workflow
+which was discussed with our supervisors. The team was given multiple reports, papers,
+and conducted multiple meetings to ensure that the understanding we had was aligned
+with the clinicians.
+Their existing process includes grading questions that can't be graded automatically 
+(like sentence repetition), and taking notes on each question and on the whole session, 
+which became FR\_ManualEvaluation, FR\_QuestionNotes and FR\_AssessmentNotes. 
+
+\subsubsection*{Question 4}
+Going over the MIS and MG as a team, we decided to restructure, rename and change some of
+our decided modules, such as adding the Assessment Review and Report Generation modules.
+We also changed `Web Platform' to be called `Frontend' to better reflect its purpose, so we have
+to update all documentation that makes that connection accordingly.
+The MG listed the Transcription Service Interface under user interface modules, even 
+though it has no screens, so we removed that grouping. We also dropped the Video Storage module 
+and moved recordings into the Database, which meant updating the other modules that referred to it. 
+
+\subsubsection*{Question 5}
+The first limitation, which our team identified with the supervisors, is how transcripts are split. 
+Ideally, the research team wanted each transcript to be divided into sections that 
+match the assessment's questions, but as of right now we can't actually reliably tell
+when a question starts or ends in the recording. 
+So instead, the transcript is split into chunks of time, so a chunk may cover part of 
+one question and part of the next, and the clinician has to match them up. 
+With the time and resources, I believe we could run an LLM over the transcript 
+to detect where each question begins and ends, and actually split it by question instead. 
+
+\subsubsection*{Question 6}
+As mentioned, the main alternative our team considered was splitting transcripts by question 
+instead of by chunks of time, mainly so that it would make it much easier for clinicians to 
+link each part of the transcript to the question it answers and review more easily.
+We also came to the final decision to use time-based chunks since it'll always work, 
+and the splitting is hidden inside the ML Transcription Model and Transcription Service Interface modules. 
+If we later add a language model to split by question, only those modules would need to change.
+
+Another alternative was just putting all question notes, flags and manual grades into the 
+Transcription Service Interface, since both involve reviewing the assessment, but this was scrapped
+as the two work on different data (transcript segments versus questions) and change for different reasons. 
+Lastly, Report Generation could read question results straight from the Database, but we decided
+to have it receive an overview through the Assessment Review module instead, so that it 
+can be changed without affecting Report Generation.
 
 \end{enumerate}
 

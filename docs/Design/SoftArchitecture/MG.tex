@@ -31,6 +31,8 @@
 \newcommand{\mthemnum}{M\themnum}
 \newcommand{\mref}[1]{M\ref{#1}}
 
+\usepackage{longtable}
+
 \begin{document}
 
 \title{Module Guide for \progname{}} 
@@ -159,16 +161,31 @@ adapted here is called design for
 change.
 
 \begin{description}
-\item[\refstepcounter{acnum} \actheacnum \label{acHardware}:] The specific
-  hardware on which the software is running.
-\item[\refstepcounter{acnum} \actheacnum \label{acInput}:] The format of the
-  initial input data.
-\item ...
+\item[\refstepcounter{acnum} \actheacnum \label{acHardware}:] 
+How the browser uses the patient's camera, microphone and local storage.\\
+Any changes would affect the Device I/O module (\mref{mDIO}).
+\item[\refstepcounter{acnum} \actheacnum \label{acUI}:] The layout of the clinician's screens 
+and how results are visualized (SRS LC2).\\
+This change would be reflected in the Frontend module (\mref{mFE}). 
+Clinicians have asked for charts and comparisons that are not specified yet, 
+so the screens will require change after usability testing.
+\item[\refstepcounter{acnum} \actheacnum \label{acRecording}:] The minimum recording quality 
+and how recordings are uploaded and retried.\\
+This change would be reflected in the Video Recording module (\mref{mVR}). 
+Quality thresholds will need to be adjusted once real assessments show what suffices for transcription.
+\item[\refstepcounter{acnum} \actheacnum \label{acTranscript}:] The transcript editing, annotation 
+features, and speaker roles. (SRS LC1).\\
+This change would be reflected in the Transcription Service Interface module (\mref{mTSI}). 
+SAFA is still being developed, and clinicians have requested features that have not been prioritized yet.
+\item[\refstepcounter{acnum} \actheacnum \label{acReport}:] The content, format and audience of assessment reports (SRS LC3, LC4).\\
+This change would be reflected in the Report Generation module (\mref{mRG}). Different clinics may require specific report contents, and patient-facing reports are a stretch goal.
+\item[\refstepcounter{acnum} \actheacnum \label{acReview}:] How clinicians flag, take notes on and grade assessment questions (SRS LC1).\\
+This change would be reflected in the Assessment Review module (\mref{mAR}). Grading rules may change as new question types are added to the assessments.
+\item[\refstepcounter{acnum} \actheacnum \label{acEncryption}:] The encryption algorithm and how keys are managed.\\
+This change would be reflected in the Encryption module (\mref{mEnc}). Security standards change over time, and a stronger algorithm may be required.
+\item[\refstepcounter{acnum} \actheacnum \label{acModel}:] The speech-to-text model and how a recording is split into segments.\\
+This change would be reflected in the ML Transcription Model module (\mref{mML}). Whisper may be replaced by a more accurate model, and transcripts may later be split by question instead of by time.
 \end{description}
-
-\wss{Anticipated changes relate to changes that would be made in requirements,
-design or implementation choices.  They are not related to changes that are made
-at run-time, like the values of parameters.}
 
 \subsection{Unlikely Changes} \label{SecUchange}
 
@@ -180,9 +197,18 @@ will potentially need to be modified. Hence, it is not intended that these
 decisions will be changed.
 
 \begin{description}
-\item[\refstepcounter{ucnum} \uctheucnum \label{ucIO}:] Input/Output devices
-  (Input: File and/or Keyboard, Output: File, Memory, and/or Screen).
-\item ...
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucIO}:] Input/output devices (Input: keyboard, mouse, camera and microphone through a web browser; Output: screen and downloaded files).\\
+Supporting other devices, such as a mobile app, would require changes to the Device I/O (\mref{mDIO}), Frontend (\mref{mFE}) and Video Recording (\mref{mVR}) modules.
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucUsers}:] The main users are speech-language pathologists assessing bilingual children remotely (SRS ULC1).\\
+TeLaC, SAFA and the research team's studies are all built around this group. Serving a different group would require a different product.
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucPlatform}:] The system builds on the existing TeLaC platform and SAFA tool (SRS ULC2).\\
+Integrating these two systems is the main goal of the project, so replacing either would remove the basis of the design.
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucSource}:] Assessment recordings are submitted through the existing TeLaC patient site, with one recording per assessment (SRS ULC3).\\
+The patient site was built by a previous team and is outside our scope. The Transcription Service Interface (\mref{mTSI}) and Database (\mref{mDB}) modules rely on this format.
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucLanguages}:] Assessments are only conducted in either Mandarin and English (SRS ULC4).\\
+Adding another language would require a new question bank and changes to the ML Transcription Model Module (\mref{mML}).
+\item[\refstepcounter{ucnum} \uctheucnum \label{ucJudgment}:] The clinician makes the final clinical judgment, and automatically generated content is always to be reviewed.\\
+This is a safety requirement from the hazard analysis. Removing it would affect the Transcription Service Interface (\mref{mTSI}), Assessment Review (\mref{mAR}) and Report Generation (\mref{mRG}) modules.
 \end{description}
 
 \section{Module Hierarchy} \label{SecMH}
@@ -192,13 +218,9 @@ in a hierarchy decomposed by secrets in Table \ref{TblMH}. The modules listed
 below, which are leaves in the hierarchy tree, are the modules that will
 actually be implemented.
 \\ \\ \indent
-\textbf{User Interface Modules}
 \begin{description}
 \item [\refstepcounter{mnum} \mthemnum \label{mTSI}:] Transcription Service Interface Module
-\item \item [\refstepcounter{mnum} \mthemnum \label{mFE}:] Frontend Module
-\end{description}
-\indent \indent \textbf{Backend Modules}
-\begin{description}
+\item [\refstepcounter{mnum} \mthemnum \label{mFE}:] Frontend Module
 \item [\refstepcounter{mnum} \mthemnum \label{mDIO}:] Device I/O Module
 \item [\refstepcounter{mnum} \mthemnum \label{mAPI}:] API Gateway Module
 \item [\refstepcounter{mnum} \mthemnum \label{mAS}:] Account System Module
@@ -247,12 +269,23 @@ The design of the system is intended to satisfy the requirements developed in
 the SRS. In this stage, the system is decomposed into modules. The connection
 between requirements and modules is listed in Table~\ref{TblRT}.
 
-\wss{The intention of this section is to document decisions that are made
-  ``between'' the requirements and the design.  To satisfy some requirements,
-  design decisions need to be made.  Rather than make these decisions implicit,
-  they are explicitly recorded here.  For instance, if a program has security
-  requirements, a specific design decision may be made to satisfy those
-  requirements with a password.}
+\subsection*{Design Decisions}
+
+\begin{description}
+\item[Access Control] To satisfy all privacy requirements, every request goes through the API Gateway (\mref{mAPI}), which asks the Account System (\mref{mAS}) to confirm the user's session and that the patient is assigned to them before any data is returned. Sessions end after 15 minutes of inactivity.
+
+\item[Encryption] To ensure that all patient data is secure (NFR7, NFR15), all browser to server traffic uses HTTPS through the API Gateway (\mref{mAPI}). Recordings, transcripts, notes and patient details will be encrypted with AES-256 by the Encryption Module (\mref{mEnc}) before the Database (\mref{mDB}) stores them.
+
+\item[Local Transcription] To keep recordings from leaving the system (HA-MLTM2, HA-SER1), the Whisper model will run locally inside the ML Transcription Model (\mref{mML}). Temporary audio files are deleted as soon as transcription ends.
+
+\item[Clinician Verification] Because automatic transcripts and flags can be wrong (SR3, NFR11, HA-MLTM1), low-confidence segments are flagged for review, and Report Generation (\mref{mRG}) will not save a report while any transcript segment is unverified (HA-SAR2).
+
+\item[Saving Work] To keep clinicians' work across sessions (NFR18, NFR20, HA-WP1), no module keeps patient data in memory. Every edit, note and grade is saved to the Database (\mref{mDB}) as soon as it is made. (NFR9).
+
+\item[Audit Logging] Modules record an access log or change of patient data (NFR8) by calling the Database's logging routine, which keeps an append-only log.
+
+\item[Recording Quality] To avoid situations where recordings are unusable/undecipherable (NFR10, HA-VR1, HA-VR2), Video Recording (\mref{mVR}) runs a quality check before an assessment starts, and verifies each upload with a checksum before the local copy is deleted.
+\end{description}
 
 \section{Module Decomposition} \label{SecMD}
 
@@ -323,6 +356,29 @@ to be implemented.
 \item[Type of Module:] Library
 \end{description}
 
+\subsubsection{Frontend Module (\mref{mFE})}
+\begin{description}
+\item[Secrets:]The layout of the clinician's screens, how they move between workflow stages, and how data is shown (such as highlighting the transcript during playback).
+\item[Services:]Displays the clinician's patients, assessments, overviews, transcripts and reports, and sends each clinician action to the API Gateway.
+\item[Implemented By:] \progname{}
+\item[Type of Module:] Abstract Object
+\end{description}
+
+\subsubsection{Report Generation Module (\mref{mRG})}
+\begin{description}
+\item[Secrets:]The content and layout of a report, how results are grouped by domain, and the rules for when a report is blocked or out of date.
+\item[Services:]Compiles an assessment's results, the clinician's review and the transcript into a report, and lets the clinician preview, save and download it.
+\item[Implemented By:] \progname{}
+\item[Type of Module:] Library
+\end{description}
+
+\subsubsection{Assessment Review Module (\mref{mAR})}
+\begin{description}
+\item[Secrets:]How question flags, notes and manual grades are stored, and the rule for which grade counts (the clinician's over the automatic one).
+\item[Services:]Gives an overview of an assessment's questions, and lets the clinician flag questions, take notes on questions and on the whole assessment, and grade questions manually.
+\item[Implemented By:] \progname{}
+\item[Type of Module:] Library
+\end{description}
 
 \subsection{Software Decision Module}
 
@@ -354,36 +410,84 @@ requirements and between the modules and the anticipated changes.
 
 % the table should use mref, the requirements should be named, use something
 % like fref
-\begin{table}[H]
-\centering
-\begin{tabular}{p{0.2\textwidth} p{0.6\textwidth}}
+\begin{longtable}{p{0.2\textwidth} p{0.6\textwidth}}
+\caption{Trace Between Requirements and Modules}
+\label{TblRT}\\
 \toprule
 \textbf{Req.} & \textbf{Modules}\\
 \midrule
+\endfirsthead
+\toprule
+\textbf{Req.} & \textbf{Modules}\\
+\midrule
+\endhead
 FR1 & \mref{mTSI}, \mref{mML}\\
-FR2 & \mref{mTSI}\\
-FR3 & \mref{mTSI}\\
-FR6 & \mref{mTSI}\\
-FR15 & \mref{mTSI}\\
-FR19 & \mref{mTSI}\\
-NFR7 & \mref{mVR}, \mref{mTSI}, \mref{mML}\\
-NFR8 & \mref{mTSI}\\
-NFR9 & \mref{mVR}\\
-NFR10 & \mref{mVR}, \mref{mML}\\
-NFR13 & \mref{mTSI}\\
+FR2 & \mref{mTSI}, \mref{mFE}\\
+FR3 & \mref{mTSI}, \mref{mFE}\\
+FR4 & \mref{mTSI}\\
+FR5 & \mref{mFE}\\
+FR6 & \mref{mTSI}, \mref{mFE}\\
+FR7 & \mref{mRG}\\
+FR8 & \mref{mAR}\\
+FR9 & \mref{mFE}, \mref{mDB}\\
+FR10 & \mref{mFE}, \mref{mDB}\\
+FR11 & \mref{mFE}, \mref{mDB}\\
+FR12 & \mref{mFE}, \mref{mAR}\\
+FR13 & \mref{mFE}, \mref{mAR}\\
+FR14 & \mref{mFE}\\
+FR15 & \mref{mTSI}, \mref{mFE}\\
+FR16 & \mref{mFE}, \mref{mAR}\\
+FR17 & \mref{mFE}, \mref{mAR}\\
+FR18 & \mref{mFE}, \mref{mAR}\\
+FR19 & \mref{mTSI}, \mref{mDB}\\
+FR20 & \mref{mFE}\\
+FR21 & \mref{mFE}\\
+FR22 & \mref{mFE}\\
+FR23 & \mref{mFE}, \mref{mRG}\\
+FR24 & \mref{mMERLS}\\
+FR25 & \mref{mFE}\\
+NFR1 & \mref{mFE}, \mref{mMERLS}\\
+NFR2 & \mref{mFE}\\
+NFR3 & \mref{mFE}\\
+NFR4 & \mref{mFE}\\
+NFR5 & \mref{mAPI}, \mref{mAS}\\
+NFR6 & \mref{mFE}, \mref{mAS}\\
+NFR7 & \mref{mTSI}, \mref{mAPI}, \mref{mVR}, \mref{mDB}, \mref{mEnc}, \mref{mML}\\
+NFR8 & \mref{mTSI}, \mref{mRG}, \mref{mAR}, \mref{mDB}\\
+NFR9 & \mref{mVR}, \mref{mDB}\\
+NFR10 & \mref{mDIO}, \mref{mVR}, \mref{mML}\\
+NFR11 & \mref{mAR}, \mref{mML}\\
+NFR12 & \mref{mFE}\\
+NFR13 & \mref{mTSI}, \mref{mFE}\\
 NFR14 & \mref{mTSI}\\
+NFR15 & \mref{mAPI}, \mref{mAS}, \mref{mDB}, \mref{mEnc}\\
+NFR16 & \mref{mDB}\\
 NFR17 & \mref{mTSI}, \mref{mML}\\
-NFR18 & \mref{mTSI}\\
-NFR21 & \mref{mTSI}\\
-HA-VR1 & \mref{mVR}\\
+NFR18 & \mref{mTSI}, \mref{mDB}\\
+NFR19 & \mref{mFE}, \mref{mAPI}\\
+NFR20 & \mref{mFE}, \mref{mDB}\\
+NFR21 & \mref{mTSI}, \mref{mFE}\\
+HA-AS1 & \mref{mAS}\\
+HA-AS2 & \mref{mAS}\\
+HA-DB1 & \mref{mDB}\\
+HA-DB2 & \mref{mDB}\\
+HA-DB3 & \mref{mDB}\\
+HA-MLTM1 & \mref{mML}\\
+HA-MLTM2 & \mref{mML}\\
+HA-RG1 & \mref{mRG}\\
+HA-RG2 & \mref{mRG}\\
+HA-RG3 & \mref{mRG}\\
+HA-SAR1 & \mref{mTSI}, \mref{mFE}\\
+HA-SAR2 & \mref{mTSI}, \mref{mRG}\\
+HA-SER1 & \mref{mTSI}, \mref{mML}\\
+HA-SER2 & \mref{mFE}, \mref{mDB}\\
+HA-SER3 & \mref{mAPI}, \mref{mAS}\\
+HA-VR1 & \mref{mDIO}, \mref{mVR}\\
 HA-VR2 & \mref{mVR}\\
-HAMLTM1 & \mref{mML}\\
-HAMLTM2 & \mref{mML}\\
+HA-WP1 & \mref{mFE}\\
+HA-WP2 & \mref{mTSI}, \mref{mFE}\\
 \bottomrule
-\end{tabular}
-\caption{Trace Between Requirements and Modules}
-\label{TblRT}
-\end{table}
+\end{longtable}
 
 \begin{table}[H]
 \centering
@@ -391,18 +495,14 @@ HAMLTM2 & \mref{mML}\\
 \toprule
 \textbf{AC} & \textbf{Modules}\\
 \midrule
-\acref{acHardware} & \mref{mHH}\\
-\acref{acInput} & \mref{mInput}\\
-\acref{acParams} & \mref{mParams}\\
-\acref{acVerify} & \mref{mVerify}\\
-\acref{acOutput} & \mref{mOutput}\\
-\acref{acVerifyOut} & \mref{mVerifyOut}\\
-\acref{acODEs} & \mref{mODEs}\\
-\acref{acEnergy} & \mref{mEnergy}\\
-\acref{acControl} & \mref{mControl}\\
-\acref{acSeqDS} & \mref{mSeqDS}\\
-\acref{acSolver} & \mref{mSolver}\\
-\acref{acPlot} & \mref{mPlot}\\
+\acref{acHardware} & \mref{mDIO}\\
+\acref{acUI} & \mref{mFE}\\
+\acref{acRecording} & \mref{mVR}\\
+\acref{acTranscript} & \mref{mTSI}\\
+\acref{acReport} & \mref{mRG}\\
+\acref{acReview} & \mref{mAR}\\
+\acref{acEncryption} & \mref{mEnc}\\
+\acref{acModel} & \mref{mML}\\
 \bottomrule
 \end{tabular}
 \caption{Trace Between Anticipated Changes and Modules}
@@ -447,9 +547,12 @@ needed. Drawings, Sketches, Figma}
 
 \section{Design of Communication Protocols}
 
-\wss{If there is communication between hardware and software, it may be necessary 
-to explain the design of the communication protocol.  This section should be filled 
-in with NA if it is not appropriate for a given project.}
+Communication between the browser and the server is handled through the API Gateway Module (\mref{mAPI}),
+which routes each request to a specific module after checking the user's session. 
+Communication with the patient's camera and microphone is handled through the 
+Device I/O Module (\mref{mDIO}), using the browser's standard media API. 
+Communication with the database is then handled through the Database Module (\mref{mDB}), 
+so no other module can access stored data directly.
 
 \section{Database Design}
 
