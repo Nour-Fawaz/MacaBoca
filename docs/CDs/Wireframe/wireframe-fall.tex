@@ -75,7 +75,7 @@ Each interface is shown in its own section, along with any changes made after th
 
 
 
-\section{Individual Assessment Page}
+\section{Individual Assessment Page}\label{individual_assessment_page}
 The individual assessment page gives clinicians an overview of a patient’s assessment, including its date and overall score. As shown in Figure~\ref{individual_assessment_view}, the left panel contains the assessment recording, transcript status, and space for assessment notes. The right panel summarizes verified, unverified, and flagged responses, followed by question rows showing answer outcomes, timestamps, verification statuses, and flag indicators. Clinicians can open questions for a detailed review, access the full assessment in SAFA, or generate a report.
 \begin{figure}[H]
     \centering
@@ -303,6 +303,49 @@ Selecting a question's note in the Questions and Responses section opens the que
 \end{enumerate}
 
 \section{Patient Summary Interface}
+The patient summary interface shows all of a single patient's assessment results in one place, so clinicians can access the patient's personal information and track their progress over time without opening each assessment separately. Selecting an assessment opens its individual assessment page (Section~\ref{individual_assessment_page}), where the clinician can review it in detail.
+
+\subsection{Patient Summary Overview}
+As shown in Figure~\ref{patient_sum_overview}, the overview page shows the patient's name and ID in the header, followed by three panels. The Patient Profile card lists the patient's age, gender, languages, location and contact information. 
+Next to it, the Overall Score Over Time panel graphs the patient's overall score across assessments, so clinicians can see at a glance whether the patient is improving. Below these, the Completed Assessments table lists each assessment with its date, name, overall score and review status, along with the total number of assessments in the title.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/patient_sum_overview.png}
+    \caption{Patient Summary Overview}
+    \label{patient_sum_overview}
+\end{figure}
+
+To update the patient's information, the clinician selects Edit Profile, which makes the fields in the Patient Profile card editable (Figure~\ref{patient_sum_edit}). The clinician can then change any field and select Save Profile to save their changes. The patient ID is shown in the header, outside the card and cannot be edited immediately by the clinician.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{Images/patient_sum_edit.png}
+    \caption{Patient Summary: Editing the Patient Profile}
+    \label{patient_sum_edit}
+\end{figure}
+
+\subsection{Patient Summary Filtered}
+Clinicians can sort the Completed Assessments table by date and filter it by review status using the drop-down menus above the table. For example, Figure~\ref{patient_sum_filter} shows the table filtered to assessments that have not been reviewed. When a filter is applied, the table heading shows how many assessments are shown out of the total, such as ``(2 of 5)'', and a Clear Filters link appears to return to the full list. Hovering over a row highlights it and shows an Open Assessment link, which opens that assessment's individual assessment page (see Section~\ref{individual_assessment_page}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Images/patient_sum_filter.png}
+    \caption{Patient Summary: Assessments Filtered by ``Not Reviewed''}
+    \label{patient_sum_filter}
+\end{figure}
+
+\subsection{Changes After Supervisor Review}
+\noindent After consulting with the supervisors, the following changes were suggested for the patient summary interface.
+\begin{enumerate}
+    \item \textbf{Suggested Change:} Add more demographic information about the patient, including age, gender, language and location.
+
+    \textbf{Reason and Result:} The original design only showed the patient's ID, age and language, which did not give clinicians enough context about the patient. The Patient Profile card (Figure~\ref{patient_sum_overview}) now shows the patient's age, gender, languages, location and contact information.
+
+    \item \textbf{Suggested Change:} Place the patient's information in its own card.
+
+    \textbf{Reason and Result:} Previously, the patient's information was shown on the same line as their ID (Figure~\ref{individual_assessment_view}). This made it easy to miss, and since it was grouped with the ID, which cannot be changed, it could not be edited. The information now has its own Patient Profile card with an Edit Profile button, while the ID stays read-only in the page header.
+\end{enumerate}
 
 
 \newpage{}
