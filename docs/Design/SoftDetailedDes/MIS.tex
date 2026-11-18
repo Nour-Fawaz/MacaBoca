@@ -77,6 +77,7 @@ See SRS Documentation at \url{https://github.com/Nour-Fawaz/MacaBoca/blob/main/p
 \textbf{Acronym} & \textbf{Meaning}\\
 \midrule
 API & Application Programming Interface\\
+AWS & Amazon Web Services\\
 CSV & Comma-Separated Values (a file format)\\
 dBFS & Decibels relative to full scale (an audio level)\\
 FR & Functional Requirement\\
@@ -414,7 +415,7 @@ When the current capture started.
 \newpage
 
 \section{MIS of API Gateway Module}\label{APIGateway}
-The API Gateway module is the single entry point to the server. It receives
+The API Gateway module is the single entry point to the server, hosted on AWS. It receives
 every request from the Frontend and the Video Recording module over HTTPS,
 checks the user's authorization, and passes the request to the
 module that handles it (\srsref{NFR}{NFR-S1}, \srsref{NFR}{NFR-S3},
