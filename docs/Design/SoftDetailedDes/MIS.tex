@@ -491,9 +491,10 @@ None
 \noindent handleRequest(method, route, sessionToken, body):
 \begin{itemize}
 \item transition: If route is login, call Account System.login with the email
-  and password in body. Otherwise, userID := Account System.authorize(
-  sessionToken, \texttt{target}(body)), then call the access program that
-  \texttt{dispatch}(method, route) gives, with the values in body and userID.
+  and password in body. Otherwise, (program, allowed) :=
+  \texttt{dispatch}(method, route); userID := Account System.authorize(
+  sessionToken, allowed, \texttt{target}(body)); then call program with the
+  values in body and userID.
 \item output: Response with status 200 and the called program's output, or,
   if it raised an exception, the status given by \texttt{statusOf}.
 \item exception: None. Errors are returned as status codes.
@@ -501,8 +502,8 @@ None
 
 \noindent uploadRecording(sessionToken, assessmentID, recording):
 \begin{itemize}
-\item transition: Account System.authorize(sessionToken, assessmentID); then
-  store recording for assessmentID in the Database.
+\item transition: Account System.authorize(sessionToken, \{PATIENT\},
+  assessmentID); then store recording for assessmentID in the Database.
 \item output: The checksum of the stored recording, from the Database.
 \item exception: UnauthorizedError if authorize fails; UploadFailedError if
   the recording cannot be stored.
@@ -510,8 +511,8 @@ None
 
 \noindent requestBackup(sessionToken, assessmentID):
 \begin{itemize}
-\item transition: Account System.authorize(sessionToken, assessmentID); then
-  back up the recording for assessmentID in the Database.
+\item transition: Account System.authorize(sessionToken, \{PATIENT\},
+  assessmentID); then back up the recording for assessmentID in the Database.
 \item output: None
 \item exception: UnauthorizedError if authorize fails; BackupFailedError if
   the backup cannot be made.
@@ -521,9 +522,9 @@ None
 
 \noindent dispatch(method: String, route: String):
 \begin{itemize}
-\item output: The access program from Uses that handles the request, e.g.,
-  (GET, /assessments/\{id\}/transcript) gives Transcription Service
-  Interface.getTranscript.
+\item output: The access program from Uses that handles the request, and the
+  set of ROLES allowed to call it, e.g., (GET, /assessments/\{id\}/transcript)
+  gives (Transcription Service Interface.getTranscript, \{CLINICIAN\}).
 \item exception: Response with status 404 if no access program matches.
 \end{itemize}
 
@@ -584,7 +585,8 @@ createAccount & email: String, password: String, role: ROLES & userID: String
 login & email: String, password: String & session: Session &
   InvalidCredentialsError \\
 logout & sessionToken: String & - & - \\
-authorize & sessionToken: String, target: String or none & userID: String &
+authorize & sessionToken: String, allowed: set of ROLES, target: String or
+  none & userID: String &
   SessionExpiredError, UnauthorizedError \\
 \hline
 \end{tabular}
@@ -648,13 +650,15 @@ None
 \item exception: None
 \end{itemize}
 
-\noindent authorize(sessionToken, target):
+\noindent authorize(sessionToken, allowed, target):
 \begin{itemize}
 \item transition: lastActive of sessionToken := current time.
 \item output: The userID of the session.
 \item exception: SessionExpiredError if sessionToken is not in sessions, or
   its lastActive is more than IDLE\_TIMEOUT minutes ago, in which case it is
-  removed (\srsref{NFR}{NFR-S2}); UnauthorizedError if target $\neq$ none and
+  removed (\srsref{NFR}{NFR-S2}); UnauthorizedError if the session's role is
+  not in allowed, so access is denied by default (\hazref{HA-AS2}), or if
+  target $\neq$ none and
   the Database does not show the user as assigned to target's patient (\srsref{NFR}{NFR-S1}).
 \end{itemize}
 

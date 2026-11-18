@@ -303,15 +303,21 @@ Only the leaf modules in the hierarchy have to be implemented. If a dash
 (\emph{--}) is shown, this means that the module is not a leaf and will not have
 to be implemented.
 
-\subsection{Hardware Hiding Modules (\mref{mHH})}
+\subsection{Hardware Hiding Modules}
 
 \begin{description}
-\item[Secrets:]The data structure and algorithm used to implement the virtual
-  hardware.
-\item[Services:]Serves as a virtual hardware used by the rest of the
-  system. This module provides the interface between the hardware and the
-  software. So, the system can use it to display outputs or to accept inputs.
-\item[Implemented By:] OS
+\item[Secrets:]How the system accesses the hardware of the patient's device.
+\item[Services:]Provides the interface between the device's hardware and the rest of the system, so other modules
+  can capture media and store files without knowing how the browser accesses the hardware.
+\item[Implemented By:] --
+\end{description}
+
+\subsubsection{Device I/O Module (\mref{mDIO})}
+\begin{description}
+\item[Secrets:]How the browser accesses the patient's camera, microphone and local storage.
+\item[Services:]Takes short audio and video samples for the quality check, captures the full recording, and keeps a temporary copy of it on the patient's device until it has been saved.
+\item[Implemented By:] \progname{} (using the browser's media and storage APIs)
+\item[Type of Module:] Abstract Object
 \end{description}
 
 \subsection{Behaviour-Hiding Module}
@@ -364,6 +370,14 @@ to be implemented.
 \item[Type of Module:] Abstract Object
 \end{description}
 
+\subsubsection{Account System Module (\mref{mAS})}
+\begin{description}
+\item[Secrets:]How passwords are checked, how sessions are kept and timed out, and the rules for which users may access which patients.
+\item[Services:]Creates user accounts, logs users in and out, and checks on each request that the user's session is still valid and that they are allowed to access the patient's data.
+\item[Implemented By:] \progname{}
+\item[Type of Module:] Abstract Object
+\end{description}
+
 \subsubsection{Report Generation Module (\mref{mRG})}
 \begin{description}
 \item[Secrets:]The content and layout of a report, how results are grouped by domain, and the rules for when a report is blocked or out of date.
@@ -391,6 +405,14 @@ to be implemented.
   % Changes in these modules are more likely to be motivated by a desire to
   % improve performance than by externally imposed changes.
 \item[Implemented By:] --
+\end{description}
+
+\subsubsection{API Gateway Module (\mref{mAPI})}
+\begin{description}
+\item[Secrets:]The server's routes, the format of requests and responses, and how errors are turned into HTTP status codes.
+\item[Services:]Receives every request from the Frontend and Video Recording modules over HTTPS, checks the user's session and access through the Account System, and passes the request to the module that handles it.
+\item[Implemented By:] \progname{}
+\item[Type of Module:] Library
 \end{description}
 
 \subsubsection{ML Transcription Model Module (\mref{mML})}
@@ -468,7 +490,7 @@ NFR19 & \mref{mFE}, \mref{mAPI}\\
 NFR20 & \mref{mFE}, \mref{mDB}\\
 NFR21 & \mref{mTSI}, \mref{mFE}\\
 HA-AS1 & \mref{mAS}\\
-HA-AS2 & \mref{mAS}\\
+HA-AS2 & \mref{mAPI}, \mref{mAS}\\
 HA-DB1 & \mref{mDB}\\
 HA-DB2 & \mref{mDB}\\
 HA-DB3 & \mref{mDB}\\
@@ -483,7 +505,7 @@ HA-SER1 & \mref{mTSI}, \mref{mML}\\
 HA-SER2 & \mref{mFE}, \mref{mDB}\\
 HA-SER3 & \mref{mAPI}, \mref{mAS}\\
 HA-VR1 & \mref{mDIO}, \mref{mVR}\\
-HA-VR2 & \mref{mVR}\\
+HA-VR2 & \mref{mDIO}, \mref{mVR}\\
 HA-WP1 & \mref{mFE}\\
 HA-WP2 & \mref{mTSI}, \mref{mFE}\\
 \bottomrule
