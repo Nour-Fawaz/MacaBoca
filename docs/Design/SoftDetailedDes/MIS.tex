@@ -1752,6 +1752,66 @@ Lastly, Report Generation could read question results straight from the Database
 to have it receive an overview through the Assessment Review module instead, so that it 
 can be changed without affecting Report Generation.
 
+\subsection*{Yilin}
+\subsubsection*{Question 1}
+Before writing the MIS, we had a group meeting where we discussed everything we
+wanted in our system and mapped out how the modules would interact using a uses
+hierarchy diagram. This was very impactful for keeping the document consistent.
+Since everyone agreed on the modules and how they call each other, we could
+split the modules evenly between us, and whenever someone found a problem with
+the original plan or made a change, we updated each other so the other sections
+stayed in line.
+
+\subsubsection*{Question 2}
+For many of my modules, I didn't
+have much experience actually implementing, so I had a
+hard time knowing whether the choices I made were realistic or well designed.
+What helped was doing my own research into common practices, such as how
+browsers access the camera and microphone and how a gateway checks a session on
+every request. I also kept referring back to our SRS and hazard analysis to
+remember the priorities each module needs to fulfill, like automatic sign-out
+after inactivity and making sure a clinician can only see their own patients.
+
+\subsubsection*{Question 3}
+Most of the requirements that shaped my modules came from our supervisors, since
+we are building off a previous capstone. For instance, our supervisors want a web
+app, so we need an API Gateway that every request goes through. Patients record
+their assessments on their own devices, so we need a module to access the camera
+and microphone through the browser. They also want the system to be secure and
+HIPAA compliant, so authorization and session handling in our Account System are
+important.
+
+The parts that did not come from the client were the technical design choices.
+Our supervisors have fewer strict requirements on our system's module implementation, so as long as it aligns with their research work and architecture
+plan, the details of how we split and connect the modules were up to us.
+
+\subsubsection*{Question 4}
+Nothing really had to change in our SRS or hazard analysis. Our supervisors
+looked over our SRS before this milestone, so we knew we could rely on it while
+designing the system. What did change was our system components. We renamed
+several modules to better show what they do, and we restructured a few of them including
+how the Account System interacts with Encryption.
+
+\subsubsection*{Question 5}
+One limitation is our Account System. Although we create different accounts for
+patients and clinicians, our way of verifying who someone actually is, for
+example that a clinician is a real SLP, is weak. If we had direct access to SLP
+offices and their client systems and records, we could improve security, and it
+would also make it easier for clinics to adopt our program right away.
+
+\subsubsection*{Question 6}
+One alternative we considered was a less integrated design than the one we have
+now. Currently, the web app is an all-in-one base for the clinician, where
+reviewing recordings, annotating transcripts and writing reports all happen in
+TeLaC. In the other design, the SAFA tool would stay as its own separate base,
+and the clinician would be redirected to it from TeLaC when they want to
+annotate. The benefit is that it would be less work for us, since SAFA could
+mostly stay as it is. However, clinicians would still be switching between two
+systems, and patient data would have to be passed
+between them, which adds more security risk. We chose the more integrated design
+because having one system means one Account System and one API Gateway control who can access
+patient data.
+
 \end{enumerate}
 
 \end{document}
