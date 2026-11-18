@@ -79,11 +79,19 @@ See SRS Documentation at \url{https://github.com/Nour-Fawaz/MacaBoca/blob/main/p
 API & Application Programming Interface\\
 CSV & Comma-Separated Values (a file format)\\
 dBFS & Decibels relative to full scale (an audio level)\\
+FR & Functional Requirement\\
 HA & Hazard Analysis (requirement labels such as HA-RG1)\\
+HTTP & Hypertext Transfer Protocol\\
+HTTPS & Hypertext Transfer Protocol Secure (HTTP over an encrypted connection)\\
+I/O & Input/Output\\
 MG & Module Guide\\
 MIS & Module Interface Specification\\
 ML & Machine Learning\\
+NFR & Non-Functional Requirement \\
 PDF & Portable Document Format\\
+SAFA & Speech Annotation For Application, Access, Accuracy\\
+SLP & Speech-Language Pathologist\\
+SR & Stakeholder Requirement \\
 SRS & Software Requirements Specification\\
 TSI & Transcription Service Interface\\
 WAV & Waveform Audio File Format\\
@@ -106,7 +114,7 @@ The following document details the Module Interface Specifications (MIS) for
 children. The system integrates the functionality of the existing standalone
 annotation tool, SAFA, directly into the \progname{} web platform, allowing
 clinicians to review assessment recordings, annotate transcripts, and manage patient records in a single place. 
-Foreach module identified in the Module Guide, this document specifies its
+For each module identified in the Module Guide, this document specifies its
 exported constants and access programs, its state and environment variables,
 its assumptions, and the semantics of its access routines.
 
@@ -262,6 +270,398 @@ The following table is taken directly from the Module Guide document for this pr
   have local scope.}
 
 
+\newpage
+\section{MIS of Device I/O Module}\label{DeviceIO}
+The Device I/O module hides the browser API calls needed to
+access the camera, microphone and local storage of the device the patient uses
+during an assessment. It captures audio and video samples used to check
+recording quality (\srsref{NFR}{NFR-P1}) and full recordings, and keeps a
+temporary copy of a recording on the device until it has been saved by the
+system.
+
+\subsection{Module}
+DeviceIO
+
+\subsection{Uses}
+\begin{itemize}
+\item Browser APIs (external): getUserMedia, MediaRecorder, IndexedDB
+\end{itemize}
+This module is used by the Video Recording module for checking recording
+quality and capturing recordings.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+None
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabular}{p{3cm} p{3.5cm} p{3.5cm} p{4.5cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+init & - & - & - \\
+sample & seconds: $\mathbb{R}$ & sample: MediaSample & PermissionDeniedError, DeviceUnavailableError \\
+startCapture & - & - & PermissionDeniedError, DeviceUnavailableError \\
+stopCapture & - & recording: Recording & NotCapturingError \\
+saveLocal & recording: Recording & - & StorageFullError \\
+clearLocal & - & - & - \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent The access programs use the following types:
+\begin{itemize}
+\item MediaSample: a tuple (audioLevel: $\mathbb{R}$ dBFS, brightness:
+  $[0,1]$, frameRate: $\mathbb{R}$ frames per second, resolution:
+  $\mathbb{N} \times \mathbb{N}$), measured over the length of the sample.
+\item Recording: defined by the Video Recording module
+  (Section~\ref{VideoRecording}).
+\end{itemize}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+\begin{itemize}
+\item capturing: $\mathbb{B}$\\
+Whether the camera and microphone are currently being recorded.
+\item startedAt: Time or none\\
+When the current capture started.
+\end{itemize}
+
+\subsubsection{Environment Variables}
+\begin{itemize}
+\item camera: the video input of the patient's device.
+\item microphone: the audio input of the patient's device.
+\item localStore: the browser's local storage on the patient's device, holding
+  at most one Recording.
+\end{itemize}
+
+\subsubsection{Assumptions}
+\begin{itemize}
+\item init() is called before any other access program.
+\item The module runs in a browser that supports the browser APIs listed in Uses.
+\item Only one capture is in progress at a time.
+\item The browser records in a video format that later modules can read
+  (e.g., ``video/webm'' or ``video/mp4'').
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: capturing := false; startedAt := none.
+\item output: None
+\item exception: None
+\end{itemize}
+
+\noindent sample(seconds):
+\begin{itemize}
+\item transition: None
+\item output: A MediaSample measured from \texttt{openDevices()} over
+  \emph{seconds} seconds. The captured media is discarded and the devices are
+  released afterwards.
+\item exception: PermissionDeniedError if the patient has not granted access to
+  the camera or microphone; DeviceUnavailableError if either device is missing
+  or in use by another application.
+\end{itemize}
+
+\noindent startCapture():
+\begin{itemize}
+\item transition: Start recording the stream from \texttt{openDevices()};
+  capturing := true; startedAt := current time.
+\item output: None
+\item exception: PermissionDeniedError, DeviceUnavailableError (as in sample).
+\end{itemize}
+
+\noindent stopCapture():
+\begin{itemize}
+\item transition: Stop recording and release the camera and microphone;
+  capturing := false; startedAt := none.
+\item output: A Recording with file = the captured media, format =
+  the video format the browser recorded in, duration = current time $-$ startedAt, resolution = the
+  camera resolution used, and recordedAt = startedAt.
+\item exception: NotCapturingError if capturing = false.
+\end{itemize}
+
+\noindent saveLocal(recording):
+\begin{itemize}
+\item transition: localStore := recording, replacing any Recording already
+  stored.
+\item output: None
+\item exception: StorageFullError if localStore does not have enough space for
+  recording.
+\end{itemize}
+
+\noindent clearLocal():
+\begin{itemize}
+\item transition: localStore := empty.
+\item output: None
+\item exception: None
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\noindent openDevices():
+\begin{itemize}
+\item transition: None
+\item output: A live audio and video stream from the camera and microphone,
+  requested through getUserMedia.
+\item exception: PermissionDeniedError, DeviceUnavailableError.
+\end{itemize}
+
+\newpage
+
+\section{MIS of API Gateway Module}\label{APIGateway}
+The API Gateway module is the single entry point to the server. It receives
+every request from the Frontend and the Video Recording module over HTTPS,
+checks the user's authorization, and passes the request to the
+module that handles it (\srsref{NFR}{NFR-S3}, \hazref{HA-SER3}).
+
+\subsection{Module}
+APIGateway
+
+\subsection{Uses}
+\begin{itemize}
+\item Account System module: login, logout, createAccount, authorize
+\item Transcription Service Interface module: generateTranscript,
+  getTranscript, editSegmentText, assignSpeaker, verifySegment,
+  completeTranscript, exportAnnotations
+\item Assessment Review module: getOverview, getReview, setQuestionFlag,
+  saveQuestionNote, recordEvaluation, saveAssessmentNote
+\item Report Generation module: previewReport, generateReport, getReport,
+  downloadReport
+\item Database module: to store, back up and read recordings, and to read and
+  add patients and assessments
+\end{itemize}
+This module is used by the Frontend module and the Video Recording module.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+None
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabular}{p{3cm} p{4.5cm} p{3.5cm} p{4cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+handleRequest & method: String, route: String, sessionToken: String or none,
+  body: Bytes & response: Response & - \\
+uploadRecording & sessionToken: String, assessmentID: String,
+  recording: Recording & checksum: String & UnauthorizedError,
+  UploadFailedError \\
+requestBackup & sessionToken: String, assessmentID: String & - &
+  UnauthorizedError, BackupFailedError \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent The access programs use the following types:
+\begin{itemize}
+\item Response: a tuple (status: $\mathbb{N}$, body: Bytes), where status is an
+  HTTP status code.
+\item Recording: defined by the Video Recording module
+  (Section~\ref{VideoRecording}).
+\end{itemize}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+None
+
+\subsubsection{Environment Variables}
+\begin{itemize}
+\item connection: the HTTPS connection the request arrived on.
+\end{itemize}
+
+\subsubsection{Assumptions}
+\begin{itemize}
+\item The server only accepts connections over HTTPS, so all data is encrypted
+  in transit (\srsref{NFR}{NFR-S3}).
+\item The Frontend and Video Recording modules only reach other server modules
+  through this module.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent handleRequest(method, route, sessionToken, body):
+\begin{itemize}
+\item transition: If route is login, call Account System.login with the email
+  and password in body. Otherwise, userID := Account System.authorize(
+  sessionToken, \texttt{target}(body)), then call the access program that
+  \texttt{dispatch}(method, route) gives, with the values in body and userID.
+\item output: Response with status 200 and the called program's output, or,
+  if it raised an exception, the status given by \texttt{statusOf}.
+\item exception: None. Errors are returned as status codes.
+\end{itemize}
+
+\noindent uploadRecording(sessionToken, assessmentID, recording):
+\begin{itemize}
+\item transition: Account System.authorize(sessionToken, assessmentID); then
+  store recording for assessmentID in the Database.
+\item output: The checksum of the stored recording, from the Database.
+\item exception: UnauthorizedError if authorize fails; UploadFailedError if
+  the recording cannot be stored.
+\end{itemize}
+
+\noindent requestBackup(sessionToken, assessmentID):
+\begin{itemize}
+\item transition: Account System.authorize(sessionToken, assessmentID); then
+  back up the recording for assessmentID in the Database.
+\item output: None
+\item exception: UnauthorizedError if authorize fails; BackupFailedError if
+  the backup cannot be made.
+\end{itemize}
+
+\subsubsection{Local Functions}
+
+\noindent dispatch(method: String, route: String):
+\begin{itemize}
+\item output: The access program from Uses that handles the request, e.g.,
+  (GET, /assessments/\{id\}/transcript) gives Transcription Service
+  Interface.getTranscript.
+\item exception: Response with status 404 if no access program matches.
+\end{itemize}
+
+\noindent target(body: Bytes):
+\begin{itemize}
+\item output: The assessmentID or patientID the request is about, or none if
+  it is not about a specific patient (e.g., listing the clinician's patients).
+\end{itemize}
+
+\noindent statusOf(e: Exception):
+\begin{itemize}
+\item output: 401 for InvalidCredentialsError or SessionExpiredError; 
+  403 for UnauthorizedError; 404 when the requested item does not exist
+  (e.g., AssessmentNotFoundError, NoTranscriptError); 409 when the request
+  conflicts with the current state (e.g., TranscriptionInProgressError,
+  UnverifiedContentError, DuplicateEmailError); 400 for invalid input (e.g.,
+  UnsupportedFormatError, NoteTooLongError); 500 otherwise.
+\end{itemize}
+
+\newpage
+
+\section{MIS of Account System Module}\label{AccSys}
+The Account System module handles login and authorization of user accounts.
+It creates accounts, starts and ends sessions, and checks that a user may
+access a patient's data (\srsref{NFR}{NFR-S1}, \srsref{NFR}{NFR-S2}).
+
+\subsection{Module}
+AccountSystem
+
+\subsection{Uses}
+\begin{itemize}
+\item Database module: to read and add user accounts, and to check which
+  patients a user is assigned to
+\item Encryption module: to hash and check passwords
+\end{itemize}
+This module is used by the API Gateway module.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+\begin{itemize}
+\item ROLES = \{CLINICIAN, PATIENT, RESEARCHER\}\\
+The kinds of user account.
+\end{itemize}
+This module also uses the auxiliary constant IDLE\_TIMEOUT (15 minutes),
+defined in the SRS.
+
+\subsubsection{Exported Access Programs}
+
+\begin{center}
+\begin{tabular}{p{3cm} p{4.5cm} p{3.5cm} p{4cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+init & - & - & - \\
+createAccount & email: String, password: String, role: ROLES & userID: String
+  & DuplicateEmailError \\
+login & email: String, password: String & session: Session &
+  InvalidCredentialsError \\
+logout & sessionToken: String & - & - \\
+authorize & sessionToken: String, target: String or none & userID: String &
+  SessionExpiredError, UnauthorizedError \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent The access programs use the following types:
+\begin{itemize}
+\item Session: a tuple (token: String, userID: String, role: ROLES).
+\item User: a tuple (userID: String, email: String, passwordHash: String,
+  role: ROLES), stored by the Database module.
+\end{itemize}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+\begin{itemize}
+\item sessions: String $\rightarrow$ (Session, lastActive: Time)\\
+The open sessions, by token, with the time each was last used.
+\end{itemize}
+
+\subsubsection{Environment Variables}
+None
+
+\subsubsection{Assumptions}
+\begin{itemize}
+\item init is called before any other access program.
+\item Session tokens are random and cannot be guessed.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent init():
+\begin{itemize}
+\item transition: sessions := \{\}.
+\item output: None
+\item exception: None
+\end{itemize}
+
+\noindent createAccount(email, password, role):
+\begin{itemize}
+\item transition: Add a User to the Database with email, role, and a
+  passwordHash of password made by the Encryption module.
+\item output: The new userID.
+\item exception: DuplicateEmailError if an account already uses email.
+\end{itemize}
+
+\noindent login(email, password):
+\begin{itemize}
+\item transition: If the Database has a user with email, and the Encryption
+  module confirms password matches its passwordHash, add a new Session for
+  that user to sessions with lastActive := current time.
+\item output: The new Session.
+\item exception: InvalidCredentialsError if no user has email or the password
+  is wrong.
+\end{itemize}
+
+\noindent logout(sessionToken):
+\begin{itemize}
+\item transition: Remove sessionToken from sessions.
+\item output: None
+\item exception: None
+\end{itemize}
+
+\noindent authorize(sessionToken, target):
+\begin{itemize}
+\item transition: lastActive of sessionToken := current time.
+\item output: The userID of the session.
+\item exception: SessionExpiredError if sessionToken is not in sessions, or
+  its lastActive is more than IDLE\_TIMEOUT minutes ago, in which case it is
+  removed (\srsref{NFR}{NFR-S2}); UnauthorizedError if target $\neq$ none and
+  the Database does not show the user as assigned to target's patient (\srsref{NFR}{NFR-S1}).
+\end{itemize}
+
+\subsubsection{Local Functions}
+None
+
+\newpage
 
 \section{MIS of ML Transcription Model} \label{MLTransModel}
 The ML Transcription Model module converts an assessment audio file into timed text segments using a locally run Whisper model, flagging uncertain segments for clinician review (\srsref{SR}{SR_ClinicianFinalJudgment}, \srsref{NFR}{NFR-A1}).
