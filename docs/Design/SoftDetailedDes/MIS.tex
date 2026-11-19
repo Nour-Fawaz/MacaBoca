@@ -57,8 +57,11 @@ urlcolor=cyan          % color of external links
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+11-11-2026 & 1.0 & Nour: Added Sections 10-12, 19, 20\\
+11-11-2026 & 1.1 & Nour: Updated Sections 10-12\\
+13-11-2026 & 1.2 & Nour: Updated Section 5\\
+16-11-2026 & 1.3 & Catherine: Added Sections 13-15, 20, Updated Sections 2, 4, 12\\
+18-11-2026 & 1.4 & Javayria: Added Sections 16-18, 20, Yilin: Added Sections 3, 7-9, 20, Updated Section 2\\
 \bottomrule
 \end{tabularx}
 
@@ -67,8 +70,6 @@ Date 2 & 1.1 & Notes\\
 \section{Symbols, Abbreviations and Acronyms}
 
 See SRS Documentation at \url{https://github.com/Nour-Fawaz/MacaBoca/blob/main/pdfs/SRS/SRS.pdf}
-
-\wss{Also add any additional symbols, abbreviations or acronyms}
 
 \noindent Additional acronyms used in this document:
 
@@ -126,9 +127,6 @@ The full documentation and implementation can be found at the
 \href{https://github.com/Nour-Fawaz/MacaBoca}{Maca Boca Github}.
 
 \section{Notation}
-
-\wss{You should describe your notation.  You can use what is below as
-  a starting point.}
 
 The structure of the MIS for modules comes from \citet{HoffmanAndStrooper1995},
 with the addition that template modules have been adapted from
@@ -195,80 +193,6 @@ The following table is taken directly from the Module Guide document for this pr
 \caption{Module Hierarchy}
 \label{TblMH}
 \end{table}
-
-\newpage
-~\newpage
-
-\section{MIS of \wss{Module Name}} \label{Module} \wss{Use labels for
-  cross-referencing}
-
-\wss{You can reference SRS labels, such as R\ref{R_Inputs}.}
-
-\wss{It is also possible to use \LaTeX for hypperlinks to external documents.}
-
-\subsection{Module}
-
-\wss{Short name for the module}
-
-\subsection{Uses}
-
-
-\subsection{Syntax}
-
-\subsubsection{Exported Constants}
-
-\subsubsection{Exported Access Programs}
-
-\begin{center}
-\begin{tabular}{p{2cm} p{4cm} p{4cm} p{2cm}}
-\hline
-\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
-\hline
-\wss{accessProg} & - & - & - \\
-\hline
-\end{tabular}
-\end{center}
-
-\subsection{Semantics}
-
-\subsubsection{State Variables}
-
-\wss{Not all modules will have state variables.  State variables give the module
-  a memory.}
-
-\subsubsection{Environment Variables}
-
-\wss{This section is not necessary for all modules.  Its purpose is to capture
-  when the module has external interaction with the environment, such as for a
-  device driver, screen interface, keyboard, file, etc.}
-
-\subsubsection{Assumptions}
-
-\wss{Try to minimize assumptions and anticipate programmer errors via
-  exceptions, but for practical purposes assumptions are sometimes appropriate.}
-
-\subsubsection{Access Routine Semantics}
-
-\noindent \wss{accessProg}():
-\begin{itemize}
-\item transition: \wss{if appropriate} 
-\item output: \wss{if appropriate} 
-\item exception: \wss{if appropriate} 
-\end{itemize}
-
-\wss{A module without environment variables or state variables is unlikely to
-  have a state transition.  In this case a state transition can only occur if
-  the module is changing the state of another module.}
-
-\wss{Modules rarely have both a transition and an output.  In most cases you
-  will have one or the other.}
-
-\subsubsection{Local Functions}
-
-\wss{As appropriate} \wss{These functions are for the purpose of specification.
-  They are not necessarily something that is going to be implemented
-  explicitly.  Even if they are implemented, they are not exported; they only
-  have local scope.}
 
 
 \newpage
@@ -1997,8 +1921,6 @@ Because the document contained no factual claims, the LLM's output did not requi
 \newpage{}
 
 \section{Appendix --- Reflection}
-
-\wss{Not required for CAS 741 projects}
 
 The information in this section will be used to evaluate the team members on the
 graduate attribute of Problem Analysis and Design.
