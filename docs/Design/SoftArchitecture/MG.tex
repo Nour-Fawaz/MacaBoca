@@ -305,15 +305,21 @@ Only the leaf modules in the hierarchy have to be implemented. If a dash
 (\emph{--}) is shown, this means that the module is not a leaf and will not have
 to be implemented.
 
-\subsection{Hardware Hiding Modules (\mref{mHH})}
+\subsection{Hardware Hiding Modules}
 
 \begin{description}
-\item[Secrets:]The data structure and algorithm used to implement the virtual
-  hardware.
-\item[Services:]Serves as a virtual hardware used by the rest of the
-  system. This module provides the interface between the hardware and the
-  software. So, the system can use it to display outputs or to accept inputs.
-\item[Implemented By:] OS
+\item[Secrets:]How the system accesses the hardware of the patient's device.
+\item[Services:]Provides the interface between the device's hardware and the rest of the system, so other modules
+  can capture media and store files without knowing how the browser accesses the hardware.
+\item[Implemented By:] --
+\end{description}
+
+\subsubsection{Device I/O Module (\mref{mDIO})}
+\begin{description}
+\item[Secrets:]How the browser accesses the patient's camera, microphone and local storage.
+\item[Services:]Takes short audio and video samples for the quality check, captures the full recording, and keeps a temporary copy of it on the patient's device until it has been saved.
+\item[Implemented By:] \progname{} (using the browser's media and storage APIs)
+\item[Type of Module:] Abstract Object
 \end{description}
 
 \subsection{Behaviour-Hiding Module}
@@ -366,6 +372,14 @@ to be implemented.
 \item[Type of Module:] Abstract Object
 \end{description}
 
+\subsubsection{Account System Module (\mref{mAS})}
+\begin{description}
+\item[Secrets:]How passwords are checked, how sessions are kept and timed out, and the rules for which users may access which patients.
+\item[Services:]Creates user accounts, logs users in and out, and checks on each request that the user's session is still valid and that they are allowed to access the patient's data.
+\item[Implemented By:] \progname{}
+\item[Type of Module:] Abstract Object
+\end{description}
+
 \subsubsection{Report Generation Module (\mref{mRG})}
 \begin{description}
 \item[Secrets:]The content and layout of a report, how results are grouped by domain, and the rules for when a report is blocked or out of date.
@@ -403,6 +417,14 @@ to be implemented.
 \item[Implemented By:] --
 \end{description}
 
+\subsubsection{API Gateway Module (\mref{mAPI})}
+\begin{description}
+\item[Secrets:]The server's routes, the format of requests and responses, and how errors are turned into HTTP status codes.
+\item[Services:]Receives every request from the Frontend and Video Recording modules over HTTPS, checks the user's session and access through the Account System, and passes the request to the module that handles it.
+\item[Implemented By:] \progname{}
+\item[Type of Module:] Library
+\end{description}
+
 \subsubsection{ML Transcription Model Module (\mref{mML})}
 \begin{description}
 \item[Secrets:]The speech recognition model used, how audio is split into chunks, and how the model's confidence and the audio level are turned into flags.
@@ -436,6 +458,10 @@ requirements and between the modules and the anticipated changes.
 
 % the table should use mref, the requirements should be named, use something
 % like fref
+Table~\ref{TblRT} maps each functional and non-functional requirement from the
+SRS, and each safety and security requirement from the Hazard Analysis, to the
+modules that satisfy it.
+
 \begin{longtable}{p{0.2\textwidth} p{0.6\textwidth}}
 \caption{Trace Between Requirements and Modules}
 \label{TblRT}\\
@@ -490,11 +516,11 @@ NFR15 & \mref{mAPI}, \mref{mAS}, \mref{mDB}, \mref{mEnc}\\
 NFR16 & \mref{mDB}\\
 NFR17 & \mref{mTSI}, \mref{mML}\\
 NFR18 & \mref{mTSI}, \mref{mDB}\\
-NFR19 & \mref{mFE}, \mref{mAPI}\\
+NFR19 & \mref{mFE}\\
 NFR20 & \mref{mFE}, \mref{mDB}\\
 NFR21 & \mref{mTSI}, \mref{mFE}\\
 HA-AS1 & \mref{mAS}\\
-HA-AS2 & \mref{mAS}\\
+HA-AS2 & \mref{mAPI}, \mref{mAS}\\
 HA-DB1 & \mref{mDB}\\
 HA-DB2 & \mref{mDB}\\
 HA-DB3 & \mref{mDB}\\
@@ -509,13 +535,18 @@ HA-SER1 & \mref{mTSI}, \mref{mML}\\
 HA-SER2 & \mref{mFE}, \mref{mDB}\\
 HA-SER3 & \mref{mAPI}, \mref{mAS}\\
 HA-VR1 & \mref{mDIO}, \mref{mVR}\\
-HA-VR2 & \mref{mVR}\\
+HA-VR2 & \mref{mDIO}, \mref{mVR}\\
 HA-WP1 & \mref{mFE}\\
 HA-WP2 & \mref{mTSI}, \mref{mFE}\\
 \bottomrule
 \end{longtable}
 
+Table~\ref{TblACT} maps each anticipated change from
+Section~\ref{SecAchange} to the module that hides it, so that a change only
+affects that module.
+
 \begin{table}[H]
+\caption{Trace Between Anticipated Changes and Modules}
 \centering
 \begin{tabular}{p{0.2\textwidth} p{0.6\textwidth}}
 \toprule
@@ -531,7 +562,6 @@ HA-WP2 & \mref{mTSI}, \mref{mFE}\\
 \acref{acModel} & \mref{mML}\\
 \bottomrule
 \end{tabular}
-\caption{Trace Between Anticipated Changes and Modules}
 \label{TblACT}
 \end{table}
 
@@ -612,8 +642,221 @@ The API Gateway (\mref{mAPI}) is the only way into the modules that run on the s
 
 \section{User Interfaces}
 
-\wss{Design of user interface for software and hardware.  Attach an appendix if
-needed. Drawings, Sketches, Figma}
+This section shows the user interfaces of \progname{}, displayed by the
+Frontend module (\mref{mFE}).
+ More details on each interface and the changes made
+after supervisor review can be found in the
+\href{https://github.com/Nour-Fawaz/MacaBoca/blob/main/pdfs/CDs/Wireframe/wireframe-fall.pdf}{Wireframe document}.
+
+\subsection{Patient Summary}
+
+The patient summary shows all of a patient's information and assessments in one
+place, using patient and assessment records from the Database module
+(\mref{mDB}).
+
+Figure~\ref{fig:ui_patient_sum_overview} shows the patient's profile, their
+overall score over time, and a table of their completed assessments.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{Images/patient_sum_overview.png}
+  \caption{Patient Summary Overview}
+  \label{fig:ui_patient_sum_overview}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.35\textwidth]{Images/patient_sum_edit.png}
+  \caption{Patient Summary: Editing the Patient Profile}
+  \label{fig:ui_patient_sum_edit}
+\end{figure}
+
+Figure~\ref{fig:ui_patient_sum_filter} shows the assessments table filtered to
+those that have not been reviewed.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{Images/patient_sum_filter.png}
+  \caption{Patient Summary: Assessments Filtered by ``Not Reviewed''}
+  \label{fig:ui_patient_sum_filter}
+\end{figure}
+
+\subsection{Individual Assessment}
+
+The individual assessment page is the main page for reviewing one assessment,
+using results and review data from the Assessment Review module
+(\mref{mAR}).
+
+Figure~\ref{fig:ui_individual_assessment} shows the recording, transcript status
+and assessment notes on the left, and a summary of verified, unverified and
+flagged responses with a row for each question on the right.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{Images/individual_assessment_page_1.png}
+  \caption{Individual Assessment View}
+  \label{fig:ui_individual_assessment}
+\end{figure}
+
+\subsection{Individual Question}
+
+The individual question view is used to review one question in detail, where
+the clinician can grade it, flag interference and add a note through the
+Assessment Review module (\mref{mAR}).
+
+Figure~\ref{fig:ui_question_alpha} shows the initial design, which included
+audio and video playback and was simplified after supervisor review.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{Images/individual_question_view_1-alpha.png}
+  \caption{Initial Design of the Individual Question View}
+  \label{fig:ui_question_alpha}
+\end{figure}
+
+Figure~\ref{fig:ui_question} shows the final design, with text-based Question
+and Answer views.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{Images/individual_question_view_1.png}
+  \caption{Individual Question View}
+  \label{fig:ui_question}
+\end{figure}
+
+Figure~\ref{fig:ui_question_interference} shows the pop-up window for
+verification, the interference flag and question notes.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{Images/individual_question_view_2.png}
+  \caption{Individual Question View With Interference View Open and Unflagged}
+  \label{fig:ui_question_interference}
+\end{figure}
+
+Figure~\ref{fig:ui_question_flagged} shows the same window after the clinician
+flags interference on the question.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{Images/individual_question_view_3-interference_flagged.png}
+  \caption{Individual Question View With Interference View Open and Flagged}
+  \label{fig:ui_question_flagged}
+\end{figure}
+
+\subsection{SAFA Annotation Tool}
+
+The SAFA annotation tool lets the clinician transcribe and annotate an
+assessment without leaving the platform. Transcripts are generated by the ML
+Transcription Model module (\mref{mML}), and edited, verified and saved through
+the Transcription Service Interface module (\mref{mTSI}).
+
+Figure~\ref{fig:ui_safa_select} shows the clinician choosing which questions or
+portions of the recording to open in SAFA, or the full assessment.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{Images/safa_select.png}
+  \caption{Annotation Tool: Selecting Questions to Transcribe}
+  \label{fig:ui_safa_select}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{Images/safa_transcribe.png}
+  \caption{Annotation Tool: Transcription in Progress}
+  \label{fig:ui_safa_transcribe}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{Images/safa_speakers.png}
+  \caption{Annotation Tool: Assigning Speaker Roles}
+  \label{fig:ui_safa_speakers}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{Images/safa_review.png}
+  \caption{Annotation Tool: Reviewing the Transcript}
+  \label{fig:ui_safa_review}
+\end{figure}
+
+Figure~\ref{fig:ui_safa_review_edit} shows a segment opened for editing, where
+the clinician can correct its text, time, speaker and language, and mark it as
+verified.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{Images/safa_review_edit.png}
+  \caption{Annotation Tool: Editing a Segment}
+  \label{fig:ui_safa_review_edit}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.35\textwidth]{Images/safa_speaker_menu.png}
+  \caption{Annotation Tool: Speaker Menu for a Single Segment}
+  \label{fig:ui_safa_speaker_menu}
+\end{figure}
+
+Figure~\ref{fig:ui_safa_complete} shows the dialog that lists any unverified
+segments before the annotated transcript is saved to the assessment record.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{Images/safa_complete_dialog.png}
+  \caption{Annotation Tool: Complete Annotation Dialog}
+  \label{fig:ui_safa_complete}
+\end{figure}
+
+\subsection{Report Generation}
+
+The report interface lets the clinician review, edit and download an
+assessment report, which is compiled by the Report Generation module
+(\mref{mRG}).
+
+Figure~\ref{fig:ui_report_overview} shows the generated report with its status
+and buttons to edit or download it.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{Images/report_overview.png}
+  \caption{Assessment Report Overview}
+  \label{fig:ui_report_overview}
+\end{figure}
+
+Figure~\ref{fig:ui_report_document} shows the full report, from the patient's
+background and findings by clinical domain to the clinician's recommendations.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.75\textwidth]{Images/report_document.png}
+  \caption{Assessment Report Document}
+  \label{fig:ui_report_document}
+\end{figure}
+
+Figure~\ref{fig:ui_report_edit} shows the edit view, where each editable section
+is outlined.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{Images/report_edit.png}
+  \caption{Assessment Report Edit View}
+  \label{fig:ui_report_edit}
+\end{figure}
+
+Figure~\ref{fig:ui_report_note_drawer} shows the drawer for writing a question's
+note and choosing whether it is included in the report.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.35\textwidth]{Images/report_question_note_drawer.png}
+  \caption{Assessment Report: Question Note Drawer}
+  \label{fig:ui_report_note_drawer}
+\end{figure}
+
+\newpage
 
 \section{Design of Communication Protocols}
 
