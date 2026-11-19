@@ -32,6 +32,8 @@
 \newcommand{\mref}[1]{M\ref{#1}}
 
 \usepackage{longtable}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
 
 \begin{document}
 
@@ -394,6 +396,14 @@ to be implemented.
 \item[Type of Module:] Library
 \end{description}
 
+\subsubsection{MERLS Module (\mref{mMERLS})}
+\begin{description}
+\item[Secrets:]How the existing patient site's assessment session is connected to the clinician platform, including the recording setup check, when breaks are offered and how the answers and recording are submitted.
+\item[Services:]Runs an assessment for the patient, offers breaks to keep the child engaged, and submits the answers and recording so the assessment appears for the clinician.
+\item[Implemented By:] \progname{} (extending the existing MERLS patient site)
+\item[Type of Module:] Abstract Object
+\end{description}
+
 \subsection{Software Decision Module}
 
 \begin{description}
@@ -420,6 +430,22 @@ to be implemented.
 \item[Secrets:]The speech recognition model used, how audio is split into chunks, and how the model's confidence and the audio level are turned into flags.
 \item[Services:]Converts an audio file into timed text segments, each with a confidence score, a detected language and a flag showing whether it needs review.
 \item[Implemented By:] \progname{} (using OpenAI's Whisper speech-to-text model)
+\item[Type of Module:] Library
+\end{description}
+
+\subsubsection{Database Module (\mref{mDB})}
+\begin{description}
+\item[Secrets:]The database schema, how data is split between the database and file storage, how stored items are linked to their patient, how concurrent edits are detected, and how data is backed up and the audit log is kept.
+\item[Services:]Saves and returns all account, patient, assessment, recording, transcript, review and report data, checks which clinician an item belongs to, and records every access to patient data.
+\item[Implemented By:] \progname{} (using PostgreSQL on Amazon RDS, and Amazon S3)
+\item[Type of Module:] Abstract Object
+\end{description}
+
+\subsubsection{Encryption Module (\mref{mEnc})}
+\begin{description}
+\item[Secrets:]The encryption algorithm, how encryption keys are created and stored, and how passwords are hashed.
+\item[Services:]Encrypts and decrypts patient data before it is stored, and hashes and checks passwords.
+\item[Implemented By:] \progname{} (using Node.js crypto, bcrypt and AWS Key Management Service)
 \item[Type of Module:] Library
 \end{description}
 
@@ -552,18 +578,62 @@ the modules. It can be seen that the graph is a directed acyclic graph
 system, and modules in the higher level of the hierarchy are essentially simpler
 because they use modules from the lower levels.
 
-\wss{The uses relation is not a data flow diagram.  In the code there will often
-be an import statement in module A when it directly uses module B.  Module B
-provides the services that module A needs.  The code for module A needs to be
-able to see these services (hence the import statement).  Since the uses
-relation is transitive, there is a use relation without an import, but the
-arrows in the diagram typically correspond to the presence of import statement.}
+If module A uses module B, the arrow in Figure \ref{FigUH} points from A to B. The modules each module uses are taken from the \emph{Uses} section of its MIS. The levels of the hierarchy are described below.
 
-\wss{If module A uses module B, the arrow is directed from A to B.}
+\vspace{\baselineskip}
+\noindent \textbf{Lowest Level}\\
+The Device I/O (\mref{mDIO}), Encryption (\mref{mEnc}) and ML Transcription Model (\mref{mML}) modules do not use any other module. They only rely on the browser, the key management service and the Whisper model. This means they can be built and tested first.
+
+
+\vspace{\baselineskip}
+\noindent \textbf{Storage}\\
+Every module that keeps data does so through the Database module (\mref{mDB}), which only uses the Encryption module. Once these two modules work, the modules above them can save and read real data.
+
+\vspace{\baselineskip}
+\noindent \textbf{Behaviour}\\
+The Transcription Service Interface (\mref{mTSI}), Account System (\mref{mAS}) and Assessment Review (\mref{mAR}) modules are built on top of storage. Report Generation (\mref{mRG}) then uses the Transcription Service Interface and Assessment Review modules to put together a report.
+
+\vspace{\baselineskip}
+\noindent \textbf{Entry Points}\\
+The API Gateway (\mref{mAPI}) is the only way into the modules that run on the server. The Frontend (\mref{mFE}), Video Recording (\mref{mVR}) and MERLS (\mref{mMERLS}) modules run in the browser, and reach the server only through the API Gateway.
 
 \begin{figure}[H]
 \centering
-%\includegraphics[width=0.7\textwidth]{UsesHierarchy.png}
+\begin{tikzpicture}[
+  mod/.style={draw, rounded corners, align=center, font=\small, minimum width=2.7cm, minimum height=0.9cm, fill=white},
+  uses/.style={-{Stealth[length=2.2mm]}, thick}]
+\node[mod] (merls) at (4.5,10) {\mref{mMERLS}\\MERLS};
+\node[mod] (fe)    at (0.5,8)  {\mref{mFE}\\Frontend};
+\node[mod] (vr)    at (8.5,8)  {\mref{mVR}\\Video Recording};
+\node[mod] (dio)   at (12.5,8) {\mref{mDIO}\\Device I/O};
+\node[mod] (api)   at (4.5,6)  {\mref{mAPI}\\API Gateway};
+\node[mod] (rg)    at (8.5,4)  {\mref{mRG}\\Report Generation};
+\node[mod] (tsi)   at (4.5,2)  {\mref{mTSI}\\Transcription\\Service Interface};
+\node[mod] (ar)    at (11,2)   {\mref{mAR}\\Assessment Review};
+\node[mod] (ml)    at (1.5,0)  {\mref{mML}\\ML Transcription\\Model};
+\node[mod] (db)    at (7,0)    {\mref{mDB}\\Database};
+\node[mod] (as)    at (13.3,0) {\mref{mAS}\\Account System};
+\node[mod] (enc)   at (7,-2)   {\mref{mEnc}\\Encryption};
+\draw[uses] (merls) -- (vr);
+\draw[uses] (merls) -- (api);
+\draw[uses] (fe) -- (api);
+\draw[uses] (vr) -- (api);
+\draw[uses] (vr) -- (dio);
+\draw[uses] (api) -- (tsi);
+\draw[uses] (api) -- (rg);
+\draw[uses] (api) -- (db);
+\draw[uses] (api.east) -- (11,6) -- (ar.north);
+\draw[uses] (11,6) -- (13.3,6) -- (as.north);
+\draw[uses] (rg) -- (tsi);
+\draw[uses] (rg) -- (ar);
+\draw[uses] (rg) -- (db);
+\draw[uses] (tsi) -- (ml);
+\draw[uses] (tsi) -- (db);
+\draw[uses] (ar) -- (db);
+\draw[uses] (as) -- (db);
+\draw[uses] (as) -- (enc);
+\draw[uses] (db) -- (enc);
+\end{tikzpicture}
 \caption{Use hierarchy among modules}
 \label{FigUH}
 \end{figure}
@@ -797,11 +867,120 @@ Device I/O Module (\mref{mDIO}), using the browser's standard media API.
 Communication with the database is then handled through the Database Module (\mref{mDB}), 
 so no other module can access stored data directly.
 
-\section{Database Design}
+\section{Database Design} \label{SecDB}
 
-\wss{If a database is a significant component of the project, the database
-design should be summarized here.  This section should be filled in with NA if
-it is not appropriate for a given project.}
+All stored data is managed by the Database module (\mref{mDB}). This section describes how that data is stored, how it is linked, and how it is protected and backed up.
+
+\subsection{Storage Overview}
+
+The existing MERLS platform does not use a database. It keeps accounts, results and recordings as files in Amazon S3. The new system, \progname{}, will add a relational database (most likely PostgreSQL on Amazon RDS) for storing structured data and keep S3 for large files:
+
+\begin{itemize}
+\item \textbf{Database:} accounts, patients, assessments, question results, the clinician's review, transcript segments, reports and the audit log.
+\item \textbf{File storage (S3):} recordings and downloaded report files. The database stores only the location of each file.
+\end{itemize}
+
+A relational database was chosen because the hazards identified for stored data are handled by features it already provides:
+\begin{itemize}
+\item Links between tables can be enforced, so no item can be saved against a patient or assessment that does not exist (HA-DB3).
+\item A change made of several steps is saved in a single transaction, so it is either saved in full or not at all (HA-DB2).
+\item Queries are sent with their values as separate parameters, which prevents injection attacks (HA-SER2).
+\item Checking that an item belongs to the logged-in clinician's patient is a single query (HA-SER3).
+\end{itemize}
+
+We considered using a key-value database, such as Amazon DynamoDB, since the data forms a hierarchy (clinician, patient, assessment, segments). It was not chosen because these checks would have to be written and tested in the actual code instead. Both RDS and S3 can be covered by a Business Associate Agreement with AWS (NFR15).
+
+\subsection{Tables}
+
+Table \ref{TblTables} lists the tables in the database. Fields marked with * are encrypted by the Encryption module (\mref{mEnc}) before they are stored. Every table also has a unique identifier and the time it was created.
+
+{\small
+\begin{longtable}{p{0.2\textwidth} p{0.45\textwidth} p{0.27\textwidth}}
+\toprule
+\textbf{Table} & \textbf{Main fields} & \textbf{Belongs to}\\
+\midrule
+\endhead
+users & email, name, role, password hash & --\\
+patients & name*, birth date*, gender, languages spoken at home, guardian name*, consent time & one clinician (users)\\
+assessments & assessment type, language, time taken, video consent, break periods & one patient\\
+recordings & file location in S3, checksum, backup location & one assessment (at most one each)\\
+question\_results & question, domain, child's response*, automatic result, automatic flag and reason, start and end time & one assessment\\
+question\_reviews & clinician flag, note*, include note in report, manual result, last changed by and when & one question result (at most one each)\\
+assessment\_notes & note*, last changed by and when & one assessment (at most one each)\\
+transcripts & status (being generated, draft, verified) & one assessment (at most one each)\\
+segments & start and end time, text*, original text*, speaker, language, confidence, flagged, verified, version, last changed by and when & one transcript\\
+reports & latest version number & one assessment\\
+report\_versions & version number, generated content*, summary*, fluency*, recommendations*, included notes, file location in S3, saved by and when & one report\\
+audit\_log & user, action, item type, item, time & one user\\
+\bottomrule
+\caption{Database Tables}
+\label{TblTables}
+\end{longtable}
+}
+
+The question bank stays in the existing MERLS storage, and question results refer to its questions by their identifier. Interference flags are stored with the question they occurred in: the automatic flag on the question result and the clinician's flag on the question review. Figure \ref{FigER} shows how the tables are linked.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  tbl/.style={draw, align=center, font=\small, minimum width=2.6cm, minimum height=0.7cm, fill=white},
+  link/.style={thick},
+  card/.style={font=\scriptsize, fill=white, inner sep=1pt}]
+\node[tbl] (users) at (0,0) {users};
+\node[tbl] (audit) at (5,0) {audit\_log};
+\node[tbl] (patients) at (0,-1.6) {patients};
+\node[tbl] (assess) at (0,-3.2) {assessments};
+\node[tbl] (rec) at (-6,-5) {recordings};
+\node[tbl] (qres) at (-3,-5) {question\_results};
+\node[tbl] (trans) at (0,-5) {transcripts};
+\node[tbl] (anote) at (3,-5) {assessment\_notes};
+\node[tbl] (reports) at (6,-5) {reports};
+\node[tbl] (qrev) at (-3,-6.8) {question\_reviews};
+\node[tbl] (seg) at (0,-6.8) {segments};
+\node[tbl] (rver) at (6,-6.8) {report\_versions};
+\draw[link] (users) -- node[card]{1 to many} (audit);
+\draw[link] (users) -- node[card]{1 to many} (patients);
+\draw[link] (patients) -- node[card]{1 to many} (assess);
+\draw[link] (assess.south) -- (rec.north) node[card, pos=0.75]{1 to 0..1};
+\draw[link] (assess.south) -- (qres.north) node[card, pos=0.75]{1 to many};
+\draw[link] (assess.south) -- (trans.north) node[card, pos=0.75]{1 to 0..1};
+\draw[link] (assess.south) -- (anote.north) node[card, pos=0.75]{1 to 0..1};
+\draw[link] (assess.south) -- (reports.north) node[card, pos=0.75]{1 to many};
+\draw[link] (qres) -- node[card]{1 to 0..1} (qrev);
+\draw[link] (trans) -- node[card]{1 to many} (seg);
+\draw[link] (reports) -- node[card]{1 to many} (rver);
+\end{tikzpicture}
+\caption{Links between database tables}
+\label{FigER}
+\end{figure}
+
+\subsection{File Storage}
+
+When an assessment is submitted, the MERLS module (\mref{mMERLS}) creates its records through the API Gateway, and the Video Recording module (\mref{mVR}) then uploads the recording. The Database module saves it in S3 under the assessment's identifier, and the recordings table stores its location and checksum. This replaces the patient site's previous upload, which did not confirm that the recording arrived (HA-VR2). Recordings saved by the patient site before this change stay where they are, and are linked to their assessment by their location. The audio clips recorded for each question of a repetition task are saved with the assessment in the same way. If the guardian did not consent to video recording, the assessment has no recording. Report files are saved under the report's identifier and version number. Exported annotation files are created when they are requested and are not stored.
+
+\subsection{Saving and Concurrent Edits}
+
+Every edit, note and grade is saved as soon as it is made, in its own transaction. Each transcript segment has a version number that increases with every change. A change based on an older version is rejected, so if the same assessment is open in two tabs or on two devices (NFR20), one cannot silently overwrite the other (HA-DB2). The original text generated by Whisper is never changed, so a segment can always be compared with or reverted to its automatic version (NFR14). Notes are overwritten when they are edited, and the audit log records who changed them and when.
+
+\subsection{Report Versions}
+
+A report is first generated from the assessment's results, the clinician's review and the transcript, and saved as version 1. In the edit view, the clinician can change the report's own fields (summary, fluency, recommendations, and which question notes are included). Saving these changes stores a new version, and downloading always uses the latest saved version. Earlier versions are kept, so it is always possible to see what was in a report given to a family or institution.
+
+The patient's background information and the results are not edited in the report itself. A result is corrected in the assessment, and the report is then regenerated: the generated content is refreshed and the clinician's own fields are carried over. A report whose assessment changed after it was saved is marked as out of date (HA-RG1), and a report cannot be finalized while it contains unverified content (HA-SAR2).
+
+\subsection{Security and Audit Log}
+\begin{itemize}
+\item Only the Database module connects to the database and file storage. No other module, and no user, can query them directly.
+\item Patient details, notes, transcript text and report content are encrypted with AES-256 by the Encryption module before they are stored (NFR7). The database and S3 are also encrypted at rest by AWS.
+\item Each encrypted value is tied to its table, field and row, so it cannot be read if it is copied into another record.
+\item Every view, change, download and export is added to the audit log (NFR8). The database account used by the system can add audit entries but not change or delete them, and entries are kept for LOG\_RETENTION (6 years).
+\end{itemize}
+
+\subsection{Backup and Retention}
+\begin{itemize}
+\item The database is backed up automatically at least every BACKUP\_INTERVAL (24 hours), and each recording is copied to a separate backup location as soon as its upload is verified (NFR9, HA-VR2).
+\item Patient data is kept for the RETENTION period defined in the SRS. When a guardian withdraws consent, all of the patient's records and files are deleted, and removed from backups within DELETE\_WINDOW (30 days). Audit log entries are kept, since they are required for LOG\_RETENTION.
+\end{itemize}
 
 \section{Timeline}
 
