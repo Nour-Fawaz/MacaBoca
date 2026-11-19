@@ -1146,6 +1146,391 @@ and the read routines call it with VIEW (\srsref{NFR}{NFR-S4}). If saving fails,
 \end{itemize}
 
 \newpage
+\section{MIS of Database Module} \label{Database}
+The Database module stores and retrieves all of the system's data: patients, assessments, recordings, transcripts, the clinician's review, reports and the audit log. It is the only module that reads or writes stored data, so every check on how data is saved, linked and protected happens in one place (\srsref{FR}{FR_AnnotationsInRecord}, \srsref{NFR}{NFR-S4}, \srsref{NFR}{NFR-M1}, \srsref{NFR}{NFR-RE2}, \hazref{HA-DB1}, \hazref{HA-DB2}, \hazref{HA-DB3}, \hazref{HA-SER2}).
+
+\subsection{Module}
+Database
+
+\subsection{Uses}
+\begin{itemize}
+\item Encryption module: encrypt, decrypt
+\end{itemize}
+This module is used by the Transcription Service Interface, Report Generation, Assessment Review and Account System modules, and by the API Gateway module.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+\begin{itemize}
+\item AUDIT\_ACTIONS = \{VIEW, EDIT, GENERATE, EXPORT, CREATE, DELETE\}\\
+The actions recorded in the audit log.
+\end{itemize}
+This module also uses the auxiliary constants BACKUP\_INTERVAL (24 hours) and LOG\_RETENTION (6 years), defined in the SRS.
+
+\subsubsection{Exported Access Programs}
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.4cm} >{\raggedright\arraybackslash}p{4.3cm} >{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}p{4.3cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+\endhead
+listPatients & clinicianID: String & patients: sequence of PatientSummary & - \\[4pt]
+isAssigned & clinicianID: String \newline objectID: String & assigned: $\mathbb{B}$ & - \\[4pt]
+storeRecording & assessmentID: String \newline recording: Recording & checksum: String & AssessmentNotFoundError \newline SaveFailedError \\[4pt]
+getRecording & assessmentID: String & recording: Recording & AssessmentNotFoundError \newline RecordingUnavailableError \\[4pt]
+backupRecording & assessmentID: String & - & RecordingUnavailableError \newline BackupFailedError \\[4pt]
+saveSegments & assessmentID: String \newline segments: sequence of Segment & - & AssessmentNotFoundError \newline SaveFailedError \\[4pt]
+getTranscript & assessmentID: String & transcript: Transcript & AssessmentNotFoundError \newline NoTranscriptError \\[4pt]
+updateSegment & assessmentID: String \newline segmentID: String \newline changes: SegmentChanges \newline version: $\mathbb{N}$ or none & newVersion: $\mathbb{N}$ & SegmentNotFoundError \newline StaleVersionError \newline SaveFailedError \\[4pt]
+setTranscriptStatus & assessmentID: String \newline status: String & - & AssessmentNotFoundError \newline SaveFailedError \\[4pt]
+getQuestionResults & assessmentID: String & results: sequence of QuestionResult & AssessmentNotFoundError \\[4pt]
+saveQuestionReview & assessmentID: String \newline questionID: String \newline changes: QuestionReviewChanges & - & QuestionNotFoundError \newline SaveFailedError \\[4pt]
+saveAssessmentNote & assessmentID: String \newline text: String or none & - & AssessmentNotFoundError \newline SaveFailedError \\[4pt]
+getReview & assessmentID: String & review: Review & AssessmentNotFoundError \\[4pt]
+getLastModified & assessmentID: String & time: Time & AssessmentNotFoundError \\[4pt]
+saveReport & report: Report & reportID: String & AssessmentNotFoundError \newline SaveFailedError \\[4pt]
+updateReport & reportID: String \newline edits: ReportEdits \newline userID: String & version: $\mathbb{N}$ & ReportNotFoundError \newline SaveFailedError \\[4pt]
+getReport & reportID: String & report: Report & ReportNotFoundError \\[4pt]
+logAccess & userID: String \newline action: AUDIT\_ACTIONS \newline objectID: String & - & LogFailedError \\[4pt]
+\hline
+\end{longtable}
+}
+
+\noindent The access programs use the following types:
+\begin{itemize}
+\item PatientSummary: a tuple (patientID: String, name: String, age: String, lastAssessment: Time or none).
+\item QuestionResult: the automatic result for one question, a tuple (questionID: String, domain: String, prompt: String, response: String, autoResult: \{CORRECT, INCORRECT\} or none, autoFlag: $\mathbb{B}$, flagReason: String or none, start: $\mathbb{R}$, end: $\mathbb{R}$).
+\item SegmentChanges: the fields of a Segment being changed, any of text, speaker, language and verified. originalText cannot be changed.
+\item QuestionReviewChanges: the fields of a question's review being changed, any of clinicianFlag: $\mathbb{B}$, note: String or none, includeInReport: $\mathbb{B}$ and manualResult: \{CORRECT, INCORRECT\} or none.
+\item ReportEdits: the clinician-written fields of a report, a tuple (summary: String, fluency: String, recommendations: String, includedNotes: set of questionID).
+\end{itemize}
+Types from other modules: Recording (Video Recording), Segment and Transcript (Transcription Service Interface), Review (Assessment Review) and Report (Report Generation).
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+None. All data is held in the environment variables below, so nothing is lost if the server restarts.
+
+\subsubsection{Environment Variables}
+\begin{itemize}
+\item records: the relational database (PostgreSQL) holding the tables described in Section 12 of the Module Guide.
+\item files: the object storage bucket (Amazon S3) holding recordings and downloaded report files.
+\item backups: a separate storage location holding copies of records and files.
+\end{itemize}
+
+\subsubsection{Assumptions}
+\begin{itemize}
+\item The caller has already checked that the user may access the item: the API Gateway calls isAssigned through the Account System before passing on a request (\hazref{HA-SER3}).
+\item The database, object storage and backups are covered by a Business Associate Agreement with the provider (\srsref{NFR}{NFR-CO1}).
+\item Each patient is assigned to exactly one clinician, as stated in the SRS.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+The following apply to every access program:
+\begin{itemize}
+\item Every query is sent with its values as separate parameters, never by joining user input into the query text (\hazref{HA-SER2}).
+\item Every routine that changes data does so in a single transaction: either all of its changes are saved, or none are and SaveFailedError is raised (\hazref{HA-DB2}).
+\item Every stored item refers to the assessment or patient it belongs to, and the database rejects a reference to one that does not exist (\hazref{HA-DB3}).
+\item Patient names, notes, transcript text and report content are encrypted with Encryption.encrypt before they are stored and decrypted when they are read, tied to their field and row so they cannot be read if copied to another record (\srsref{NFR}{NFR-S3}).
+\item Routines that only read (getRecording, getTranscript, getQuestionResults, getReview, getReport) return the stored item and raise the listed not-found error if it does not exist. They do not change any data.
+\end{itemize}
+
+\noindent listPatients(clinicianID):
+\begin{itemize}
+\item output: One PatientSummary for each patient assigned to clinicianID, and no others (\srsref{FR}{FR_Label9}, \srsref{NFR}{NFR-S1}).
+\end{itemize}
+
+\noindent isAssigned(clinicianID, objectID):
+\begin{itemize}
+\item output: true iff objectID is a stored item (patient, assessment, segment, question or report) that belongs to a patient assigned to clinicianID. false if objectID does not exist, so that a missing item and another clinician's item cannot be told apart (\hazref{HA-SER3}).
+\end{itemize}
+
+\noindent storeRecording(assessmentID, recording):
+\begin{itemize}
+\item transition: Saves recording.file in files and records its location against assessmentID.
+\item output: The checksum of the file as stored, so the caller can confirm it arrived intact (\hazref{HA-VR2}).
+\end{itemize}
+
+\noindent backupRecording(assessmentID):
+\begin{itemize}
+\item transition: Copies the recording to backups. Records and all other files are also copied to backups at least every BACKUP\_INTERVAL (\srsref{NFR}{NFR-M1}).
+\end{itemize}
+
+\noindent saveSegments(assessmentID, segments):
+\begin{itemize}
+\item transition: Adds segments to the assessment's transcript, each with version := 1.
+\end{itemize}
+
+\noindent updateSegment(assessmentID, segmentID, changes, version):
+\begin{itemize}
+\item transition: If version is none or equals the segment's stored version, applies changes and increments the stored version. originalText is never changed, so the automatic version is always kept (\srsref{NFR}{NFR-UN1}).
+\item output: The segment's new version.
+\item exception: StaleVersionError if version is older than the stored version, meaning the segment was changed elsewhere (for example in another tab), and nothing is saved (\hazref{HA-DB2}).
+\end{itemize}
+
+\noindent setTranscriptStatus(assessmentID, status):
+\begin{itemize}
+\item transition: The transcript's status := status.
+\end{itemize}
+
+\noindent saveQuestionReview(assessmentID, questionID, changes):
+\begin{itemize}
+\item transition: Applies changes to the clinician's review of the question. The automatic result and flag are never changed.
+\end{itemize}
+
+\noindent saveAssessmentNote(assessmentID, text):
+\begin{itemize}
+\item transition: The assessment note := text, or deletes it if text = none.
+\end{itemize}
+
+\noindent getLastModified(assessmentID):
+\begin{itemize}
+\item output: The latest time at which any question review, the assessment note or any transcript segment of the assessment was changed (\hazref{HA-RG1}).
+\end{itemize}
+
+\noindent saveReport(report):
+\begin{itemize}
+\item transition: Stores report as version 1 of a new report for report.assessmentID.
+\item output: The new reportID.
+\end{itemize}
+
+\noindent updateReport(reportID, edits, userID):
+\begin{itemize}
+\item transition: Stores a new version of the report: a copy of the latest version with its clinician-written fields replaced by edits, stamped with userID and the current time. Earlier versions are kept, and getReport returns the latest.
+\item output: The new version number.
+\end{itemize}
+
+\noindent logAccess(userID, action, objectID):
+\begin{itemize}
+\item transition: Appends the entry (userID, action, objectID, current time) to the audit log. Entries can never be changed or deleted, and are kept for LOG\_RETENTION (\srsref{NFR}{NFR-S4}).
+\item exception: LogFailedError if the entry cannot be saved. The caller then treats its own action as failed, so no action goes unrecorded.
+\end{itemize}
+
+\subsubsection{Local Functions}
+None.
+
+\newpage
+\section{MIS of Encryption Module} \label{Encryption}
+The Encryption module protects stored patient data and passwords. It's purpose is to encrypt and decrypt values for the Database module, and hash and check passwords for the Account System module (\srsref{NFR}{NFR-S3}, \srsref{NFR}{NFR-CO1}, \hazref{HA-DB1}).
+
+\subsection{Module}
+Encryption
+
+\subsection{Uses}
+None. Keys are provided by the key management service in the environment.\\
+This module is used by the Database and Account System modules.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+\begin{itemize}
+\item ALGORITHM = AES-256-GCM\\
+The algorithm used to encrypt stored data. It also detects whether the data has been changed.
+\item HASH\_COST = 12\\
+The work factor used when hashing passwords, which sets how slow each guess is for an attacker.
+\end{itemize}
+
+\subsubsection{Exported Access Programs}
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.4cm} >{\raggedright\arraybackslash}p{4.3cm} >{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}p{4.3cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+\endhead
+encrypt & plaintext: Bytes \newline context: String & c: Ciphertext & KeyUnavailableError \\[4pt]
+decrypt & c: Ciphertext \newline context: String & plaintext: Bytes & KeyUnavailableError \newline DecryptionFailedError \\[4pt]
+hashPassword & password: String & hash: String & - \\[4pt]
+verifyPassword & password: String \newline hash: String & matches: $\mathbb{B}$ & - \\[4pt]
+\hline
+\end{longtable}
+}
+
+\noindent The access programs use the following types:
+\begin{itemize}
+\item Ciphertext: a tuple (keyID: String, wrappedKey: Bytes, iv: Bytes, data: Bytes, tag: Bytes). keyID names the master key, wrappedKey is the data key encrypted by that master key, and tag is used to detect changes.
+\end{itemize}
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+None.
+
+\subsubsection{Environment Variables}
+\begin{itemize}
+\item keyService: the cloud key management service (AWS KMS) that holds the master key. The master key never leaves the service.
+\item random: a cryptographically secure random number generator.
+\end{itemize}
+
+\subsubsection{Assumptions}
+\begin{itemize}
+\item The key management service is covered by a Business Associate Agreement (\srsref{NFR}{NFR-CO1}).
+\item Only the server running the Database and Account System modules is allowed to use the master key.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent encrypt(plaintext, context):
+\begin{itemize}
+\item transition: Asks keyService for a new data key.
+\item output: c, plaintext encrypted with ALGORITHM under the data key, a fresh iv from random, and context as additional authenticated data, together with the data key wrapped by the master key. decrypt(c, context) = plaintext.
+\item exception: KeyUnavailableError if keyService cannot be reached.
+\end{itemize}
+
+\noindent decrypt(c, context):
+\begin{itemize}
+\item transition: Asks keyService to unwrap c.wrappedKey.
+\item output: The original plaintext.
+\item exception: KeyUnavailableError; DecryptionFailedError if c has been changed or context differs from the one used to encrypt it. No partial plaintext is returned.
+\end{itemize}
+
+\noindent hashPassword(password):
+\begin{itemize}
+\item output: A hash of the password. The password itself is never stored.
+\end{itemize}
+
+\noindent verifyPassword(password, hash):
+\begin{itemize}
+\item output: true only if the password produces the provided hash
+\end{itemize}
+
+\subsubsection{Local Functions}
+None.
+
+\newpage
+\section{MIS of MERLS Module} \label{MERLS}
+The MERLS module connects the existing patient site, built by a previous team, to the clinician platform. It runs an assessment for the patient: it checks the recording setup, records the session with breaks to keep the child engaged, and submits the answers and recording so they appear for the clinician (\srsref{FR}{FR_Label24}, \srsref{NFR}{NFR-U1}, \srsref{NFR}{NFR-P1}). It replaces the patient site's existing upload, which did not confirm that the recording arrived, with one that is verified and retried (\hazref{HA-VR2}).
+
+\subsection{Module}
+MERLS
+
+\subsection{Uses}
+\begin{itemize}
+\item Video Recording module: init, checkQuality, startRecording, stopRecording, saveRecording
+\item API Gateway module: createAssessment
+\end{itemize}
+This module is not used by any other module. It is run by the patient site in the patient's browser.
+
+\subsection{Syntax}
+
+\subsubsection{Exported Constants}
+\begin{itemize}
+\item BREAK\_INTERVAL = 8 questions\\
+Number of questions after which the child is offered a break.
+\item MAX\_BREAK\_LENGTH = 3 minutes\\
+Longest a break can last before the assessment continues, so that breaks do not use up the recording time.
+\end{itemize}
+This module also uses the auxiliary constant MAX\_REC\_LEN (30 minutes), defined in the SRS.
+
+\subsubsection{Exported Access Programs}
+{\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.4cm} >{\raggedright\arraybackslash}p{4.3cm} >{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}p{4.3cm}}
+\hline
+\textbf{Name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions} \\
+\hline
+\endhead
+startAssessment & sessionToken: String \newline assessmentType: String \newline language: String \newline videoConsent: $\mathbb{B}$ & report: QualityReport or none & AssessmentInProgressError \newline PermissionDeniedError \newline DeviceUnavailableError \\[4pt]
+recordAnswer & answer: AnswerRecord & breakDue: $\mathbb{B}$ & NotInProgressError \\[4pt]
+startBreak & - & - & NotInProgressError \\[4pt]
+endBreak & - & - & NotOnBreakError \\[4pt]
+submitAssessment & - & assessmentID: String & NotInProgressError \newline SubmitFailedError \newline UploadPendingError \\[4pt]
+getStatus & - & status: \{IDLE, IN\_PROGRESS, ON\_BREAK, PENDING\_UPLOAD, SUBMITTED\} & - \\[4pt]
+\hline
+\end{longtable}
+}
+
+\noindent The access programs use the following types:
+\begin{itemize}
+\item AnswerRecord: one answer given by the patient, a tuple (questionID: String, response: String, autoResult: \{CORRECT, INCORRECT\} or none, start: $\mathbb{R}$, end: $\mathbb{R}$, clip: Bytes or none).
+  \begin{itemize}
+  \item start and end are times in seconds on the recording's timeline.
+  \item clip is the audio recorded for that question, used by repetition tasks; none for other tasks.
+  \end{itemize}
+\item AssessmentSubmission: what is sent when the assessment is finished, a tuple (assessmentType: String, language: String, takenAt: Time, videoConsent: $\mathbb{B}$, answers: sequence of AnswerRecord, breaks: sequence of Interval).
+  \begin{itemize}
+  \item breaks lists the periods of the recording when the child was on a break, so they can be skipped during transcription and review.
+  \end{itemize}
+\end{itemize}
+The type QualityReport is defined by the Video Recording module and Interval by the Transcription Service Interface module.
+
+\subsection{Semantics}
+
+\subsubsection{State Variables}
+\begin{itemize}
+\item status: \{IDLE, IN\_PROGRESS, ON\_BREAK, PENDING\_UPLOAD, SUBMITTED\}
+\item token: String or none, the patient's session.
+\item submission: AssessmentSubmission or none, the assessment being taken.
+\item assessmentID: String or none, set once the assessment has been created, so that it is never created twice.
+\item sinceBreak: $\mathbb{N}$, questions answered since the last break.
+\item breakStart: $\mathbb{R}$ or none, when the current break started on the recording's timeline.
+\end{itemize}
+
+\subsubsection{Environment Variables}
+None. The camera and microphone are reached through the Video Recording module.
+
+\subsubsection{Assumptions}
+\begin{itemize}
+\item The patient site presents the questions and scores the answers that can be graded automatically, as it does today. Its question bank does not change.
+\item The patient site only offers an assessment once the guardian has consented to it, and passes on whether they also consented to video recording, as stated in the SRS.
+\item The guardian is signed in through the patient site's existing login, and the API Gateway accepts sessionToken only for that patient's assessments. How this login connects to the Account System is still to be decided.
+\item Interference flags are produced on the server by the existing detection service once the recording is stored (\srsref{FR}{FR_Label13}). Which module calls this service is still to be decided.
+\end{itemize}
+
+\subsubsection{Access Routine Semantics}
+
+\noindent startAssessment(sessionToken, assessmentType, language, videoConsent):
+\begin{itemize}
+\item transition:
+  \begin{itemize}
+  \item If videoConsent: VideoRecording.init(); report := VideoRecording.checkQuality(). If report.passed is false, nothing else changes, so the patient can fix the issues and try again (\hazref{HA-VR1}). Otherwise VideoRecording.startRecording().
+  \item If not videoConsent: report := none and nothing is recorded, apart from the audio clips of repetition tasks.
+  \item Unless the quality check failed: token := sessionToken; submission := (assessmentType, language, current time, videoConsent, $\langle\rangle$, $\langle\rangle$); assessmentID := none; sinceBreak := 0; status := IN\_PROGRESS.
+  \end{itemize}
+\item output: report.
+\item exception: AssessmentInProgressError if status is IN\_PROGRESS, ON\_BREAK or PENDING\_UPLOAD; PermissionDeniedError, DeviceUnavailableError (from Video Recording).
+\end{itemize}
+
+\noindent recordAnswer(answer):
+\begin{itemize}
+\item transition: Appends answer to submission.answers; sinceBreak := sinceBreak + 1.
+\item output: true iff sinceBreak $\geq$ BREAK\_INTERVAL, so the patient site can offer a break.
+\item exception: NotInProgressError if status $\neq$ IN\_PROGRESS.
+\end{itemize}
+
+\noindent startBreak():
+\begin{itemize}
+\item transition: breakStart := the current time on the recording; status := ON\_BREAK. The recording continues, and endBreak is called automatically after MAX\_BREAK\_LENGTH (\srsref{FR}{FR_Label24}).
+\item exception: NotInProgressError if status $\neq$ IN\_PROGRESS.
+\end{itemize}
+
+\noindent endBreak():
+\begin{itemize}
+\item transition: Appends (breakStart, the current time on the recording) to submission.breaks; breakStart := none; sinceBreak := 0; status := IN\_PROGRESS.
+\item exception: NotOnBreakError if status $\neq$ ON\_BREAK.
+\end{itemize}
+
+\noindent submitAssessment():
+\begin{itemize}
+\item transition:
+  \begin{itemize}
+  \item If status = IN\_PROGRESS: stop the recording with VideoRecording.stopRecording() if videoConsent, then assessmentID := API Gateway.createAssessment(token, submission), and status := PENDING\_UPLOAD.
+  \item If videoConsent: VideoRecording.saveRecording(assessmentID, token).
+  \item status := SUBMITTED.
+  \item If saving the recording fails, status stays PENDING\_UPLOAD and the recording stays on the device. Calling submitAssessment again only retries the upload, since assessmentID is already set, so the assessment is not created twice (\hazref{HA-VR2}).
+  \end{itemize}
+\item output: assessmentID.
+\item exception: NotInProgressError if status is IDLE, ON\_BREAK or SUBMITTED; SubmitFailedError if the assessment could not be created, in which case nothing changes; UploadPendingError if the assessment was created but the recording could not be saved yet.
+\end{itemize}
+
+\noindent getStatus():
+\begin{itemize}
+\item output: status.
+\end{itemize}
+
+\subsubsection{Local Functions}
+None.
+
+\newpage
 
 \bibliographystyle {plainnat}
 \bibliography {../../../refs/References}
@@ -1342,6 +1727,39 @@ as the two work on different data (transcript segments versus questions) and cha
 Lastly, Report Generation could read question results straight from the Database, but we decided
 to have it receive an overview through the Assessment Review module instead, so that it 
 can be changed without affecting Report Generation.
+
+\subsection*{Javayria}
+\subsubsection*{Question 1}
+Decomposing the system into modules was easier than I expected. Our team already had a clear picture of what the system needs to do, so the module boundaries followed naturally from its features. The SRS and hazard analysis gave us a list of requirements to cover, and the previous capstone team's implementation of MERLS showed us which parts already existed and which we needed to add. This meant most of our effort went into defining each module's interface rather than deciding what the modules should be.
+
+\subsubsection*{Question 2}
+I was assigned the Database, Encryption and MERLS modules, as well as the Database Design section of the MG, and making storage decisions this early in the project was difficult. The existing MERLS platform stores everything as JSON files in Amazon S3 without a database, so I had to research the options (relational, non-relational, or staying with files) and work out what our system really needs. It was also hard to define the Database interface before the other modules were specified, since its access programs depend on what those modules need. We resolved this by discussing as a team what each module would store and read, and I built the Database interface from the calls in the other MIS sections, leaving routines for modules that are not yet specified to be added later.
+
+\subsubsection*{Question 3}
+The decision to have a separate Encryption module that both encrypts stored data and hashes passwords came from conversations with our supervisor, who emphasized protecting client data, encryption, and meeting HIPAA requirements. Keeping all of this in one module means the algorithm or keys can change without affecting the modules that use it. The choice of a relational database did not come from our client, since they had no preference on how data is stored. Instead, it came from my own research and from our hazard analysis, since foreign keys, transactions and parameterized queries directly address hazards HA-DB2, HA-DB3 and HA-SER2.
+
+\subsubsection*{Question 4}
+For the most part, our other documents did not need major changes, since our supervisors reviewed the SRS and hazard analysis and confirmed that they fit the system they want, and the modules followed from those. However, writing the design did expose a few gaps. For example, the report edit view in our wireframes needed a way to save edited reports as new versions, and the option to include a question note in the report needed to be stored.
+
+\subsubsection*{Question 5}
+The main limitations of our solution are time and money. We are currently limited to AWS's free tier, which restricts the size of our database and where we can run the ML Transcription Model, since running Whisper locally needs significant computing power. With unlimited resources, we could run transcription on a dedicated server, and keep a full edit history of notes and transcripts instead of only the original and latest versions. We also have only one semester to implement the system, and software that handles children's health data should be built over many rounds of feedback and security review, which our team does not have the time or expertise to fully complete.
+
+\subsubsection*{Question 6}
+The first alternative design was storing each transcript as one large JSON file, with each segment marked by its start and end time.
+The benefit is that it is simple, and it matches how the existing SAFA tool already reads transcripts.
+However, clinicians edit one segment at a time, so every small edit would rewrite the whole file. If the transcript was open in two tabs, one tab could also overwrite the other's changes.
+We didn't choose it, and instead store each segment as its own row in the database, with a version number that detects when a segment was changed somewhere else.
+
+The second alternative design was keeping the existing setup of JSON files in Amazon S3, or using a non-relational database such as DynamoDB.
+The benefit is that this is closer to what the previous team built, and it fits our data well, since it is mostly a simple hierarchy of clinicians, patients, assessments and segments.
+However, checks such as making sure every note and segment belongs to a real assessment, or that a clinician only sees their own patients, would have to be written and tested in our own code.
+We didn't choose it because a relational database already provides these checks, which directly address the hazards we found for stored data.
+
+The third alternative design was relying only on the encryption that AWS provides for its storage, instead of having a separate Encryption module.
+This would be less work, but anyone with access to the database could still read patient details, notes and transcripts.
+We didn't choose it because encrypting these fields ourselves, in one module, adds a second layer of protection and lets the algorithm or keys change without affecting the rest of the system.
+
+Overall, we chose our design because it keeps each clinician's edits safe and protects patient data.
 
 \end{enumerate}
 
