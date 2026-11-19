@@ -32,9 +32,23 @@ the report.}
 
 \section{Demo Plans}
 
-\wss{What is your feasibility risk?}
+The main feasibility risk of the project is integrating SAFA into \progname{}, as
+SAFA is currently a separate, local python GUI tool, while \progname{} is a web-based
+platform with its own architecture. If the two cannot be connected, clinicians
+would still have to leave the platform and move files to SAFA by hand, which
+defeats one of the main goals of the project, being making work for clinicians
+more accessible and efficient.
 
-\wss{What will you be demonstrating}
+In the proof of concept demonstration, the team will show this integration
+working end to end in the browser. A clinician will log in, open a patient's
+recorded bilingual assessment, and send it to SAFA's transcription module. The
+transcript will then be shown in \progname{}, split into time chunks. While the
+video plays, the clinician will jump between the start, middle and end of the
+recording, and the matching transcript chunk will be highlighted within half a
+second of the video. The clinician will then edit a segment's text, time, speaker
+or language, and the change will be saved to the assessment. Finally, a second
+clinician account and patient account will log in to show that it cannot view or edit the first
+clinician's patient, nor see any information that they do not have access to.
 
 \section{Team Meeting Attendance}
 This section outlines the total number of group meetings each team member attended.
@@ -192,9 +206,23 @@ lectures, and supervisor meetings.
 
 \section{CICD via GitHub Actions}
 
-\wss{Say how CICD technology is used and will be used in your project.}
-
-\wss{Provide links to your CICD yaml files}
+\begin{itemize}
+    \item GitHub Actions is currently used to build the LaTeX documentation
+    (\href{https://github.com/Nour-Fawaz/MacaBoca/blob/main/.github/workflows/latex-pages.yml}{latex-pages.yml})
+    and a workflow runs on every pull request and push to main that changes the documentation.
+    \begin{itemize}
+        \item Only documents affected by a change are compiled.
+        \item If a document doesn't compile, the check fails, blocking any pushes and produces an error message and logs to be checked.
+        \item All compiled PDFs are placed in the \texttt{pdfs/} folder for TA review on merge to main
+        \item PDFs are published to the project's GitHub Pages site
+    \end{itemize}
+    \item Once implementation begins, GitHub Actions will also be used:
+    \begin{itemize}
+        \item To run unit, contract and integration tests, etc.
+        \item Run linter tests on all code pushed to main or in a pull request.
+    \end{itemize}
+    \item If all checks pass and at least one other team member approves the pull request, the branch can be merged into main.
+\end{itemize}
 
 \section{Custom Documents (CDs)}
 
