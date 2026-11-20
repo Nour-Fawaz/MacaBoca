@@ -142,21 +142,10 @@ Catherine Yang & 4 \\
 
 \section{Commits, Lines Added and Lines Deleted, Pull Requests}
 
-\wss{For each team member how many commits to the main branch have been made
-over the time period of interest.  The total is the total number of commits for
-the entire team since the beginning of the term.  The percentage is the
-percentage of the total commits made by each team member.}
-
-\wss{There are also columns for lines added and lines deleted to give a sense of
-the magnitude of each team member's contributions.  Note that these numbers can
-be somewhat misleading, as a team member who does refactoring may have high
-numbers in both columns, while a team member who implements a large new feature
-may have a high number of lines added, but few lines deleted.  As for all commit
-information, these numbers will be interpreted with care.}
-
-\wss{The pull requests column counts the number of pull requests created by each
-team member.  This is a measure of how many contributions were made in branches,
-which may not be reflected in the commit counts for the main branch.}
+This section outlines the number of commits to the main branch, the lines added
+and deleted on the main branch, and the number of pull requests created by each
+team member since the beginning of the term. All values
+come directly from the team's GitHub repository.
 
 \begin{table}[H]
 \centering
@@ -165,20 +154,42 @@ which may not be reflected in the commit counts for the main branch.}
 \textbf{Student} & \textbf{Commits} & \textbf{Percent} & \textbf{Lines Added} &
 \textbf{Lines Deleted} & \textbf{Pull Requests}\\
 \midrule
-Total & Num & 100\% & total added & total deleted & total PRs\\
-Name 1 & Num & \% & num & num & num\\
-Name 2 & Num & \% & num & num & num\\
-Name 3 & Num & \% & num & num & num\\
-Name 4 & Num & \% & num & num & num\\
-Name 5 & Num & \% & num & num & num\\
+Total & 60 & 100\% & 10172 & 3378 & 46\\
+Nour Fawaz & 13 & 21.7\% & 2692 & 669 & 14\\
+Javayria Mudassar & 17 & 28.3\% & 2322 & 277 & 12\\
+Yilin Jiang & 10 & 16.7\% & 2254 & 1587 & 10\\
+Catherine Yang & 20 & 33.3\% & 2904 & 845 & 10\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\wss{If needed, an explanation for the counts can be provided here.  For
-instance, if a team member has more commits to unmerged branches, these numbers
-can be provided here.  If multiple people contribute to a commit, git allows for
-multi-author commits.}
+\noindent
+The following notes explain how these numbers were counted and why they differ
+between team members:
+\begin{itemize}
+    \item Pull requests are squash merged into main, so each merged pull request
+    shows up as a single commit on main. The commit counts are therefore mostly
+    the number of merged pull requests, plus any commits made directly to main.
+    Before squashing, team members made a total of 156 commits across their
+    branches (Nour 44, Javayria 27, Yilin 51, Catherine 34).
+    \item Commits made by the GitHub Actions bot to update the generated PDFs are
+    not counted. The repository's initial commit, which added the course
+    template, is also not counted in the commits or lines.
+    \item Lines added and deleted do not include generated PDFs or LaTeX build
+    files.
+    \item Some team members have more commits to main because they made changes
+    on behalf of the whole team. Before submitting any document, the team would meet on a 
+    Teams call to review the document together and decide if any formatting needed to be fized.
+     Instead of everyone editing the
+    document at once, one person (usually Catherine) would make the agreed
+    changes and commit them. These commits represent the work of the whole
+    team, not one member.
+    \item Some team members also worked on the repository setup more. For instance, Javayria added the issue templates and pull request template,
+    and Catherine fixed a bug in the CI/CD workflow so the LaTeX documents could compile correctly. These
+    commits add few lines but support the team's workflow.
+    \item The pull request counts include two pull requests that were closed
+    without being merged (one by Nour and one by Catherine).
+\end{itemize}
 
 \section{Issue Tracker}
 
@@ -235,15 +246,22 @@ supervisors are arranging for us to meet with speech-language pathologists, our 
 
 \section{Team Charter Trigger Items}
 
-\wss{Provide a summary of the quantified triggers identified in the team's
-charter.}
+Our team charter (Development Plan, Appendix) sets triggers for attendance
+(missing 3 group meetings), commits (fewer than 5 meaningful commits per
+deliverable), GitHub issues (not finished one day before a deadline), deadlines
+(work not on GitHub one day before a deadline), and communication (not replying
+to messages within 1--2 hours).
 
-\wss{Provide a list of any violations of the triggers.  If the team wishes, the
-violations can be summarized on aggregate, instead of naming specific team
-members.}
+So far, we have not had any trigger items. Everyone has completed their work, has
+been respectful, and has communicated well with the rest of the team. The few
+missed meetings were for illness or injury, and the team was told about them.
 
-\wss{Provide a plan to address the violations.  This could include revising the
-triggers, if they are found to be too weak, strong or ambiguous.}
+The only change we made is to when work needs to be done. Because each of us has
+a large workload, we decided as a team that it is okay to finish our assigned
+work as long as it is done before the team meeting. We meet around 8:00 pm on
+every day we submit a deliverable, so team members can keep working on their parts
+until then. We made this decision to fit our busy schedules, since it just is not
+realistic to expect everyone to be done earlier.
 
 \section{Additional Productivity Metrics}
 The team does not plan to track additional productivity metrics.
