@@ -1,8 +1,8 @@
 import { createTheme } from '@mantine/core';
 
-// Keep this minimal: Mantine's defaults already look clean.
-// Tweak primaryColor / fontFamily here to restyle the whole POC.
+// same look as linkedout: cyan + inter
 export const theme = createTheme({
-  primaryColor: 'teal',
-  defaultRadius: 'sm',
+  primaryColor: 'cyan',
+  fontFamily: 'Inter, system-ui, Helvetica, Arial, sans-serif',
+  defaultRadius: 'md',
 });

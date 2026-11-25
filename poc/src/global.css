@@ -1,0 +1,4 @@
+/* shrink everything a bit; mantine sizes are in rem so they all follow */
+html {
+  font-size: 90%;
+}

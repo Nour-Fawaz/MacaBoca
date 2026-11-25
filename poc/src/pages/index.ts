@@ -1,1 +1,9 @@
-export { HomePage } from './HomePage';
+export { AssessmentPage } from './AssessmentPage';
+export { LoginPage } from './LoginPage';
+export { QuestionPage } from './QuestionPage';
+export { ReportPage } from './ReportPage';
+export { SafaPage } from './SafaPage';
+export { PatientPage } from './PatientPage';
+export { PatientsPage } from './PatientsPage';
+export { ReportsPage } from './ReportsPage';
+export { AssessmentsPage } from './AssessmentsPage';
